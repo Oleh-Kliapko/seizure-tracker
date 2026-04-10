@@ -1,6 +1,11 @@
+// config/firebase.ts
+
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import { getApp, getApps, initializeApp } from "firebase/app"
-import { getAuth } from "firebase/auth"
 import { getFirestore } from "firebase/firestore"
+
+// @ts-expect-error - getReactNativePersistence існує в runtime але не в типах цієї версії
+import { getReactNativePersistence, initializeAuth } from "firebase/auth"
 
 const firebaseConfig = {
 	apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
@@ -14,5 +19,8 @@ const firebaseConfig = {
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp()
 
-export const auth = getAuth(app)
+export const auth = initializeAuth(app, {
+	persistence: getReactNativePersistence(AsyncStorage),
+})
+
 export const db = getFirestore(app)
