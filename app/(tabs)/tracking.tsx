@@ -1,9 +1,9 @@
-// app/(tabs)/index.tsx
+// app/(tabs)/tracking.tsx
 
 import { useAppTheme } from "@/hooks"
 import { Text, View } from "react-native"
 
-export default function Dashboard() {
+export default function Tracking() {
 	const { colors, fonts } = useAppTheme()
 
 	return (
@@ -22,7 +22,7 @@ export default function Dashboard() {
 					color: colors.onSurface,
 				}}
 			>
-				Дашборд
+				Трекінг
 			</Text>
 		</View>
 	)

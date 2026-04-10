@@ -1,35 +1,75 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+// app/(tabs)/_layout.tsx
 
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { FontFamily } from "@/constants/fonts"
+import { useAppTheme } from "@/hooks"
+import { Tabs } from "expo-router"
+import {
+	CalendarDays,
+	ChartBar,
+	House,
+	Settings,
+	Zap,
+} from "lucide-react-native"
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+export default function TabsLayout() {
+	const {
+		colors: { primary, textSecondary, surface, border },
+		iconSize: { md },
+		fontSize: { sm },
+	} = useAppTheme()
 
-  return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
-    </Tabs>
-  );
+	return (
+		<Tabs
+			screenOptions={{
+				headerShown: false,
+				tabBarActiveTintColor: primary,
+				tabBarInactiveTintColor: textSecondary,
+				tabBarStyle: {
+					backgroundColor: surface,
+					borderTopColor: border,
+					paddingTop: 8,
+				},
+				tabBarLabelStyle: {
+					fontFamily: FontFamily.medium,
+					fontSize: sm,
+				},
+			}}
+		>
+			<Tabs.Screen
+				name="index"
+				options={{
+					title: "Головна",
+					tabBarIcon: ({ color }) => <House size={md} color={color} />,
+				}}
+			/>
+			<Tabs.Screen
+				name="seizures"
+				options={{
+					title: "Приступи",
+					tabBarIcon: ({ color }) => <Zap size={md} color={color} />,
+				}}
+			/>
+			<Tabs.Screen
+				name="tracking"
+				options={{
+					title: "Трекінг",
+					tabBarIcon: ({ color }) => <ChartBar size={md} color={color} />,
+				}}
+			/>
+			<Tabs.Screen
+				name="history"
+				options={{
+					title: "Історія",
+					tabBarIcon: ({ color }) => <CalendarDays size={md} color={color} />,
+				}}
+			/>
+			<Tabs.Screen
+				name="settings"
+				options={{
+					title: "Профіль",
+					tabBarIcon: ({ color }) => <Settings size={md} color={color} />,
+				}}
+			/>
+		</Tabs>
+	)
 }

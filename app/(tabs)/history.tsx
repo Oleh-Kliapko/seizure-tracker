@@ -1,9 +1,9 @@
-// app/(tabs)/index.tsx
+// app/(tabs)/history.tsx
 
 import { useAppTheme } from "@/hooks"
 import { Text, View } from "react-native"
 
-export default function Dashboard() {
+export default function History() {
 	const { colors, fonts } = useAppTheme()
 
 	return (
@@ -22,7 +22,7 @@ export default function Dashboard() {
 					color: colors.onSurface,
 				}}
 			>
-				Дашборд
+				Історія
 			</Text>
 		</View>
 	)
