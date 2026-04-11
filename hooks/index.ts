@@ -8,12 +8,18 @@ import {
 	useThemeContext,
 } from "./useAppTheme"
 import { useAuth } from "./useAuth"
+import { useAuthActions } from "./useAuthActions"
+import { useLoginForm } from "./useLoginForm"
+import { useRegisterForm } from "./useRegisterForm"
 
 export {
 	ThemeProvider,
 	useAppFonts,
 	useAppTheme,
 	useAuth,
+	useAuthActions,
 	useIsDarkTheme,
+	useLoginForm,
+	useRegisterForm,
 	useThemeContext,
 }

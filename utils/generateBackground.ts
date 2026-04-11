@@ -15,6 +15,7 @@ type Item = {
 
 export function generateBackground(): Item[] {
 	const size = 160
+	const opacity = 0.3
 
 	return [
 		{
@@ -23,7 +24,7 @@ export function generateBackground(): Item[] {
 			y: size * 0.1,
 			size,
 			rotation: -15,
-			opacity: 0.3,
+			opacity,
 		},
 		{
 			id: 1,
@@ -31,7 +32,7 @@ export function generateBackground(): Item[] {
 			y: size * 0.1,
 			size,
 			rotation: 15,
-			opacity: 0.3,
+			opacity,
 		},
 		{
 			id: 2,
@@ -39,7 +40,7 @@ export function generateBackground(): Item[] {
 			y: height - size * 1.1,
 			size,
 			rotation: 20,
-			opacity: 0.3,
+			opacity,
 		},
 		{
 			id: 3,
@@ -47,7 +48,7 @@ export function generateBackground(): Item[] {
 			y: height - size * 1.1,
 			size,
 			rotation: -20,
-			opacity: 0.3,
+			opacity,
 		},
 	]
 }

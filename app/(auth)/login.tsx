@@ -11,22 +11,27 @@ import {
 	PrimaryButton,
 	ScreenWrapper,
 } from "@/components/ui"
-import { useAppTheme } from "@/hooks"
-import { useState } from "react"
-import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native"
+import { useAppTheme, useLoginForm } from "@/hooks"
+import {
+	KeyboardAvoidingView,
+	Platform,
+	ScrollView,
+	Text,
+	View,
+} from "react-native"
 
 export default function Login() {
-	const { spacing, colors, radius } = useAppTheme()
-	const [email, setEmail] = useState("")
-	const [password, setPassword] = useState("")
-
-	const handleLogin = () => {
-		// логіка входу — додамо далі
-	}
-
-	const handleGoogle = () => {
-		// логіка Google — додамо далі
-	}
+	const { spacing, colors, radius, fontSize, fonts } = useAppTheme()
+	const {
+		email,
+		setEmail,
+		password,
+		setPassword,
+		isLoading,
+		displayError,
+		handleLogin,
+		loginWithGoogle,
+	} = useLoginForm()
 
 	return (
 		<ScreenWrapper>
@@ -71,15 +76,34 @@ export default function Login() {
 							value={password}
 							onChangeText={setPassword}
 							placeholder="••••••••"
-							secureTextEntry
 							autoComplete="password"
 							isPassword
 						/>
-						<PrimaryButton title="Увійти" onPress={handleLogin} />
+
+						<View style={{ minHeight: 24, marginBottom: spacing.sm }}>
+							{displayError && (
+								<Text
+									style={{
+										color: colors.error,
+										fontFamily: fonts.regular,
+										fontSize: fontSize.sm,
+										textAlign: "center",
+									}}
+								>
+									{displayError}
+								</Text>
+							)}
+						</View>
+
+						<PrimaryButton
+							title={isLoading ? "Завантаження..." : "Увійти"}
+							onPress={handleLogin}
+							disabled={isLoading}
+						/>
 					</View>
 
 					<Divider />
-					<GoogleButton onPress={handleGoogle} />
+					<GoogleButton onPress={loginWithGoogle} />
 					<AuthFooterLink
 						question="Ще немає акаунту?"
 						linkText="Зареєструватись"

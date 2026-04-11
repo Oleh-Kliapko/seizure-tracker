@@ -13,6 +13,7 @@ export function PrimaryButton({ title, style, ...props }: Props) {
 			style={[
 				{
 					alignItems: "center",
+					height: 52,
 					backgroundColor: colors.primary,
 					borderRadius: radius.md,
 					paddingVertical: spacing.md,

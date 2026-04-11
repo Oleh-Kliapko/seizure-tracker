@@ -6,7 +6,7 @@ import { StyleSheet, View } from "react-native"
 import { SvgXml } from "react-native-svg"
 import { BRAIN_SVG } from "./svg"
 
-export function AppBackground() {
+export function AppBackground({ color }: { color?: string }) {
 	const { colors } = useAppTheme()
 
 	return (
@@ -17,7 +17,7 @@ export function AppBackground() {
 					xml={BRAIN_SVG}
 					width={b.size}
 					height={b.size}
-					color={colors.primary}
+					color={color || colors.primary}
 					style={{
 						position: "absolute",
 						left: b.x,

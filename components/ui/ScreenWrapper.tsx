@@ -5,12 +5,22 @@ import { ReactNode } from "react"
 import { View } from "react-native"
 import { AppBackground } from "./AppBackground"
 
-export function ScreenWrapper({ children }: { children: ReactNode }) {
+type ScreenWrapperProps = {
+	from?: string
+	children: ReactNode
+}
+
+export function ScreenWrapper({
+	from = "default",
+	children,
+}: ScreenWrapperProps) {
 	const { colors } = useAppTheme()
 
 	return (
 		<View style={[{ flex: 1 }, { backgroundColor: colors.background }]}>
-			<AppBackground />
+			<AppBackground
+				color={from === "default" ? colors.primary : colors.secondary}
+			/>
 			{children}
 		</View>
 	)
