@@ -1,5 +1,6 @@
 // components/index.ts
 
 import { AppLayout } from "./AppLayout"
+import { AppBackground } from "./ui/AppBackground"
 
-export { AppLayout }
+export { AppBackground, AppLayout }

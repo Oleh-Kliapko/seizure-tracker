@@ -1,29 +1,25 @@
 // app/(auth)/login.tsx
 
+import { ScreenWrapper } from "@/components/ui"
 import { useAppTheme } from "@/hooks"
 import { Text, View } from "react-native"
 
 export default function Login() {
-	const { colors, fonts } = useAppTheme()
+	const { fonts, colors } = useAppTheme()
 
 	return (
-		<View
-			style={{
-				flex: 1,
-				justifyContent: "center",
-				alignItems: "center",
-				backgroundColor: colors.background,
-			}}
-		>
-			<Text
-				style={{
-					fontSize: 20,
-					fontFamily: fonts.medium,
-					color: colors.onSurface,
-				}}
-			>
-				Увійти
-			</Text>
-		</View>
+		<ScreenWrapper>
+			<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+				<Text
+					style={{
+						fontSize: 20,
+						fontFamily: fonts.medium,
+						color: colors.onSurface,
+					}}
+				>
+					Тут буде логіка для входу в акаунт
+				</Text>
+			</View>
+		</ScreenWrapper>
 	)
 }

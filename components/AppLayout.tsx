@@ -46,7 +46,6 @@ export function AppLayout() {
 					...baseTheme.colors,
 					primary,
 					secondary,
-					background,
 					surface,
 					error,
 					onSurface,
@@ -54,7 +53,12 @@ export function AppLayout() {
 				},
 			}}
 		>
-			<Stack screenOptions={{ headerShown: false }}>
+			<Stack
+				screenOptions={{
+					headerShown: false,
+					contentStyle: { backgroundColor: "transparent" },
+				}}
+			>
 				<Stack.Screen name="(tabs)" />
 				<Stack.Screen name="(auth)" />
 			</Stack>
