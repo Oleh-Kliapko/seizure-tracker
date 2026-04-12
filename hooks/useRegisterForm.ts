@@ -1,8 +1,8 @@
 // hooks/useRegisterForm.ts
 
-import { useAuthActions } from "@/hooks"
 import { validateRegister } from "@/utils"
 import { useState } from "react"
+import { useAuthActions } from "./useAuthActions"
 
 export function useRegisterForm() {
 	const { register, loginWithGoogle, isLoading, error } = useAuthActions()

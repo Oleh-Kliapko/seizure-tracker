@@ -11,6 +11,7 @@ import { useAuth } from "./useAuth"
 import { useAuthActions } from "./useAuthActions"
 import { useLoginForm } from "./useLoginForm"
 import { useRegisterForm } from "./useRegisterForm"
+import { useUser } from "./useUser"
 
 export {
 	ThemeProvider,
@@ -22,4 +23,5 @@ export {
 	useLoginForm,
 	useRegisterForm,
 	useThemeContext,
+	useUser,
 }

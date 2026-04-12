@@ -1,6 +1,6 @@
 // hooks/useLoginForm.ts
 
-import { useAuthActions } from "@/hooks"
+import { useAuthActions } from "./useAuthActions"
 import { validateLogin } from "@/utils"
 import { useState } from "react"
 

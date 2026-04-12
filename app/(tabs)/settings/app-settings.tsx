@@ -1,9 +1,8 @@
-// app/(tabs)/settings.tsx
-
+// app/(tabs)/settings/app-settings.tsx
 import { useAppTheme } from "@/hooks"
 import { Text, View } from "react-native"
 
-export default function Settings() {
+export default function AppSettings() {
 	const { colors, fonts } = useAppTheme()
 
 	return (
@@ -22,7 +21,7 @@ export default function Settings() {
 					color: colors.onSurface,
 				}}
 			>
-				Профіль
+				Налаштування додатку
 			</Text>
 		</View>
 	)
