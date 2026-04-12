@@ -1,6 +1,7 @@
 // hooks/useAuthActions.ts
 
 import { auth } from "@/config/firebase"
+import { createUser } from "@/services"
 import { parseFirebaseError } from "@/utils"
 import {
 	createUserWithEmailAndPassword,
@@ -33,7 +34,12 @@ export function useAuthActions() {
 		try {
 			setIsLoading(true)
 			setError(null)
-			await createUserWithEmailAndPassword(auth, email, password)
+			const { user } = await createUserWithEmailAndPassword(
+				auth,
+				email,
+				password,
+			)
+			await createUser(user.uid, email)
 		} catch (e: any) {
 			setError({ message: parseFirebaseError(e.code) })
 		} finally {

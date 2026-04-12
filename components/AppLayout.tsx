@@ -63,6 +63,7 @@ export function AppLayout() {
 				<Stack.Screen name="(auth)" />
 			</Stack>
 			{!user && <Redirect href="/(auth)/login" />}
+			{user && <Redirect href="/(tabs)" />}
 		</PaperProvider>
 	)
 }
