@@ -1,29 +1,37 @@
 // app/(tabs)/settings/personal.tsx
 
-import { useAppTheme } from "@/hooks"
-import { Text, View } from "react-native"
+import { ScreenHeader, ScreenWrapper } from "@/components/ui"
+import { PersonalForm } from "@/components/ui/settings"
+import { useAppTheme, usePersonalForm } from "@/hooks"
+import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 
-export default function Personal() {
-	const { colors, fonts } = useAppTheme()
+export default function PersonalScreen() {
+	const { spacing } = useAppTheme()
+	const { fields, isLoading, isLoadingProfile, displayError, handleSave } =
+		usePersonalForm()
 
 	return (
-		<View
-			style={{
-				flex: 1,
-				justifyContent: "center",
-				alignItems: "center",
-				backgroundColor: colors.background,
-			}}
-		>
-			<Text
-				style={{
-					fontSize: 20,
-					fontFamily: fonts.medium,
-					color: colors.onSurface,
-				}}
+		<ScreenWrapper>
+			<ScreenHeader title="Особисті дані" />
+			<KeyboardAvoidingView
+				style={{ flex: 1 }}
+				behavior={Platform.OS === "ios" ? "padding" : undefined}
 			>
-				Особисті дані
-			</Text>
-		</View>
+				<ScrollView
+					contentContainerStyle={{
+						padding: spacing.lg,
+					}}
+					showsVerticalScrollIndicator={false}
+					keyboardShouldPersistTaps="handled"
+				>
+					<PersonalForm
+						fields={fields}
+						onSave={handleSave}
+						isLoading={isLoading || isLoadingProfile}
+						displayError={displayError}
+					/>
+				</ScrollView>
+			</KeyboardAvoidingView>
+		</ScreenWrapper>
 	)
 }

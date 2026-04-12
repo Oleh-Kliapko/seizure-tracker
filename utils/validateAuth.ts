@@ -1,21 +1,11 @@
 // utils/validateAuth.ts
 
-type ValidationResult = {
-	isValid: boolean
-	error: string | null
-}
+import { validate, ValidationResult } from "./validation"
 
 const errorMsg = {
 	required: "Всі поля обов'язкові",
 	passwordLength: "Пароль має бути не менше 6 символів",
 	passwordMatch: "Паролі не співпадають",
-}
-
-function validate(rules: [boolean, string][]): ValidationResult {
-	for (const [condition, message] of rules) {
-		if (condition) return { isValid: false, error: message }
-	}
-	return { isValid: true, error: null }
 }
 
 export function validateLogin(

@@ -18,25 +18,25 @@ export function ProfileMenu() {
 
 	const items: MenuItem[] = [
 		{
-			href: "./personal",
+			href: "/(tabs)/settings/personal",
 			icon: <User size={size} color={color} />,
 			title: "Особисті дані",
 			subtitle: "Ім'я, телефон, адреса",
 		},
 		{
-			href: "./medical",
+			href: "/(tabs)/settings/medical",
 			icon: <Heart size={size} color={color} />,
 			title: "Медичні дані",
 			subtitle: "Перша поява приступів",
 		},
 		{
-			href: "./guardians",
+			href: "/(tabs)/settings/guardians",
 			icon: <Users size={size} color={color} />,
 			title: "Опікуни",
 			subtitle: "Батьки та опікуни",
 		},
 		{
-			href: "./app-settings",
+			href: "/(tabs)/settings/app-settings",
 			icon: <Settings size={size} color={color} />,
 			title: "Налаштування",
 			subtitle: "Канал комунікації",
