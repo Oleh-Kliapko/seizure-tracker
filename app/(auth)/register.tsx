@@ -5,12 +5,12 @@ import {
 	AppName,
 	AppSlogan,
 	AuthFooterLink,
+	Button,
 	Divider,
 	FormInput,
-	GoogleButton,
-	PrimaryButton,
 	ScreenWrapper,
 } from "@/components/ui"
+import { GOOGLE_ICON } from "@/components/ui/svg"
 import { useAppTheme, useRegisterForm } from "@/hooks"
 import {
 	KeyboardAvoidingView,
@@ -19,9 +19,13 @@ import {
 	Text,
 	View,
 } from "react-native"
+import { SvgXml } from "react-native-svg"
+import createAuthStyles from "./auth.styles"
 
 export default function Register() {
-	const { spacing, colors, radius, fonts, fontSize } = useAppTheme()
+	const theme = useAppTheme()
+	const styles = createAuthStyles(theme)
+
 	const {
 		email,
 		setEmail,
@@ -42,28 +46,16 @@ export default function Register() {
 				behavior={Platform.OS === "ios" ? "padding" : undefined}
 			>
 				<ScrollView
-					contentContainerStyle={{
-						flexGrow: 1,
-						justifyContent: "center",
-						paddingHorizontal: spacing.lg,
-						paddingVertical: spacing.xl,
-					}}
+					contentContainerStyle={styles.scrollContent}
 					keyboardShouldPersistTaps="handled"
 				>
-					<View style={{ alignItems: "center", marginBottom: spacing.xl }}>
+					<View style={styles.logoContainer}>
 						<AppLogo size={80} />
 						<AppName marginTop={4} />
 						<AppSlogan />
 					</View>
 
-					<View
-						style={{
-							backgroundColor: colors.surface,
-							borderRadius: radius.lg,
-							padding: spacing.lg,
-							marginBottom: spacing.md,
-						}}
-					>
+					<View style={styles.formCard}>
 						<FormInput
 							label="Email"
 							value={email}
@@ -90,22 +82,13 @@ export default function Register() {
 							isPassword
 						/>
 
-						<View style={{ minHeight: 24, marginBottom: spacing.sm }}>
+						<View style={styles.errorContainer}>
 							{displayError && (
-								<Text
-									style={{
-										color: colors.error,
-										fontFamily: fonts.regular,
-										fontSize: fontSize.sm,
-										textAlign: "center",
-									}}
-								>
-									{displayError}
-								</Text>
+								<Text style={styles.errorText}>{displayError}</Text>
 							)}
 						</View>
 
-						<PrimaryButton
+						<Button
 							title={isLoading ? "Завантаження..." : "Зареєструватись"}
 							onPress={handleRegister}
 							disabled={isLoading}
@@ -113,7 +96,13 @@ export default function Register() {
 					</View>
 
 					<Divider />
-					<GoogleButton onPress={loginWithGoogle} />
+					<Button
+						title="Продовжити з Google"
+						icon={<SvgXml xml={GOOGLE_ICON} width={20} height={20} />}
+						iconPosition="left"
+						onPress={loginWithGoogle}
+						variant="secondary"
+					/>
 					<AuthFooterLink
 						question="Вже є акаунт?"
 						linkText="Увійти"

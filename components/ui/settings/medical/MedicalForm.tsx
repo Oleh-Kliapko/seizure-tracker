@@ -1,5 +1,5 @@
 // components/settings/medical/MedicalForm.tsx
-import { PrimaryButton } from "@/components/ui"
+import { Button, Divider } from "@/components/ui"
 import { useAppTheme } from "@/hooks"
 import { Text, View } from "react-native"
 import { getStyles } from "../getStyles"
@@ -61,7 +61,7 @@ export function MedicalForm(props: Props) {
 				onYearChange={onYearChange}
 			/>
 
-			<View style={styles.divider} />
+			<Divider label="" />
 
 			<BloodTypePicker
 				bloodType={bloodType}
@@ -70,7 +70,7 @@ export function MedicalForm(props: Props) {
 				onRhFactorChange={onRhFactorChange}
 			/>
 
-			<View style={styles.divider} />
+			<Divider label="" />
 
 			<PhysicalInfo
 				height={height}
@@ -79,13 +79,13 @@ export function MedicalForm(props: Props) {
 				onWeightChange={onWeightChange}
 			/>
 
-			<View style={styles.divider} />
+			<Divider label="" />
 
 			<AnamnesisInput value={anamnesis} onChange={onAnamnesisChange} />
 
 			{error && <Text style={styles.errorText}>{error}</Text>}
 
-			<PrimaryButton
+			<Button
 				title={isLoading ? "Збереження..." : "Зберегти"}
 				onPress={onSave}
 				disabled={isLoading}

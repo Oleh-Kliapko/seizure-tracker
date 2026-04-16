@@ -1,6 +1,7 @@
 import { useAppTheme } from "@/hooks"
 import { Link } from "expo-router"
 import { Text, TouchableOpacity, View } from "react-native"
+import { createAuthFooterLinkStyles } from "./AuthFooterLink.styles"
 
 type Props = {
 	question: string
@@ -9,37 +10,15 @@ type Props = {
 }
 
 export function AuthFooterLink({ question, linkText, href }: Props) {
-	const { colors, fonts, fontSize, spacing } = useAppTheme()
+	const theme = useAppTheme()
+	const styles = createAuthFooterLinkStyles(theme)
 
 	return (
-		<View
-			style={{
-				flexDirection: "row",
-				justifyContent: "center",
-				marginTop: 24,
-			}}
-		>
-			<Text
-				style={{
-					fontFamily: fonts.regular,
-					fontSize: fontSize.sm,
-					color: colors.textSecondary,
-				}}
-			>
-				{question}
-			</Text>
+		<View style={styles.wrapper}>
+			<Text style={styles.question}>{question}</Text>
 			<Link href={href as any} asChild>
 				<TouchableOpacity>
-					<Text
-						style={{
-							fontFamily: fonts.medium,
-							fontSize: fontSize.sm,
-							color: colors.primary,
-							marginLeft: spacing.xs,
-						}}
-					>
-						{linkText}
-					</Text>
+					<Text style={styles.linkText}>{linkText}</Text>
 				</TouchableOpacity>
 			</Link>
 		</View>

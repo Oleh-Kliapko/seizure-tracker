@@ -1,6 +1,6 @@
 // components/settings/profile/PersonalForm.tsx
 
-import { FormInput, PrimaryButton } from "@/components/ui"
+import { FormInput, Button } from "@/components/ui"
 import { useAppTheme } from "@/hooks"
 import { Text, View } from "react-native"
 import { getStyles } from "../getStyles"
@@ -59,7 +59,7 @@ export function PersonalForm({
 				{displayError && <Text style={errorText}>{displayError}</Text>}
 			</View>
 
-			<PrimaryButton
+			<Button
 				title={isLoading ? "Оновлення..." : "Оновити"}
 				onPress={onSave}
 				disabled={isLoading}

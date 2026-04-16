@@ -7,8 +7,7 @@ import { AppSlogan } from "./AppSlogan"
 import { AuthFooterLink } from "./AuthFooterLink"
 import { Divider } from "./Divider"
 import { FormInput } from "./FormInput"
-import { GoogleButton } from "./GoogleButton"
-import { PrimaryButton } from "./PrimaryButton"
+import { Button } from "./Button"
 import { ScreenHeader } from "./ScreenHeader"
 import { ScreenWrapper } from "./ScreenWrapper"
 
@@ -20,8 +19,7 @@ export {
 	AuthFooterLink,
 	Divider,
 	FormInput,
-	GoogleButton,
-	PrimaryButton,
+	Button,
 	ScreenHeader,
 	ScreenWrapper,
 }

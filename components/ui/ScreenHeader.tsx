@@ -1,63 +1,47 @@
 // components/ui/ScreenHeader.tsx
-
 import { useAppTheme } from "@/hooks"
 import { router } from "expo-router"
 import { ArrowLeft } from "lucide-react-native"
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Text, TouchableOpacity, View } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { createScreenHeaderStyles } from "./ScreenHeader.styles"
 
 type Props = {
 	title: string
+	showBackButton?: boolean
 }
 
-export function ScreenHeader({ title }: Props) {
-	const { colors, fonts, fontSize, spacing } = useAppTheme()
+export function ScreenHeader({ title, showBackButton = true }: Props) {
+	const theme = useAppTheme()
+	const styles = createScreenHeaderStyles(theme)
 	const insets = useSafeAreaInsets()
 
 	return (
 		<View
 			style={[
-				s.container,
+				styles.container,
 				{
-					paddingHorizontal: spacing.lg,
-					paddingVertical: spacing.md,
-					paddingTop: insets.top + spacing.sm,
+					paddingHorizontal: theme.spacing.lg,
+					paddingVertical: theme.spacing.md,
+					paddingTop: insets.top + theme.spacing.sm,
 				},
 			]}
 		>
-			<TouchableOpacity
-				onPress={() => router.back()}
-				activeOpacity={0.7}
-				style={s.backBtn}
-			>
-				<ArrowLeft size={24} color={colors.primary} />
-			</TouchableOpacity>
-			<Text
-				style={{
-					fontFamily: fonts.bold,
-					fontSize: fontSize.lg,
-					color: colors.onSurface,
-				}}
-			>
-				{title}
-			</Text>
-			<View style={s.placeholder} />
+			{showBackButton ? (
+				<TouchableOpacity
+					onPress={() => router.back()}
+					activeOpacity={0.7}
+					style={styles.backBtn}
+				>
+					<ArrowLeft size={24} color={theme.colors.primary} />
+				</TouchableOpacity>
+			) : (
+				<View style={styles.placeholder} />
+			)}
+
+			<Text style={styles.title}>{title}</Text>
+
+			<View style={styles.placeholder} />
 		</View>
 	)
 }
-
-const s = StyleSheet.create({
-	container: {
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "space-between",
-	},
-	backBtn: {
-		width: 40,
-		height: 40,
-		justifyContent: "center",
-	},
-	placeholder: {
-		width: 40,
-	},
-})

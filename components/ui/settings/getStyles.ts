@@ -36,12 +36,6 @@ export const getStyles = (theme: AppTheme) => {
 			gap: 14,
 		},
 
-		divider: {
-			height: 1,
-			backgroundColor: border,
-			marginVertical: 20,
-		},
-
 		errorText: {
 			color: error,
 			fontFamily: fonts.regular,
