@@ -1,4 +1,4 @@
-// components/settings/PersonalForm.tsx
+// components/settings/profile/PersonalForm.tsx
 
 import { FormInput, PrimaryButton } from "@/components/ui"
 import { useAppTheme } from "@/hooks"

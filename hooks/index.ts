@@ -10,6 +10,7 @@ import {
 import { useAuth } from "./useAuth"
 import { useAuthActions } from "./useAuthActions"
 import { useLoginForm } from "./useLoginForm"
+import { useMedicalForm } from "./useMedicalForm"
 import { usePersonalForm } from "./usePersonalForm"
 import { useRegisterForm } from "./useRegisterForm"
 import { useUpdateProfile } from "./useUpdateProfile"
@@ -23,6 +24,7 @@ export {
 	useAuthActions,
 	useIsDarkTheme,
 	useLoginForm,
+	useMedicalForm,
 	usePersonalForm,
 	useRegisterForm,
 	useThemeContext,

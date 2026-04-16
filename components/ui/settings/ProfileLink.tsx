@@ -1,3 +1,5 @@
+// components/ui/settings/ProfileLink.tsx
+
 import { useAppTheme } from "@/hooks"
 import { Link } from "expo-router"
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"

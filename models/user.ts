@@ -1,5 +1,21 @@
 // models/user.ts
 
+export type FirstSeizureDate = {
+	month: number
+	year: number
+}
+export type BloodType = "A" | "B" | "AB" | "O"
+export type RhFactor = "+" | "-"
+
+export type MedicalInfo = {
+	firstSeizureDate?: FirstSeizureDate
+	bloodType?: BloodType
+	rhFactor?: RhFactor
+	height?: number // см
+	weight?: number // кг
+	anamnesis?: string
+}
+
 export type GuardianRelation = "father" | "mother" | "guardian"
 
 export type Guardian = {
@@ -10,11 +26,6 @@ export type Guardian = {
 }
 
 export type CommunicationChannel = "email" | "phone"
-
-export type FirstSeizureDate = {
-	month: number
-	year: number
-}
 
 export type User = {
 	uid: string
@@ -33,7 +44,7 @@ export type User = {
 	address?: string
 	avatarUrl?: string
 
-	firstSeizureDate?: FirstSeizureDate
+	medicalInfo?: MedicalInfo
 
 	communicationChannel?: CommunicationChannel
 
