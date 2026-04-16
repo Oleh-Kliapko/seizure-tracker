@@ -3,7 +3,7 @@ import { MONTHS, YEARS } from "@/constants/commonConstants"
 import { useAppTheme } from "@/hooks"
 import { Picker } from "@react-native-picker/picker"
 import { Text, View } from "react-native"
-import { getStyles } from "./getStyles" // ← беремо з загального файлу
+import { getStyles } from "../getStyles" // ← беремо з загального файлу
 
 type Props = {
 	month: number

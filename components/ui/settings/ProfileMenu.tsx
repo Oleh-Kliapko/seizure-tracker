@@ -12,32 +12,33 @@ type MenuItem = {
 }
 
 export function ProfileMenu() {
-	const { colors, iconSize } = useAppTheme()
-	const size = iconSize.md
-	const color = colors.primary
+	const {
+		colors: { primary },
+		iconSize: { md: iconSize },
+	} = useAppTheme()
 
 	const items: MenuItem[] = [
 		{
 			href: "/(tabs)/settings/personal",
-			icon: <User size={size} color={color} />,
+			icon: <User size={iconSize} color={primary} />,
 			title: "Особисті дані",
 			subtitle: "Ім'я, телефон, адреса",
 		},
 		{
 			href: "/(tabs)/settings/medical",
-			icon: <Heart size={size} color={color} />,
+			icon: <Heart size={iconSize} color={primary} />,
 			title: "Медичні дані",
 			subtitle: "Перша поява приступів",
 		},
 		{
 			href: "/(tabs)/settings/guardians",
-			icon: <Users size={size} color={color} />,
+			icon: <Users size={iconSize} color={primary} />,
 			title: "Опікуни",
 			subtitle: "Батьки та опікуни",
 		},
 		{
 			href: "/(tabs)/settings/app-settings",
-			icon: <Settings size={size} color={color} />,
+			icon: <Settings size={iconSize} color={primary} />,
 			title: "Налаштування",
 			subtitle: "Канал комунікації",
 		},

@@ -3,6 +3,7 @@
 import { FormInput, PrimaryButton } from "@/components/ui"
 import { useAppTheme } from "@/hooks"
 import { Text, View } from "react-native"
+import { getStyles } from "../getStyles"
 
 type FormField = {
 	label: string
@@ -26,20 +27,11 @@ export function PersonalForm({
 	isLoading,
 	displayError,
 }: Props) {
-	const { colors, fonts, fontSize, spacing, radius } = useAppTheme()
+	const theme = useAppTheme()
+	const { card, errorText } = getStyles(theme)
 
 	return (
-		<View
-			style={{
-				shadowColor: "#000",
-				shadowOpacity: 0.04,
-				shadowRadius: 6,
-				shadowOffset: { width: 0, height: 2 },
-				backgroundColor: colors.surface,
-				borderRadius: radius.lg,
-				padding: spacing.lg,
-			}}
-		>
+		<View style={card}>
 			{fields.map(field => {
 				const {
 					label,
@@ -63,19 +55,8 @@ export function PersonalForm({
 				)
 			})}
 
-			<View style={{ height: 20, marginBottom: spacing.sm }}>
-				{displayError && (
-					<Text
-						style={{
-							color: colors.error,
-							fontFamily: fonts.regular,
-							fontSize: fontSize.sm - 2,
-							textAlign: "center",
-						}}
-					>
-						{displayError}
-					</Text>
-				)}
+			<View style={{ height: 20, marginBottom: theme.spacing.sm }}>
+				{displayError && <Text style={errorText}>{displayError}</Text>}
 			</View>
 
 			<PrimaryButton

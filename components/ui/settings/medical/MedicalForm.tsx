@@ -2,11 +2,11 @@
 import { PrimaryButton } from "@/components/ui"
 import { useAppTheme } from "@/hooks"
 import { Text, View } from "react-native"
+import { getStyles } from "../getStyles"
 import { AnamnesisInput } from "./AnamnesisInput"
 import { BloodTypePicker } from "./BloodTypePicker"
 import { FirstSeizureDatePicker } from "./FirstSeizureDatePicker"
 import { PhysicalInfo } from "./PhysicalInfo"
-import { getStyles } from "./getStyles"
 
 type Props = {
 	month: number
@@ -30,7 +30,7 @@ type Props = {
 
 export function MedicalForm(props: Props) {
 	const theme = useAppTheme()
-	const { card, divider, errorText } = getStyles(theme)
+	const styles = getStyles(theme)
 
 	const {
 		month,
@@ -53,7 +53,7 @@ export function MedicalForm(props: Props) {
 	} = props
 
 	return (
-		<View style={card}>
+		<View style={styles.card}>
 			<FirstSeizureDatePicker
 				month={month}
 				year={year}
@@ -61,7 +61,7 @@ export function MedicalForm(props: Props) {
 				onYearChange={onYearChange}
 			/>
 
-			<View style={divider} />
+			<View style={styles.divider} />
 
 			<BloodTypePicker
 				bloodType={bloodType}
@@ -70,7 +70,7 @@ export function MedicalForm(props: Props) {
 				onRhFactorChange={onRhFactorChange}
 			/>
 
-			<View style={divider} />
+			<View style={styles.divider} />
 
 			<PhysicalInfo
 				height={height}
@@ -79,11 +79,11 @@ export function MedicalForm(props: Props) {
 				onWeightChange={onWeightChange}
 			/>
 
-			<View style={divider} />
+			<View style={styles.divider} />
 
 			<AnamnesisInput value={anamnesis} onChange={onAnamnesisChange} />
 
-			{error && <Text style={errorText}>{error}</Text>}
+			{error && <Text style={styles.errorText}>{error}</Text>}
 
 			<PrimaryButton
 				title={isLoading ? "Збереження..." : "Зберегти"}

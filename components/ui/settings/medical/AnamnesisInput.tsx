@@ -2,7 +2,7 @@
 
 import { useAppTheme } from "@/hooks"
 import { Text, TextInput, View } from "react-native"
-import { getStyles } from "./getStyles"
+import { getStyles } from "../getStyles"
 
 type Props = {
 	value: string
