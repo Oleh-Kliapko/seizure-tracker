@@ -90,7 +90,10 @@ export function DangerZone() {
 					variant="secondary"
 					icon={<Trash2 size={18} color={theme.colors.error} />}
 					iconPosition="left"
-					style={{ borderColor: theme.colors.error }}
+					style={{
+						borderColor: theme.colors.error,
+						backgroundColor: "transparent",
+					}}
 				/>
 			)}
 		</View>

@@ -1,7 +1,7 @@
 // app/(tabs)/settings/guardians.tsx
 
+import { GuardiansList } from "@/components/settings"
 import { ScreenHeader, ScreenWrapper } from "@/components/ui"
-import { GuardiansList } from "@/components/ui/settings"
 import { useAppTheme, useGuardiansForm } from "@/hooks"
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 

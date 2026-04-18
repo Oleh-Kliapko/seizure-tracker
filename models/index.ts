@@ -5,6 +5,7 @@ import {
 	Seizure,
 	SeizureSeverity,
 	SeizureType,
+	TriggerItem,
 } from "./seizure"
 import { DailyTracking } from "./tracking"
 import { CommunicationChannel, FirstSeizureDate, Guardian, User } from "./user"
@@ -20,5 +21,6 @@ export type {
 	Seizure,
 	SeizureSeverity,
 	SeizureType,
+	TriggerItem,
 	User,
 }

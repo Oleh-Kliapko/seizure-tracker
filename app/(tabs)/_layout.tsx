@@ -48,6 +48,7 @@ export default function TabsLayout() {
 				options={{
 					title: "Приступи",
 					tabBarIcon: ({ color }) => <Zap size={md} color={color} />,
+					href: "/(tabs)/seizures",
 				}}
 			/>
 			<Tabs.Screen

@@ -1,7 +1,7 @@
 // app/(tabs)/settings/medical.tsx
 
+import { MedicalForm } from "@/components/settings"
 import { ScreenHeader, ScreenWrapper } from "@/components/ui"
-import { MedicalForm } from "@/components/ui/settings"
 import { useAppTheme, useMedicalForm } from "@/hooks"
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 

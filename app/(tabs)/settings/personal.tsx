@@ -1,7 +1,7 @@
 // app/(tabs)/settings/personal.tsx
 
+import { PersonalForm } from "@/components/settings"
 import { ScreenHeader, ScreenWrapper } from "@/components/ui"
-import { PersonalForm } from "@/components/ui/settings"
 import { useAppTheme, usePersonalForm } from "@/hooks"
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 

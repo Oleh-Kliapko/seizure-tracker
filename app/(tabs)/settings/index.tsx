@@ -1,11 +1,7 @@
 // app/(tabs)/settings/index.tsx
 
+import { LogoutButton, ProfileAvatar, ProfileMenu } from "@/components/settings"
 import { ScreenWrapper } from "@/components/ui"
-import {
-	LogoutButton,
-	ProfileAvatar,
-	ProfileMenu,
-} from "@/components/ui/settings"
 import { useAppTheme, useAuthActions, useUser } from "@/hooks"
 import { ActivityIndicator, ScrollView, View } from "react-native"
 

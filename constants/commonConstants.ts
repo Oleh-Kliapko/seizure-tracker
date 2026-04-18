@@ -1,3 +1,9 @@
+import {
+	ExternalTrigger,
+	InternalTrigger,
+	SeizureSeverity,
+	SeizureType,
+} from "../models"
 import { AppThemeMode, CommunicationChannel } from "../models/user"
 
 export const MONTHS = [
@@ -53,6 +59,47 @@ export const LINKS = [
 	{ label: "Угода користувача", key: "terms" },
 	{ label: "Обробка персональних даних", key: "privacy" },
 ]
+
+export const SEIZURE_TYPES: { label: string; value: SeizureType }[] = [
+	{ label: "Тоніко-клонічний", value: "tonic-clonic" },
+	{ label: "Абсанс", value: "absence" },
+	{ label: "Міоклонічний", value: "myoclonic" },
+	{ label: "Фокальний", value: "focal" },
+	{ label: "Атонічний", value: "atonic" },
+	{ label: "Інший", value: "custom" },
+]
+
+export const SEVERITY_LABELS: Record<SeizureSeverity, string> = {
+	1: "Легкий",
+	2: "Середній",
+	3: "Важкий",
+}
+
+export const INTERNAL_TRIGGERS: { label: string; value: InternalTrigger }[] = [
+	{ label: "Недосипання", value: "sleep-deprivation" },
+	{ label: "Стрес", value: "stress" },
+	{ label: "Алкоголь", value: "alcohol" },
+	{ label: "Температура", value: "fever" },
+	{ label: "Інфекція", value: "infection" },
+	{ label: "Інше", value: "custom" },
+]
+
+export const EXTERNAL_TRIGGERS: { label: string; value: ExternalTrigger }[] = [
+	{ label: "Світлочутливість", value: "photosensitivity" },
+	{ label: "Магнітна буря", value: "magnetic-storm" },
+	{ label: "Зміна тиску", value: "pressure-change" },
+	{ label: "Зміна погоди", value: "weather-change" },
+	{ label: "Інше", value: "custom" },
+]
+
+export const MOODS = [1, 2, 3, 4, 5]
+export const MOOD_EMOJI: Record<number, string> = {
+	1: "😞",
+	2: "😕",
+	3: "😐",
+	4: "🙂",
+	5: "😊",
+}
 
 const currentYear = new Date().getFullYear()
 export const YEARS = [

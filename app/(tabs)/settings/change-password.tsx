@@ -1,7 +1,7 @@
 // app/(tabs)/settings/change-password.tsx
 
+import { ChangePasswordForm } from "@/components/settings"
 import { ScreenHeader, ScreenWrapper } from "@/components/ui"
-import { ChangePasswordForm } from "@/components/ui/settings/"
 import { useAppTheme, useChangePasswordForm } from "@/hooks"
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 

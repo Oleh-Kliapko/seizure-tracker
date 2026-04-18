@@ -1,13 +1,17 @@
 // components/ui/ScreenHeader.styles.ts
+
 import { AppTheme } from "@/constants/theme"
 import { StyleSheet } from "react-native"
 
-export const createScreenHeaderStyles = (theme: AppTheme) => {
+export const createScreenHeaderStyles = (theme: AppTheme, insets: any) => {
 	return StyleSheet.create({
 		container: {
 			flexDirection: "row",
 			alignItems: "center",
 			justifyContent: "space-between",
+			paddingHorizontal: theme.spacing.lg,
+			paddingVertical: theme.spacing.md,
+			paddingTop: insets.top + theme.spacing.sm,
 		},
 
 		backBtn: {
@@ -25,6 +29,12 @@ export const createScreenHeaderStyles = (theme: AppTheme) => {
 
 		placeholder: {
 			width: 40,
+		},
+
+		right: {
+			width: 40,
+			alignItems: "flex-end",
+			justifyContent: "center",
 		},
 	})
 }

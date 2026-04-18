@@ -1,4 +1,5 @@
 // components/ui/ScreenHeader.tsx
+
 import { useAppTheme } from "@/hooks"
 import { router } from "expo-router"
 import { ArrowLeft } from "lucide-react-native"
@@ -9,24 +10,16 @@ import { createScreenHeaderStyles } from "./ScreenHeader.styles"
 type Props = {
 	title: string
 	showBackButton?: boolean
+	right?: React.ReactNode
 }
 
-export function ScreenHeader({ title, showBackButton = true }: Props) {
+export function ScreenHeader({ title, showBackButton = true, right }: Props) {
 	const theme = useAppTheme()
-	const styles = createScreenHeaderStyles(theme)
 	const insets = useSafeAreaInsets()
+	const styles = createScreenHeaderStyles(theme, insets)
 
 	return (
-		<View
-			style={[
-				styles.container,
-				{
-					paddingHorizontal: theme.spacing.lg,
-					paddingVertical: theme.spacing.md,
-					paddingTop: insets.top + theme.spacing.sm,
-				},
-			]}
-		>
+		<View style={styles.container}>
 			{showBackButton ? (
 				<TouchableOpacity
 					onPress={() => router.back()}
@@ -41,7 +34,7 @@ export function ScreenHeader({ title, showBackButton = true }: Props) {
 
 			<Text style={styles.title}>{title}</Text>
 
-			<View style={styles.placeholder} />
+			<View style={styles.right}>{right ?? null}</View>
 		</View>
 	)
 }

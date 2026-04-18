@@ -1,7 +1,7 @@
 // app/(tabs)/settings/app-settings.tsx
 
+import { AppSettingsForm } from "@/components/settings"
 import { ScreenHeader, ScreenWrapper } from "@/components/ui"
-import { AppSettingsForm } from "@/components/ui/settings"
 import { useAppSettingsForm, useAppTheme } from "@/hooks"
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 
