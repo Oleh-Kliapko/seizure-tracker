@@ -1,6 +1,6 @@
 // components/settings/profile/PersonalForm.tsx
 
-import { FormInput, Button } from "@/components/ui"
+import { Button, FormInput } from "@/components/ui"
 import { useAppTheme } from "@/hooks"
 import { Text, View } from "react-native"
 import { getStyles } from "../getStyles"
@@ -28,10 +28,10 @@ export function PersonalForm({
 	displayError,
 }: Props) {
 	const theme = useAppTheme()
-	const { card, errorText } = getStyles(theme)
+	const styles = getStyles(theme)
 
 	return (
-		<View style={card}>
+		<View style={styles.card}>
 			{fields.map(field => {
 				const {
 					label,
@@ -55,8 +55,8 @@ export function PersonalForm({
 				)
 			})}
 
-			<View style={{ height: 20, marginBottom: theme.spacing.sm }}>
-				{displayError && <Text style={errorText}>{displayError}</Text>}
+			<View style={styles.errorContainer}>
+				{displayError && <Text style={styles.errorText}>{displayError}</Text>}
 			</View>
 
 			<Button

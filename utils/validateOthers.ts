@@ -9,3 +9,12 @@ export function validatePhone(phone: string): ValidationResult {
 		],
 	])
 }
+
+export function validateEmail(email: string): ValidationResult {
+	return validate([
+		[
+			email.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()),
+			"Невірний формат email",
+		],
+	])
+}

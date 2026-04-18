@@ -27,6 +27,13 @@ export type Guardian = {
 
 export type CommunicationChannel = "email" | "phone"
 
+export type AppThemeMode = "system" | "light" | "dark"
+
+export type AppSettings = {
+	themeMode?: AppThemeMode
+	communicationChannel?: CommunicationChannel
+}
+
 export type User = {
 	uid: string
 	email: string
@@ -49,4 +56,6 @@ export type User = {
 	communicationChannel?: CommunicationChannel
 
 	guardians?: Guardian[]
+
+	appSettings?: AppSettings
 }

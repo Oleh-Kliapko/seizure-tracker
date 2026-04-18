@@ -83,7 +83,9 @@ export function MedicalForm(props: Props) {
 
 			<AnamnesisInput value={anamnesis} onChange={onAnamnesisChange} />
 
-			{error && <Text style={styles.errorText}>{error}</Text>}
+			<View style={styles.errorContainer}>
+				{error && <Text style={styles.errorText}>{error}</Text>}
+			</View>
 
 			<Button
 				title={isLoading ? "Збереження..." : "Зберегти"}

@@ -1,4 +1,4 @@
-// components/ui/settings/medical/getStyles.ts
+// components/ui/settings/getStyles.ts
 import { AppTheme } from "@/constants/theme"
 import { StyleSheet } from "react-native"
 
@@ -36,12 +36,17 @@ export const getStyles = (theme: AppTheme) => {
 			gap: 14,
 		},
 
+		errorContainer: {
+			height: 40,
+			justifyContent: "center",
+			marginBottom: spacing.sm,
+		},
+
 		errorText: {
 			color: error,
 			fontFamily: fonts.regular,
 			fontSize: fontSize.sm,
 			textAlign: "center",
-			marginVertical: spacing.md,
 		},
 
 		label: {
@@ -169,6 +174,188 @@ export const getStyles = (theme: AppTheme) => {
 			fontSize: fontSize.sm,
 			color: textSecondary,
 			marginTop: 4,
+		},
+
+		guardianCard: {
+			backgroundColor: background,
+			borderRadius: radius.md,
+			padding: spacing.md,
+			marginBottom: spacing.md,
+			borderWidth: 1,
+			borderColor: border,
+		},
+
+		guardianHeader: {
+			flexDirection: "row",
+			justifyContent: "space-between",
+			alignItems: "center",
+			marginBottom: spacing.md,
+		},
+
+		guardianTitle: {
+			fontFamily: fonts.medium,
+			fontSize: fontSize.md,
+			color: onSurface,
+		},
+
+		relationsRow: {
+			flexDirection: "row",
+			justifyContent: "space-between",
+			marginBottom: spacing.lg,
+		},
+
+		relationBtn: {
+			flexDirection: "row",
+			alignItems: "center",
+			gap: spacing.xs,
+		},
+
+		relationBtnActive: {},
+
+		radioCircle: {
+			width: 20,
+			height: 20,
+			borderRadius: 10,
+			borderWidth: 2,
+			borderColor: border,
+			justifyContent: "center",
+			alignItems: "center",
+		},
+
+		radioCircleActive: {
+			borderColor: primary,
+		},
+
+		radioDot: {
+			width: 10,
+			height: 10,
+			borderRadius: 5,
+			backgroundColor: primary,
+		},
+
+		relationLabel: {
+			fontFamily: fonts.regular,
+			fontSize: fontSize.sm,
+			color: textSecondary,
+		},
+
+		relationLabelActive: {
+			fontFamily: fonts.medium,
+			color: primary,
+		},
+
+		addBtn: {
+			borderWidth: 1,
+			borderColor: primary,
+			borderRadius: radius.md,
+			padding: spacing.md,
+			alignItems: "center",
+			flexDirection: "row",
+			justifyContent: "center",
+			marginBottom: spacing.md,
+		},
+
+		addBtnText: {
+			fontFamily: fonts.medium,
+			fontSize: fontSize.md,
+			color: primary,
+			marginLeft: spacing.xs,
+		},
+
+		// додай в getStyles.ts — нові селектори
+
+		settingsSection: {
+			backgroundColor: surface,
+			borderRadius: radius.lg,
+			padding: spacing.md,
+			marginBottom: spacing.lg,
+			shadowColor: "#000",
+			shadowOpacity: 0.04,
+			shadowRadius: 6,
+			shadowOffset: { width: 0, height: 2 },
+		},
+
+		settingsSectionTitle: {
+			fontFamily: fonts.medium,
+			fontSize: fontSize.sm,
+			color: textSecondary,
+			marginBottom: spacing.xs,
+			textTransform: "uppercase" as const,
+			letterSpacing: 0.5,
+		},
+
+		settingsRow: {
+			flexDirection: "row",
+			alignItems: "center",
+			justifyContent: "space-between",
+			paddingVertical: spacing.sm,
+		},
+
+		settingsRowTitle: {
+			fontFamily: fonts.medium,
+			fontSize: fontSize.md,
+			color: onSurface,
+		},
+
+		settingsRowSubtitle: {
+			fontFamily: fonts.regular,
+			fontSize: fontSize.sm,
+			color: textSecondary,
+			marginTop: 2,
+		},
+
+		settingsDivider: {
+			height: 1,
+			backgroundColor: border,
+			marginVertical: spacing.xs,
+		},
+
+		themeOption: {
+			flexDirection: "row",
+			alignItems: "center",
+			gap: spacing.sm,
+			paddingVertical: spacing.sm,
+		},
+
+		themeOptionLabel: {
+			fontFamily: fonts.regular,
+			fontSize: fontSize.md,
+			color: onSurface,
+		},
+
+		themeOptionLabelActive: {
+			fontFamily: fonts.medium,
+			color: primary,
+		},
+
+		dangerBtn: {
+			borderWidth: 1,
+			borderColor: error,
+			borderRadius: radius.md,
+			padding: spacing.md,
+			alignItems: "center",
+			flexDirection: "row",
+			justifyContent: "center",
+		},
+
+		dangerBtnText: {
+			fontFamily: fonts.medium,
+			fontSize: fontSize.md,
+			color: error,
+			marginLeft: spacing.sm,
+		},
+
+		legalLink: {
+			paddingVertical: spacing.md,
+			flexDirection: "row",
+			alignItems: "center",
+			justifyContent: "space-between",
+		},
+
+		legalLinkText: {
+			fontFamily: fonts.regular,
+			fontSize: fontSize.md,
+			color: onSurface,
 		},
 	})
 }

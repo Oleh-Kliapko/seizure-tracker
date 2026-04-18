@@ -1,28 +1,41 @@
 // app/(tabs)/settings/app-settings.tsx
-import { useAppTheme } from "@/hooks"
-import { Text, View } from "react-native"
 
-export default function AppSettings() {
-	const { colors, fonts } = useAppTheme()
+import { ScreenHeader, ScreenWrapper } from "@/components/ui"
+import { AppSettingsForm } from "@/components/ui/settings"
+import { useAppSettingsForm, useAppTheme } from "@/hooks"
+import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
+
+export default function AppSettingsScreen() {
+	const { spacing } = useAppTheme()
+	const {
+		themeMode,
+		communicationChannel,
+		isLoading,
+		isLoadingProfile,
+		handleThemeChange,
+		handleCommunicationChange,
+	} = useAppSettingsForm()
 
 	return (
-		<View
-			style={{
-				flex: 1,
-				justifyContent: "center",
-				alignItems: "center",
-				backgroundColor: colors.background,
-			}}
-		>
-			<Text
-				style={{
-					fontSize: 20,
-					fontFamily: fonts.medium,
-					color: colors.onSurface,
-				}}
+		<ScreenWrapper>
+			<ScreenHeader title="Налаштування" />
+			<KeyboardAvoidingView
+				style={{ flex: 1 }}
+				behavior={Platform.OS === "ios" ? "padding" : undefined}
 			>
-				Налаштування додатку
-			</Text>
-		</View>
+				<ScrollView
+					contentContainerStyle={{ padding: spacing.lg }}
+					showsVerticalScrollIndicator={false}
+				>
+					<AppSettingsForm
+						themeMode={themeMode}
+						communicationChannel={communicationChannel}
+						onThemeChange={handleThemeChange}
+						onCommunicationChange={handleCommunicationChange}
+						isLoading={isLoading || isLoadingProfile}
+					/>
+				</ScrollView>
+			</KeyboardAvoidingView>
+		</ScreenWrapper>
 	)
 }
