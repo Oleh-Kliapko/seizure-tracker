@@ -224,5 +224,18 @@ export const getStyles = (theme: AppTheme) => {
 			fontSize: fontSize.sm,
 			textAlign: "center",
 		},
+
+		doneBtn: {
+			marginTop: spacing.sm,
+			borderRadius: radius.md,
+			paddingVertical: spacing.sm,
+			alignItems: "center",
+		},
+
+		doneBtnText: {
+			fontFamily: fonts.medium,
+			fontSize: fontSize.md,
+			color: "#fff",
+		},
 	})
 }

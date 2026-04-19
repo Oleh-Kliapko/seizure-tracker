@@ -18,6 +18,7 @@ import { useMedicalForm } from "./useMedicalForm"
 import { usePersonalForm } from "./usePersonalForm"
 import { useRegisterForm } from "./useRegisterForm"
 import { useSeizureForm } from "./useSeizureForm"
+import { useSeizureList } from "./useSeizureList"
 import { useUpdateProfile } from "./useUpdateProfile"
 import { useUser } from "./useUser"
 
@@ -37,6 +38,7 @@ export {
 	usePersonalForm,
 	useRegisterForm,
 	useSeizureForm,
+	useSeizureList,
 	useThemeContext,
 	useUpdateProfile,
 	useUser,

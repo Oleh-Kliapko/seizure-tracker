@@ -29,6 +29,7 @@ export function BloodTypePicker({
 				<View style={styles.pickerWrapper}>
 					<Picker
 						selectedValue={bloodType}
+						itemStyle={{ color: theme.colors.onSurface }}
 						onValueChange={onBloodTypeChange}
 						style={{ color: theme.colors.onSurface }}
 					>
@@ -41,6 +42,7 @@ export function BloodTypePicker({
 				<View style={styles.pickerWrapper}>
 					<Picker
 						selectedValue={rhFactor}
+						itemStyle={{ color: theme.colors.onSurface }}
 						onValueChange={onRhFactorChange}
 						style={{ color: theme.colors.onSurface }}
 					>

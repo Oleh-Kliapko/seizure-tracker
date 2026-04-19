@@ -38,6 +38,12 @@ type Theme = {
 		md: number
 		lg: number
 	}
+	seizureColors: {
+		severe: string
+		medium: string
+		light: string
+		unknown: string
+	}
 }
 
 export const lightTheme: Theme = {
@@ -76,6 +82,12 @@ export const lightTheme: Theme = {
 		md: 24,
 		lg: 32,
 	},
+	seizureColors: {
+		severe: "#f8a3ad", // темно-рожевий
+		medium: "#fdc1c8", // середній рожевий
+		light: "#fddcde", // світло-рожевий
+		unknown: "#e9ebed", // світло-сірий
+	},
 } as const
 
 const { spacing, radius, fontSize, iconSize } = lightTheme
@@ -97,6 +109,12 @@ export const darkTheme: Theme = {
 	fonts: FontFamily,
 	fontSize,
 	iconSize,
+	seizureColors: {
+		severe: "#9F1239", // темно-рожевий для темної теми
+		medium: "#BE123C", // середній
+		light: "#bc2653", // світліший
+		unknown: "#1E293B", // темно-сірий
+	},
 } as const
 
 export type AppTheme = Theme

@@ -1,18 +1,48 @@
 // app/(tabs)/seizures/index.tsx
 
+import {
+	SeizureCard,
+	SeizureFilters,
+	SeizurePagination,
+	SeizureStatsHeader,
+} from "@/components/seizure/list"
+import { getStyles } from "@/components/seizure/list/getStyles"
 import { ScreenHeader, ScreenWrapper } from "@/components/ui"
-import { useAppTheme } from "@/hooks"
+import { useAppTheme, useSeizureList } from "@/hooks"
+import { Seizure } from "@/models"
 import { router } from "expo-router"
 import { Plus } from "lucide-react-native"
-import { Text, TouchableOpacity, View } from "react-native"
+import {
+	ActivityIndicator,
+	ScrollView,
+	Text,
+	TouchableOpacity,
+	View,
+} from "react-native"
 
 export default function SeizuresScreen() {
-	const { colors, fonts, fontSize, spacing } = useAppTheme()
+	const theme = useAppTheme()
+	const styles = getStyles(theme)
+	const {
+		seizures,
+		paginated,
+		filter,
+		page,
+		totalPages,
+		isLoading,
+		handleFilterChange,
+		setPage,
+	} = useSeizureList()
+
+	const handleSeizurePress = (s: Seizure) => {
+		// TODO: перейти на екран деталей
+	}
 
 	return (
 		<ScreenWrapper>
 			<ScreenHeader
 				title="Приступи"
+				showBackButton={false}
 				right={
 					<TouchableOpacity
 						onPress={() => router.push("/(tabs)/seizures/add")}
@@ -21,7 +51,7 @@ export default function SeizuresScreen() {
 							width: 36,
 							height: 36,
 							borderRadius: 18,
-							backgroundColor: colors.primary,
+							backgroundColor: theme.colors.primary,
 							justifyContent: "center",
 							alignItems: "center",
 						}}
@@ -30,27 +60,45 @@ export default function SeizuresScreen() {
 					</TouchableOpacity>
 				}
 			/>
-			<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-				<Text
-					style={{
-						fontFamily: fonts.medium,
-						fontSize: fontSize.lg,
-						color: colors.textSecondary,
-					}}
+
+			{isLoading ? (
+				<View
+					style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
 				>
-					Приступів ще немає
-				</Text>
-				<Text
-					style={{
-						fontFamily: fonts.regular,
-						fontSize: fontSize.md,
-						color: colors.textSecondary,
-						marginTop: spacing.xs,
-					}}
+					<ActivityIndicator color={theme.colors.primary} size="large" />
+				</View>
+			) : (
+				<ScrollView
+					contentContainerStyle={{ padding: theme.spacing.lg }}
+					showsVerticalScrollIndicator={false}
 				>
-					Натисніть кнопку додавання справа вгорі
-				</Text>
-			</View>
+					<SeizureStatsHeader seizures={seizures} />
+					<SeizureFilters active={filter} onChange={handleFilterChange} />
+
+					{paginated.length === 0 ? (
+						<View style={styles.emptyContainer}>
+							<Text style={styles.emptyText}>Приступів ще немає</Text>
+							<Text style={styles.emptySubtext}>
+								Натисніть кнопку додавання справа вгорі
+							</Text>
+						</View>
+					) : (
+						paginated.map(s => (
+							<SeizureCard
+								key={s.id}
+								seizure={s}
+								onPress={handleSeizurePress}
+							/>
+						))
+					)}
+
+					<SeizurePagination
+						currentPage={page}
+						totalPages={totalPages}
+						onPageChange={setPage}
+					/>
+				</ScrollView>
+			)}
 		</ScreenWrapper>
 	)
 }

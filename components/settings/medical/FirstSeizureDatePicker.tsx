@@ -29,6 +29,7 @@ export function FirstSeizureDatePicker({
 				<View style={styles.pickerWrapper}>
 					<Picker
 						selectedValue={month}
+						itemStyle={{ color: theme.colors.onSurface }}
 						onValueChange={onMonthChange}
 						style={{ color: theme.colors.onSurface }}
 					>
@@ -41,6 +42,7 @@ export function FirstSeizureDatePicker({
 				<View style={styles.pickerWrapper}>
 					<Picker
 						selectedValue={year}
+						itemStyle={{ color: theme.colors.onSurface }}
 						onValueChange={onYearChange}
 						style={{ color: theme.colors.onSurface }}
 					>

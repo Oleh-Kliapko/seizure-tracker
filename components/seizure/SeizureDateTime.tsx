@@ -1,6 +1,6 @@
 // components/seizure/SeizureDateTime.tsx
 
-import { useAppTheme } from "@/hooks"
+import { useAppTheme, useIsDarkTheme } from "@/hooks"
 import DateTimePicker from "@react-native-community/datetimepicker"
 import { useState } from "react"
 import { Platform, Switch, Text, TouchableOpacity, View } from "react-native"
@@ -21,6 +21,7 @@ export function SeizureDateTime({
 	onEndChange,
 }: Props) {
 	const theme = useAppTheme()
+	const isDark = useIsDarkTheme()
 	const styles = getStyles(theme)
 	const [showStartPicker, setShowStartPicker] = useState(false)
 	const [showEndPicker, setShowEndPicker] = useState(false)
@@ -48,7 +49,7 @@ export function SeizureDateTime({
 			<Text style={styles.sectionTitle}>Час приступу</Text>
 
 			<Text style={styles.label}>Початок</Text>
-			<TouchableOpacity onPress={() => setShowStartPicker(true)}>
+			<TouchableOpacity onPress={() => setShowStartPicker(v => !v)}>
 				<Text
 					style={[
 						styles.sublabel,
@@ -60,15 +61,24 @@ export function SeizureDateTime({
 			</TouchableOpacity>
 
 			{showStartPicker && (
-				<DateTimePicker
-					value={new Date(startedAt)}
-					mode="datetime"
-					display={Platform.OS === "ios" ? "spinner" : "default"}
-					onChange={(_, date) => {
-						setShowStartPicker(false)
-						if (date) onStartChange(date.getTime())
-					}}
-				/>
+				<View>
+					<DateTimePicker
+						value={new Date(startedAt)}
+						mode="datetime"
+						display={Platform.OS === "ios" ? "spinner" : "default"}
+						themeVariant={isDark ? "dark" : "light"}
+						onChange={(_, date) => {
+							if (date) onStartChange(date.getTime())
+						}}
+					/>
+					<TouchableOpacity
+						onPress={() => setShowStartPicker(false)}
+						style={[styles.doneBtn, { backgroundColor: theme.colors.primary }]}
+						activeOpacity={0.8}
+					>
+						<Text style={[styles.doneBtnText]}>Готово</Text>
+					</TouchableOpacity>
+				</View>
 			)}
 
 			<Divider label="" />
@@ -84,7 +94,7 @@ export function SeizureDateTime({
 
 			{hasEndTime && (
 				<>
-					<TouchableOpacity onPress={() => setShowEndPicker(true)}>
+					<TouchableOpacity onPress={() => setShowEndPicker(v => !v)}>
 						<Text
 							style={[
 								styles.sublabel,
@@ -96,15 +106,27 @@ export function SeizureDateTime({
 					</TouchableOpacity>
 
 					{showEndPicker && (
-						<DateTimePicker
-							value={new Date(endedAt ?? Date.now())}
-							mode="datetime"
-							display={Platform.OS === "ios" ? "spinner" : "default"}
-							onChange={(_, date) => {
-								setShowEndPicker(false)
-								if (date) onEndChange(date.getTime())
-							}}
-						/>
+						<View>
+							<DateTimePicker
+								value={new Date(endedAt ?? Date.now())}
+								mode="datetime"
+								display={Platform.OS === "ios" ? "spinner" : "default"}
+								themeVariant={isDark ? "dark" : "light"}
+								onChange={(_, date) => {
+									if (date) onEndChange(date.getTime())
+								}}
+							/>
+							<TouchableOpacity
+								onPress={() => setShowEndPicker(false)}
+								style={[
+									styles.doneBtn,
+									{ backgroundColor: theme.colors.primary },
+								]}
+								activeOpacity={0.8}
+							>
+								<Text style={styles.doneBtnText}>Готово</Text>
+							</TouchableOpacity>
+						</View>
 					)}
 				</>
 			)}

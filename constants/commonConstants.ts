@@ -101,6 +101,16 @@ export const MOOD_EMOJI: Record<number, string> = {
 	5: "😊",
 }
 
+export type SeizureFilter = "all" | "1" | "2" | "3" | "unknown"
+
+export const FILTERS: { label: string; value: SeizureFilter }[] = [
+	{ label: "Всі", value: "all" },
+	{ label: "⚡ Легкі", value: "1" },
+	{ label: "⚡⚡ Середні", value: "2" },
+	{ label: "⚡⚡⚡ Важкі", value: "3" },
+	{ label: "Без оцінки", value: "unknown" },
+]
+
 const currentYear = new Date().getFullYear()
 export const YEARS = [
 	{ label: "—", value: 0 },

@@ -3,6 +3,7 @@
 import {
 	ExternalTrigger,
 	InternalTrigger,
+	Seizure,
 	SeizureSeverity,
 	SeizureType,
 	TriggerItem,
@@ -78,26 +79,34 @@ export function useSeizureForm() {
 			setIsLoading(true)
 			setError(null)
 
-			await createSeizure(user.uid, {
+			const seizureData: Record<string, any> = {
 				userId: user.uid,
 				patientId: user.uid,
 				startedAt,
-				endedAt,
 				type,
-				customType: type === "custom" ? customType : undefined,
-				severity,
+				isMedicationTaken,
 				internalTriggers,
 				externalTriggers,
-				moodBefore,
-				moodAfter,
-				isMedicationTaken,
-				sleepHoursBefore,
-				description: description || undefined,
-				videoUrl,
-			})
+			}
+
+			if (endedAt !== undefined) seizureData.endedAt = endedAt
+			if (customType && type === "custom") seizureData.customType = customType
+			if (severity !== undefined) seizureData.severity = severity
+			if (moodBefore !== undefined) seizureData.moodBefore = moodBefore
+			if (moodAfter !== undefined) seizureData.moodAfter = moodAfter
+			if (sleepHoursBefore !== undefined)
+				seizureData.sleepHoursBefore = sleepHoursBefore
+			if (description) seizureData.description = description
+			if (videoUrl) seizureData.videoUrl = videoUrl
+
+			await createSeizure(
+				user.uid,
+				seizureData as Omit<Seizure, "id" | "createdAt" | "updatedAt">,
+			)
 
 			router.back()
-		} catch {
+		} catch (e) {
+			console.error("Seizure save error:", e)
 			setError("Помилка збереження. Спробуйте ще раз")
 		} finally {
 			setIsLoading(false)
