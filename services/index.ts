@@ -1,3 +1,4 @@
+export { exportSeizuresToPdf } from "./exportService"
 export {
 	createMedication,
 	deleteMedication,

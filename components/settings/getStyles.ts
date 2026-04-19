@@ -1,4 +1,4 @@
-// components/ui/settings/getStyles.ts
+// components/settings/getStyles.ts
 import { AppTheme } from "@/constants/theme"
 import { StyleSheet } from "react-native"
 

@@ -8,6 +8,7 @@ import {
 } from "@/constants/commonConstants"
 import { useAppTheme } from "@/hooks"
 import { Seizure } from "@/models"
+import { router } from "expo-router"
 import { Zap } from "lucide-react-native"
 import { Text, TouchableOpacity, View } from "react-native"
 import { getSeizureColor } from "./getSeizureColor"
@@ -76,10 +77,17 @@ export function SeizureCard({ seizure, onPress }: Props) {
 		),
 	]
 
+	const handleSeizurePress = (s: Seizure) => {
+		router.push({
+			pathname: "/(tabs)/seizures/[id]" as any,
+			params: { id: s.id },
+		})
+	}
+
 	return (
 		<TouchableOpacity
 			style={[styles.card, { backgroundColor: bgColor }]}
-			onPress={() => onPress(seizure)}
+			onPress={() => handleSeizurePress(seizure)}
 			activeOpacity={0.8}
 		>
 			<View style={styles.cardHeader}>

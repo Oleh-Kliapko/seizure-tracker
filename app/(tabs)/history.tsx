@@ -1,29 +1,20 @@
 // app/(tabs)/history.tsx
 
-import { useAppTheme } from "@/hooks"
-import { Text, View } from "react-native"
+import { ExportForm } from "@/components/history"
+import { ScreenHeader, ScreenWrapper } from "@/components/ui"
+import { useAppTheme, useExport } from "@/hooks"
+import { ScrollView } from "react-native"
 
 export default function History() {
-	const { colors, fonts } = useAppTheme()
+	const { spacing } = useAppTheme()
+	const { exportPdf, isLoading, error } = useExport()
 
 	return (
-		<View
-			style={{
-				flex: 1,
-				justifyContent: "center",
-				alignItems: "center",
-				backgroundColor: colors.background,
-			}}
-		>
-			<Text
-				style={{
-					fontSize: 20,
-					fontFamily: fonts.medium,
-					color: colors.onSurface,
-				}}
-			>
-				Історія
-			</Text>
-		</View>
+		<ScreenWrapper>
+			<ScreenHeader title="Історія" showBackButton={false} />
+			<ScrollView contentContainerStyle={{ padding: spacing.lg }}>
+				<ExportForm onExport={exportPdf} isLoading={isLoading} error={error} />
+			</ScrollView>
+		</ScreenWrapper>
 	)
 }
