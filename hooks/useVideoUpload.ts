@@ -1,0 +1,73 @@
+// hooks/useVideoUpload.ts
+
+import {
+	checkVideoLimits,
+	uploadVideoToCloudinary,
+} from "@/services/cloudinaryService"
+import { getInfoAsync } from "expo-file-system/legacy"
+import { useRef, useState } from "react"
+import { useAuth } from "./useAuth"
+
+export function useVideoUpload() {
+	const { user } = useAuth()
+	const [uploadProgress, setUploadProgress] = useState<number>(0)
+	const [isUploading, setIsUploading] = useState(false)
+	const [error, setError] = useState<string | null>(null)
+	const abortController = useRef<AbortController | null>(null)
+
+	const upload = async (
+		_userId: string,
+		_seizureId: string,
+		localUri: string,
+	): Promise<{ url: string | null; error: string | null }> => {
+		if (!user) {
+			return { url: null, error: "Користувач не знайдений" }
+		}
+
+		try {
+			setIsUploading(true)
+			setError(null)
+			setUploadProgress(0)
+
+			const fileInfo = await getInfoAsync(localUri, { size: true } as any)
+			if (!fileInfo.exists) {
+				setError("Файл не знайдено")
+				return { url: null, error: "Файл не знайдено" }
+			}
+
+			const fileSize = (fileInfo as any).size ?? 0
+			const limitError = await checkVideoLimits(user.uid, fileSize)
+
+			if (limitError) {
+				setError(limitError)
+				return { url: null, error: limitError }
+			}
+
+			abortController.current = new AbortController()
+
+			const url = await uploadVideoToCloudinary(
+				localUri,
+				setUploadProgress,
+				abortController.current.signal,
+			)
+
+			return { url, error: null }
+		} catch (e: any) {
+			if (e.message === "Завантаження скасовано") {
+				setError("Завантаження скасовано")
+			} else {
+				setError("Помилка завантаження відео")
+			}
+			return { url: null, error: e.message }
+		} finally {
+			setIsUploading(false)
+			abortController.current = null
+		}
+	}
+
+	const cancel = () => {
+		abortController.current?.abort()
+	}
+
+	return { upload, cancel, isUploading, uploadProgress, error }
+}

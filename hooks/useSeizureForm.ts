@@ -8,10 +8,11 @@ import {
 	SeizureType,
 	TriggerItem,
 } from "@/models"
-import { createSeizure } from "@/services"
+import { createSeizure, deleteSeizure, updateSeizure } from "@/services"
 import { router } from "expo-router"
 import { useState } from "react"
 import { useAuth } from "./useAuth"
+import { useVideoUpload } from "./useVideoUpload"
 
 export function useSeizureForm() {
 	const { user } = useAuth()
@@ -40,6 +41,13 @@ export function useSeizureForm() {
 
 	const [isLoading, setIsLoading] = useState(false)
 	const [error, setError] = useState<string | null>(null)
+	const {
+		upload,
+		cancel,
+		isUploading,
+		uploadProgress,
+		error: uploadError,
+	} = useVideoUpload()
 
 	const toggleInternalTrigger = (trigger: InternalTrigger) => {
 		setInternalTriggers(prev => {
@@ -97,16 +105,30 @@ export function useSeizureForm() {
 			if (sleepHoursBefore !== undefined)
 				seizureData.sleepHoursBefore = sleepHoursBefore
 			if (description) seizureData.description = description
-			if (videoUrl) seizureData.videoUrl = videoUrl
 
-			await createSeizure(
+			const seizureId = await createSeizure(
 				user.uid,
 				seizureData as Omit<Seizure, "id" | "createdAt" | "updatedAt">,
 			)
 
+			if (videoUrl && !videoUrl.startsWith("http")) {
+				const { url: uploadedUrl, error: videoError } = await upload(
+					user.uid,
+					seizureId,
+					videoUrl,
+				)
+
+				if (!uploadedUrl) {
+					await deleteSeizure(user.uid, seizureId)
+					setError(videoError ?? "Помилка завантаження відео")
+					return
+				}
+
+				await updateSeizure(user.uid, seizureId, { videoUrl: uploadedUrl })
+			}
+
 			router.back()
-		} catch (e) {
-			console.error("Seizure save error:", e)
+		} catch {
 			setError("Помилка збереження. Спробуйте ще раз")
 		} finally {
 			setIsLoading(false)
@@ -142,6 +164,10 @@ export function useSeizureForm() {
 		error,
 		toggleInternalTrigger,
 		toggleExternalTrigger,
+		isUploading,
+		uploadProgress,
+		uploadError,
+		cancelUpload: cancel,
 		handleSave,
 	}
 }

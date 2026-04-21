@@ -37,6 +37,9 @@ export default function AddSeizureScreen() {
 		toggleInternalTrigger,
 		toggleExternalTrigger,
 		handleSave,
+		isUploading,
+		uploadProgress,
+		cancelUpload,
 	} = useSeizureForm()
 
 	return (
@@ -81,6 +84,9 @@ export default function AddSeizureScreen() {
 						onDescriptionChange={setDescription}
 						onVideoChange={setVideoUrl}
 						onSave={handleSave}
+						isUploading={isUploading}
+						uploadProgress={uploadProgress}
+						onCancelUpload={cancelUpload}
 					/>
 				</ScrollView>
 			</KeyboardAvoidingView>

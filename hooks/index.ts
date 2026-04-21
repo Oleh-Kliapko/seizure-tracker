@@ -23,6 +23,7 @@ import { useSeizureForm } from "./useSeizureForm"
 import { useSeizureList } from "./useSeizureList"
 import { useUpdateProfile } from "./useUpdateProfile"
 import { useUser } from "./useUser"
+import { useVideoUpload } from "./useVideoUpload"
 
 export {
 	ThemeProvider,
@@ -46,4 +47,5 @@ export {
 	useThemeContext,
 	useUpdateProfile,
 	useUser,
+	useVideoUpload,
 }

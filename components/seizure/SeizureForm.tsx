@@ -49,6 +49,9 @@ type Props = {
 	onDescriptionChange: (v: string) => void
 	onVideoChange: (v: string | undefined) => void
 	onSave: () => void
+	isUploading?: boolean
+	uploadProgress?: number
+	onCancelUpload?: () => void
 }
 
 export function SeizureForm(props: Props) {
@@ -96,6 +99,9 @@ export function SeizureForm(props: Props) {
 			<SeizureVideo
 				videoUrl={props.videoUrl}
 				onVideoChange={props.onVideoChange}
+				isUploading={props.isUploading}
+				uploadProgress={props.uploadProgress}
+				onCancelUpload={props.onCancelUpload}
 			/>
 
 			<View style={styles.errorContainer}>

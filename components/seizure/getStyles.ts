@@ -237,5 +237,29 @@ export const getStyles = (theme: AppTheme) => {
 			fontSize: fontSize.md,
 			color: "#fff",
 		},
+
+		uploadProgress: {
+			marginTop: spacing.sm,
+		},
+
+		progressBar: {
+			height: 6,
+			backgroundColor: colors.border,
+			borderRadius: 3,
+			overflow: "hidden" as const,
+		},
+
+		progressFill: {
+			height: 6,
+			borderRadius: 3,
+		},
+
+		videoLimitText: {
+			fontFamily: fonts.regular,
+			fontSize: fontSize.sm,
+			color: colors.textSecondary,
+			textAlign: "center" as const,
+			marginTop: spacing.xs,
+		},
 	})
 }
