@@ -10,6 +10,7 @@ import {
 } from "@/models"
 import { deleteSeizure, getSeizures, updateSeizure } from "@/services"
 import { router, useLocalSearchParams } from "expo-router"
+import { deleteField } from "firebase/firestore"
 import { useCallback, useEffect, useState } from "react"
 import { Alert } from "react-native"
 import { useAuth } from "./useAuth"
@@ -69,7 +70,7 @@ export function useSeizureEditForm() {
 			setIsMedicationTaken(seizure.isMedicationTaken ?? false)
 			setSleepHoursBefore(seizure.sleepHoursBefore)
 			setDescription(seizure.description ?? "")
-			setVideoUrl(seizure.videoUrl)
+			setVideoUrl(seizure.videoUrl ?? undefined)
 		} catch {
 			setError("Помилка завантаження")
 		} finally {
@@ -132,14 +133,14 @@ export function useSeizureEditForm() {
 			if (description) seizureData.description = description
 
 			if (videoUrl === undefined) {
-				seizureData.videoUrl = null
+				seizureData.videoUrl = deleteField()
 			} else if (videoUrl.startsWith("http")) {
 				seizureData.videoUrl = videoUrl
 			} else {
 				const { url: uploadedUrl, error: videoError } = await upload(
 					user.uid,
 					id,
-					videoUrl,
+					videoUrl, // тепер точно string
 				)
 				if (!uploadedUrl) {
 					setError(videoError ?? "Помилка завантаження відео")
@@ -150,7 +151,8 @@ export function useSeizureEditForm() {
 
 			await updateSeizure(user.uid, id, seizureData as Partial<Seizure>)
 			router.back()
-		} catch {
+		} catch (e: any) {
+			console.error("Save error:", e.message, JSON.stringify(e))
 			setError("Помилка збереження. Спробуйте ще раз")
 		} finally {
 			setIsLoading(false)
