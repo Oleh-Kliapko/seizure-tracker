@@ -18,21 +18,28 @@ export function useSeizureList() {
 
 	const fetchSeizures = useCallback(async () => {
 		if (!user) return
+
+		let cancelled = false
+
 		try {
 			setIsLoading(true)
 			const data = await getSeizures(user.uid)
 			setSeizures(data)
 		} catch {
-			// тихо ігноруємо
 		} finally {
-			setIsLoading(false)
+			if (!cancelled) setIsLoading(false)
+		}
+
+		return () => {
+			cancelled = true
 		}
 	}, [user])
 
 	useFocusEffect(
 		useCallback(() => {
+			if (!user) return
 			fetchSeizures()
-		}, [fetchSeizures]),
+		}, [fetchSeizures, user]),
 	)
 
 	const filtered = useMemo(() => {

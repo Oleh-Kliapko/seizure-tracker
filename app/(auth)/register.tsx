@@ -6,11 +6,11 @@ import {
 	AppSlogan,
 	AuthFooterLink,
 	Button,
-	Divider,
+	// Divider,
 	FormInput,
 	ScreenWrapper,
 } from "@/components/ui"
-import { GOOGLE_ICON } from "@/components/ui/svg"
+// import { GOOGLE_ICON } from "@/components/ui/svg"
 import { useAppTheme, useRegisterForm } from "@/hooks"
 import {
 	KeyboardAvoidingView,
@@ -19,7 +19,7 @@ import {
 	Text,
 	View,
 } from "react-native"
-import { SvgXml } from "react-native-svg"
+// import { SvgXml } from "react-native-svg"
 import createAuthStyles from "./auth.styles"
 
 export default function Register() {
@@ -95,14 +95,14 @@ export default function Register() {
 						/>
 					</View>
 
-					<Divider />
-					<Button
+					{/* <Divider /> */}
+					{/* <Button
 						title="Продовжити з Google"
 						icon={<SvgXml xml={GOOGLE_ICON} width={20} height={20} />}
 						iconPosition="left"
 						onPress={loginWithGoogle}
 						variant="secondary"
-					/>
+					/> */}
 					<AuthFooterLink
 						question="Вже є акаунт?"
 						linkText="Увійти"

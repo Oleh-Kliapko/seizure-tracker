@@ -1,36 +1,51 @@
+// app.json
+
 {
-  "expo": {
-    "name": "seizure-tracker",
-    "slug": "seizure-tracker",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "scheme": "seizuretracker",
-    "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.olehkliapko.seizurestracker"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE"
-      },
-      "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
-    },
-    "web": {
-      "output": "static"
-    },
-    "plugins": [
-      "expo-router",
-      "expo-secure-store",
-      "expo-font",
-      "@react-native-community/datetimepicker",
-      "expo-video"
-    ],
-    "experiments": {
-      "typedRoutes": true,
-      "reactCompiler": true
-    }
-  }
+	"expo": {
+		"name": "seizure-tracker",
+		"slug": "seizure-tracker",
+		"owner": "oleh_kliapko",
+		"version": "1.0.0",
+		"orientation": "portrait",
+		"scheme": "seizuretracker",
+		"userInterfaceStyle": "automatic",
+		"newArchEnabled": true,
+		"ios": {
+			"supportsTablet": true,
+			"bundleIdentifier": "com.olehkliapko.seizurestracker",
+			"googleServicesFile": "./GoogleService-Info.plist",
+			"infoPlist": {
+				"CFBundleURLTypes": [
+					{
+						"CFBundleURLSchemes": [
+							// iOS URL scheme in console.cloud.google.com
+							"com.googleusercontent.apps.974039154929-qsmkl4tdb2h2k0vmorg8h8hqbev74q2f"
+						]
+					}
+				]
+			}
+		},
+		"android": {
+			"adaptiveIcon": {
+				"backgroundColor": "#E6F4FE"
+			},
+			"edgeToEdgeEnabled": true,
+			"predictiveBackGestureEnabled": false
+		},
+		"web": {
+			"output": "static"
+		},
+		"plugins": [
+			"expo-router",
+			"expo-secure-store",
+			"expo-font",
+			"@react-native-community/datetimepicker",
+			"expo-video",
+			"expo-web-browser"
+		],
+		"experiments": {
+			"typedRoutes": true,
+			"reactCompiler": true
+		}
+	}
 }

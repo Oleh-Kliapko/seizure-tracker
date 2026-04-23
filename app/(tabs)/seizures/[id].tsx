@@ -47,6 +47,9 @@ export default function EditSeizureScreen() {
 		toggleExternalTrigger,
 		handleSave,
 		handleDelete,
+		isUploading,
+		uploadProgress,
+		cancelUpload,
 	} = useSeizureEditForm()
 
 	return (
@@ -113,6 +116,9 @@ export default function EditSeizureScreen() {
 							onDescriptionChange={setDescription}
 							onVideoChange={setVideoUrl}
 							onSave={handleSave}
+							isUploading={isUploading}
+							uploadProgress={uploadProgress}
+							onCancelUpload={cancelUpload}
 						/>
 					</ScrollView>
 				</KeyboardAvoidingView>

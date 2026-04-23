@@ -56,8 +56,6 @@ export async function uploadVideoToCloudinary(
 		})
 
 		xhr.addEventListener("load", () => {
-			console.log("Cloudinary response status:", xhr.status)
-			console.log("Cloudinary response:", xhr.responseText)
 			if (xhr.status === 200) {
 				const response = JSON.parse(xhr.responseText)
 				resolve(response.secure_url)

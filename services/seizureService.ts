@@ -72,7 +72,7 @@ export async function getSeizuresByPeriod(
 export async function updateSeizure(
 	userId: string,
 	seizureId: string,
-	data: Partial<Seizure>,
+	data: Partial<Seizure> & { videoUrl?: string | null },
 ): Promise<void> {
 	await updateDoc(doc(seizuresCol(userId), seizureId), {
 		...data,

@@ -13,10 +13,12 @@ import { router, useLocalSearchParams } from "expo-router"
 import { useCallback, useEffect, useState } from "react"
 import { Alert } from "react-native"
 import { useAuth } from "./useAuth"
+import { useVideoUpload } from "./useVideoUpload"
 
 export function useSeizureEditForm() {
 	const { user } = useAuth()
 	const { id } = useLocalSearchParams<{ id: string }>()
+	const { upload, cancel, isUploading, uploadProgress } = useVideoUpload()
 
 	const [startedAt, setStartedAt] = useState<number>(Date.now())
 	const [endedAt, setEndedAt] = useState<number | undefined>(undefined)
@@ -46,8 +48,11 @@ export function useSeizureEditForm() {
 
 	const loadSeizure = useCallback(async () => {
 		if (!user || !id) return
+		if (!user?.uid) return
+
 		try {
 			setIsFetching(true)
+
 			const seizures = await getSeizures(user.uid)
 			const seizure = seizures.find(s => s.id === id)
 			if (!seizure) return
@@ -125,7 +130,23 @@ export function useSeizureEditForm() {
 			if (sleepHoursBefore !== undefined)
 				seizureData.sleepHoursBefore = sleepHoursBefore
 			if (description) seizureData.description = description
-			if (videoUrl) seizureData.videoUrl = videoUrl
+
+			if (videoUrl === undefined) {
+				seizureData.videoUrl = null
+			} else if (videoUrl.startsWith("http")) {
+				seizureData.videoUrl = videoUrl
+			} else {
+				const { url: uploadedUrl, error: videoError } = await upload(
+					user.uid,
+					id,
+					videoUrl,
+				)
+				if (!uploadedUrl) {
+					setError(videoError ?? "Помилка завантаження відео")
+					return
+				}
+				seizureData.videoUrl = uploadedUrl
+			}
 
 			await updateSeizure(user.uid, id, seizureData as Partial<Seizure>)
 			router.back()
@@ -194,5 +215,8 @@ export function useSeizureEditForm() {
 		toggleExternalTrigger,
 		handleSave,
 		handleDelete,
+		isUploading,
+		uploadProgress,
+		cancelUpload: cancel,
 	}
 }

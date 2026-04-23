@@ -13,6 +13,7 @@ import { useAuthActions } from "./useAuthActions"
 import { useChangePasswordForm } from "./useChangePasswordForm"
 import { useDeleteAccount } from "./useDeleteAccount"
 import { useExport } from "./useExport"
+import { useGoogleAuth } from "./useGoogleAuth"
 import { useGuardiansForm } from "./useGuardiansForm"
 import { useLoginForm } from "./useLoginForm"
 import { useMedicalForm } from "./useMedicalForm"
@@ -35,6 +36,7 @@ export {
 	useChangePasswordForm,
 	useDeleteAccount,
 	useExport,
+	useGoogleAuth,
 	useGuardiansForm,
 	useIsDarkTheme,
 	useLoginForm,

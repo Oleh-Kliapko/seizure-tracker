@@ -9,6 +9,7 @@ import {
 	signOut,
 } from "firebase/auth"
 import { useState } from "react"
+import { useGoogleAuth } from "./useGoogleAuth"
 
 type AuthError = {
 	message: string
@@ -17,6 +18,11 @@ type AuthError = {
 export function useAuthActions() {
 	const [isLoading, setIsLoading] = useState(false)
 	const [error, setError] = useState<AuthError | null>(null)
+	const {
+		signInWithGoogle,
+		isLoading: isGoogleLoading,
+		error: googleError,
+	} = useGoogleAuth()
 
 	const login = async (email: string, password: string) => {
 		try {
@@ -48,8 +54,11 @@ export function useAuthActions() {
 	}
 
 	const loginWithGoogle = async () => {
-		// TODO: реалізувати через expo-auth-session
-		setError({ message: "Google авторизація буде додана незабаром" })
+		setError(null)
+		const success = await signInWithGoogle()
+		if (!success && googleError) {
+			setError({ message: googleError })
+		}
 	}
 
 	const logout = async () => {
@@ -64,5 +73,12 @@ export function useAuthActions() {
 		}
 	}
 
-	return { login, register, loginWithGoogle, logout, isLoading, error }
+	return {
+		login,
+		register,
+		loginWithGoogle,
+		logout,
+		isLoading: isLoading || isGoogleLoading,
+		error,
+	}
 }
