@@ -261,5 +261,9 @@ export const getStyles = (theme: AppTheme) => {
 			textAlign: "center" as const,
 			marginTop: spacing.xs,
 		},
+
+		descriptionInput: {
+			minHeight: 100,
+		},
 	})
 }

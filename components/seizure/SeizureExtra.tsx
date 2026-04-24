@@ -61,7 +61,7 @@ export function SeizureExtra({
 				placeholder="Додаткові нотатки..."
 				multiline
 				numberOfLines={4}
-				style={{ minHeight: 100, textAlignVertical: "top" }}
+				style={[styles.descriptionInput, { textAlignVertical: "top" }]}
 			/>
 		</View>
 	)

@@ -357,5 +357,19 @@ export const getStyles = (theme: AppTheme) => {
 			fontSize: fontSize.md,
 			color: onSurface,
 		},
+
+		flexContainer: {
+			flex: 1,
+		},
+
+		menuArrow: {
+			color: textSecondary,
+		},
+
+		iconRow: {
+			flexDirection: "row",
+			alignItems: "center",
+			gap: 12,
+		},
 	})
 }

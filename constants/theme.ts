@@ -110,10 +110,10 @@ export const darkTheme: Theme = {
 	fontSize,
 	iconSize,
 	seizureColors: {
-		severe: "#9F1239", // темно-рожевий для темної теми
-		medium: "#BE123C", // середній
-		light: "#bc2653", // світліший
-		unknown: "#1E293B", // темно-сірий
+		severe: "#326d9390",
+		medium: "#326d9380",
+		light: "#326d9370",
+		unknown: "#6b7b8860",
 	},
 } as const
 

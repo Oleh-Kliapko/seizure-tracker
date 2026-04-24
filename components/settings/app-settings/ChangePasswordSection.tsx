@@ -25,7 +25,7 @@ export function ChangePasswordSection() {
 				onPress={() => router.push("/(tabs)/settings/change-password")}
 				activeOpacity={0.7}
 			>
-				<View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+				<View style={styles.iconRow}>
 					<Lock size={20} color={theme.colors.primary} />
 					<Text style={styles.settingsRowTitle}>Змінити пароль</Text>
 				</View>

@@ -21,13 +21,11 @@ export function ProfileLink({ href, icon, title, subtitle }: Props) {
 			<TouchableOpacity style={styles.card} activeOpacity={0.7}>
 				<View style={styles.content}>
 					<View style={styles.iconMenu}>{icon}</View>
-					<View style={{ flex: 1 }}>
+					<View style={styles.flexContainer}>
 						<Text style={styles.titleMenu}>{title}</Text>
 						{subtitle && <Text style={styles.subtitleMenu}>{subtitle}</Text>}
 					</View>
-					<Text style={{ color: theme.colors.textSecondary, fontSize: 24 }}>
-						›
-					</Text>
+					<Text style={[styles.menuArrow, { fontSize: 24 }]}>›</Text>
 				</View>
 			</TouchableOpacity>
 		</Link>
