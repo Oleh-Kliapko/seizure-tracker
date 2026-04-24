@@ -3,12 +3,14 @@
 import { useAppTheme } from "@/hooks"
 import { Seizure } from "@/models"
 import { getSeizures, updateSeizure } from "@/services"
-import { deleteVideoFromCloudinary, uploadVideoToCloudinary } from "@/services/cloudinaryService"
+import { checkVideoLimits, deleteVideoFromCloudinary, uploadVideoToCloudinary } from "@/services/cloudinaryService"
+import { MAX_VIDEO_SIZE_MB, MAX_VIDEOS_PER_USER } from "@/config/cloudinary"
 import * as ImagePicker from "expo-image-picker"
 import { AlertCircle, Plus, Trash2 } from "lucide-react-native"
 import { useState } from "react"
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native"
 import { useAuth } from "@/hooks"
+import { getInfoAsync } from "expo-file-system/legacy"
 
 type Props = {
 	seizure: Seizure
@@ -41,6 +43,21 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 
 			if (result.canceled) return
 
+			// Check file size before uploading
+			const fileInfo = await getInfoAsync(result.assets[0].uri, { size: true } as any)
+			const fileSize = (fileInfo as any).size ?? 0
+
+			if (fileSize === 0) {
+				setError("Не вдалося отримати розмір файлу")
+				return
+			}
+
+			const limitError = await checkVideoLimits(user.uid, fileSize)
+			if (limitError) {
+				setError(limitError)
+				return
+			}
+
 			setIsUploading(true)
 			const response = await uploadVideoToCloudinary(result.assets[0].uri)
 
@@ -51,7 +68,8 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 
 			await reloadSeizure()
 		} catch (e: any) {
-			setError("Помилка завантаження")
+			console.error("Video upload error:", e)
+			setError(e.message || "Помилка завантаження")
 		} finally {
 			setIsUploading(false)
 		}

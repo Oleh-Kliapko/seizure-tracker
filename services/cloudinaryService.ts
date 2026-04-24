@@ -53,6 +53,9 @@ export async function uploadVideoToCloudinary(
 	return new Promise((resolve, reject) => {
 		const xhr = new XMLHttpRequest()
 
+		// Set timeout for 15 minutes (for large files)
+		xhr.timeout = 15 * 60 * 1000
+
 		xhr.upload.addEventListener("progress", e => {
 			if (e.lengthComputable) {
 				const progress = Math.round((e.loaded / e.total) * 100)
@@ -62,13 +65,22 @@ export async function uploadVideoToCloudinary(
 
 		xhr.addEventListener("load", () => {
 			if (xhr.status === 200) {
-				const response = JSON.parse(xhr.responseText)
-				resolve({
-					url: response.secure_url,
-					publicId: response.public_id,
-				})
+				try {
+					const response = JSON.parse(xhr.responseText)
+					resolve({
+						url: response.secure_url,
+						publicId: response.public_id,
+					})
+				} catch (e) {
+					reject(new Error("Невірна відповідь від сервера"))
+				}
 			} else {
-				reject(new Error("Помилка завантаження на Cloudinary"))
+				try {
+					const errorResponse = JSON.parse(xhr.responseText)
+					reject(new Error(errorResponse.error?.message || "Помилка завантаження на Cloudinary"))
+				} catch {
+					reject(new Error(`Помилка завантаження: ${xhr.status}`))
+				}
 			}
 		})
 
@@ -76,13 +88,22 @@ export async function uploadVideoToCloudinary(
 			reject(new Error("Помилка мережі"))
 		})
 
+		xhr.addEventListener("timeout", () => {
+			xhr.abort()
+			reject(new Error("Час очікування завантаження закінчився"))
+		})
+
 		signal?.addEventListener("abort", () => {
 			xhr.abort()
 			reject(new Error("Завантаження скасовано"))
 		})
 
-		xhr.open("POST", CLOUDINARY_UPLOAD_URL)
-		xhr.send(formData)
+		try {
+			xhr.open("POST", CLOUDINARY_UPLOAD_URL)
+			xhr.send(formData)
+		} catch (e) {
+			reject(new Error("Не вдалося почати завантаження"))
+		}
 	})
 }
 
