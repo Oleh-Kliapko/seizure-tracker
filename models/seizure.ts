@@ -52,6 +52,7 @@ export type Seizure = {
 	moodAfter?: number // 1-5 - настрій після судом
 
 	videoUrl?: string // посилання на відео з судомами (якщо є)
+	cloudinaryPublicId?: string // public_id з Cloudinary для видалення
 	description?: string // додаткові нотатки про судоми
 
 	createdAt: number

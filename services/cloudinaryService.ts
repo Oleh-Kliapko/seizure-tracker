@@ -29,11 +29,16 @@ export async function checkVideoLimits(
 	return null
 }
 
+export type CloudinaryUploadResponse = {
+	url: string
+	publicId: string
+}
+
 export async function uploadVideoToCloudinary(
 	localUri: string,
 	onProgress?: UploadProgress,
 	signal?: AbortSignal,
-): Promise<string> {
+): Promise<CloudinaryUploadResponse> {
 	const formData = new FormData()
 
 	formData.append("file", {
@@ -58,7 +63,10 @@ export async function uploadVideoToCloudinary(
 		xhr.addEventListener("load", () => {
 			if (xhr.status === 200) {
 				const response = JSON.parse(xhr.responseText)
-				resolve(response.secure_url)
+				resolve({
+					url: response.secure_url,
+					publicId: response.public_id,
+				})
 			} else {
 				reject(new Error("Помилка завантаження на Cloudinary"))
 			}
@@ -78,8 +86,37 @@ export async function uploadVideoToCloudinary(
 	})
 }
 
-export async function deleteVideoFromCloudinary(url: string): Promise<void> {
-	// Видалення через unsigned preset неможливе без серверної частини
-	// TODO: реалізувати через Cloud Function або серверний endpoint
-	console.warn("Видалення відео з Cloudinary потребує серверної частини", url)
+const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL || "http://localhost:3000"
+const BACKEND_API_KEY = process.env.EXPO_PUBLIC_BACKEND_API_KEY
+
+export async function deleteVideoFromCloudinary(
+	userId: string,
+	publicId: string,
+): Promise<void> {
+	if (!BACKEND_API_KEY) {
+		console.warn("Backend API key not configured, skipping video deletion")
+		return
+	}
+
+	try {
+		const response = await fetch(`${BACKEND_URL}/api/videos/delete`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				"x-api-key": BACKEND_API_KEY,
+			},
+			body: JSON.stringify({
+				publicId,
+				userId,
+			}),
+		})
+
+		if (!response.ok) {
+			const error = await response.json()
+			throw new Error(error.error || "Failed to delete video")
+		}
+	} catch (error: any) {
+		console.error("Error deleting video from backend:", error.message)
+		// Don't throw - deletion failure shouldn't block seizure deletion
+	}
 }

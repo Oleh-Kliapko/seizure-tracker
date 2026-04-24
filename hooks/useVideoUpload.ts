@@ -19,9 +19,9 @@ export function useVideoUpload() {
 		_userId: string,
 		_seizureId: string,
 		localUri: string,
-	): Promise<{ url: string | null; error: string | null }> => {
+	): Promise<{ url: string | null; publicId: string | null; error: string | null }> => {
 		if (!user) {
-			return { url: null, error: "Користувач не знайдений" }
+			return { url: null, publicId: null, error: "Користувач не знайдений" }
 		}
 
 		try {
@@ -32,7 +32,7 @@ export function useVideoUpload() {
 			const fileInfo = await getInfoAsync(localUri, { size: true } as any)
 			if (!fileInfo.exists) {
 				setError("Файл не знайдено")
-				return { url: null, error: "Файл не знайдено" }
+				return { url: null, publicId: null, error: "Файл не знайдено" }
 			}
 
 			const fileSize = (fileInfo as any).size ?? 0
@@ -40,25 +40,25 @@ export function useVideoUpload() {
 
 			if (limitError) {
 				setError(limitError)
-				return { url: null, error: limitError }
+				return { url: null, publicId: null, error: limitError }
 			}
 
 			abortController.current = new AbortController()
 
-			const url = await uploadVideoToCloudinary(
+			const response = await uploadVideoToCloudinary(
 				localUri,
 				setUploadProgress,
 				abortController.current.signal,
 			)
 
-			return { url, error: null }
+			return { url: response.url, publicId: response.publicId, error: null }
 		} catch (e: any) {
 			if (e.message === "Завантаження скасовано") {
 				setError("Завантаження скасовано")
 			} else {
 				setError("Помилка завантаження відео")
 			}
-			return { url: null, error: e.message }
+			return { url: null, publicId: null, error: e.message }
 		} finally {
 			setIsUploading(false)
 			abortController.current = null

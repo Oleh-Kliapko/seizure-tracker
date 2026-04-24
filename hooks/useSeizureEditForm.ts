@@ -9,6 +9,7 @@ import {
 	TriggerItem,
 } from "@/models"
 import { deleteSeizure, getSeizures, updateSeizure } from "@/services"
+import { deleteVideoFromCloudinary } from "@/services/cloudinaryService"
 import { router, useLocalSearchParams } from "expo-router"
 import { deleteField } from "firebase/firestore"
 import { useCallback, useEffect, useState } from "react"
@@ -42,6 +43,9 @@ export function useSeizureEditForm() {
 	)
 	const [description, setDescription] = useState("")
 	const [videoUrl, setVideoUrl] = useState<string | undefined>(undefined)
+	const [cloudinaryPublicId, setCloudinaryPublicId] = useState<string | undefined>(
+		undefined,
+	)
 
 	const [isLoading, setIsLoading] = useState(false)
 	const [isFetching, setIsFetching] = useState(true)
@@ -71,6 +75,7 @@ export function useSeizureEditForm() {
 			setSleepHoursBefore(seizure.sleepHoursBefore)
 			setDescription(seizure.description ?? "")
 			setVideoUrl(seizure.videoUrl ?? undefined)
+			setCloudinaryPublicId(seizure.cloudinaryPublicId ?? undefined)
 		} catch {
 			setError("Помилка завантаження")
 		} finally {
@@ -134,19 +139,21 @@ export function useSeizureEditForm() {
 
 			if (videoUrl === undefined) {
 				seizureData.videoUrl = deleteField()
+				seizureData.cloudinaryPublicId = deleteField()
 			} else if (videoUrl.startsWith("http")) {
 				seizureData.videoUrl = videoUrl
 			} else {
-				const { url: uploadedUrl, error: videoError } = await upload(
+				const { url: uploadedUrl, publicId: uploadedPublicId, error: videoError } = await upload(
 					user.uid,
 					id,
-					videoUrl, // тепер точно string
+					videoUrl,
 				)
 				if (!uploadedUrl) {
 					setError(videoError ?? "Помилка завантаження відео")
 					return
 				}
 				seizureData.videoUrl = uploadedUrl
+				seizureData.cloudinaryPublicId = uploadedPublicId || undefined
 			}
 
 			await updateSeizure(user.uid, id, seizureData as Partial<Seizure>)
@@ -172,6 +179,10 @@ export function useSeizureEditForm() {
 						if (!user || !id) return
 						try {
 							setIsLoading(true)
+							// Delete video from Cloudinary if exists
+							if (cloudinaryPublicId) {
+								await deleteVideoFromCloudinary(user.uid, cloudinaryPublicId)
+							}
 							await deleteSeizure(user.uid, id)
 							router.back()
 						} catch {
@@ -210,6 +221,8 @@ export function useSeizureEditForm() {
 		setDescription,
 		videoUrl,
 		setVideoUrl,
+		cloudinaryPublicId,
+		setCloudinaryPublicId,
 		isLoading,
 		isFetching,
 		error,
