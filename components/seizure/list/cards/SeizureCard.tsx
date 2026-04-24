@@ -9,10 +9,12 @@ import {
 import { useAppTheme } from "@/hooks"
 import { Seizure } from "@/models"
 import { router } from "expo-router"
+import { useState } from "react"
 import { Text, TouchableOpacity, View } from "react-native"
 import { getSeizureColor } from "../getSeizureColor"
 import { getStyles } from "../getStyles"
 import { CardHeader } from "./CardHeader"
+import { CardVideoUpload } from "./CardVideoUpload"
 
 type Props = {
 	seizure: Seizure
@@ -37,6 +39,7 @@ export function SeizureCard({ seizure, onPress }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
 	const bgColor = getSeizureColor(theme, seizure.severity)
+	const [updateTrigger, setUpdateTrigger] = useState(0)
 
 	const allTriggers = [
 		...(seizure.internalTriggers ?? []).map(t =>
@@ -52,6 +55,10 @@ export function SeizureCard({ seizure, onPress }: Props) {
 			pathname: "/(tabs)/seizures/[id]" as any,
 			params: { id: s.id },
 		})
+	}
+
+	const handleVideoUpdated = () => {
+		setUpdateTrigger(prev => prev + 1)
 	}
 
 	return (
@@ -88,6 +95,14 @@ export function SeizureCard({ seizure, onPress }: Props) {
 					))}
 				</View>
 			)}
+
+			<View style={{ marginTop: theme.spacing.md }}>
+				<CardVideoUpload
+					key={`video-${updateTrigger}`}
+					seizure={seizure}
+					onVideoUpdated={handleVideoUpdated}
+				/>
+			</View>
 		</TouchableOpacity>
 	)
 }

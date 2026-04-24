@@ -17,8 +17,6 @@ import { SeizureMood } from "./SeizureMood"
 import { SeizureSeverityPicker } from "./SeizureSeverityPicker"
 import { SeizureTriggers } from "./SeizureTriggers"
 import { SeizureTypePicker } from "./SeizureTypePicker"
-import { SeizureVideo } from "./video"
-
 type Props = {
 	startedAt: number
 	endedAt: number | undefined
@@ -32,7 +30,6 @@ type Props = {
 	isMedicationTaken: boolean
 	sleepHoursBefore: number | undefined
 	description: string
-	videoUrl: string | undefined
 	isLoading: boolean
 	error: string | null
 	onStartChange: (v: number) => void
@@ -47,11 +44,7 @@ type Props = {
 	onMedicationChange: (v: boolean) => void
 	onSleepHoursChange: (v: number | undefined) => void
 	onDescriptionChange: (v: string) => void
-	onVideoChange: (v: string | undefined) => void
 	onSave: () => void
-	isUploading?: boolean
-	uploadProgress?: number
-	onCancelUpload?: () => void
 }
 
 export function SeizureForm(props: Props) {
@@ -95,13 +88,6 @@ export function SeizureForm(props: Props) {
 				onMedicationChange={props.onMedicationChange}
 				onSleepHoursChange={props.onSleepHoursChange}
 				onDescriptionChange={props.onDescriptionChange}
-			/>
-			<SeizureVideo
-				videoUrl={props.videoUrl}
-				onVideoChange={props.onVideoChange}
-				isUploading={props.isUploading}
-				uploadProgress={props.uploadProgress}
-				onCancelUpload={props.onCancelUpload}
 			/>
 
 			<View style={styles.errorContainer}>

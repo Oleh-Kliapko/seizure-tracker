@@ -93,13 +93,19 @@ export async function deleteVideoFromCloudinary(
 	userId: string,
 	publicId: string,
 ): Promise<void> {
+	console.log("deleteVideoFromCloudinary called with:", { userId, publicId })
+	console.log("BACKEND_URL:", BACKEND_URL)
+	console.log("BACKEND_API_KEY configured:", !!BACKEND_API_KEY)
+
 	if (!BACKEND_API_KEY) {
 		console.warn("Backend API key not configured, skipping video deletion")
 		return
 	}
 
 	try {
-		const response = await fetch(`${BACKEND_URL}/api/videos/delete`, {
+		const url = `${BACKEND_URL}/api/videos/delete`
+		console.log("Fetching:", url)
+		const response = await fetch(url, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -111,10 +117,16 @@ export async function deleteVideoFromCloudinary(
 			}),
 		})
 
+		console.log("Response status:", response.status)
+
 		if (!response.ok) {
 			const error = await response.json()
+			console.error("Backend error:", error)
 			throw new Error(error.error || "Failed to delete video")
 		}
+
+		const result = await response.json()
+		console.log("Video deleted successfully:", result)
 	} catch (error: any) {
 		console.error("Error deleting video from backend:", error.message)
 		// Don't throw - deletion failure shouldn't block seizure deletion

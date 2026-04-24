@@ -51,6 +51,7 @@ export function useVideoUpload() {
 				abortController.current.signal,
 			)
 
+			console.log("Video uploaded successfully:", { url: response.url, publicId: response.publicId })
 			return { url: response.url, publicId: response.publicId, error: null }
 		} catch (e: any) {
 			if (e.message === "Завантаження скасовано") {

@@ -9,13 +9,10 @@ import {
 	TriggerItem,
 } from "@/models"
 import { deleteSeizure, getSeizures, updateSeizure } from "@/services"
-import { deleteVideoFromCloudinary } from "@/services/cloudinaryService"
 import { router, useLocalSearchParams } from "expo-router"
-import { deleteField } from "firebase/firestore"
 import { useCallback, useEffect, useState } from "react"
 import { Alert } from "react-native"
 import { useAuth } from "./useAuth"
-import { useVideoUpload } from "./useVideoUpload"
 
 export function useSeizureEditForm() {
 	const { user } = useAuth()
@@ -42,10 +39,6 @@ export function useSeizureEditForm() {
 		undefined,
 	)
 	const [description, setDescription] = useState("")
-	const [videoUrl, setVideoUrl] = useState<string | undefined>(undefined)
-	const [cloudinaryPublicId, setCloudinaryPublicId] = useState<string | undefined>(
-		undefined,
-	)
 
 	const [isLoading, setIsLoading] = useState(false)
 	const [isFetching, setIsFetching] = useState(true)
@@ -74,8 +67,6 @@ export function useSeizureEditForm() {
 			setIsMedicationTaken(seizure.isMedicationTaken ?? false)
 			setSleepHoursBefore(seizure.sleepHoursBefore)
 			setDescription(seizure.description ?? "")
-			setVideoUrl(seizure.videoUrl ?? undefined)
-			setCloudinaryPublicId(seizure.cloudinaryPublicId ?? undefined)
 		} catch {
 			setError("Помилка завантаження")
 		} finally {
@@ -137,25 +128,6 @@ export function useSeizureEditForm() {
 				seizureData.sleepHoursBefore = sleepHoursBefore
 			if (description) seizureData.description = description
 
-			if (videoUrl === undefined) {
-				seizureData.videoUrl = deleteField()
-				seizureData.cloudinaryPublicId = deleteField()
-			} else if (videoUrl.startsWith("http")) {
-				seizureData.videoUrl = videoUrl
-			} else {
-				const { url: uploadedUrl, publicId: uploadedPublicId, error: videoError } = await upload(
-					user.uid,
-					id,
-					videoUrl,
-				)
-				if (!uploadedUrl) {
-					setError(videoError ?? "Помилка завантаження відео")
-					return
-				}
-				seizureData.videoUrl = uploadedUrl
-				seizureData.cloudinaryPublicId = uploadedPublicId || undefined
-			}
-
 			await updateSeizure(user.uid, id, seizureData as Partial<Seizure>)
 			router.back()
 		} catch (e: any) {
@@ -179,10 +151,6 @@ export function useSeizureEditForm() {
 						if (!user || !id) return
 						try {
 							setIsLoading(true)
-							// Delete video from Cloudinary if exists
-							if (cloudinaryPublicId) {
-								await deleteVideoFromCloudinary(user.uid, cloudinaryPublicId)
-							}
 							await deleteSeizure(user.uid, id)
 							router.back()
 						} catch {
@@ -219,10 +187,6 @@ export function useSeizureEditForm() {
 		setSleepHoursBefore,
 		description,
 		setDescription,
-		videoUrl,
-		setVideoUrl,
-		cloudinaryPublicId,
-		setCloudinaryPublicId,
 		isLoading,
 		isFetching,
 		error,
@@ -230,8 +194,5 @@ export function useSeizureEditForm() {
 		toggleExternalTrigger,
 		handleSave,
 		handleDelete,
-		isUploading,
-		uploadProgress,
-		cancelUpload: cancel,
 	}
 }

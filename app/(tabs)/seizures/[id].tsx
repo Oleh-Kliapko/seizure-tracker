@@ -38,8 +38,6 @@ export default function EditSeizureScreen() {
 		setSleepHoursBefore,
 		description,
 		setDescription,
-		videoUrl,
-		setVideoUrl,
 		isLoading,
 		isFetching,
 		error,
@@ -47,9 +45,6 @@ export default function EditSeizureScreen() {
 		toggleExternalTrigger,
 		handleSave,
 		handleDelete,
-		isUploading,
-		uploadProgress,
-		cancelUpload,
 	} = useSeizureEditForm()
 
 	return (
@@ -64,6 +59,7 @@ export default function EditSeizureScreen() {
 						variant="secondary"
 						style={{
 							backgroundColor: "transparent",
+							borderColor: "transparent",
 							paddingHorizontal: spacing.sm,
 						}}
 					/>
@@ -99,7 +95,6 @@ export default function EditSeizureScreen() {
 							isMedicationTaken={isMedicationTaken}
 							sleepHoursBefore={sleepHoursBefore}
 							description={description}
-							videoUrl={videoUrl}
 							isLoading={isLoading}
 							error={error}
 							onStartChange={setStartedAt}
@@ -114,11 +109,7 @@ export default function EditSeizureScreen() {
 							onMedicationChange={setIsMedicationTaken}
 							onSleepHoursChange={setSleepHoursBefore}
 							onDescriptionChange={setDescription}
-							onVideoChange={setVideoUrl}
 							onSave={handleSave}
-							isUploading={isUploading}
-							uploadProgress={uploadProgress}
-							onCancelUpload={cancelUpload}
 						/>
 					</ScrollView>
 				</KeyboardAvoidingView>
