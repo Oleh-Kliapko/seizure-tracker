@@ -37,13 +37,13 @@ export async function deleteVideoFromCloudinary(
 	const { cloudName, apiKey, apiSecret } = getCloudinaryConfig()
 	const timestamp = Math.floor(Date.now() / 1000).toString()
 
-	const params: Record<string, string> = {
+	// Signature should only include public_id and timestamp, NOT api_key
+	const signatureParams: Record<string, string> = {
 		public_id: publicId,
-		api_key: apiKey,
 		timestamp,
 	}
 
-	const signature = generateSignature(params, apiSecret)
+	const signature = generateSignature(signatureParams, apiSecret)
 
 	const formData = new URLSearchParams()
 	formData.append("public_id", publicId)
