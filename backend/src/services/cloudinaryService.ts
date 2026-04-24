@@ -1,15 +1,22 @@
 import crypto from "crypto"
 import axios from "axios"
 
-const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || ""
-const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY || ""
-const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET || ""
+function getCloudinaryConfig() {
+	const cloudName = process.env.CLOUDINARY_CLOUD_NAME
+	const apiKey = process.env.CLOUDINARY_API_KEY
+	const apiSecret = process.env.CLOUDINARY_API_SECRET
 
-if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_API_SECRET) {
-	throw new Error("Missing Cloudinary configuration")
+	if (!cloudName || !apiKey || !apiSecret) {
+		throw new Error("Missing Cloudinary configuration")
+	}
+
+	return { cloudName, apiKey, apiSecret }
 }
 
-function generateSignature(params: Record<string, string>): string {
+function generateSignature(
+	params: Record<string, string>,
+	apiSecret: string,
+): string {
 	const sortedParams = Object.keys(params)
 		.sort()
 		.map(key => `${key}=${params[key]}`)
@@ -17,30 +24,34 @@ function generateSignature(params: Record<string, string>): string {
 
 	const signature = crypto
 		.createHash("sha1")
-		.update(sortedParams + CLOUDINARY_API_SECRET)
+		.update(sortedParams + apiSecret)
 		.digest("hex")
 
 	return signature
 }
 
-export async function deleteVideoFromCloudinary(publicId: string): Promise<void> {
+export async function deleteVideoFromCloudinary(
+	userId: string,
+	publicId: string,
+): Promise<void> {
+	const { cloudName, apiKey, apiSecret } = getCloudinaryConfig()
 	const timestamp = Math.floor(Date.now() / 1000).toString()
 
 	const params: Record<string, string> = {
 		public_id: publicId,
-		api_key: CLOUDINARY_API_KEY,
+		api_key: apiKey,
 		timestamp,
 	}
 
-	const signature = generateSignature(params)
+	const signature = generateSignature(params, apiSecret)
 
 	const formData = new URLSearchParams()
 	formData.append("public_id", publicId)
-	formData.append("api_key", CLOUDINARY_API_KEY)
+	formData.append("api_key", apiKey)
 	formData.append("timestamp", timestamp)
 	formData.append("signature", signature)
 
-	const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/video/destroy`
+	const url = `https://api.cloudinary.com/v1_1/${cloudName}/video/destroy`
 
 	try {
 		await axios.post(url, formData, {

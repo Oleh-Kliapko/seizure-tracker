@@ -1,9 +1,9 @@
+import dotenv from "dotenv"
+dotenv.config()
+
 import express, { Request, Response } from "express"
 import cors from "cors"
-import dotenv from "dotenv"
 import { deleteVideoFromCloudinary } from "./services/cloudinaryService.js"
-
-dotenv.config()
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -41,7 +41,7 @@ app.post("/api/videos/delete", async (req: Request, res: Response) => {
 		}
 
 		// Delete from Cloudinary
-		await deleteVideoFromCloudinary(publicId)
+		await deleteVideoFromCloudinary(userId, publicId)
 
 		res.json({ success: true, message: "Video deleted successfully" })
 	} catch (error: any) {
