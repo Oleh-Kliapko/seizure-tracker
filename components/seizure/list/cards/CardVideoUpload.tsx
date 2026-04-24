@@ -2,7 +2,7 @@
 
 import { useAppTheme } from "@/hooks"
 import { Seizure } from "@/models"
-import { updateSeizure } from "@/services"
+import { getSeizures, updateSeizure } from "@/services"
 import { deleteVideoFromCloudinary, uploadVideoToCloudinary } from "@/services/cloudinaryService"
 import * as ImagePicker from "expo-image-picker"
 import { AlertCircle, Plus, Trash2 } from "lucide-react-native"
@@ -12,7 +12,7 @@ import { useAuth } from "@/hooks"
 
 type Props = {
 	seizure: Seizure
-	onVideoUpdated: () => void
+	onVideoUpdated: (updatedSeizure: Seizure) => void
 }
 
 export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
@@ -20,6 +20,13 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 	const theme = useAppTheme()
 	const [isUploading, setIsUploading] = useState(false)
 	const [error, setError] = useState<string | null>(null)
+
+	const reloadSeizure = async () => {
+		if (!user) return
+		const seizures = await getSeizures(user.uid)
+		const updated = seizures.find(s => s.id === seizure.id)
+		if (updated) onVideoUpdated(updated)
+	}
 
 	const pickAndUploadVideo = async () => {
 		if (!user) return
@@ -42,7 +49,7 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 				cloudinaryPublicId: response.publicId,
 			})
 
-			onVideoUpdated()
+			await reloadSeizure()
 		} catch (e: any) {
 			setError("Помилка завантаження")
 		} finally {
@@ -63,7 +70,7 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 				cloudinaryPublicId: null,
 			} as any)
 
-			onVideoUpdated()
+			await reloadSeizure()
 		} catch (e: any) {
 			setError("Помилка видалення")
 		} finally {

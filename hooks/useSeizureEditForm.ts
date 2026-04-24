@@ -17,7 +17,6 @@ import { useAuth } from "./useAuth"
 export function useSeizureEditForm() {
 	const { user } = useAuth()
 	const { id } = useLocalSearchParams<{ id: string }>()
-	const { upload, cancel, isUploading, uploadProgress } = useVideoUpload()
 
 	const [startedAt, setStartedAt] = useState<number>(Date.now())
 	const [endedAt, setEndedAt] = useState<number | undefined>(undefined)

@@ -35,11 +35,11 @@ function getTriggerLabel(
 	return list.find(t => t.value === type)?.label ?? type
 }
 
-export function SeizureCard({ seizure, onPress }: Props) {
+export function SeizureCard({ seizure: initialSeizure, onPress }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const [seizure, setSeizure] = useState(initialSeizure)
 	const bgColor = getSeizureColor(theme, seizure.severity)
-	const [updateTrigger, setUpdateTrigger] = useState(0)
 
 	const allTriggers = [
 		...(seizure.internalTriggers ?? []).map(t =>
@@ -57,8 +57,8 @@ export function SeizureCard({ seizure, onPress }: Props) {
 		})
 	}
 
-	const handleVideoUpdated = () => {
-		setUpdateTrigger(prev => prev + 1)
+	const handleVideoUpdated = (updatedSeizure: Seizure) => {
+		setSeizure(updatedSeizure)
 	}
 
 	return (
@@ -98,7 +98,6 @@ export function SeizureCard({ seizure, onPress }: Props) {
 
 			<View style={{ marginTop: theme.spacing.md }}>
 				<CardVideoUpload
-					key={`video-${updateTrigger}`}
 					seizure={seizure}
 					onVideoUpdated={handleVideoUpdated}
 				/>
