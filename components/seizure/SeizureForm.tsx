@@ -11,13 +11,13 @@ import {
 } from "@/models"
 import { Text, View } from "react-native"
 import { getStyles } from "./getStyles"
-import { SeizureDateTime } from "./SeizureDateTime"
+import { SeizureDateTime } from "./datetime"
 import { SeizureExtra } from "./SeizureExtra"
 import { SeizureMood } from "./SeizureMood"
 import { SeizureSeverityPicker } from "./SeizureSeverityPicker"
 import { SeizureTriggers } from "./SeizureTriggers"
 import { SeizureTypePicker } from "./SeizureTypePicker"
-import { SeizureVideo } from "./SeizureVideo"
+import { SeizureVideo } from "./video"
 
 type Props = {
 	startedAt: number
