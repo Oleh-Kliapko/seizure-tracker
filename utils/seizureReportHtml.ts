@@ -6,7 +6,8 @@ export const htmlReport = (
 	to: number,
 	formatDate: (date: number) => string,
 	stats: any,
-	rows: string,
+	rowsWithVideo: string,
+	rowsWithoutVideo: string,
 	patientName: string,
 ) => `<!DOCTYPE html>
 <html lang="uk">
@@ -36,6 +37,9 @@ export const htmlReport = (
     .triggers-section { margin-bottom: 24px; }
     .triggers-section h2 { font-size: 14px; margin-bottom: 8px; color: #4A90E2; }
     .triggers-section p { color: #6B7280; }
+
+    .table-section { margin-bottom: 32px; }
+    .table-section h3 { font-size: 13px; color: #4A90E2; margin-bottom: 12px; margin-top: 16px; }
 
     table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
     th { background: #4A90E2; color: white; padding: 8px; text-align: left; font-size: 11px; }
@@ -90,24 +94,50 @@ export const htmlReport = (
     <p>${stats.topTriggers}</p>
   </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Дата</th>
-        <th>Час</th>
-        <th>Тривалість</th>
-        <th>Тип</th>
-        <th>Сила</th>
-        <th>Тригери</th>
-        <th>Настрій до/після</th>
-        <th>Ліки</th>
-        <th>Опис</th>
-      </tr>
-    </thead>
-    <tbody>
-      ${rows}
-    </tbody>
-  </table>
+  ${rowsWithVideo ? `
+  <div class="table-section">
+    <h3>🎥 Приступи з відеозаписом</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Дата</th>
+          <th>Час</th>
+          <th>Тривалість</th>
+          <th>Тип</th>
+          <th>Сила</th>
+          <th>Тригери</th>
+          <th>Опис</th>
+          <th>Відео</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rowsWithVideo}
+      </tbody>
+    </table>
+  </div>
+  ` : ""}
+
+  ${rowsWithoutVideo ? `
+  <div class="table-section">
+    <h3>Приступи без відеозаписів</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Дата</th>
+          <th>Час</th>
+          <th>Тривалість</th>
+          <th>Тип</th>
+          <th>Сила</th>
+          <th>Тригери</th>
+          <th>Опис</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rowsWithoutVideo}
+      </tbody>
+    </table>
+  </div>
+  ` : ""}
 
   <div class="footer">
     <p>Сформовано додатком SeizureTracker • ${new Date().toLocaleString("uk-UA")}</p>

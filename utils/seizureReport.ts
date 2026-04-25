@@ -35,7 +35,7 @@ function formatDuration(start: number, end?: number): string {
 }
 
 function getTypeLabel(seizure: Seizure): string {
-	if (seizure.type === "custom") return seizure.customType ?? "Інший"
+	if (seizure.type === "custom") return "Unknown"
 	return (
 		SEIZURE_TYPES.find(t => t.value === seizure.type)?.label ?? seizure.type
 	)
@@ -109,6 +109,25 @@ function getStats(seizures: Seizure[]) {
 	return { total, avgDuration, severe, medium, light, topTriggers }
 }
 
+function generateTableRows(seizures: Seizure[], includeQr: boolean): string {
+	return seizures
+		.map(
+			s => `
+      <tr>
+        <td>${formatDate(s.startedAt)}</td>
+        <td>${formatTime(s.startedAt)}</td>
+        <td>${formatDuration(s.startedAt, s.endedAt)}</td>
+        <td>${getTypeLabel(s)}</td>
+        <td>${getSeverityLabel(s.severity)}</td>
+        <td>${getTriggers(s)}</td>
+        <td>${s.description ?? "—"}</td>
+        ${includeQr && s.videoUrl ? `<td><img src="https://chart.googleapis.com/chart?cht=qr&chs=150x150&chl=${encodeURIComponent(s.videoUrl)}" alt="QR" style="width: 40px; height: 40px; cursor: pointer;"><br><a href="${s.videoUrl}" style="font-size: 9px; color: #4A90E2;">Відео</a></td>` : ""}
+      </tr>
+    `,
+		)
+		.join("")
+}
+
 export function generateSeizureReportHtml(
 	user: User,
 	seizures: Seizure[],
@@ -121,23 +140,11 @@ export function generateSeizureReportHtml(
 			.filter(Boolean)
 			.join(" ") || user.displayName
 
-	const rows = seizures
-		.map(
-			s => `
-      <tr>
-        <td>${formatDate(s.startedAt)}</td>
-        <td>${formatTime(s.startedAt)}${s.endedAt ? ` — ${formatTime(s.endedAt)}` : ""}</td>
-        <td>${formatDuration(s.startedAt, s.endedAt)}</td>
-        <td>${getTypeLabel(s)}</td>
-        <td>${getSeverityLabel(s.severity)}</td>
-        <td>${getTriggers(s)}</td>
-        <td>${getMoodEmoji(s.moodBefore)} / ${getMoodEmoji(s.moodAfter)}</td>
-        <td>${s.isMedicationTaken ? "✓" : "✗"}</td>
-        <td>${s.description ?? "—"}</td>
-      </tr>
-    `,
-		)
-		.join("")
+	const seizuresWithVideo = seizures.filter(s => s.videoUrl)
+	const seizuresWithoutVideo = seizures.filter(s => !s.videoUrl)
+
+	const rowsWithVideo = generateTableRows(seizuresWithVideo, true)
+	const rowsWithoutVideo = generateTableRows(seizuresWithoutVideo, false)
 
 	return htmlReport(
 		user,
@@ -145,7 +152,8 @@ export function generateSeizureReportHtml(
 		to,
 		formatDate,
 		stats,
-		rows,
+		rowsWithVideo,
+		rowsWithoutVideo,
 		patientName,
-	).replace("{{ROWS}}", rows)
+	)
 }
