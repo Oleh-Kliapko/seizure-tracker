@@ -2,7 +2,7 @@ import {
 	checkVideoLimits,
 	deleteVideoFromCloudinary,
 	uploadVideoToCloudinary,
-} from "./cloudinaryService"
+} from "./cloudinary"
 import { exportSeizuresToPdf } from "./exportService"
 import {
 	createMedication,
