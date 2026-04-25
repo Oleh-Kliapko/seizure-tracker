@@ -24,11 +24,15 @@ export async function deleteVideoFromCloudinary(
 		})
 
 		if (!response.ok) {
-			const error = await response.json()
-			return error.error || "Невдала спроба видалення відео"
+			try {
+				const errorData = await response.json()
+				return errorData.error || "Помилка видалення відео"
+			} catch {
+				return "Помилка видалення відео"
+			}
 		}
 		return null
 	} catch (error: any) {
-		return error.message || "Невдала спроба видалення відео"
+		return "Помилка видалення відео"
 	}
 }

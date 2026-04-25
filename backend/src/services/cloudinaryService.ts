@@ -60,7 +60,6 @@ export async function deleteVideoFromCloudinary(
 			},
 		})
 	} catch (error: any) {
-		console.error("Cloudinary API error:", error.response?.data || error.message)
 		throw new Error(
 			error.response?.data?.error?.message ||
 				"Failed to delete video from Cloudinary",
