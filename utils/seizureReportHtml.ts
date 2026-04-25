@@ -43,10 +43,22 @@ export const htmlReport = (
     .table-section { margin-bottom: 32px; }
     .table-section h3 { font-size: 13px; color: #4A90E2; margin-bottom: 12px; margin-top: 16px; }
 
-    table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
-    th { background: #4A90E2; color: white; padding: 8px; text-align: left; font-size: 11px; }
-    td { padding: 7px 8px; border-bottom: 1px solid #E5E7EB; font-size: 11px; vertical-align: top; }
-    tr:nth-child(even) { background: #F8FAFC; }
+    .data-table { width: 100%; margin-bottom: 24px; }
+    .data-header, .data-row { display: grid; align-items: stretch; }
+    .data-header { background: #4A90E2; color: white; font-size: 11px; }
+    .data-header > div { padding: 8px; font-weight: bold; }
+    .data-row {
+      font-size: 11px;
+      border-bottom: 1px solid #E5E7EB;
+      page-break-inside: avoid !important;
+      break-inside: avoid !important;
+    }
+    .data-row > div { padding: 7px 8px; word-wrap: break-word; overflow-wrap: break-word; }
+    .data-row:nth-child(even) { background: #F8FAFC; }
+    .data-row.with-qr-cell > div:last-child { text-align: center; }
+
+    .cols-no-video { grid-template-columns: 75px 50px 75px 90px 75px 1.2fr 1.5fr; }
+    .cols-with-video { grid-template-columns: 75px 50px 75px 90px 75px 1.2fr 1.5fr 70px; }
 
     .footer { text-align: center; color: #6B7280; font-size: 10px; border-top: 1px solid #E5E7EB; padding-top: 12px; }
 
@@ -130,45 +142,37 @@ export const htmlReport = (
   ${rowsWithVideo ? `
   <div class="table-section">
     <h3>🎥 Приступи з відеозаписом</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Дата</th>
-          <th>Час</th>
-          <th>Тривалість</th>
-          <th>Тип</th>
-          <th>Сила</th>
-          <th>Тригери</th>
-          <th>Опис</th>
-          <th>Відео</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${rowsWithVideo}
-      </tbody>
-    </table>
+    <div class="data-table">
+      <div class="data-header cols-with-video">
+        <div>Дата</div>
+        <div>Час</div>
+        <div>Тривалість</div>
+        <div>Тип</div>
+        <div>Сила</div>
+        <div>Тригери</div>
+        <div>Опис</div>
+        <div>Відео</div>
+      </div>
+      ${rowsWithVideo}
+    </div>
   </div>
   ` : ""}
 
   ${rowsWithoutVideo ? `
   <div class="table-section">
     <h3>Приступи без відеозаписів</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Дата</th>
-          <th>Час</th>
-          <th>Тривалість</th>
-          <th>Тип</th>
-          <th>Сила</th>
-          <th>Тригери</th>
-          <th>Опис</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${rowsWithoutVideo}
-      </tbody>
-    </table>
+    <div class="data-table">
+      <div class="data-header cols-no-video">
+        <div>Дата</div>
+        <div>Час</div>
+        <div>Тривалість</div>
+        <div>Тип</div>
+        <div>Сила</div>
+        <div>Тригери</div>
+        <div>Опис</div>
+      </div>
+      ${rowsWithoutVideo}
+    </div>
   </div>
   ` : ""}
 

@@ -239,34 +239,39 @@ async function generateTableRows(
 	seizures: Seizure[],
 	includeQr: boolean,
 ): Promise<string> {
+	const rowClass = includeQr ? "cols-with-video with-qr-cell" : "cols-no-video"
 	const rows = await Promise.all(
 		seizures.map(async s => {
 			let qrCell = ""
-			if (includeQr && s.videoUrl) {
-				try {
-					const qrSvg = await QRCode.toString(s.videoUrl, {
-						type: "image/svg+xml",
-						width: 80,
-						margin: 0,
-						color: { dark: "#4A90E2", light: "#ffffff" },
-					})
-					qrCell = `<td style="text-align: center;"><img src="data:image/svg+xml;charset=utf-8,${encodeURIComponent(qrSvg)}" alt="QR" style="width: 60px; height: 60px;"/></td>`
-				} catch {
-					qrCell = `<td style="text-align: center;"><span style="font-size: 9px; color: #4A90E2;">🎥</span></td>`
+			if (includeQr) {
+				if (s.videoUrl) {
+					try {
+						const qrSvg = await QRCode.toString(s.videoUrl, {
+							type: "image/svg+xml",
+							width: 80,
+							margin: 0,
+							color: { dark: "#4A90E2", light: "#ffffff" },
+						})
+						qrCell = `<div><img src="data:image/svg+xml;charset=utf-8,${encodeURIComponent(qrSvg)}" alt="QR" style="width: 60px; height: 60px;"/></div>`
+					} catch {
+						qrCell = `<div><span style="font-size: 9px; color: #4A90E2;">🎥</span></div>`
+					}
+				} else {
+					qrCell = `<div></div>`
 				}
 			}
 
 			return `
-      <tr>
-        <td>${formatDate(s.startedAt)}</td>
-        <td>${formatTime(s.startedAt)}</td>
-        <td>${formatDuration(s.startedAt, s.endedAt)}</td>
-        <td>${getTypeLabel(s)}</td>
-        <td>${getSeverityLabel(s.severity)}</td>
-        <td>${getTriggers(s)}</td>
-        <td>${(s.description ?? "—").substring(0, 150)}</td>
+      <div class="data-row ${rowClass}">
+        <div>${formatDate(s.startedAt)}</div>
+        <div>${formatTime(s.startedAt)}</div>
+        <div>${formatDuration(s.startedAt, s.endedAt)}</div>
+        <div>${getTypeLabel(s)}</div>
+        <div>${getSeverityLabel(s.severity)}</div>
+        <div>${getTriggers(s)}</div>
+        <div>${(s.description ?? "—").substring(0, 150)}</div>
         ${qrCell}
-      </tr>
+      </div>
     `
 		}),
 	)
