@@ -21,6 +21,7 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 	const { user } = useAuth()
 	const theme = useAppTheme()
 	const [isUploading, setIsUploading] = useState(false)
+	const [isDeleting, setIsDeleting] = useState(false)
 	const [error, setError] = useState<string | null>(null)
 
 	const reloadSeizure = async () => {
@@ -79,7 +80,7 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 
 		try {
 			setError(null)
-			setIsUploading(true)
+			setIsDeleting(true)
 
 			const cloudinaryError = await deleteVideoFromCloudinary(user.uid, seizure.cloudinaryPublicId)
 			await updateSeizure(user.uid, seizure.id, {
@@ -87,7 +88,12 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 				cloudinaryPublicId: null,
 			} as any)
 
-			await reloadSeizure()
+			// Оновлюємо UI з новим приступом без відео
+			onVideoUpdated({
+				...seizure,
+				videoUrl: null,
+				cloudinaryPublicId: null,
+			})
 
 			if (cloudinaryError) {
 				setError(`Відео не видалилось з Cloudinary: ${cloudinaryError}`)
@@ -95,15 +101,17 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 		} catch (e: any) {
 			setError("Помилка видалення приступу")
 		} finally {
-			setIsUploading(false)
+			setIsDeleting(false)
 		}
 	}
 
-	if (isUploading) {
+	if (isUploading || isDeleting) {
 		return (
 			<View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
 				<ActivityIndicator size="small" color={theme.colors.primary} />
-				<Text style={{ color: theme.colors.text, fontSize: 12 }}>Завантаження...</Text>
+				<Text style={{ color: theme.colors.text, fontSize: 12 }}>
+					{isDeleting ? "Видалення..." : "Завантаження..."}
+				</Text>
 			</View>
 		)
 	}
