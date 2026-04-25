@@ -9,7 +9,6 @@ import {
 import { Seizure } from "@/models"
 import { User } from "@/models/user"
 import { htmlReport } from "./seizureReportHtml"
-import QRCode from "qrcode"
 
 function formatDate(ts: number): string {
 	return new Date(ts).toLocaleDateString("uk-UA", {
