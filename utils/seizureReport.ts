@@ -111,23 +111,13 @@ function getStats(seizures: Seizure[]) {
 }
 
 async function generateTableRows(seizures: Seizure[], includeQr: boolean): Promise<string> {
-	const rows = await Promise.all(
-		seizures.map(async s => {
-			let qrCell = ""
-			if (includeQr && s.videoUrl) {
-				try {
-					const qrDataUrl = await QRCode.toDataURL(s.videoUrl, {
-						width: 150,
-						margin: 1,
-						color: { dark: "#4A90E2", light: "#ffffff" },
-					})
-					qrCell = `<td><img src="${qrDataUrl}" alt="QR" style="width: 50px; height: 50px;"><br><a href="${s.videoUrl}" style="font-size: 9px; color: #4A90E2;">Відео</a></td>`
-				} catch (error) {
-					qrCell = `<td><a href="${s.videoUrl}" style="font-size: 9px; color: #4A90E2;">Відео</a></td>`
-				}
-			}
+	const rows = seizures.map(s => {
+		let qrCell = ""
+		if (includeQr && s.videoUrl) {
+			qrCell = `<td style="text-align: center; word-break: break-all;"><span style="font-size: 9px; color: #4A90E2;">🎥 ${s.videoUrl}</span></td>`
+		}
 
-			return `
+		return `
       <tr>
         <td>${formatDate(s.startedAt)}</td>
         <td>${formatTime(s.startedAt)}</td>
@@ -139,17 +129,16 @@ async function generateTableRows(seizures: Seizure[], includeQr: boolean): Promi
         ${qrCell}
       </tr>
     `
-		}),
-	)
+	})
 	return rows.join("")
 }
 
-export async function generateSeizureReportHtml(
+export function generateSeizureReportHtml(
 	user: User,
 	seizures: Seizure[],
 	from: number,
 	to: number,
-): Promise<string> {
+): string {
 	const stats = getStats(seizures)
 	const patientName =
 		[user.lastName, user.firstName, user.middleName]
@@ -159,10 +148,8 @@ export async function generateSeizureReportHtml(
 	const seizuresWithVideo = seizures.filter(s => s.videoUrl)
 	const seizuresWithoutVideo = seizures.filter(s => !s.videoUrl)
 
-	const [rowsWithVideo, rowsWithoutVideo] = await Promise.all([
-		generateTableRows(seizuresWithVideo, true),
-		generateTableRows(seizuresWithoutVideo, false),
-	])
+	const rowsWithVideo = generateTableRows(seizuresWithVideo, true)
+	const rowsWithoutVideo = generateTableRows(seizuresWithoutVideo, false)
 
 	return htmlReport(
 		user,
