@@ -24,12 +24,14 @@ export function ExportForm({ onExport, onExportEmail, isLoading, error }: Props)
 	const { user } = useAuth()
 	const { profile } = useUser()
 
-	const [from, setFrom] = useState(() => {
+	const minFromDate = (() => {
 		const d = new Date()
-		d.setMonth(d.getMonth() - 1)
+		d.setMonth(d.getMonth() - 6)
 		d.setHours(0, 0, 0, 0)
-		return d.getTime()
-	})
+		return d
+	})()
+
+	const [from, setFrom] = useState(() => minFromDate.getTime())
 
 	const [to, setTo] = useState(() => {
 		const d = new Date()
@@ -56,6 +58,7 @@ export function ExportForm({ onExport, onExportEmail, isLoading, error }: Props)
 	return (
 		<View style={styles.card}>
 			<Text style={styles.title}>Експорт PDF звіту</Text>
+			<Text style={styles.subtitle}>(максимум за 6 останніх місяців)</Text>
 
 			<View style={styles.row}>
 				<TouchableOpacity
@@ -84,6 +87,8 @@ export function ExportForm({ onExport, onExportEmail, isLoading, error }: Props)
 						mode="date"
 						display={Platform.OS === "ios" ? "spinner" : "default"}
 						themeVariant={isDark ? "dark" : "light"}
+						minimumDate={minFromDate}
+						maximumDate={new Date(to)}
 						onChange={(_, date) => {
 							if (date) setFrom(date.getTime())
 						}}
@@ -104,6 +109,8 @@ export function ExportForm({ onExport, onExportEmail, isLoading, error }: Props)
 						mode="date"
 						display={Platform.OS === "ios" ? "spinner" : "default"}
 						themeVariant={isDark ? "dark" : "light"}
+						minimumDate={new Date(from)}
+						maximumDate={new Date()}
 						onChange={(_, date) => {
 							if (date) setTo(date.getTime())
 						}}

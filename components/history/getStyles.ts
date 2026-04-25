@@ -26,9 +26,15 @@ export const getStyles = (theme: AppTheme) => {
 			fontFamily: fonts.medium,
 			fontSize: fontSize.sm,
 			color: textSecondary,
-			marginBottom: spacing.md,
 			textTransform: "uppercase" as const,
 			letterSpacing: 0.5,
+		},
+		subtitle: {
+			fontFamily: fonts.regular,
+			fontSize: fontSize.sm,
+			color: textSecondary,
+			marginTop: 2,
+			marginBottom: spacing.md,
 		},
 		row: {
 			flexDirection: "row",

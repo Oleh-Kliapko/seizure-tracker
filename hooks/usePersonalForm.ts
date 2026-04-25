@@ -13,6 +13,7 @@ export function usePersonalForm() {
 	const [firstName, setFirstName] = useState("")
 	const [middleName, setMiddleName] = useState("")
 	const [phone, setPhone] = useState("")
+	const [birthDate, setBirthDate] = useState<number | null>(null)
 	const [countryOfBirth, setCountryOfBirth] = useState("")
 	const [cityOfBirth, setCityOfBirth] = useState("")
 	const [address, setAddress] = useState("")
@@ -24,6 +25,7 @@ export function usePersonalForm() {
 		setFirstName(profile.firstName ?? "")
 		setMiddleName(profile.middleName ?? "")
 		setPhone(profile.phone ?? "")
+		setBirthDate(profile.birthDate ?? null)
 		setCountryOfBirth(profile.countryOfBirth ?? "")
 		setCityOfBirth(profile.cityOfBirth ?? "")
 		setAddress(profile.address ?? "")
@@ -42,6 +44,7 @@ export function usePersonalForm() {
 			firstName,
 			middleName,
 			phone,
+			birthDate: birthDate ?? undefined,
 			countryOfBirth,
 			cityOfBirth,
 			address,
@@ -101,6 +104,8 @@ export function usePersonalForm() {
 
 	return {
 		fields,
+		birthDate,
+		setBirthDate,
 		isLoading,
 		isLoadingProfile,
 		displayError: validationError ?? error ?? null,

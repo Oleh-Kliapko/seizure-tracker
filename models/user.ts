@@ -46,6 +46,7 @@ export type User = {
 	firstName?: string
 	middleName?: string
 	phone?: string
+	birthDate?: number
 	countryOfBirth?: string
 	cityOfBirth?: string
 	address?: string

@@ -60,8 +60,11 @@ export const htmlReport = (
     <h2>Дані пацієнта</h2>
     <div class="patient-row">
       <div class="patient-field"><span>ПІБ: </span><strong>${patientName}</strong></div>
+      ${user.birthDate ? `<div class="patient-field"><span>Дата народження: </span>${formatDate(user.birthDate)}</div>` : ""}
       <div class="patient-field"><span>Email: </span>${user.email}</div>
       ${user.phone ? `<div class="patient-field"><span>Телефон: </span>${user.phone}</div>` : ""}
+      ${user.medicalInfo?.height ? `<div class="patient-field"><span>Зріст: </span>${user.medicalInfo.height} см</div>` : ""}
+      ${user.medicalInfo?.weight ? `<div class="patient-field"><span>Вага: </span>${user.medicalInfo.weight} кг</div>` : ""}
       ${user.medicalInfo?.anamnesis ? `<div class="patient-field"><span>Анамнез: </span>${user.medicalInfo.anamnesis}</div>` : ""}
     </div>
   </div>

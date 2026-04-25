@@ -7,8 +7,15 @@ import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 
 export default function PersonalScreen() {
 	const { spacing } = useAppTheme()
-	const { fields, isLoading, isLoadingProfile, displayError, handleSave } =
-		usePersonalForm()
+	const {
+		fields,
+		birthDate,
+		setBirthDate,
+		isLoading,
+		isLoadingProfile,
+		displayError,
+		handleSave,
+	} = usePersonalForm()
 
 	return (
 		<ScreenWrapper>
@@ -26,6 +33,8 @@ export default function PersonalScreen() {
 				>
 					<PersonalForm
 						fields={fields}
+						birthDate={birthDate}
+						onBirthDateChange={setBirthDate}
 						onSave={handleSave}
 						isLoading={isLoading || isLoadingProfile}
 						displayError={displayError}

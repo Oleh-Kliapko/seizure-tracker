@@ -54,7 +54,6 @@ export function useExport() {
 
 			const html = await generateSeizureReportHtml(profile, seizures, from, to)
 			const { uri } = await Print.printToFileAsync({ html, base64: false })
-
 			const fileContent = await readFileAsBase64(uri)
 
 			const response = await fetch(`${BACKEND_URL}/api/emails/send-report`, {
