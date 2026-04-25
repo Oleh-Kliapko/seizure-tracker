@@ -54,15 +54,21 @@ export function SeizureExtra({
 				maxLength={2}
 			/>
 
-			<FormInput
-				label="Опис"
-				value={description}
-				onChangeText={onDescriptionChange}
-				placeholder="Додаткові нотатки..."
-				multiline
-				numberOfLines={4}
-				style={[styles.descriptionInput, { textAlignVertical: "top" }]}
-			/>
+			<View>
+				<View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+					<Text style={styles.label}>Опис</Text>
+					<Text style={[styles.sublabel, { fontSize: 10 }]}>{description.length}/150</Text>
+				</View>
+				<FormInput
+					value={description}
+					onChangeText={onDescriptionChange}
+					placeholder="Додаткові нотатки..."
+					multiline
+					numberOfLines={4}
+					maxLength={150}
+					style={[styles.descriptionInput, { textAlignVertical: "top" }]}
+				/>
+			</View>
 		</View>
 	)
 }

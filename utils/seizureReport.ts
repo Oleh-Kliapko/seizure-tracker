@@ -9,6 +9,7 @@ import {
 import { Seizure } from "@/models"
 import { User } from "@/models/user"
 import { htmlReport } from "./seizureReportHtml"
+import QRCode from "qrcode"
 
 function formatDate(ts: number): string {
 	return new Date(ts).toLocaleDateString("uk-UA", {
@@ -109,10 +110,24 @@ function getStats(seizures: Seizure[]) {
 	return { total, avgDuration, severe, medium, light, topTriggers }
 }
 
-function generateTableRows(seizures: Seizure[], includeQr: boolean): string {
-	return seizures
-		.map(
-			s => `
+async function generateTableRows(seizures: Seizure[], includeQr: boolean): Promise<string> {
+	const rows = await Promise.all(
+		seizures.map(async s => {
+			let qrCell = ""
+			if (includeQr && s.videoUrl) {
+				try {
+					const qrDataUrl = await QRCode.toDataURL(s.videoUrl, {
+						width: 150,
+						margin: 1,
+						color: { dark: "#4A90E2", light: "#ffffff" },
+					})
+					qrCell = `<td><img src="${qrDataUrl}" alt="QR" style="width: 50px; height: 50px;"><br><a href="${s.videoUrl}" style="font-size: 9px; color: #4A90E2;">Відео</a></td>`
+				} catch (error) {
+					qrCell = `<td><a href="${s.videoUrl}" style="font-size: 9px; color: #4A90E2;">Відео</a></td>`
+				}
+			}
+
+			return `
       <tr>
         <td>${formatDate(s.startedAt)}</td>
         <td>${formatTime(s.startedAt)}</td>
@@ -120,20 +135,21 @@ function generateTableRows(seizures: Seizure[], includeQr: boolean): string {
         <td>${getTypeLabel(s)}</td>
         <td>${getSeverityLabel(s.severity)}</td>
         <td>${getTriggers(s)}</td>
-        <td>${s.description ?? "—"}</td>
-        ${includeQr && s.videoUrl ? `<td><img src="https://chart.googleapis.com/chart?cht=qr&chs=150x150&chl=${encodeURIComponent(s.videoUrl)}" alt="QR" style="width: 40px; height: 40px; cursor: pointer;"><br><a href="${s.videoUrl}" style="font-size: 9px; color: #4A90E2;">Відео</a></td>` : ""}
+        <td>${(s.description ?? "—").substring(0, 150)}</td>
+        ${qrCell}
       </tr>
-    `,
-		)
-		.join("")
+    `
+		}),
+	)
+	return rows.join("")
 }
 
-export function generateSeizureReportHtml(
+export async function generateSeizureReportHtml(
 	user: User,
 	seizures: Seizure[],
 	from: number,
 	to: number,
-): string {
+): Promise<string> {
 	const stats = getStats(seizures)
 	const patientName =
 		[user.lastName, user.firstName, user.middleName]
@@ -143,8 +159,10 @@ export function generateSeizureReportHtml(
 	const seizuresWithVideo = seizures.filter(s => s.videoUrl)
 	const seizuresWithoutVideo = seizures.filter(s => !s.videoUrl)
 
-	const rowsWithVideo = generateTableRows(seizuresWithVideo, true)
-	const rowsWithoutVideo = generateTableRows(seizuresWithoutVideo, false)
+	const [rowsWithVideo, rowsWithoutVideo] = await Promise.all([
+		generateTableRows(seizuresWithVideo, true),
+		generateTableRows(seizuresWithoutVideo, false),
+	])
 
 	return htmlReport(
 		user,

@@ -12,7 +12,7 @@ export async function exportSeizuresToPdf(
 	from: number,
 	to: number,
 ): Promise<void> {
-	const html = generateSeizureReportHtml(user, seizures, from, to)
+	const html = await generateSeizureReportHtml(user, seizures, from, to)
 
 	const { uri } = await Print.printToFileAsync({
 		html,
