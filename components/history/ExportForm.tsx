@@ -26,7 +26,7 @@ export function ExportForm({ onExport, onExportEmail, isLoading, error }: Props)
 
 	const minFromDate = (() => {
 		const d = new Date()
-		d.setMonth(d.getMonth() - 6)
+		d.setMonth(d.getMonth() - 5)
 		d.setHours(0, 0, 0, 0)
 		return d
 	})()
@@ -58,7 +58,7 @@ export function ExportForm({ onExport, onExportEmail, isLoading, error }: Props)
 	return (
 		<View style={styles.card}>
 			<Text style={styles.title}>Експорт PDF звіту</Text>
-			<Text style={styles.subtitle}>(максимум за 6 останніх місяців)</Text>
+			<Text style={styles.subtitle}>(максимум за 5 останніх місяців)</Text>
 
 			<View style={styles.row}>
 				<TouchableOpacity
@@ -172,6 +172,10 @@ export function ExportForm({ onExport, onExportEmail, isLoading, error }: Props)
 					>
 						<Text style={{ fontSize: 18, fontWeight: "bold", color: theme.colors.text }}>
 							Відправити звіт на імейл
+						</Text>
+
+						<Text style={{ fontSize: 13, color: theme.colors.textSecondary, lineHeight: 18 }}>
+							Відправлення може зайняти близько 1 хвилини
 						</Text>
 
 						<TextInput

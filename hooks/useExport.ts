@@ -52,10 +52,19 @@ export function useExport() {
 				return
 			}
 
+			console.log("[Email Export] 1. Generating HTML...")
 			const html = await generateSeizureReportHtml(profile, seizures, from, to)
-			const { uri } = await Print.printToFileAsync({ html, base64: false })
-			const fileContent = await readFileAsBase64(uri)
+			console.log("[Email Export] 2. HTML generated, length:", html.length)
 
+			console.log("[Email Export] 3. Generating PDF...")
+			const { uri } = await Print.printToFileAsync({ html, base64: false })
+			console.log("[Email Export] 4. PDF generated:", uri)
+
+			console.log("[Email Export] 5. Reading as base64...")
+			const fileContent = await readFileAsBase64(uri)
+			console.log("[Email Export] 6. Base64 length:", fileContent.length)
+
+			console.log("[Email Export] 7. Sending to backend:", BACKEND_URL)
 			const response = await fetch(`${BACKEND_URL}/api/emails/send-report`, {
 				method: "POST",
 				headers: {
@@ -70,6 +79,7 @@ export function useExport() {
 						.join(" ") || profile.displayName,
 				}),
 			})
+			console.log("[Email Export] 8. Response status:", response.status)
 
 			if (!response.ok) {
 				const errorData = await response.json().catch(() => ({ error: "Невідома помилка" }))
@@ -78,7 +88,8 @@ export function useExport() {
 			}
 
 			setError(null)
-		} catch {
+		} catch (e: any) {
+			console.log("[Email Export] EXCEPTION:", e.message, e)
 			setError("Помилка відправлення. Спробуйте ще раз")
 		} finally {
 			setIsLoading(false)

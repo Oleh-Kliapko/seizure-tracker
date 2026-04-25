@@ -2,6 +2,7 @@
 
 import { useAuth, useThemeContext } from "@/hooks"
 import { Redirect, Stack } from "expo-router"
+import { useEffect } from "react"
 import { ActivityIndicator, View } from "react-native"
 import { MD3DarkTheme, MD3LightTheme, PaperProvider } from "react-native-paper"
 
@@ -9,6 +10,12 @@ export function AppLayout() {
 	const { theme, isDark } = useThemeContext()
 	const { user, isLoading } = useAuth()
 	const baseTheme = isDark ? MD3DarkTheme : MD3LightTheme
+
+	useEffect(() => {
+		const url = process.env.EXPO_PUBLIC_BACKEND_URL
+		if (!url) return
+		fetch(`${url}/health`).catch(() => {})
+	}, [])
 
 	const {
 		colors: {

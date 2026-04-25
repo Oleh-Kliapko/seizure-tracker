@@ -9,6 +9,7 @@ export const htmlReport = (
 	rowsWithVideo: string,
 	rowsWithoutVideo: string,
 	patientName: string,
+	calendarHtml: string,
 ) => `<!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -16,8 +17,9 @@ export const htmlReport = (
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Звіт про приступи</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Arial, sans-serif; font-size: 12px; color: #1F2937; padding: 24px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body { font-family: Arial, sans-serif; font-size: 12px; color: #1F2937; padding: 48px 32px; }
+    @page { margin: 24px; }
 
     .header { margin-bottom: 24px; border-bottom: 2px solid #4A90E2; padding-bottom: 16px; }
     .header h1 { font-size: 20px; color: #4A90E2; margin-bottom: 4px; }
@@ -47,6 +49,34 @@ export const htmlReport = (
     tr:nth-child(even) { background: #F8FAFC; }
 
     .footer { text-align: center; color: #6B7280; font-size: 10px; border-top: 1px solid #E5E7EB; padding-top: 12px; }
+
+    .calendar-page { page-break-before: always; padding-top: 50px; }
+    .calendar-page h2 { font-size: 16px; color: #4A90E2; margin-bottom: 20px; }
+    .legend { margin-bottom: 28px; font-size: 11px; color: #6B7280; }
+    .legend-item { display: inline-block; margin-right: 16px; vertical-align: middle; }
+    .legend-box { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: middle; margin-right: 5px; }
+
+    .months-grid { width: 100%; }
+    .month-block { display: inline-block; width: 48%; margin-bottom: 24px; margin-right: 1%; page-break-inside: avoid; vertical-align: top; }
+    .month-title { font-size: 13px; color: #1F2937; margin-bottom: 4px; text-align: center; font-weight: bold; }
+
+    table.calendar { width: 100%; border-collapse: separate; border-spacing: 1px; margin-bottom: 0; }
+    table.calendar th { background: #F1F5F9; color: #9CA3AF; padding: 3px 0; text-align: center; font-size: 10px; font-weight: normal; border-radius: 3px; width: 14.28%; }
+
+    .cal-num { font-size: 9px; color: #1F2937; text-align: center; padding: 0; margin: 0; line-height: 1; border: none; height: auto; }
+    .cal-num-empty { border: none; padding: 0; margin: 0; height: auto; }
+
+    .cal-cell { height: 22px; line-height: 22px; border: 1px solid #9CA3AF; border-radius: 4px; text-align: center; vertical-align: middle; background: #fff; padding: 0; }
+    .cal-cell-empty { border: none; background: transparent; }
+
+    .cal-count { font-size: 13px; font-weight: bold; line-height: 1; }
+
+    .cal-severe { background: #EF4444 !important; border-color: #EF4444 !important; }
+    .cal-severe .cal-count { color: #fff; }
+    .cal-medium { background: #F97316 !important; border-color: #F97316 !important; }
+    .cal-medium .cal-count { color: #fff; }
+    .cal-light { background: #FACC15 !important; border-color: #FACC15 !important; }
+    .cal-light .cal-count { color: #1F2937; }
   </style>
 </head>
 <body>
@@ -139,6 +169,21 @@ export const htmlReport = (
         ${rowsWithoutVideo}
       </tbody>
     </table>
+  </div>
+  ` : ""}
+
+  ${calendarHtml ? `
+  <div class="calendar-page">
+    <h2>Календар приступів за період з ${formatDate(from)} по ${formatDate(to)}</h2>
+    <div class="legend">
+      <span class="legend-item"><span class="legend-box" style="background:#EF4444"></span>Важкий</span>
+      <span class="legend-item"><span class="legend-box" style="background:#F97316"></span>Середній</span>
+      <span class="legend-item"><span class="legend-box" style="background:#FACC15"></span>Легкий / не визначено</span>
+      <span class="legend-item"><span style="font-size: 13px; font-weight: bold;">N</span> — кількість приступів за день</span>
+    </div>
+    <div class="months-grid">
+      ${calendarHtml}
+    </div>
   </div>
   ` : ""}
 

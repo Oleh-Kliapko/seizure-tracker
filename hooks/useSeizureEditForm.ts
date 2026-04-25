@@ -10,6 +10,7 @@ import {
 } from "@/models"
 import { deleteSeizure, getSeizures, updateSeizure } from "@/services"
 import { router, useLocalSearchParams } from "expo-router"
+import { deleteField } from "firebase/firestore"
 import { useCallback, useEffect, useState } from "react"
 import { Alert } from "react-native"
 import { useAuth } from "./useAuth"
@@ -118,7 +119,7 @@ export function useSeizureEditForm() {
 				externalTriggers,
 			}
 
-			if (endedAt !== undefined) seizureData.endedAt = endedAt
+			seizureData.endedAt = endedAt !== undefined ? endedAt : deleteField()
 			if (customType && type === "custom") seizureData.customType = customType
 			if (severity !== undefined) seizureData.severity = severity
 			if (moodBefore !== undefined) seizureData.moodBefore = moodBefore

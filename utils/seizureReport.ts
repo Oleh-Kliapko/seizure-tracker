@@ -8,8 +8,8 @@ import {
 } from "@/constants/commonConstants"
 import { Seizure } from "@/models"
 import { User } from "@/models/user"
-import { htmlReport } from "./seizureReportHtml"
 import QRCode from "qrcode"
+import { htmlReport } from "./seizureReportHtml"
 
 function formatDate(ts: number): string {
 	return new Date(ts).toLocaleDateString("uk-UA", {
@@ -57,18 +57,6 @@ function getSeverityLabel(severity?: number): string {
 	return SEVERITY_LABELS[severity as keyof typeof SEVERITY_LABELS] ?? "—"
 }
 
-function getMoodEmoji(mood?: number): string {
-	if (!mood) return "—"
-	const emojis: Record<number, string> = {
-		1: "дуже поганий",
-		2: "поганий",
-		3: "задовільний",
-		4: "добрий",
-		5: "відмінний",
-	}
-	return emojis[mood] ?? "—"
-}
-
 function getStats(seizures: Seizure[]) {
 	const total = seizures.length
 	const withDuration = seizures.filter(s => s.endedAt)
@@ -110,7 +98,147 @@ function getStats(seizures: Seizure[]) {
 	return { total, avgDuration, severe, medium, light, topTriggers }
 }
 
-async function generateTableRows(seizures: Seizure[], includeQr: boolean): Promise<string> {
+const MONTH_NAMES_UK = [
+	"Січень",
+	"Лютий",
+	"Березень",
+	"Квітень",
+	"Травень",
+	"Червень",
+	"Липень",
+	"Серпень",
+	"Вересень",
+	"Жовтень",
+	"Листопад",
+	"Грудень",
+]
+
+type DayData = { count: number; maxSeverity: number }
+
+function buildDayMap(seizures: Seizure[]): Record<string, DayData> {
+	const map: Record<string, DayData> = {}
+	seizures.forEach(s => {
+		const d = new Date(s.startedAt)
+		const key = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`
+		if (!map[key]) map[key] = { count: 0, maxSeverity: 0 }
+		map[key].count++
+		const sev = s.severity ?? 1
+		if (sev > map[key].maxSeverity) map[key].maxSeverity = sev
+	})
+	return map
+}
+
+type CalEntry = {
+	inMonth: boolean
+	day?: number
+	severity?: number
+	count?: number
+}
+
+function buildMonthHtml(
+	year: number,
+	month: number,
+	dayMap: Record<string, DayData>,
+): string {
+	const firstDay = new Date(year, month, 1)
+	const daysInMonth = new Date(year, month + 1, 0).getDate()
+	const startCol = (firstDay.getDay() + 6) % 7
+
+	const entries: CalEntry[] = []
+	for (let i = 0; i < startCol; i++) {
+		entries.push({ inMonth: false })
+	}
+	for (let day = 1; day <= daysInMonth; day++) {
+		const key = `${year}-${month}-${day}`
+		const data = dayMap[key]
+		entries.push({
+			inMonth: true,
+			day,
+			severity: data?.maxSeverity,
+			count: data?.count,
+		})
+	}
+	while (entries.length % 7 !== 0) {
+		entries.push({ inMonth: false })
+	}
+
+	const weeks: CalEntry[][] = []
+	for (let i = 0; i < entries.length; i += 7) {
+		weeks.push(entries.slice(i, i + 7))
+	}
+
+	const rowsHtml = weeks
+		.map(week => {
+			const numRow = week
+				.map(e =>
+					e.inMonth
+						? `<td class="cal-num">${e.day}</td>`
+						: `<td class="cal-num-empty"></td>`,
+				)
+				.join("")
+
+			const cellRow = week
+				.map(e => {
+					if (!e.inMonth) return `<td class="cal-cell-empty"></td>`
+					if (!e.count) return `<td class="cal-cell"></td>`
+					const cls =
+						e.severity === 3
+							? "cal-severe"
+							: e.severity === 2
+								? "cal-medium"
+								: "cal-light"
+					return `<td class="cal-cell ${cls}"><span class="cal-count">${e.count}</span></td>`
+				})
+				.join("")
+
+			return `<tr class="cal-num-row">${numRow}</tr><tr class="cal-cell-row">${cellRow}</tr>`
+		})
+		.join("")
+
+	return `
+    <div class="month-block">
+      <h4 class="month-title">${MONTH_NAMES_UK[month]} ${year}</h4>
+      <table class="calendar">
+        <thead>
+          <tr>
+            <th>Пн</th><th>Вт</th><th>Ср</th><th>Чт</th><th>Пт</th><th>Сб</th><th>Нд</th>
+          </tr>
+        </thead>
+        <tbody>${rowsHtml}</tbody>
+      </table>
+    </div>
+  `
+}
+
+function buildCalendarHtml(
+	seizures: Seizure[],
+	from: number,
+	to: number,
+): string {
+	if (seizures.length === 0) return ""
+
+	const dayMap = buildDayMap(seizures)
+
+	const months: { year: number; month: number }[] = []
+	const cursor = new Date(from)
+	cursor.setDate(1)
+	const end = new Date(to)
+	while (
+		cursor.getFullYear() < end.getFullYear() ||
+		(cursor.getFullYear() === end.getFullYear() &&
+			cursor.getMonth() <= end.getMonth())
+	) {
+		months.push({ year: cursor.getFullYear(), month: cursor.getMonth() })
+		cursor.setMonth(cursor.getMonth() + 1)
+	}
+
+	return months.map(m => buildMonthHtml(m.year, m.month, dayMap)).join("")
+}
+
+async function generateTableRows(
+	seizures: Seizure[],
+	includeQr: boolean,
+): Promise<string> {
 	const rows = await Promise.all(
 		seizures.map(async s => {
 			let qrCell = ""
@@ -123,7 +251,7 @@ async function generateTableRows(seizures: Seizure[], includeQr: boolean): Promi
 						color: { dark: "#4A90E2", light: "#ffffff" },
 					})
 					qrCell = `<td style="text-align: center;"><img src="data:image/svg+xml;charset=utf-8,${encodeURIComponent(qrSvg)}" alt="QR" style="width: 60px; height: 60px;"/></td>`
-				} catch (error) {
+				} catch {
 					qrCell = `<td style="text-align: center;"><span style="font-size: 9px; color: #4A90E2;">🎥</span></td>`
 				}
 			}
@@ -165,6 +293,8 @@ export async function generateSeizureReportHtml(
 		generateTableRows(seizuresWithoutVideo, false),
 	])
 
+	const calendarHtml = buildCalendarHtml(seizures, from, to)
+
 	return htmlReport(
 		user,
 		from,
@@ -174,5 +304,6 @@ export async function generateSeizureReportHtml(
 		rowsWithVideo,
 		rowsWithoutVideo,
 		patientName,
+		calendarHtml,
 	)
 }
