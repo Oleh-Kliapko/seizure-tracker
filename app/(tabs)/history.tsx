@@ -7,13 +7,18 @@ import { ScrollView } from "react-native"
 
 export default function History() {
 	const { spacing } = useAppTheme()
-	const { exportPdf, isLoading, error } = useExport()
+	const { exportPdf, exportPdfToEmail, isLoading, error } = useExport()
 
 	return (
 		<ScreenWrapper>
 			<ScreenHeader title="Історія" showBackButton={false} />
 			<ScrollView contentContainerStyle={{ padding: spacing.lg }}>
-				<ExportForm onExport={exportPdf} isLoading={isLoading} error={error} />
+				<ExportForm
+					onExport={exportPdf}
+					onExportEmail={exportPdfToEmail}
+					isLoading={isLoading}
+					error={error}
+				/>
 			</ScrollView>
 		</ScreenWrapper>
 	)
