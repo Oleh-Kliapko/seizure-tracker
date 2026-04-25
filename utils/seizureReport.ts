@@ -109,7 +109,7 @@ function getStats(seizures: Seizure[]) {
 	return { total, avgDuration, severe, medium, light, topTriggers }
 }
 
-async function generateTableRows(seizures: Seizure[], includeQr: boolean): Promise<string> {
+function generateTableRows(seizures: Seizure[], includeQr: boolean): string {
 	const rows = seizures.map(s => {
 		let qrCell = ""
 		if (includeQr && s.videoUrl) {
