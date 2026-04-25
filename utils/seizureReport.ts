@@ -113,7 +113,7 @@ function generateTableRows(seizures: Seizure[], includeQr: boolean): string {
 	const rows = seizures.map(s => {
 		let qrCell = ""
 		if (includeQr && s.videoUrl) {
-			qrCell = `<td style="text-align: center; word-break: break-all;"><span style="font-size: 9px; color: #4A90E2;">🎥 ${s.videoUrl}</span></td>`
+			qrCell = `<td style="text-align: center;"><a href="${s.videoUrl}" style="font-size: 11px; color: #4A90E2; text-decoration: none; font-weight: bold;">🎥 Відео</a></td>`
 		}
 
 		return `
