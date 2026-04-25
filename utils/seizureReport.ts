@@ -9,6 +9,7 @@ import {
 import { Seizure } from "@/models"
 import { User } from "@/models/user"
 import { htmlReport } from "./seizureReportHtml"
+import QRCode from "qrcode"
 
 function formatDate(ts: number): string {
 	return new Date(ts).toLocaleDateString("uk-UA", {
@@ -109,14 +110,25 @@ function getStats(seizures: Seizure[]) {
 	return { total, avgDuration, severe, medium, light, topTriggers }
 }
 
-function generateTableRows(seizures: Seizure[], includeQr: boolean): string {
-	const rows = seizures.map(s => {
-		let qrCell = ""
-		if (includeQr && s.videoUrl) {
-			qrCell = `<td style="text-align: center;"><a href="${s.videoUrl}" style="font-size: 11px; color: #4A90E2; text-decoration: none; font-weight: bold;">🎥 Відео</a></td>`
-		}
+async function generateTableRows(seizures: Seizure[], includeQr: boolean): Promise<string> {
+	const rows = await Promise.all(
+		seizures.map(async s => {
+			let qrCell = ""
+			if (includeQr && s.videoUrl) {
+				try {
+					const qrSvg = await QRCode.toString(s.videoUrl, {
+						type: "image/svg+xml",
+						width: 80,
+						margin: 0,
+						color: { dark: "#4A90E2", light: "#ffffff" },
+					})
+					qrCell = `<td style="text-align: center;"><img src="data:image/svg+xml;charset=utf-8,${encodeURIComponent(qrSvg)}" alt="QR" style="width: 60px; height: 60px;"/></td>`
+				} catch (error) {
+					qrCell = `<td style="text-align: center;"><span style="font-size: 9px; color: #4A90E2;">🎥</span></td>`
+				}
+			}
 
-		return `
+			return `
       <tr>
         <td>${formatDate(s.startedAt)}</td>
         <td>${formatTime(s.startedAt)}</td>
@@ -128,16 +140,17 @@ function generateTableRows(seizures: Seizure[], includeQr: boolean): string {
         ${qrCell}
       </tr>
     `
-	})
+		}),
+	)
 	return rows.join("")
 }
 
-export function generateSeizureReportHtml(
+export async function generateSeizureReportHtml(
 	user: User,
 	seizures: Seizure[],
 	from: number,
 	to: number,
-): string {
+): Promise<string> {
 	const stats = getStats(seizures)
 	const patientName =
 		[user.lastName, user.firstName, user.middleName]
@@ -147,8 +160,10 @@ export function generateSeizureReportHtml(
 	const seizuresWithVideo = seizures.filter(s => s.videoUrl)
 	const seizuresWithoutVideo = seizures.filter(s => !s.videoUrl)
 
-	const rowsWithVideo = generateTableRows(seizuresWithVideo, true)
-	const rowsWithoutVideo = generateTableRows(seizuresWithoutVideo, false)
+	const [rowsWithVideo, rowsWithoutVideo] = await Promise.all([
+		generateTableRows(seizuresWithVideo, true),
+		generateTableRows(seizuresWithoutVideo, false),
+	])
 
 	return htmlReport(
 		user,
