@@ -6,7 +6,7 @@ import { useIsDarkTheme } from "@/hooks/useAppTheme"
 import { useAuth, useUser } from "@/hooks"
 import DateTimePicker from "@react-native-community/datetimepicker"
 import { FileDown, Mail } from "lucide-react-native"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Modal, Platform, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { getStyles } from "./getStyles"
 
@@ -41,6 +41,10 @@ export function ExportForm({ onExport, onExportEmail, isLoading, error }: Props)
 	const [showToPicker, setShowToPicker] = useState(false)
 	const [showEmailModal, setShowEmailModal] = useState(false)
 	const [email, setEmail] = useState(user?.email || "")
+
+	useEffect(() => {
+		if (user?.email) setEmail(user.email)
+	}, [user?.email])
 
 	const formatDate = (ts: number) =>
 		new Date(ts).toLocaleDateString("uk-UA", {

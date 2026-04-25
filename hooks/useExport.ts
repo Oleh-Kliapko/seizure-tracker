@@ -1,6 +1,7 @@
 // hooks/useExport.ts
 
-import { exportSeizuresToPdf, generateSeizureReportHtml, getSeizuresByPeriod } from "@/services"
+import { exportSeizuresToPdf, getSeizuresByPeriod } from "@/services"
+import { generateSeizureReportHtml } from "@/utils"
 import { useState } from "react"
 import * as Print from "expo-print"
 import { useAuth } from "./useAuth"
@@ -54,10 +55,8 @@ export function useExport() {
 			const html = await generateSeizureReportHtml(profile, seizures, from, to)
 			const { uri } = await Print.printToFileAsync({ html, base64: false })
 
-			// Читаємо файл як base64
 			const fileContent = await readFileAsBase64(uri)
 
-			// Відправляємо на бекенд
 			const response = await fetch(`${BACKEND_URL}/api/emails/send-report`, {
 				method: "POST",
 				headers: {
@@ -74,13 +73,13 @@ export function useExport() {
 			})
 
 			if (!response.ok) {
-				const errorData = await response.json()
+				const errorData = await response.json().catch(() => ({ error: "Невідома помилка" }))
 				setError(errorData.error || "Помилка відправлення. Спробуйте ще раз")
 				return
 			}
 
 			setError(null)
-		} catch (e: any) {
+		} catch {
 			setError("Помилка відправлення. Спробуйте ще раз")
 		} finally {
 			setIsLoading(false)
@@ -91,7 +90,7 @@ export function useExport() {
 }
 
 async function readFileAsBase64(uri: string): Promise<string> {
-	const fs = require("expo-file-system")
+	const fs = require("expo-file-system/legacy")
 	const content = await fs.readAsStringAsync(uri, { encoding: "base64" })
 	return content
 }
