@@ -3,7 +3,7 @@
 import { useAppTheme } from "@/hooks"
 import { Seizure } from "@/models"
 import { getSeizures, updateSeizure } from "@/services"
-import { checkVideoLimits, deleteVideoFromCloudinary, uploadVideoToCloudinary } from "@/services/cloudinaryService"
+import { checkVideoLimits, deleteVideoFromCloudinary, uploadVideoToCloudinary } from "@/services/cloudinary"
 import { MAX_VIDEO_SIZE_MB, MAX_VIDEOS_PER_USER } from "@/config/cloudinary"
 import * as ImagePicker from "expo-image-picker"
 import { AlertCircle, Plus, Trash2 } from "lucide-react-native"
@@ -68,7 +68,6 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 
 			await reloadSeizure()
 		} catch (e: any) {
-			console.error("Video upload error:", e)
 			setError(e.message || "Помилка завантаження")
 		} finally {
 			setIsUploading(false)
@@ -82,15 +81,19 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 			setError(null)
 			setIsUploading(true)
 
-			await deleteVideoFromCloudinary(user.uid, seizure.cloudinaryPublicId)
+			const cloudinaryError = await deleteVideoFromCloudinary(user.uid, seizure.cloudinaryPublicId)
 			await updateSeizure(user.uid, seizure.id, {
 				videoUrl: null,
 				cloudinaryPublicId: null,
 			} as any)
 
 			await reloadSeizure()
+
+			if (cloudinaryError) {
+				setError(`Відео не видалилось з Cloudinary: ${cloudinaryError}`)
+			}
 		} catch (e: any) {
-			setError("Помилка видалення")
+			setError("Помилка видалення приступу")
 		} finally {
 			setIsUploading(false)
 		}

@@ -3,7 +3,7 @@
 import {
 	checkVideoLimits,
 	uploadVideoToCloudinary,
-} from "@/services/cloudinaryService"
+} from "@/services/cloudinary"
 import { getInfoAsync } from "expo-file-system/legacy"
 import { useRef, useState } from "react"
 import { useAuth } from "./useAuth"
