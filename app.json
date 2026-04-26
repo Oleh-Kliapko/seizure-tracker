@@ -1,51 +1,65 @@
-// app.json
-
 {
-	"expo": {
-		"name": "seizure-tracker",
-		"slug": "seizure-tracker",
-		"owner": "oleh_kliapko",
-		"version": "1.0.0",
-		"orientation": "portrait",
-		"scheme": "seizuretracker",
-		"userInterfaceStyle": "automatic",
-		"newArchEnabled": true,
-		"ios": {
-			"supportsTablet": true,
-			"bundleIdentifier": "com.olehkliapko.seizurestracker",
-			"googleServicesFile": "./GoogleService-Info.plist",
-			"infoPlist": {
-				"CFBundleURLTypes": [
-					{
-						"CFBundleURLSchemes": [
-							// iOS URL scheme in console.cloud.google.com
-							"com.googleusercontent.apps.974039154929-qsmkl4tdb2h2k0vmorg8h8hqbev74q2f"
-						]
-					}
-				]
-			}
-		},
-		"android": {
-			"adaptiveIcon": {
-				"backgroundColor": "#E6F4FE"
-			},
-			"edgeToEdgeEnabled": true,
-			"predictiveBackGestureEnabled": false
-		},
-		"web": {
-			"output": "static"
-		},
-		"plugins": [
-			"expo-router",
-			"expo-secure-store",
-			"expo-font",
-			"@react-native-community/datetimepicker",
-			"expo-video",
-			"expo-web-browser"
-		],
-		"experiments": {
-			"typedRoutes": true,
-			"reactCompiler": true
-		}
-	}
+  "expo": {
+    "name": "seizure-tracker",
+    "slug": "seizure-tracker",
+    "owner": "oleh_kliapko",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "seizuretracker",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.olehkliapko.seizurestracker",
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "infoPlist": {
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": [
+              "com.googleusercontent.apps.899051190770-b9pgl03milrsig9vgf8611n3otel30bj"
+            ]
+          },
+          {
+            "CFBundleURLSchemes": [
+              "com.googleusercontent.apps.899051190770-b9pgl03milrsig9vgf8611n3otel30bj"
+            ]
+          }
+        ],
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "output": "static"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-font",
+      "@react-native-community/datetimepicker",
+      "expo-video",
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.899051190770-b9pgl03milrsig9vgf8611n3otel30bj"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "b35306f5-7e71-4074-9aa3-6b6d195c45c5"
+      }
+    }
+  }
 }
