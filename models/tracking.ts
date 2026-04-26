@@ -36,6 +36,10 @@ export type DailyTracking = {
 		isTaken: boolean // чи прийняті ліки
 	}[]
 
+	// Самопочуття
+	mood?: number // 1-5 - загальний настрій дня
+	activityLevel?: number // 1-5 - рівень фізичної активності
+
 	// Коментарі
 	patientNotes?: string // нотатки пацієнта
 	doctorNotes?: string // нотатки лікаря

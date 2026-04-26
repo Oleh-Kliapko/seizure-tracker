@@ -22,6 +22,7 @@ import { useRegisterForm } from "./useRegisterForm"
 import { useSeizureEditForm } from "./useSeizureEditForm"
 import { useSeizureForm } from "./useSeizureForm"
 import { useSeizureList } from "./useSeizureList"
+import { useTrackingForm } from "./useTrackingForm"
 import { useUpdateProfile } from "./useUpdateProfile"
 import { useUser } from "./useUser"
 import { useVideoUpload } from "./useVideoUpload"
@@ -47,6 +48,7 @@ export {
 	useSeizureForm,
 	useSeizureList,
 	useThemeContext,
+	useTrackingForm,
 	useUpdateProfile,
 	useUser,
 	useVideoUpload,
