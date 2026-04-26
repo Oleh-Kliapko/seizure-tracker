@@ -31,7 +31,7 @@ type GoogleAuthResult = {
 let isConfigured = false
 
 function configureGoogleSignIn() {
-	if (isConfigured) return
+	if (isConfigured || !GoogleSignin) return
 	GoogleSignin.configure({
 		iosClientId: GOOGLE_AUTH_CONFIG.iosClientId,
 		webClientId: GOOGLE_AUTH_CONFIG.webClientId,
@@ -48,6 +48,9 @@ export function useGoogleAuth() {
 	}, [])
 
 	const getGoogleCredential = async (): Promise<GoogleAuthResult> => {
+		if (!GoogleSignin) {
+			return { success: false, error: "Google Sign-In недоступний" }
+		}
 		try {
 			await GoogleSignin.hasPlayServices({
 				showPlayServicesUpdateDialog: true,

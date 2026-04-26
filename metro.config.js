@@ -31,6 +31,22 @@ config.resolver.resolveRequest = (context, moduleName, platform) => {
 		const pkgName = moduleName.split("/").slice(0, 2).join("/")
 		const nestedPath = path.join(firebaseNestedModules, pkgName)
 		if (fs.existsSync(nestedPath)) {
+			const isRN = platform === "ios" || platform === "android"
+			const isMainImport = moduleName === pkgName
+			if (isRN && isMainImport) {
+				try {
+					const pkgJson = JSON.parse(
+						fs.readFileSync(path.join(nestedPath, "package.json"), "utf8"),
+					)
+					const rnEntry = pkgJson["react-native"]
+					if (rnEntry) {
+						const rnFile = path.join(nestedPath, rnEntry)
+						if (fs.existsSync(rnFile)) {
+							return { filePath: rnFile, type: "sourceFile" }
+						}
+					}
+				} catch {}
+			}
 			return context.resolveRequest(
 				{
 					...context,
