@@ -38,9 +38,10 @@ export function TrackingSleep({
 				style={[styles.vitalInput, { marginBottom: theme.spacing.md }]}
 				value={sleepDuration}
 				onChangeText={onDurationChange}
-				keyboardType="decimal-pad"
+				keyboardType="number-pad"
 				placeholder="8"
 				placeholderTextColor={theme.colors.textSecondary}
+				maxLength={2}
 			/>
 
 			<Text style={styles.label}>Якість сну</Text>

@@ -50,6 +50,7 @@ export function useTrackingForm() {
 
 	// Notes
 	const [patientNotes, setPatientNotes] = useState("")
+	const [doctorNotes, setDoctorNotes] = useState("")
 
 	const [isLoading, setIsLoading] = useState(true)
 	const [isSaving, setIsSaving] = useState(false)
@@ -95,6 +96,7 @@ export function useTrackingForm() {
 					setInternalTriggers(tracking.internalTriggers ?? [])
 					setExternalTriggers(tracking.externalTriggers ?? [])
 					setPatientNotes(tracking.patientNotes ?? "")
+					setDoctorNotes(tracking.doctorNotes ?? "")
 
 					if (tracking.medications) {
 						for (const m of tracking.medications) {
@@ -172,6 +174,7 @@ export function useTrackingForm() {
 					externalTriggers.length > 0 ? externalTriggers : undefined,
 				medications: medsData.length > 0 ? medsData : undefined,
 				patientNotes: patientNotes || undefined,
+				doctorNotes: doctorNotes || undefined,
 			})
 			setIsSaved(true)
 			setTimeout(() => setIsSaved(false), 2000)
@@ -214,6 +217,8 @@ export function useTrackingForm() {
 		toggleMedication,
 		patientNotes,
 		setPatientNotes,
+		doctorNotes,
+		setDoctorNotes,
 		isLoading,
 		isSaving,
 		isSaved,

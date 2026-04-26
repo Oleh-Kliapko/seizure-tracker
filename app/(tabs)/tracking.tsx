@@ -57,6 +57,8 @@ export default function TrackingScreen() {
 		toggleMedication,
 		patientNotes,
 		setPatientNotes,
+		doctorNotes,
+		setDoctorNotes,
 		isLoading,
 		isSaving,
 		isSaved,
@@ -135,7 +137,12 @@ export default function TrackingScreen() {
 							onToggleExternal={toggleExternalTrigger}
 						/>
 
-						<TrackingNotes value={patientNotes} onChange={setPatientNotes} />
+						<TrackingNotes
+							patientNotes={patientNotes}
+							doctorNotes={doctorNotes}
+							onPatientNotesChange={setPatientNotes}
+							onDoctorNotesChange={setDoctorNotes}
+						/>
 
 						<View style={{ height: 40, justifyContent: "center", marginBottom: spacing.sm }}>
 							{error && (

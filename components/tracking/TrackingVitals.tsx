@@ -17,6 +17,14 @@ type Props = {
 	onOxygenChange: (v: string) => void
 }
 
+function makeIntHandler(setter: (v: string) => void, max: number) {
+	return (v: string) => {
+		if (!v) return setter("")
+		const num = parseInt(v)
+		if (!isNaN(num) && num <= max) setter(v)
+	}
+}
+
 export function TrackingVitals({
 	temperature,
 	pulse,
@@ -45,6 +53,7 @@ export function TrackingVitals({
 						keyboardType="decimal-pad"
 						placeholder="36.6"
 						placeholderTextColor={theme.colors.textSecondary}
+						maxLength={4}
 					/>
 				</View>
 
@@ -53,10 +62,11 @@ export function TrackingVitals({
 					<TextInput
 						style={styles.vitalInput}
 						value={pulse}
-						onChangeText={onPulseChange}
+						onChangeText={makeIntHandler(onPulseChange, 250)}
 						keyboardType="number-pad"
 						placeholder="72"
 						placeholderTextColor={theme.colors.textSecondary}
+						maxLength={3}
 					/>
 				</View>
 
@@ -65,10 +75,11 @@ export function TrackingVitals({
 					<TextInput
 						style={styles.vitalInput}
 						value={systolicPressure}
-						onChangeText={onSystolicChange}
+						onChangeText={makeIntHandler(onSystolicChange, 250)}
 						keyboardType="number-pad"
 						placeholder="120"
 						placeholderTextColor={theme.colors.textSecondary}
+						maxLength={3}
 					/>
 				</View>
 
@@ -77,10 +88,11 @@ export function TrackingVitals({
 					<TextInput
 						style={styles.vitalInput}
 						value={diastolicPressure}
-						onChangeText={onDiastolicChange}
+						onChangeText={makeIntHandler(onDiastolicChange, 150)}
 						keyboardType="number-pad"
 						placeholder="80"
 						placeholderTextColor={theme.colors.textSecondary}
+						maxLength={3}
 					/>
 				</View>
 
@@ -89,10 +101,11 @@ export function TrackingVitals({
 					<TextInput
 						style={styles.vitalInput}
 						value={oxygenSaturation}
-						onChangeText={onOxygenChange}
+						onChangeText={makeIntHandler(onOxygenChange, 100)}
 						keyboardType="number-pad"
 						placeholder="98"
 						placeholderTextColor={theme.colors.textSecondary}
+						maxLength={3}
 					/>
 				</View>
 			</View>
