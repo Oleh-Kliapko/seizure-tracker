@@ -1,7 +1,7 @@
 // components/settings/ProfileMenu.tsx
 
 import { useAppTheme } from "@/hooks"
-import { Heart, Settings, User, Users } from "lucide-react-native"
+import { Heart, Pill, Settings, User, Users } from "lucide-react-native"
 import { ProfileLink } from "./ProfileLink"
 
 type MenuItem = {
@@ -35,6 +35,12 @@ export function ProfileMenu() {
 			icon: <Users size={iconSize} color={primary} />,
 			title: "Опікуни",
 			subtitle: "Батьки та опікуни",
+		},
+		{
+			href: "/(tabs)/settings/medications",
+			icon: <Pill size={iconSize} color={primary} />,
+			title: "Ліки",
+			subtitle: "Список препаратів",
 		},
 		{
 			href: "/(tabs)/settings/app-settings",

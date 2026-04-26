@@ -4,16 +4,10 @@ export type Medication = {
 	id: string
 	userId: string
 	patientId: string
-
-	name: string // назва ліків
+	name: string
 	dose: string
-	scheduledAt: number
-	takenAt?: number
-	isTaken: boolean
-
-	sideEffects?: string
+	scheduledTime?: string // "HH:MM"
 	notes?: string
-
 	createdAt: number
 	updatedAt: number
 }

@@ -9,7 +9,6 @@ import {
 	deleteMedication,
 	getMedications,
 	getMedicationsByPatient,
-	markMedicationTaken,
 	updateMedication,
 } from "./medicationService"
 import {
@@ -49,7 +48,6 @@ export {
 	getTrackingByPeriod,
 	getTrackingRecords,
 	getUser,
-	markMedicationTaken,
 	startOfDay,
 	updateMedication,
 	updateSeizure,

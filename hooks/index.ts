@@ -22,6 +22,8 @@ import { useRegisterForm } from "./useRegisterForm"
 import { useSeizureEditForm } from "./useSeizureEditForm"
 import { useSeizureForm } from "./useSeizureForm"
 import { useSeizureList } from "./useSeizureList"
+import { useMedicationForm } from "./useMedicationForm"
+import { useMedications } from "./useMedications"
 import { useTrackingForm } from "./useTrackingForm"
 import { useUpdateProfile } from "./useUpdateProfile"
 import { useUser } from "./useUser"
@@ -46,6 +48,8 @@ export {
 	useRegisterForm,
 	useSeizureEditForm,
 	useSeizureForm,
+	useMedicationForm,
+	useMedications,
 	useSeizureList,
 	useThemeContext,
 	useTrackingForm,

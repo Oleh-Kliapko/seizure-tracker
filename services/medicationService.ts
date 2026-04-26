@@ -33,7 +33,7 @@ export async function createMedication(
 
 // Отримати всі ліки користувача
 export async function getMedications(userId: string): Promise<Medication[]> {
-	const q = query(medicationsCol(userId), orderBy("scheduledAt", "asc"))
+	const q = query(medicationsCol(userId), orderBy("createdAt", "asc"))
 	const snap = await getDocs(q)
 	return snap.docs.map(d => ({ id: d.id, ...d.data() }) as Medication)
 }
@@ -46,7 +46,7 @@ export async function getMedicationsByPatient(
 	const q = query(
 		medicationsCol(userId),
 		where("patientId", "==", patientId),
-		orderBy("scheduledAt", "asc"),
+		orderBy("createdAt", "asc"),
 	)
 	const snap = await getDocs(q)
 	return snap.docs.map(d => ({ id: d.id, ...d.data() }) as Medication)
@@ -60,18 +60,6 @@ export async function updateMedication(
 ): Promise<void> {
 	await updateDoc(doc(medicationsCol(userId), medicationId), {
 		...data,
-		updatedAt: Date.now(),
-	})
-}
-
-// Відмітити як прийняті
-export async function markMedicationTaken(
-	userId: string,
-	medicationId: string,
-): Promise<void> {
-	await updateDoc(doc(medicationsCol(userId), medicationId), {
-		isTaken: true,
-		takenAt: Date.now(),
 		updatedAt: Date.now(),
 	})
 }
