@@ -9,11 +9,17 @@ import { createScreenHeaderStyles } from "./ScreenHeader.styles"
 
 type Props = {
 	title: string
+	subtitle?: string
 	showBackButton?: boolean
 	right?: React.ReactNode
 }
 
-export function ScreenHeader({ title, showBackButton = true, right }: Props) {
+export function ScreenHeader({
+	title,
+	subtitle,
+	showBackButton = true,
+	right,
+}: Props) {
 	const theme = useAppTheme()
 	const insets = useSafeAreaInsets()
 	const styles = createScreenHeaderStyles(theme, insets)
@@ -32,7 +38,10 @@ export function ScreenHeader({ title, showBackButton = true, right }: Props) {
 				<View style={styles.placeholder} />
 			)}
 
-			<Text style={styles.title}>{title}</Text>
+			<View style={{ alignItems: "center" }}>
+				<Text style={styles.title}>{title}</Text>
+				{subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
+			</View>
 
 			<View style={styles.right}>{right ?? null}</View>
 		</View>

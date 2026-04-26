@@ -24,6 +24,12 @@ export function startOfDay(timestamp: number): number {
 	return d.getTime()
 }
 
+function stripUndefined<T extends object>(obj: T): Partial<T> {
+	return Object.fromEntries(
+		Object.entries(obj).filter(([, v]) => v !== undefined),
+	) as Partial<T>
+}
+
 // Створити або оновити запис за день
 export async function upsertTracking(
 	userId: string,
@@ -31,6 +37,7 @@ export async function upsertTracking(
 ): Promise<string> {
 	const now = Date.now()
 	const dayStart = startOfDay(data.date)
+	const cleanData = stripUndefined(data)
 
 	// Перевіряємо чи є вже запис за цей день
 	const q = query(
@@ -44,7 +51,7 @@ export async function upsertTracking(
 		// Оновлюємо існуючий
 		const existingId = snap.docs[0].id
 		await updateDoc(doc(trackingCol(userId), existingId), {
-			...data,
+			...cleanData,
 			date: dayStart,
 			updatedAt: now,
 		})
@@ -53,7 +60,7 @@ export async function upsertTracking(
 
 	// Створюємо новий
 	const ref = await addDoc(trackingCol(userId), {
-		...data,
+		...cleanData,
 		date: dayStart,
 		createdAt: now,
 		updatedAt: now,

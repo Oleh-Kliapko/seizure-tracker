@@ -27,6 +27,13 @@ export const createScreenHeaderStyles = (theme: AppTheme, insets: any) => {
 			color: theme.colors.onSurface,
 		},
 
+		subtitle: {
+			fontFamily: theme.fonts.regular,
+			fontSize: theme.fontSize.sm,
+			color: theme.colors.textSecondary,
+			marginTop: 2,
+		},
+
 		placeholder: {
 			width: 40,
 		},

@@ -70,18 +70,8 @@ export default function TrackingScreen() {
 		<ScreenWrapper>
 			<ScreenHeader
 				title="Трекінг"
+				subtitle={today}
 				showBackButton={false}
-				right={
-					<Text
-						style={{
-							fontFamily: fonts.regular,
-							fontSize: fontSize.sm,
-							color: colors.textSecondary,
-						}}
-					>
-						{today}
-					</Text>
-				}
 			/>
 
 			{isLoading ? (
@@ -147,19 +137,20 @@ export default function TrackingScreen() {
 
 						<TrackingNotes value={patientNotes} onChange={setPatientNotes} />
 
-						{error && (
-							<Text
-								style={{
-									fontFamily: fonts.regular,
-									fontSize: fontSize.sm,
-									color: colors.error,
-									textAlign: "center",
-									marginBottom: spacing.sm,
-								}}
-							>
-								{error}
-							</Text>
-						)}
+						<View style={{ height: 40, justifyContent: "center", marginBottom: spacing.sm }}>
+							{error && (
+								<Text
+									style={{
+										fontFamily: fonts.regular,
+										fontSize: fontSize.sm,
+										color: colors.error,
+										textAlign: "center",
+									}}
+								>
+									{error}
+								</Text>
+							)}
+						</View>
 
 						<TouchableOpacity
 							onPress={handleSave}
