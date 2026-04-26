@@ -46,10 +46,11 @@ export async function getMedicationsByPatient(
 	const q = query(
 		medicationsCol(userId),
 		where("patientId", "==", patientId),
-		orderBy("createdAt", "asc"),
 	)
 	const snap = await getDocs(q)
-	return snap.docs.map(d => ({ id: d.id, ...d.data() }) as Medication)
+	return snap.docs
+		.map(d => ({ id: d.id, ...d.data() }) as Medication)
+		.sort((a, b) => a.createdAt - b.createdAt)
 }
 
 // Оновити ліки

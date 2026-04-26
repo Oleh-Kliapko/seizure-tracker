@@ -50,7 +50,7 @@ export function MedicationCard({
 
 			{/* Dose amount */}
 			<FormInput
-				label="Доза за один прийом *"
+				label="Денна доза *"
 				value={entry.doseAmount}
 				onChangeText={v => {
 					if (!v || /^\d*\.?\d*$/.test(v)) onUpdate("doseAmount", v)

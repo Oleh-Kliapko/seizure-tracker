@@ -74,7 +74,14 @@ export function MedicationIntakeModal({ visible, medications, onClose, onAdd }: 
 						return (
 							<TouchableOpacity
 								key={med.id}
-								onPress={() => { setSelectedId(med.id); setAmount(med.doseAmount) }}
+								onPress={() => {
+						setSelectedId(med.id)
+						const timesCount = med.scheduledTimes?.length ?? 0
+						const perIntake = timesCount > 0
+							? med.doseAmount / timesCount
+							: med.doseAmount
+						setAmount(Math.max(0.5, Math.round(perIntake * 2) / 2))
+					}}
 								activeOpacity={0.7}
 								style={{
 									flexDirection: "row",
@@ -126,7 +133,7 @@ export function MedicationIntakeModal({ visible, medications, onClose, onAdd }: 
 											color: colors.textSecondary,
 										}}
 									>
-										доза: {med.doseAmount} {med.doseUnit}
+										денна доза: {med.doseAmount} {med.doseUnit}
 									</Text>
 								</View>
 							</TouchableOpacity>

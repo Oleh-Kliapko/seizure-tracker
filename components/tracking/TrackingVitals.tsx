@@ -15,6 +15,7 @@ type Props = {
 	onSystolicChange: (v: string) => void
 	onDiastolicChange: (v: string) => void
 	onOxygenChange: (v: string) => void
+	onSave: () => void
 }
 
 function makeIntHandler(setter: (v: string) => void, max: number) {
@@ -36,6 +37,7 @@ export function TrackingVitals({
 	onSystolicChange,
 	onDiastolicChange,
 	onOxygenChange,
+	onSave,
 }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
@@ -50,6 +52,7 @@ export function TrackingVitals({
 						style={styles.vitalInput}
 						value={temperature}
 						onChangeText={onTemperatureChange}
+						onBlur={onSave}
 						keyboardType="decimal-pad"
 						placeholder="36.6"
 						placeholderTextColor={theme.colors.textSecondary}
@@ -63,6 +66,7 @@ export function TrackingVitals({
 						style={styles.vitalInput}
 						value={pulse}
 						onChangeText={makeIntHandler(onPulseChange, 250)}
+						onBlur={onSave}
 						keyboardType="number-pad"
 						placeholder="72"
 						placeholderTextColor={theme.colors.textSecondary}
@@ -76,6 +80,7 @@ export function TrackingVitals({
 						style={styles.vitalInput}
 						value={systolicPressure}
 						onChangeText={makeIntHandler(onSystolicChange, 250)}
+						onBlur={onSave}
 						keyboardType="number-pad"
 						placeholder="120"
 						placeholderTextColor={theme.colors.textSecondary}
@@ -89,6 +94,7 @@ export function TrackingVitals({
 						style={styles.vitalInput}
 						value={diastolicPressure}
 						onChangeText={makeIntHandler(onDiastolicChange, 150)}
+						onBlur={onSave}
 						keyboardType="number-pad"
 						placeholder="80"
 						placeholderTextColor={theme.colors.textSecondary}
@@ -102,6 +108,7 @@ export function TrackingVitals({
 						style={styles.vitalInput}
 						value={oxygenSaturation}
 						onChangeText={makeIntHandler(onOxygenChange, 100)}
+						onBlur={onSave}
 						keyboardType="number-pad"
 						placeholder="98"
 						placeholderTextColor={theme.colors.textSecondary}

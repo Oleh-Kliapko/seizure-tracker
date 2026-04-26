@@ -7,7 +7,7 @@ import {
 	getTrackingByDate,
 	upsertTracking,
 } from "@/services"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useAuth } from "./useAuth"
 
 export type MedIntake = {
@@ -16,43 +16,46 @@ export type MedIntake = {
 	takenAt: number
 }
 
+type TrackingState = {
+	temperature: string
+	pulse: string
+	systolicPressure: string
+	diastolicPressure: string
+	oxygenSaturation: string
+	sleepDuration: string
+	sleepQuality: number | undefined
+	mood: number | undefined
+	activityLevel: number | undefined
+	urinationCount: number
+	bowelMovements: number
+	internalTriggers: TriggerItem<InternalTrigger>[]
+	externalTriggers: TriggerItem<ExternalTrigger>[]
+	medIntakes: MedIntake[]
+	patientNotes: string
+	doctorNotes: string
+}
+
 export function useTrackingForm() {
 	const { user } = useAuth()
 
-	// Vitals
 	const [temperature, setTemperature] = useState("")
 	const [pulse, setPulse] = useState("")
 	const [systolicPressure, setSystolicPressure] = useState("")
 	const [diastolicPressure, setDiastolicPressure] = useState("")
 	const [oxygenSaturation, setOxygenSaturation] = useState("")
-
-	// Sleep
 	const [sleepDuration, setSleepDuration] = useState("")
 	const [sleepQuality, setSleepQuality] = useState<number | undefined>(undefined)
-
-	// Wellbeing
 	const [mood, setMood] = useState<number | undefined>(undefined)
 	const [activityLevel, setActivityLevel] = useState<number | undefined>(undefined)
-
-	// Bathroom
 	const [urinationCount, setUrinationCount] = useState(0)
 	const [bowelMovements, setBowelMovements] = useState(0)
-
-	// Triggers
 	const [internalTriggers, setInternalTriggers] = useState<TriggerItem<InternalTrigger>[]>([])
 	const [externalTriggers, setExternalTriggers] = useState<TriggerItem<ExternalTrigger>[]>([])
-
-	// Medications
 	const [medications, setMedications] = useState<Medication[]>([])
 	const [medIntakes, setMedIntakes] = useState<MedIntake[]>([])
-
-	// Notes
 	const [patientNotes, setPatientNotes] = useState("")
 	const [doctorNotes, setDoctorNotes] = useState("")
-
 	const [isLoading, setIsLoading] = useState(true)
-	const [isSaving, setIsSaving] = useState(false)
-	const [isSaved, setIsSaved] = useState(false)
 	const [error, setError] = useState<string | null>(null)
 
 	useEffect(() => {
@@ -98,64 +101,84 @@ export function useTrackingForm() {
 		load()
 	}, [user])
 
+	// Always-current snapshot — assigned synchronously on every render
+	const stateRef = useRef<TrackingState>({
+		temperature, pulse, systolicPressure, diastolicPressure, oxygenSaturation,
+		sleepDuration, sleepQuality, mood, activityLevel,
+		urinationCount, bowelMovements, internalTriggers, externalTriggers,
+		medIntakes, patientNotes, doctorNotes,
+	})
+	stateRef.current = {
+		temperature, pulse, systolicPressure, diastolicPressure, oxygenSaturation,
+		sleepDuration, sleepQuality, mood, activityLevel,
+		urinationCount, bowelMovements, internalTriggers, externalTriggers,
+		medIntakes, patientNotes, doctorNotes,
+	}
+
+	const autoSave = useCallback(async (overrides: Partial<TrackingState> = {}) => {
+		if (!user) return
+		const s: TrackingState = { ...stateRef.current, ...overrides }
+		try {
+			await upsertTracking(user.uid, {
+				userId: user.uid,
+				patientId: user.uid,
+				date: Date.now(),
+				temperature: s.temperature ? parseFloat(s.temperature) : undefined,
+				pulse: s.pulse ? parseInt(s.pulse) : undefined,
+				systolicPressure: s.systolicPressure ? parseInt(s.systolicPressure) : undefined,
+				diastolicPressure: s.diastolicPressure ? parseInt(s.diastolicPressure) : undefined,
+				oxygenSaturation: s.oxygenSaturation ? parseInt(s.oxygenSaturation) : undefined,
+				sleepDuration: s.sleepDuration ? parseFloat(s.sleepDuration) : undefined,
+				sleepQuality: s.sleepQuality,
+				mood: s.mood,
+				activityLevel: s.activityLevel,
+				urinationCount: s.urinationCount || undefined,
+				bowelMovements: s.bowelMovements || undefined,
+				internalTriggers: s.internalTriggers.length > 0 ? s.internalTriggers : undefined,
+				externalTriggers: s.externalTriggers.length > 0 ? s.externalTriggers : undefined,
+				medications: s.medIntakes,
+				patientNotes: s.patientNotes || undefined,
+				doctorNotes: s.doctorNotes || undefined,
+			})
+			setError(null)
+		} catch {
+			setError("Помилка збереження")
+		}
+	}, [user])
+
 	const toggleInternalTrigger = (trigger: InternalTrigger) => {
 		setInternalTriggers(prev => {
 			const exists = prev.find(t => t.type === trigger)
-			if (exists) return prev.filter(t => t.type !== trigger)
-			return [...prev, { type: trigger }]
+			const updated = exists ? prev.filter(t => t.type !== trigger) : [...prev, { type: trigger }]
+			autoSave({ internalTriggers: updated })
+			return updated
 		})
 	}
 
 	const toggleExternalTrigger = (trigger: ExternalTrigger) => {
 		setExternalTriggers(prev => {
 			const exists = prev.find(t => t.type === trigger)
-			if (exists) return prev.filter(t => t.type !== trigger)
-			return [...prev, { type: trigger }]
+			const updated = exists ? prev.filter(t => t.type !== trigger) : [...prev, { type: trigger }]
+			autoSave({ externalTriggers: updated })
+			return updated
 		})
 	}
 
 	const addIntake = (medicationId: string, amount: number) => {
-		setMedIntakes(prev => [...prev, { medicationId, amount, takenAt: Date.now() }])
+		const newIntake = { medicationId, amount, takenAt: Date.now() }
+		setMedIntakes(prev => {
+			const updated = [...prev, newIntake]
+			autoSave({ medIntakes: updated })
+			return updated
+		})
 	}
 
 	const removeIntake = (index: number) => {
-		setMedIntakes(prev => prev.filter((_, i) => i !== index))
-	}
-
-	const handleSave = async () => {
-		if (!user) return
-		setIsSaving(true)
-		setIsSaved(false)
-		setError(null)
-		try {
-			await upsertTracking(user.uid, {
-				userId: user.uid,
-				patientId: user.uid,
-				date: Date.now(),
-				temperature: temperature ? parseFloat(temperature) : undefined,
-				pulse: pulse ? parseInt(pulse) : undefined,
-				systolicPressure: systolicPressure ? parseInt(systolicPressure) : undefined,
-				diastolicPressure: diastolicPressure ? parseInt(diastolicPressure) : undefined,
-				oxygenSaturation: oxygenSaturation ? parseInt(oxygenSaturation) : undefined,
-				sleepDuration: sleepDuration ? parseFloat(sleepDuration) : undefined,
-				sleepQuality,
-				mood,
-				activityLevel,
-				urinationCount: urinationCount || undefined,
-				bowelMovements: bowelMovements || undefined,
-				internalTriggers: internalTriggers.length > 0 ? internalTriggers : undefined,
-				externalTriggers: externalTriggers.length > 0 ? externalTriggers : undefined,
-				medications: medIntakes.length > 0 ? medIntakes : undefined,
-				patientNotes: patientNotes || undefined,
-				doctorNotes: doctorNotes || undefined,
-			})
-			setIsSaved(true)
-			setTimeout(() => setIsSaved(false), 2000)
-		} catch {
-			setError("Помилка збереження")
-		} finally {
-			setIsSaving(false)
-		}
+		setMedIntakes(prev => {
+			const updated = prev.filter((_, i) => i !== index)
+			autoSave({ medIntakes: updated })
+			return updated
+		})
 	}
 
 	return {
@@ -178,7 +201,7 @@ export function useTrackingForm() {
 		removeIntake,
 		patientNotes, setPatientNotes,
 		doctorNotes, setDoctorNotes,
-		isLoading, isSaving, isSaved, error,
-		handleSave,
+		isLoading, error,
+		autoSave,
 	}
 }

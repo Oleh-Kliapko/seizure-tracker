@@ -18,6 +18,7 @@ type Props = {
 	sleepQuality: number | undefined
 	onDurationChange: (v: string) => void
 	onQualityChange: (v: number) => void
+	onSave: () => void
 }
 
 export function TrackingSleep({
@@ -25,6 +26,7 @@ export function TrackingSleep({
 	sleepQuality,
 	onDurationChange,
 	onQualityChange,
+	onSave,
 }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
@@ -38,6 +40,7 @@ export function TrackingSleep({
 				style={[styles.vitalInput, { marginBottom: theme.spacing.md }]}
 				value={sleepDuration}
 				onChangeText={onDurationChange}
+				onBlur={onSave}
 				keyboardType="number-pad"
 				placeholder="8"
 				placeholderTextColor={theme.colors.textSecondary}

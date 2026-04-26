@@ -8,7 +8,7 @@ export type Medication = {
 	userId: string
 	patientId: string
 	name: string
-	doseAmount: number    // кількість одиниць за один прийом
+	doseAmount: number    // денна доза (загальна кількість одиниць за день)
 	doseUnit: DoseUnit    // одиниця виміру
 	scheduledTimes?: string[] // ["HH:MM", ...]
 	notes?: string

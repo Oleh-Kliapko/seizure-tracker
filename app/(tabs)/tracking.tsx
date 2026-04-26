@@ -19,52 +19,31 @@ import {
 	Platform,
 	ScrollView,
 	Text,
-	TouchableOpacity,
 	View,
 } from "react-native"
 
 export default function TrackingScreen() {
-	const { colors, fonts, fontSize, spacing, radius } = useAppTheme()
+	const { colors, fonts, fontSize, spacing } = useAppTheme()
 	const {
-		temperature,
-		setTemperature,
-		pulse,
-		setPulse,
-		systolicPressure,
-		setSystolicPressure,
-		diastolicPressure,
-		setDiastolicPressure,
-		oxygenSaturation,
-		setOxygenSaturation,
-		sleepDuration,
-		setSleepDuration,
-		sleepQuality,
-		setSleepQuality,
-		mood,
-		setMood,
-		activityLevel,
-		setActivityLevel,
-		urinationCount,
-		setUrinationCount,
-		bowelMovements,
-		setBowelMovements,
-		internalTriggers,
-		externalTriggers,
-		toggleInternalTrigger,
-		toggleExternalTrigger,
-		medications,
-		medIntakes,
-		addIntake,
-		removeIntake,
-		patientNotes,
-		setPatientNotes,
-		doctorNotes,
-		setDoctorNotes,
-		isLoading,
-		isSaving,
-		isSaved,
-		error,
-		handleSave,
+		temperature, setTemperature,
+		pulse, setPulse,
+		systolicPressure, setSystolicPressure,
+		diastolicPressure, setDiastolicPressure,
+		oxygenSaturation, setOxygenSaturation,
+		sleepDuration, setSleepDuration,
+		sleepQuality, setSleepQuality,
+		mood, setMood,
+		activityLevel, setActivityLevel,
+		urinationCount, setUrinationCount,
+		bowelMovements, setBowelMovements,
+		internalTriggers, externalTriggers,
+		toggleInternalTrigger, toggleExternalTrigger,
+		medications, medIntakes,
+		addIntake, removeIntake,
+		patientNotes, setPatientNotes,
+		doctorNotes, setDoctorNotes,
+		isLoading, error,
+		autoSave,
 	} = useTrackingForm()
 
 	const today = format(new Date(), "d MMMM yyyy", { locale: uk })
@@ -94,8 +73,8 @@ export default function TrackingScreen() {
 						<TrackingWellbeing
 							mood={mood}
 							activityLevel={activityLevel}
-							onMoodChange={setMood}
-							onActivityChange={setActivityLevel}
+							onMoodChange={v => { setMood(v); autoSave({ mood: v }) }}
+							onActivityChange={v => { setActivityLevel(v); autoSave({ activityLevel: v }) }}
 						/>
 
 						<TrackingVitals
@@ -109,13 +88,15 @@ export default function TrackingScreen() {
 							onSystolicChange={setSystolicPressure}
 							onDiastolicChange={setDiastolicPressure}
 							onOxygenChange={setOxygenSaturation}
+							onSave={autoSave}
 						/>
 
 						<TrackingSleep
 							sleepDuration={sleepDuration}
 							sleepQuality={sleepQuality}
 							onDurationChange={setSleepDuration}
-							onQualityChange={setSleepQuality}
+							onQualityChange={v => { setSleepQuality(v); autoSave({ sleepQuality: v }) }}
+							onSave={autoSave}
 						/>
 
 						<TrackingMedications
@@ -128,8 +109,8 @@ export default function TrackingScreen() {
 						<TrackingToilet
 							urinationCount={urinationCount}
 							bowelMovements={bowelMovements}
-							onUrinationChange={setUrinationCount}
-							onBowelChange={setBowelMovements}
+							onUrinationChange={v => { setUrinationCount(v); autoSave({ urinationCount: v }) }}
+							onBowelChange={v => { setBowelMovements(v); autoSave({ bowelMovements: v }) }}
 						/>
 
 						<TrackingTriggers
@@ -144,48 +125,23 @@ export default function TrackingScreen() {
 							doctorNotes={doctorNotes}
 							onPatientNotesChange={setPatientNotes}
 							onDoctorNotesChange={setDoctorNotes}
+							onSave={autoSave}
 						/>
 
-						<View style={{ height: 40, justifyContent: "center", marginBottom: spacing.sm }}>
-							{error && (
-								<Text
-									style={{
-										fontFamily: fonts.regular,
-										fontSize: fontSize.sm,
-										color: colors.error,
-										textAlign: "center",
-									}}
-								>
-									{error}
-								</Text>
-							)}
-						</View>
-
-						<TouchableOpacity
-							onPress={handleSave}
-							disabled={isSaving}
-							style={{
-								backgroundColor: isSaved
-									? colors.success
-									: colors.primary,
-								borderRadius: radius.md,
-								paddingVertical: spacing.md,
-								alignItems: "center",
-								opacity: isSaving ? 0.7 : 1,
-								marginBottom: spacing.lg,
-							}}
-							activeOpacity={0.8}
-						>
+						{error && (
 							<Text
 								style={{
-									fontFamily: fonts.medium,
-									fontSize: fontSize.md,
-									color: "#fff",
+									fontFamily: fonts.regular,
+									fontSize: fontSize.sm,
+									color: colors.error,
+									textAlign: "center",
+									marginTop: spacing.md,
+									marginBottom: spacing.lg,
 								}}
 							>
-								{isSaved ? "Збережено ✓" : isSaving ? "Збереження..." : "Зберегти"}
+								{error}
 							</Text>
-						</TouchableOpacity>
+						)}
 					</ScrollView>
 				</KeyboardAvoidingView>
 			)}
