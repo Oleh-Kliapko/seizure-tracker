@@ -2,7 +2,8 @@
 
 import { useAppTheme } from "@/hooks"
 import { Medication } from "@/models/medication"
-import { Switch, Text, View } from "react-native"
+import { router } from "expo-router"
+import { Switch, Text, TouchableOpacity, View } from "react-native"
 import { getStyles } from "./getStyles"
 
 type Props = {
@@ -20,7 +21,14 @@ export function TrackingMedications({ medications, takenMeds, onToggle }: Props)
 			<Text style={styles.sectionTitle}>Ліки</Text>
 
 			{medications.length === 0 ? (
-				<Text style={styles.emptyText}>Ліки не додані</Text>
+				<TouchableOpacity
+					onPress={() => router.push("/(tabs)/settings/medications" as any)}
+					activeOpacity={0.7}
+				>
+					<Text style={[styles.emptyText, { color: theme.colors.primary }]}>
+						+ Додати ліки у профілі
+					</Text>
+				</TouchableOpacity>
 			) : (
 				medications.map((med, index) => (
 					<View key={med.id}>
