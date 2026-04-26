@@ -3,6 +3,7 @@
 import { FormInput, TimePickerModal } from "@/components/ui"
 import { useAppTheme } from "@/hooks"
 import { MedEntry } from "@/hooks/useMedicationsForm"
+import { DOSE_UNITS } from "@/models/medication"
 import { Clock, Plus, Trash2, X } from "lucide-react-native"
 import { useState } from "react"
 import { Text, TouchableOpacity, View } from "react-native"
@@ -46,13 +47,54 @@ export function MedicationCard({
 				placeholder="Наприклад: Карбамазепін"
 				autoCapitalize="words"
 			/>
+
+			{/* Dose amount */}
 			<FormInput
-				label="Доза *"
-				value={entry.dose}
-				onChangeText={v => onUpdate("dose", v)}
-				placeholder="Наприклад: 200мг, 1 таблетка"
-				autoCapitalize="none"
+				label="Доза за один прийом *"
+				value={entry.doseAmount}
+				onChangeText={v => {
+					if (!v || /^\d*\.?\d*$/.test(v)) onUpdate("doseAmount", v)
+				}}
+				placeholder="1"
+				keyboardType="decimal-pad"
 			/>
+
+			{/* Dose unit */}
+			<View style={{ marginBottom: spacing.md }}>
+				<Text style={[styles.label, { marginBottom: spacing.sm }]}>
+					Одиниця виміру
+				</Text>
+				<View style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.sm }}>
+					{DOSE_UNITS.map(unit => {
+						const active = entry.doseUnit === unit
+						return (
+							<TouchableOpacity
+								key={unit}
+								onPress={() => onUpdate("doseUnit", unit)}
+								activeOpacity={0.7}
+								style={{
+									paddingHorizontal: spacing.md,
+									paddingVertical: spacing.xs,
+									borderRadius: radius.lg,
+									borderWidth: 1,
+									borderColor: active ? colors.primary : colors.border,
+									backgroundColor: active ? colors.primary + "15" : colors.background,
+								}}
+							>
+								<Text
+									style={{
+										fontFamily: active ? fonts.medium : fonts.regular,
+										fontSize: fontSize.sm,
+										color: active ? colors.primary : colors.textSecondary,
+									}}
+								>
+									{unit}
+								</Text>
+							</TouchableOpacity>
+						)
+					})}
+				</View>
+			</View>
 
 			{/* Scheduled times */}
 			<View style={{ marginBottom: spacing.md }}>
@@ -74,13 +116,7 @@ export function MedicationCard({
 							}}
 						>
 							<Clock size={13} color={colors.primary} />
-							<Text
-								style={{
-									fontFamily: fonts.medium,
-									fontSize: fontSize.sm,
-									color: colors.primary,
-								}}
-							>
+							<Text style={{ fontFamily: fonts.medium, fontSize: fontSize.sm, color: colors.primary }}>
 								{t}
 							</Text>
 							<TouchableOpacity
@@ -108,13 +144,7 @@ export function MedicationCard({
 						}}
 					>
 						<Plus size={13} color={colors.primary} />
-						<Text
-							style={{
-								fontFamily: fonts.medium,
-								fontSize: fontSize.sm,
-								color: colors.primary,
-							}}
-						>
+						<Text style={{ fontFamily: fonts.medium, fontSize: fontSize.sm, color: colors.primary }}>
 							Додати час
 						</Text>
 					</TouchableOpacity>

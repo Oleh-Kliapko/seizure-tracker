@@ -22,7 +22,7 @@ import { useRegisterForm } from "./useRegisterForm"
 import { useSeizureEditForm } from "./useSeizureEditForm"
 import { useSeizureForm } from "./useSeizureForm"
 import { useSeizureList } from "./useSeizureList"
-import { useMedicationForm } from "./useMedicationForm"
+// useMedicationForm removed — superseded by useMedicationsForm
 import { useMedications } from "./useMedications"
 import { useMedicationsForm } from "./useMedicationsForm"
 import { useTrackingForm } from "./useTrackingForm"
@@ -49,7 +49,6 @@ export {
 	useRegisterForm,
 	useSeizureEditForm,
 	useSeizureForm,
-	useMedicationForm,
 	useMedications,
 	useMedicationsForm,
 	useSeizureList,

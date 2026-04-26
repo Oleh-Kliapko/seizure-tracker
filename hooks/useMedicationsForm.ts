@@ -1,6 +1,6 @@
 // hooks/useMedicationsForm.ts
 
-import { Medication } from "@/models/medication"
+import { DoseUnit, Medication } from "@/models/medication"
 import {
 	createMedication,
 	deleteMedication,
@@ -13,7 +13,8 @@ import { useAuth } from "./useAuth"
 export type MedEntry = {
 	id?: string
 	name: string
-	dose: string
+	doseAmount: string   // string для форми, конвертується в number при збереженні
+	doseUnit: string
 	scheduledTimes: string[]
 	notes: string
 }
@@ -22,7 +23,8 @@ function medToEntry(m: Medication): MedEntry {
 	return {
 		id: m.id,
 		name: m.name,
-		dose: m.dose,
+		doseAmount: String(m.doseAmount ?? 1),
+		doseUnit: m.doseUnit ?? "таблетки",
 		scheduledTimes: m.scheduledTimes ?? [],
 		notes: m.notes ?? "",
 	}
@@ -55,7 +57,7 @@ export function useMedicationsForm() {
 	const addEntry = () =>
 		setEntries(prev => [
 			...prev,
-			{ name: "", dose: "", scheduledTimes: [], notes: "" },
+			{ name: "", doseAmount: "1", doseUnit: "таблетки", scheduledTimes: [], notes: "" },
 		])
 
 	const removeEntry = (index: number) => {
@@ -93,8 +95,9 @@ export function useMedicationsForm() {
 	const handleSave = async () => {
 		if (!user) return
 		for (const e of entries) {
-			if (!e.name.trim() || !e.dose.trim()) {
-				setError("Введіть назву і дозу для кожного препарату")
+			const amount = parseFloat(e.doseAmount)
+			if (!e.name.trim() || isNaN(amount) || amount <= 0) {
+				setError("Введіть назву і кількість для кожного препарату")
 				return
 			}
 		}
@@ -108,7 +111,8 @@ export function useMedicationsForm() {
 						userId: user.uid,
 						patientId: user.uid,
 						name: e.name.trim(),
-						dose: e.dose.trim(),
+						doseAmount: parseFloat(e.doseAmount),
+						doseUnit: (e.doseUnit || "таблетки") as DoseUnit,
 						...(e.scheduledTimes.length > 0 ? { scheduledTimes: e.scheduledTimes } : {}),
 						...(e.notes.trim() ? { notes: e.notes.trim() } : {}),
 					}

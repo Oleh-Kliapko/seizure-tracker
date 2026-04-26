@@ -53,8 +53,9 @@ export default function TrackingScreen() {
 		toggleInternalTrigger,
 		toggleExternalTrigger,
 		medications,
-		takenMeds,
-		toggleMedication,
+		medIntakes,
+		addIntake,
+		removeIntake,
 		patientNotes,
 		setPatientNotes,
 		doctorNotes,
@@ -119,8 +120,9 @@ export default function TrackingScreen() {
 
 						<TrackingMedications
 							medications={medications}
-							takenMeds={takenMeds}
-							onToggle={toggleMedication}
+							medIntakes={medIntakes}
+							onAddIntake={addIntake}
+							onRemoveIntake={removeIntake}
 						/>
 
 						<TrackingToilet
