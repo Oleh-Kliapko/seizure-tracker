@@ -4,16 +4,23 @@ import { auth } from "@/config/firebase"
 import { GOOGLE_AUTH_CONFIG } from "@/config/googleAuth"
 import { createUser, getUser } from "@/services"
 import { parseFirebaseError } from "@/utils"
-import * as Google from "expo-auth-session/providers/google"
-import * as WebBrowser from "expo-web-browser"
+let GoogleSignin: any
+let statusCodes: any
+try {
+	// eslint-disable-next-line @typescript-eslint/no-require-imports
+	const m = require("@react-native-google-signin/google-signin")
+	GoogleSignin = m.GoogleSignin
+	statusCodes = m.statusCodes
+} catch {
+	GoogleSignin = null
+	statusCodes = {}
+}
 import {
 	GoogleAuthProvider,
 	reauthenticateWithCredential,
 	signInWithCredential,
 } from "firebase/auth"
-import { useState } from "react"
-
-WebBrowser.maybeCompleteAuthSession()
+import { useEffect, useState } from "react"
 
 type GoogleAuthResult = {
 	success: boolean
@@ -21,31 +28,53 @@ type GoogleAuthResult = {
 	credential?: ReturnType<typeof GoogleAuthProvider.credential>
 }
 
+let isConfigured = false
+
+function configureGoogleSignIn() {
+	if (isConfigured) return
+	GoogleSignin.configure({
+		iosClientId: GOOGLE_AUTH_CONFIG.iosClientId,
+		webClientId: GOOGLE_AUTH_CONFIG.webClientId,
+	})
+	isConfigured = true
+}
+
 export function useGoogleAuth() {
 	const [isLoading, setIsLoading] = useState(false)
 	const [error, setError] = useState<string | null>(null)
 
-	const [request, response, promptAsync] = Google.useAuthRequest({
-		iosClientId: GOOGLE_AUTH_CONFIG.iosClientId,
-		webClientId: GOOGLE_AUTH_CONFIG.webClientId,
-	})
+	useEffect(() => {
+		configureGoogleSignIn()
+	}, [])
 
 	const getGoogleCredential = async (): Promise<GoogleAuthResult> => {
 		try {
-			const result = await promptAsync()
+			await GoogleSignin.hasPlayServices({
+				showPlayServicesUpdateDialog: true,
+			})
+			const response = await GoogleSignin.signIn()
 
-			if (result.type !== "success") {
+			if (response.type === "cancelled") {
 				return { success: false, error: "Авторизацію скасовано" }
 			}
 
-			const { id_token } = result.params
-			if (!id_token) {
+			const idToken = response.data?.idToken
+			if (!idToken) {
 				return { success: false, error: "Не вдалось отримати токен" }
 			}
 
-			const credential = GoogleAuthProvider.credential(id_token)
+			const credential = GoogleAuthProvider.credential(idToken)
 			return { success: true, credential }
 		} catch (e: any) {
+			if (e.code === statusCodes.SIGN_IN_CANCELLED) {
+				return { success: false, error: "Авторизацію скасовано" }
+			}
+			if (e.code === statusCodes.IN_PROGRESS) {
+				return { success: false, error: "Авторизація вже виконується" }
+			}
+			if (e.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+				return { success: false, error: "Google Play недоступний" }
+			}
 			return { success: false, error: parseFirebaseError(e.code) }
 		}
 	}
@@ -119,6 +148,5 @@ export function useGoogleAuth() {
 		reauthWithGoogle,
 		isLoading,
 		error,
-		request,
 	}
 }
