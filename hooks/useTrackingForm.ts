@@ -63,10 +63,17 @@ export function useTrackingForm() {
 			setIsLoading(true)
 			try {
 				const patientId = user.uid
-				const [tracking, meds] = await Promise.all([
-					getTrackingByDate(user.uid, patientId, Date.now()),
-					getMedicationsByPatient(user.uid, patientId),
-				])
+
+				const tracking = await getTrackingByDate(
+					user.uid,
+					patientId,
+					Date.now(),
+				).catch(() => null)
+
+				const meds = await getMedicationsByPatient(
+					user.uid,
+					patientId,
+				).catch(() => [])
 
 				setMedications(meds)
 
@@ -97,8 +104,6 @@ export function useTrackingForm() {
 				}
 
 				setTakenMeds(initTaken)
-			} catch {
-				setError("Помилка завантаження даних")
 			} finally {
 				setIsLoading(false)
 			}

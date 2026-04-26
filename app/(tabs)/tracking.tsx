@@ -9,7 +9,7 @@ import {
 	TrackingVitals,
 	TrackingWellbeing,
 } from "@/components/tracking"
-import { ScreenWrapper } from "@/components/ui"
+import { ScreenHeader, ScreenWrapper } from "@/components/ui"
 import { useAppTheme, useTrackingForm } from "@/hooks"
 import { format } from "date-fns"
 import { uk } from "date-fns/locale"
@@ -68,76 +68,21 @@ export default function TrackingScreen() {
 
 	return (
 		<ScreenWrapper>
-			<View
-				style={{
-					paddingHorizontal: spacing.lg,
-					paddingTop: spacing.lg,
-					paddingBottom: spacing.sm,
-					flexDirection: "row",
-					alignItems: "center",
-					justifyContent: "space-between",
-				}}
-			>
-				<View>
-					<Text
-						style={{
-							fontFamily: fonts.bold,
-							fontSize: fontSize.xl,
-							color: colors.onSurface,
-						}}
-					>
-						Трекінг
-					</Text>
+			<ScreenHeader
+				title="Трекінг"
+				showBackButton={false}
+				right={
 					<Text
 						style={{
 							fontFamily: fonts.regular,
 							fontSize: fontSize.sm,
 							color: colors.textSecondary,
-							marginTop: 2,
 						}}
 					>
 						{today}
 					</Text>
-				</View>
-
-				<TouchableOpacity
-					onPress={handleSave}
-					disabled={isSaving}
-					style={{
-						backgroundColor: isSaved ? colors.success ?? "#4CAF50" : colors.primary,
-						paddingHorizontal: spacing.lg,
-						paddingVertical: spacing.sm,
-						borderRadius: radius.md,
-						opacity: isSaving ? 0.7 : 1,
-					}}
-					activeOpacity={0.8}
-				>
-					<Text
-						style={{
-							fontFamily: fonts.medium,
-							fontSize: fontSize.md,
-							color: "#fff",
-						}}
-					>
-						{isSaved ? "Збережено ✓" : "Зберегти"}
-					</Text>
-				</TouchableOpacity>
-			</View>
-
-			{error && (
-				<Text
-					style={{
-						fontFamily: fonts.regular,
-						fontSize: fontSize.sm,
-						color: colors.error,
-						textAlign: "center",
-						paddingHorizontal: spacing.lg,
-						paddingBottom: spacing.sm,
-					}}
-				>
-					{error}
-				</Text>
-			)}
+				}
+			/>
 
 			{isLoading ? (
 				<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -149,7 +94,7 @@ export default function TrackingScreen() {
 					behavior={Platform.OS === "ios" ? "padding" : undefined}
 				>
 					<ScrollView
-						contentContainerStyle={{ padding: spacing.lg, paddingTop: spacing.sm }}
+						contentContainerStyle={{ padding: spacing.lg }}
 						showsVerticalScrollIndicator={false}
 						keyboardShouldPersistTaps="handled"
 					>
@@ -201,6 +146,46 @@ export default function TrackingScreen() {
 						/>
 
 						<TrackingNotes value={patientNotes} onChange={setPatientNotes} />
+
+						{error && (
+							<Text
+								style={{
+									fontFamily: fonts.regular,
+									fontSize: fontSize.sm,
+									color: colors.error,
+									textAlign: "center",
+									marginBottom: spacing.sm,
+								}}
+							>
+								{error}
+							</Text>
+						)}
+
+						<TouchableOpacity
+							onPress={handleSave}
+							disabled={isSaving}
+							style={{
+								backgroundColor: isSaved
+									? colors.success
+									: colors.primary,
+								borderRadius: radius.md,
+								paddingVertical: spacing.md,
+								alignItems: "center",
+								opacity: isSaving ? 0.7 : 1,
+								marginBottom: spacing.lg,
+							}}
+							activeOpacity={0.8}
+						>
+							<Text
+								style={{
+									fontFamily: fonts.medium,
+									fontSize: fontSize.md,
+									color: "#fff",
+								}}
+							>
+								{isSaved ? "Збережено ✓" : isSaving ? "Збереження..." : "Зберегти"}
+							</Text>
+						</TouchableOpacity>
 					</ScrollView>
 				</KeyboardAvoidingView>
 			)}
