@@ -5,24 +5,31 @@ import { createMedication, updateMedication } from "@/services"
 import { useState } from "react"
 import { useAuth } from "./useAuth"
 
-const TIME_RE = /^([01]?\d|2[0-3]):[0-5]\d$/
-
 export function useMedicationForm(initial?: Medication) {
 	const { user } = useAuth()
 	const [name, setName] = useState(initial?.name ?? "")
 	const [dose, setDose] = useState(initial?.dose ?? "")
-	const [scheduledTime, setScheduledTime] = useState(initial?.scheduledTime ?? "")
+	const [scheduledTimes, setScheduledTimes] = useState<string[]>(
+		initial?.scheduledTimes ?? [],
+	)
 	const [notes, setNotes] = useState(initial?.notes ?? "")
 	const [isSaving, setIsSaving] = useState(false)
 	const [error, setError] = useState<string | null>(null)
 
+	const addTime = (time: string) => {
+		setScheduledTimes(prev => {
+			if (prev.includes(time)) return prev
+			return [...prev, time].sort()
+		})
+	}
+
+	const removeTime = (time: string) => {
+		setScheduledTimes(prev => prev.filter(t => t !== time))
+	}
+
 	const validate = () => {
 		if (!name.trim()) { setError("Введіть назву ліків"); return false }
 		if (!dose.trim()) { setError("Введіть дозу"); return false }
-		if (scheduledTime && !TIME_RE.test(scheduledTime)) {
-			setError("Час у форматі ГГ:ХХ, наприклад 08:00")
-			return false
-		}
 		return true
 	}
 
@@ -36,7 +43,7 @@ export function useMedicationForm(initial?: Medication) {
 				patientId: user.uid,
 				name: name.trim(),
 				dose: dose.trim(),
-				...(scheduledTime.trim() ? { scheduledTime: scheduledTime.trim() } : {}),
+				...(scheduledTimes.length > 0 ? { scheduledTimes } : {}),
 				...(notes.trim() ? { notes: notes.trim() } : {}),
 			}
 			if (initial) {
@@ -55,7 +62,7 @@ export function useMedicationForm(initial?: Medication) {
 	return {
 		name, setName,
 		dose, setDose,
-		scheduledTime, setScheduledTime,
+		scheduledTimes, addTime, removeTime,
 		notes, setNotes,
 		isSaving, error,
 		handleSave,

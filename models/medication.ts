@@ -6,7 +6,7 @@ export type Medication = {
 	patientId: string
 	name: string
 	dose: string
-	scheduledTime?: string // "HH:MM"
+	scheduledTimes?: string[] // ["HH:MM", ...]
 	notes?: string
 	createdAt: number
 	updatedAt: number

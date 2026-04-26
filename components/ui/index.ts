@@ -10,6 +10,7 @@ import { FormInput } from "./FormInput"
 import { Button } from "./Button"
 import { ScreenHeader } from "./ScreenHeader"
 import { ScreenWrapper } from "./ScreenWrapper"
+import { TimePickerModal } from "./TimePickerModal"
 
 export {
 	AppBackground,
@@ -17,9 +18,10 @@ export {
 	AppName,
 	AppSlogan,
 	AuthFooterLink,
+	Button,
 	Divider,
 	FormInput,
-	Button,
 	ScreenHeader,
 	ScreenWrapper,
+	TimePickerModal,
 }

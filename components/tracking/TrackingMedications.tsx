@@ -29,7 +29,10 @@ export function TrackingMedications({ medications, takenMeds, onToggle }: Props)
 							<View style={{ flex: 1 }}>
 								<Text style={styles.medName}>{med.name}</Text>
 								<Text style={styles.medDose}>
-									{med.dose}{med.scheduledTime ? ` · ${med.scheduledTime}` : ""}
+									{med.dose}
+									{med.scheduledTimes && med.scheduledTimes.length > 0
+										? ` · ${med.scheduledTimes.join(", ")}`
+										: ""}
 								</Text>
 							</View>
 							<Switch
