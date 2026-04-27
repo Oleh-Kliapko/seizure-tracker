@@ -4,6 +4,8 @@ import { MedicationsList } from "@/components/settings/medications/MedicationsLi
 import { ScreenHeader, ScreenWrapper } from "@/components/ui"
 import { useAppTheme } from "@/hooks"
 import { useMedicationsForm } from "@/hooks/useMedicationsForm"
+import { useFocusEffect } from "@react-navigation/native"
+import { useCallback } from "react"
 import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, View } from "react-native"
 
 export default function MedicationsScreen() {
@@ -18,7 +20,10 @@ export default function MedicationsScreen() {
 		addEntryTime,
 		removeEntryTime,
 		saveEntry,
+		saveAllEntries,
 	} = useMedicationsForm()
+
+	useFocusEffect(useCallback(() => () => { saveAllEntries() }, [saveAllEntries]))
 
 	return (
 		<ScreenWrapper>

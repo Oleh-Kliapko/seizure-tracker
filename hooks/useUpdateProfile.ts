@@ -2,7 +2,7 @@
 
 import { User } from "@/models"
 import { updateUser } from "@/services"
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { useAuth } from "./useAuth"
 
 export function useUpdateProfile() {
@@ -11,7 +11,7 @@ export function useUpdateProfile() {
 	const [error, setError] = useState<string | null>(null)
 	const [isSuccess, setIsSuccess] = useState(false)
 
-	const updateProfile = async (data: Partial<User>) => {
+	const updateProfile = useCallback(async (data: Partial<User>) => {
 		if (!user) return
 
 		try {
@@ -26,7 +26,7 @@ export function useUpdateProfile() {
 		} finally {
 			setIsLoading(false)
 		}
-	}
+	}, [user])
 
 	return { updateProfile, isLoading, error, isSuccess }
 }

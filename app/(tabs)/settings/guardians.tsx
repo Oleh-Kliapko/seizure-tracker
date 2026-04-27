@@ -3,6 +3,8 @@
 import { GuardiansList } from "@/components/settings"
 import { ScreenHeader, ScreenWrapper } from "@/components/ui"
 import { useAppTheme, useGuardiansForm } from "@/hooks"
+import { useFocusEffect } from "@react-navigation/native"
+import { useCallback } from "react"
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 
 export default function GuardiansScreen() {
@@ -15,6 +17,8 @@ export default function GuardiansScreen() {
 		updateGuardian,
 		autoSave,
 	} = useGuardiansForm()
+
+	useFocusEffect(useCallback(() => () => { autoSave() }, [autoSave]))
 
 	return (
 		<ScreenWrapper>

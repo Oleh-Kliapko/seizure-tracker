@@ -128,6 +128,12 @@ export function useMedicationsForm() {
 		}))
 	}
 
+	const saveAllEntries = useCallback(async () => {
+		for (let i = 0; i < entriesRef.current.length; i++) {
+			await saveEntry(i)
+		}
+	}, [saveEntry])
+
 	return {
 		entries,
 		isLoading,
@@ -138,5 +144,6 @@ export function useMedicationsForm() {
 		addEntryTime,
 		removeEntryTime,
 		saveEntry,
+		saveAllEntries,
 	}
 }
