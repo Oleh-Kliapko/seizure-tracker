@@ -11,6 +11,12 @@ type Props = {
 	daysSinceLastSeizure: number | null
 }
 
+function daysWord(n: number): string {
+	if (n === 1) return "день"
+	if (n >= 2 && n <= 4) return "дні"
+	return "днів"
+}
+
 export function DashboardHero({ lastSeizure, daysSinceLastSeizure }: Props) {
 	const { colors, fonts, fontSize, spacing, radius } = useAppTheme()
 
@@ -25,7 +31,8 @@ export function DashboardHero({ lastSeizure, daysSinceLastSeizure }: Props) {
 			style={{
 				backgroundColor: colors.primary,
 				borderRadius: radius.lg,
-				padding: spacing.xl,
+				paddingHorizontal: spacing.lg,
+				paddingVertical: spacing.md,
 				alignItems: "center",
 				marginBottom: spacing.md,
 			}}
@@ -38,6 +45,7 @@ export function DashboardHero({ lastSeizure, daysSinceLastSeizure }: Props) {
 						color: "#fff",
 						opacity: 0.9,
 						textAlign: "center",
+						paddingVertical: spacing.sm,
 					}}
 				>
 					Приступів ще немає
@@ -70,7 +78,7 @@ export function DashboardHero({ lastSeizure, daysSinceLastSeizure }: Props) {
 							Сьогодні
 						</Text>
 					) : (
-						<View style={{ flexDirection: "row", alignItems: "flex-end", gap: 6 }}>
+						<View style={{ alignItems: "center" }}>
 							<Text
 								style={{
 									fontFamily: fonts.bold,
@@ -87,10 +95,9 @@ export function DashboardHero({ lastSeizure, daysSinceLastSeizure }: Props) {
 									fontSize: fontSize.lg,
 									color: "#fff",
 									opacity: 0.85,
-									marginBottom: 12,
 								}}
 							>
-								{daysSinceLastSeizure === 1 ? "день" : daysSinceLastSeizure! < 5 ? "дні" : "днів"}
+								{daysWord(daysSinceLastSeizure!)}
 							</Text>
 						</View>
 					)}

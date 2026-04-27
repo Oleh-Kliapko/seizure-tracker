@@ -1,10 +1,10 @@
 // components/dashboard/DashboardHeatmap.tsx
 
+import { HeatmapDay } from "@/hooks/useDashboard"
 import { useAppTheme } from "@/hooks"
 import { format } from "date-fns"
 import { uk } from "date-fns/locale"
 import { Text, View } from "react-native"
-import { HeatmapDay } from "@/hooks/useDashboard"
 
 function dotColor(count: number, colors: ReturnType<typeof useAppTheme>["colors"]): string {
 	if (count === 0) return colors.border
@@ -19,6 +19,9 @@ type Props = {
 
 export function DashboardHeatmap({ days }: Props) {
 	const { colors, fonts, fontSize, spacing, radius } = useAppTheme()
+
+	const firstRow = days.slice(0, 15)
+	const secondRow = days.slice(15)
 
 	const firstDay = days[0] ? format(new Date(days[0].dateStr), "d MMM", { locale: uk }) : ""
 	const lastDay = days[29] ? format(new Date(days[29].dateStr), "d MMM", { locale: uk }) : ""
@@ -40,20 +43,24 @@ export function DashboardHeatmap({ days }: Props) {
 					marginBottom: spacing.sm,
 				}}
 			>
-				Активність за 30 днів
+				Приступи за 30 днів
 			</Text>
 
-			<View style={{ flexDirection: "row", gap: 4, flexWrap: "nowrap" }}>
-				{days.map(day => (
-					<View
-						key={day.dateStr}
-						style={{
-							flex: 1,
-							aspectRatio: 1,
-							borderRadius: 3,
-							backgroundColor: dotColor(day.count, colors),
-						}}
-					/>
+			<View style={{ gap: 4 }}>
+				{[firstRow, secondRow].map((row, rowIdx) => (
+					<View key={rowIdx} style={{ flexDirection: "row", gap: 4 }}>
+						{row.map(day => (
+							<View
+								key={day.dateStr}
+								style={{
+									flex: 1,
+									height: 20,
+									borderRadius: 4,
+									backgroundColor: dotColor(day.count, colors),
+								}}
+							/>
+						))}
+					</View>
 				))}
 			</View>
 

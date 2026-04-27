@@ -19,9 +19,9 @@ function trendLabel(current: number, previous: number): { text: string; color: s
 }
 
 function seizureWord(n: number): string {
-	if (n === 1) return "припадок"
-	if (n >= 2 && n <= 4) return "припадки"
-	return "припадків"
+	if (n === 1) return "приступ"
+	if (n >= 2 && n <= 4) return "приступи"
+	return "приступів"
 }
 
 export function DashboardStats({ thisMonthCount, lastMonthCount }: Props) {

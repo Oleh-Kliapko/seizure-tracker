@@ -7,7 +7,7 @@ import {
 	DashboardStats,
 	DashboardToday,
 } from "@/components/dashboard"
-import { ScreenWrapper } from "@/components/ui"
+import { ScreenHeader, ScreenWrapper } from "@/components/ui"
 import { useAppTheme } from "@/hooks"
 import { useDashboard } from "@/hooks/useDashboard"
 import { router } from "expo-router"
@@ -33,7 +33,7 @@ export default function Dashboard() {
 		lastMonthCount,
 		heatmapDays,
 		recentSeizures,
-		isTrackingDone,
+		trackingFilledSections,
 		medications,
 		medicationsTakenToday,
 	} = useDashboard()
@@ -43,25 +43,11 @@ export default function Dashboard() {
 
 	return (
 		<ScreenWrapper>
-			<View
-				style={{
-					paddingHorizontal: spacing.lg,
-					paddingTop: spacing.md,
-					paddingBottom: spacing.sm,
-					flexDirection: "row",
-					justifyContent: "space-between",
-					alignItems: "flex-end",
-				}}
-			>
-				<View>
-					<Text style={{ fontFamily: fonts.bold, fontSize: fontSize.xl, color: colors.onSurface }}>
-						{firstName ? `Привіт, ${firstName}` : "Привіт"}
-					</Text>
-					<Text style={{ fontFamily: fonts.regular, fontSize: fontSize.sm, color: colors.textSecondary }}>
-						{today}
-					</Text>
-				</View>
-			</View>
+			<ScreenHeader
+				title={firstName ? `Привіт, ${firstName}` : "Привіт"}
+				subtitle={today}
+				showBackButton={false}
+			/>
 
 			{isLoading ? (
 				<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -130,7 +116,7 @@ export default function Dashboard() {
 					<DashboardHeatmap days={heatmapDays} />
 
 					<DashboardToday
-						isTrackingDone={isTrackingDone}
+						trackingFilledSections={trackingFilledSections}
 						medications={medications}
 						medicationsTakenToday={medicationsTakenToday}
 					/>

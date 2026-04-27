@@ -6,8 +6,10 @@ import { router } from "expo-router"
 import { CheckCircle, ChevronRight, Circle, Pill } from "lucide-react-native"
 import { Text, TouchableOpacity, View } from "react-native"
 
+const TRACKING_SECTIONS = 6
+
 type Props = {
-	isTrackingDone: boolean
+	trackingFilledSections: number
 	medications: Medication[]
 	medicationsTakenToday: number
 }
@@ -64,14 +66,21 @@ function StatusRow({
 	)
 }
 
-export function DashboardToday({ isTrackingDone, medications, medicationsTakenToday }: Props) {
+export function DashboardToday({ trackingFilledSections, medications, medicationsTakenToday }: Props) {
 	const { colors, spacing, radius } = useAppTheme()
+
+	const trackingDone = trackingFilledSections === TRACKING_SECTIONS
+	const trackingLabel =
+		trackingFilledSections === 0
+			? "Не заповнено"
+			: trackingDone
+				? "Заповнено"
+				: `${trackingFilledSections} / ${TRACKING_SECTIONS}`
 
 	const medLabel =
 		medications.length === 0
 			? "Не налаштовані"
 			: `${medicationsTakenToday} з ${medications.length}`
-
 	const medOk = medications.length > 0 && medicationsTakenToday === medications.length
 	const medRoute =
 		medications.length === 0
@@ -89,13 +98,13 @@ export function DashboardToday({ isTrackingDone, medications, medicationsTakenTo
 		>
 			<StatusRow
 				icon={
-					isTrackingDone
+					trackingDone
 						? <CheckCircle size={20} color={colors.success} />
 						: <Circle size={20} color={colors.textSecondary} />
 				}
 				label="Трекінг"
-				statusText={isTrackingDone ? "Заповнено" : "Не заповнено"}
-				statusOk={isTrackingDone}
+				statusText={trackingLabel}
+				statusOk={trackingDone}
 				onPress={() => router.push("/(tabs)/tracking")}
 			/>
 
