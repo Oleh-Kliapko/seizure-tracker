@@ -1,13 +1,24 @@
 // hooks/usePersonalForm.ts
 
 import { validatePhone } from "@/utils"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useUpdateProfile } from "./useUpdateProfile"
 import { useUser } from "./useUser"
 
+type PersonalState = {
+	lastName: string
+	firstName: string
+	middleName: string
+	phone: string
+	birthDate: number | null
+	countryOfBirth: string
+	cityOfBirth: string
+	address: string
+}
+
 export function usePersonalForm() {
 	const { profile, isLoading: isLoadingProfile } = useUser()
-	const { updateProfile, isLoading, error } = useUpdateProfile()
+	const { updateProfile, error } = useUpdateProfile()
 
 	const [lastName, setLastName] = useState("")
 	const [firstName, setFirstName] = useState("")
@@ -31,25 +42,36 @@ export function usePersonalForm() {
 		setAddress(profile.address ?? "")
 	}, [profile])
 
-	const handleSave = async () => {
-		const { isValid, error } = validatePhone(phone)
-		if (!isValid) {
-			setValidationError(error)
-			return
-		}
+	const stateRef = useRef<PersonalState>({
+		lastName, firstName, middleName, phone, birthDate,
+		countryOfBirth, cityOfBirth, address,
+	})
+	stateRef.current = {
+		lastName, firstName, middleName, phone, birthDate,
+		countryOfBirth, cityOfBirth, address,
+	}
 
+	const autoSave = useCallback(async (overrides: Partial<PersonalState> = {}) => {
+		const s: PersonalState = { ...stateRef.current, ...overrides }
+		if (s.phone) {
+			const { isValid, error } = validatePhone(s.phone)
+			if (!isValid) {
+				setValidationError(error)
+				return
+			}
+		}
 		setValidationError(null)
 		await updateProfile({
-			lastName,
-			firstName,
-			middleName,
-			phone,
-			birthDate: birthDate ?? undefined,
-			countryOfBirth,
-			cityOfBirth,
-			address,
+			lastName: s.lastName,
+			firstName: s.firstName,
+			middleName: s.middleName,
+			phone: s.phone,
+			birthDate: s.birthDate ?? undefined,
+			countryOfBirth: s.countryOfBirth,
+			cityOfBirth: s.cityOfBirth,
+			address: s.address,
 		})
-	}
+	}, [updateProfile])
 
 	const fields = [
 		{
@@ -106,9 +128,8 @@ export function usePersonalForm() {
 		fields,
 		birthDate,
 		setBirthDate,
-		isLoading,
 		isLoadingProfile,
 		displayError: validationError ?? error ?? null,
-		handleSave,
+		autoSave,
 	}
 }

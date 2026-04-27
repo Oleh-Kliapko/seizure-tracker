@@ -1,6 +1,5 @@
 // components/settings/medications/MedicationsList.tsx
 
-import { Button } from "@/components/ui"
 import { useAppTheme } from "@/hooks"
 import { MedEntry } from "@/hooks/useMedicationsForm"
 import { Pill } from "lucide-react-native"
@@ -10,28 +9,24 @@ import { MedicationCard } from "./MedicationCard"
 
 type Props = {
 	entries: MedEntry[]
-	isSaving: boolean
-	isSaved: boolean
 	error: string | null
 	onAdd: () => void
 	onRemove: (index: number) => void
 	onUpdate: (index: number, field: keyof MedEntry, value: string) => void
 	onAddTime: (index: number, time: string) => void
 	onRemoveTime: (index: number, time: string) => void
-	onSave: () => void
+	onBlurEntry: (index: number) => void
 }
 
 export function MedicationsList({
 	entries,
-	isSaving,
-	isSaved,
 	error,
 	onAdd,
 	onRemove,
 	onUpdate,
 	onAddTime,
 	onRemoveTime,
-	onSave,
+	onBlurEntry,
 }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
@@ -47,6 +42,7 @@ export function MedicationsList({
 					onAddTime={time => onAddTime(index, time)}
 					onRemoveTime={time => onRemoveTime(index, time)}
 					onRemove={() => onRemove(index)}
+					onBlur={() => onBlurEntry(index)}
 				/>
 			))}
 
@@ -59,15 +55,11 @@ export function MedicationsList({
 				<Text style={styles.addBtnText}>Додати препарат</Text>
 			</TouchableOpacity>
 
-			<View style={styles.errorContainer}>
-				{error && <Text style={styles.errorText}>{error}</Text>}
-			</View>
-
-			<Button
-				title={isSaved ? "Збережено ✓" : isSaving ? "Збереження..." : "Зберегти"}
-				onPress={onSave}
-				disabled={isSaving}
-			/>
+			{error && (
+				<View style={styles.errorContainer}>
+					<Text style={styles.errorText}>{error}</Text>
+				</View>
+			)}
 		</View>
 	)
 }

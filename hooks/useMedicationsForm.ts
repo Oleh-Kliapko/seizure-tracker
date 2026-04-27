@@ -7,13 +7,13 @@ import {
 	getMedications,
 	updateMedication,
 } from "@/services"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useAuth } from "./useAuth"
 
 export type MedEntry = {
 	id?: string
 	name: string
-	doseAmount: string   // string для форми, конвертується в number при збереженні
+	doseAmount: string
 	doseUnit: string
 	scheduledTimes: string[]
 	notes: string
@@ -33,11 +33,11 @@ function medToEntry(m: Medication): MedEntry {
 export function useMedicationsForm() {
 	const { user } = useAuth()
 	const [entries, setEntries] = useState<MedEntry[]>([])
-	const [deletedIds, setDeletedIds] = useState<string[]>([])
 	const [isLoading, setIsLoading] = useState(true)
-	const [isSaving, setIsSaving] = useState(false)
-	const [isSaved, setIsSaved] = useState(false)
 	const [error, setError] = useState<string | null>(null)
+
+	const entriesRef = useRef<MedEntry[]>([])
+	entriesRef.current = entries
 
 	const load = async () => {
 		if (!user) return
@@ -54,96 +54,89 @@ export function useMedicationsForm() {
 
 	useEffect(() => { load() }, [user])
 
+	const saveEntry = useCallback(async (index: number, overrides: Partial<MedEntry> = {}) => {
+		if (!user) return
+		const e = { ...entriesRef.current[index], ...overrides }
+		const amount = parseFloat(e.doseAmount)
+		if (!e.name.trim() || isNaN(amount) || amount <= 0) return
+
+		try {
+			const data = {
+				userId: user.uid,
+				patientId: user.uid,
+				name: e.name.trim(),
+				doseAmount: amount,
+				doseUnit: (e.doseUnit || "таблетки") as DoseUnit,
+				...(e.scheduledTimes.length > 0 ? { scheduledTimes: e.scheduledTimes } : {}),
+				...(e.notes.trim() ? { notes: e.notes.trim() } : {}),
+			}
+			if (e.id) {
+				await updateMedication(user.uid, e.id, data)
+			} else {
+				const newId = await createMedication(user.uid, data)
+				setEntries(prev => prev.map((en, i) => i === index ? { ...en, id: newId } : en))
+			}
+			setError(null)
+		} catch {
+			setError("Помилка збереження")
+		}
+	}, [user])
+
 	const addEntry = () =>
 		setEntries(prev => [
 			...prev,
 			{ name: "", doseAmount: "1", doseUnit: "таблетки", scheduledTimes: [], notes: "" },
 		])
 
-	const removeEntry = (index: number) => {
-		const entry = entries[index]
-		if (entry.id) setDeletedIds(prev => [...prev, entry.id!])
+	const removeEntry = async (index: number) => {
+		const entry = entriesRef.current[index]
 		setEntries(prev => prev.filter((_, i) => i !== index))
+		if (entry?.id && user) {
+			try {
+				await deleteMedication(user.uid, entry.id)
+			} catch {
+				setError("Помилка видалення")
+			}
+		}
 	}
 
 	const updateEntry = (index: number, field: keyof MedEntry, value: string) => {
-		setEntries(prev =>
-			prev.map((e, i) => (i === index ? { ...e, [field]: value } : e)),
-		)
+		setEntries(prev => prev.map((e, i) => {
+			if (i !== index) return e
+			const updated = { ...e, [field]: value }
+			if (field === "doseUnit") saveEntry(index, { [field]: value })
+			return updated
+		}))
 	}
 
 	const addEntryTime = (index: number, time: string) => {
-		setEntries(prev =>
-			prev.map((e, i) => {
-				if (i !== index) return e
-				if (e.scheduledTimes.includes(time)) return e
-				return { ...e, scheduledTimes: [...e.scheduledTimes, time].sort() }
-			}),
-		)
+		setEntries(prev => prev.map((e, i) => {
+			if (i !== index) return e
+			if (e.scheduledTimes.includes(time)) return e
+			const newTimes = [...e.scheduledTimes, time].sort()
+			saveEntry(index, { scheduledTimes: newTimes })
+			return { ...e, scheduledTimes: newTimes }
+		}))
 	}
 
 	const removeEntryTime = (index: number, time: string) => {
-		setEntries(prev =>
-			prev.map((e, i) =>
-				i === index
-					? { ...e, scheduledTimes: e.scheduledTimes.filter(t => t !== time) }
-					: e,
-			),
-		)
-	}
-
-	const handleSave = async () => {
-		if (!user) return
-		for (const e of entries) {
-			const amount = parseFloat(e.doseAmount)
-			if (!e.name.trim() || isNaN(amount) || amount <= 0) {
-				setError("Введіть назву і кількість для кожного препарату")
-				return
-			}
-		}
-		setIsSaving(true)
-		setError(null)
-		try {
-			await Promise.all(deletedIds.map(id => deleteMedication(user.uid, id)))
-			await Promise.all(
-				entries.map(e => {
-					const data = {
-						userId: user.uid,
-						patientId: user.uid,
-						name: e.name.trim(),
-						doseAmount: parseFloat(e.doseAmount),
-						doseUnit: (e.doseUnit || "таблетки") as DoseUnit,
-						...(e.scheduledTimes.length > 0 ? { scheduledTimes: e.scheduledTimes } : {}),
-						...(e.notes.trim() ? { notes: e.notes.trim() } : {}),
-					}
-					return e.id
-						? updateMedication(user.uid, e.id, data)
-						: createMedication(user.uid, data)
-				}),
-			)
-			setDeletedIds([])
-			const fresh = await getMedications(user.uid)
-			setEntries(fresh.map(medToEntry))
-			setIsSaved(true)
-			setTimeout(() => setIsSaved(false), 2000)
-		} catch {
-			setError("Помилка збереження")
-		} finally {
-			setIsSaving(false)
-		}
+		setEntries(prev => prev.map((e, i) => {
+			if (i !== index) return e
+			const newTimes = e.scheduledTimes.filter(t => t !== time)
+			saveEntry(index, { scheduledTimes: newTimes })
+			return { ...e, scheduledTimes: newTimes }
+		}))
 	}
 
 	return {
 		entries,
 		isLoading,
-		isSaving,
-		isSaved,
 		error,
 		addEntry,
 		removeEntry,
 		updateEntry,
 		addEntryTime,
 		removeEntryTime,
-		handleSave,
+		saveEntry,
 	}
 }

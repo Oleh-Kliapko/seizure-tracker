@@ -11,15 +11,13 @@ export default function MedicationsScreen() {
 	const {
 		entries,
 		isLoading,
-		isSaving,
-		isSaved,
 		error,
 		addEntry,
 		removeEntry,
 		updateEntry,
 		addEntryTime,
 		removeEntryTime,
-		handleSave,
+		saveEntry,
 	} = useMedicationsForm()
 
 	return (
@@ -42,15 +40,13 @@ export default function MedicationsScreen() {
 					>
 						<MedicationsList
 							entries={entries}
-							isSaving={isSaving}
-							isSaved={isSaved}
 							error={error}
 							onAdd={addEntry}
 							onRemove={removeEntry}
 							onUpdate={updateEntry}
 							onAddTime={addEntryTime}
 							onRemoveTime={removeEntryTime}
-							onSave={handleSave}
+							onBlurEntry={saveEntry}
 						/>
 					</ScrollView>
 				</KeyboardAvoidingView>

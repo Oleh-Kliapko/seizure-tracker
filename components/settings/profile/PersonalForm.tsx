@@ -1,6 +1,6 @@
 // components/settings/profile/PersonalForm.tsx
 
-import { Button, FormInput } from "@/components/ui"
+import { FormInput } from "@/components/ui"
 import { useAppTheme } from "@/hooks"
 import { useIsDarkTheme } from "@/hooks/useAppTheme"
 import DateTimePicker from "@react-native-community/datetimepicker"
@@ -21,8 +21,7 @@ type Props = {
 	fields: FormField[]
 	birthDate: number | null
 	onBirthDateChange: (v: number | null) => void
-	onSave: () => void
-	isLoading: boolean
+	onBlur: () => void
 	displayError: string | null
 }
 
@@ -30,8 +29,7 @@ export function PersonalForm({
 	fields,
 	birthDate,
 	onBirthDateChange,
-	onSave,
-	isLoading,
+	onBlur,
 	displayError,
 }: Props) {
 	const theme = useAppTheme()
@@ -64,6 +62,7 @@ export function PersonalForm({
 						label={label}
 						value={value}
 						onChangeText={onChange}
+						onBlur={onBlur}
 						placeholder={placeholder}
 						autoCapitalize={autoCapitalize ?? "sentences"}
 						keyboardType={keyboardType ?? "default"}
@@ -116,7 +115,10 @@ export function PersonalForm({
 								alignItems: "center",
 								backgroundColor: theme.colors.primary,
 							}}
-							onPress={() => setShowPicker(false)}
+							onPress={() => {
+								setShowPicker(false)
+								onBlur()
+							}}
 						>
 							<Text
 								style={{
@@ -132,15 +134,11 @@ export function PersonalForm({
 				)}
 			</View>
 
-			<View style={styles.errorContainer}>
-				{displayError && <Text style={styles.errorText}>{displayError}</Text>}
-			</View>
-
-			<Button
-				title={isLoading ? "Оновлення..." : "Оновити"}
-				onPress={onSave}
-				disabled={isLoading}
-			/>
+			{displayError && (
+				<View style={styles.errorContainer}>
+					<Text style={styles.errorText}>{displayError}</Text>
+				</View>
+			)}
 		</View>
 	)
 }

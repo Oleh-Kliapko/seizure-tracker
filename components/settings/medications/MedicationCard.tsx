@@ -16,6 +16,7 @@ type Props = {
 	onAddTime: (time: string) => void
 	onRemoveTime: (time: string) => void
 	onRemove: () => void
+	onBlur: () => void
 }
 
 export function MedicationCard({
@@ -25,6 +26,7 @@ export function MedicationCard({
 	onAddTime,
 	onRemoveTime,
 	onRemove,
+	onBlur,
 }: Props) {
 	const theme = useAppTheme()
 	const { colors, fonts, fontSize, spacing, radius } = theme
@@ -44,22 +46,22 @@ export function MedicationCard({
 				label="Назва *"
 				value={entry.name}
 				onChangeText={v => onUpdate("name", v)}
+				onBlur={onBlur}
 				placeholder="Наприклад: Карбамазепін"
 				autoCapitalize="words"
 			/>
 
-			{/* Dose amount */}
 			<FormInput
 				label="Денна доза *"
 				value={entry.doseAmount}
 				onChangeText={v => {
 					if (!v || /^\d*\.?\d*$/.test(v)) onUpdate("doseAmount", v)
 				}}
+				onBlur={onBlur}
 				placeholder="1"
 				keyboardType="decimal-pad"
 			/>
 
-			{/* Dose unit */}
 			<View style={{ marginBottom: spacing.md }}>
 				<Text style={[styles.label, { marginBottom: spacing.sm }]}>
 					Одиниця виміру
@@ -96,7 +98,6 @@ export function MedicationCard({
 				</View>
 			</View>
 
-			{/* Scheduled times */}
 			<View style={{ marginBottom: spacing.md }}>
 				<Text style={[styles.label, { marginBottom: spacing.sm }]}>
 					Час прийому
@@ -155,6 +156,7 @@ export function MedicationCard({
 				label="Нотатки"
 				value={entry.notes}
 				onChangeText={v => onUpdate("notes", v)}
+				onBlur={onBlur}
 				placeholder="Додаткова інформація..."
 				autoCapitalize="sentences"
 				multiline

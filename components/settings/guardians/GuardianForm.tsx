@@ -4,7 +4,6 @@ import { FormInput } from "@/components/ui"
 import { RELATIONS } from "@/constants/commonConstants"
 import { useAppTheme } from "@/hooks"
 import { Guardian } from "@/models/user"
-import { Picker } from "@react-native-picker/picker"
 import { Trash2 } from "lucide-react-native"
 import { Text, TouchableOpacity, View } from "react-native"
 import { getStyles } from "../getStyles"
@@ -14,9 +13,10 @@ type Props = {
 	index: number
 	onUpdate: (field: keyof Guardian, value: string) => void
 	onRemove: () => void
+	onBlur: () => void
 }
 
-export function GuardianForm({ guardian, index, onUpdate, onRemove }: Props) {
+export function GuardianForm({ guardian, index, onUpdate, onRemove, onBlur }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
 
@@ -68,6 +68,7 @@ export function GuardianForm({ guardian, index, onUpdate, onRemove }: Props) {
 				label="ПІБ"
 				value={guardian.fullName}
 				onChangeText={v => onUpdate("fullName", v)}
+				onBlur={onBlur}
 				placeholder="Прізвище Ім'я По батькові"
 				autoCapitalize="words"
 			/>
@@ -75,6 +76,7 @@ export function GuardianForm({ guardian, index, onUpdate, onRemove }: Props) {
 				label="Email"
 				value={guardian.email}
 				onChangeText={v => onUpdate("email", v)}
+				onBlur={onBlur}
 				placeholder="email@example.com"
 				keyboardType="email-address"
 				autoCapitalize="none"
@@ -83,6 +85,7 @@ export function GuardianForm({ guardian, index, onUpdate, onRemove }: Props) {
 				label="Телефон"
 				value={guardian.phone}
 				onChangeText={v => onUpdate("phone", v)}
+				onBlur={onBlur}
 				placeholder="+380XXXXXXXXX"
 				keyboardType="phone-pad"
 			/>

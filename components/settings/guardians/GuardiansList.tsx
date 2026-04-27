@@ -1,6 +1,5 @@
 // components/settings/guardians/GuardiansList.tsx
 
-import { Button } from "@/components/ui"
 import { useAppTheme } from "@/hooks"
 import { Guardian } from "@/models/user"
 import { UserPlus } from "lucide-react-native"
@@ -13,8 +12,7 @@ type Props = {
 	onAdd: () => void
 	onRemove: (index: number) => void
 	onUpdate: (index: number, field: keyof Guardian, value: string) => void
-	onSave: () => void
-	isLoading: boolean
+	onBlur: () => void
 	error: string | null
 }
 
@@ -23,8 +21,7 @@ export function GuardiansList({
 	onAdd,
 	onRemove,
 	onUpdate,
-	onSave,
-	isLoading,
+	onBlur,
 	error,
 }: Props) {
 	const theme = useAppTheme()
@@ -39,6 +36,7 @@ export function GuardiansList({
 					index={index}
 					onUpdate={(field, value) => onUpdate(index, field, value)}
 					onRemove={() => onRemove(index)}
+					onBlur={onBlur}
 				/>
 			))}
 
@@ -51,15 +49,11 @@ export function GuardiansList({
 				<Text style={styles.addBtnText}>Додати опікуна</Text>
 			</TouchableOpacity>
 
-			<View style={styles.errorContainer}>
-				{error && <Text style={styles.errorText}>{error}</Text>}
-			</View>
-
-			<Button
-				title={isLoading ? "Збереження..." : "Зберегти"}
-				onPress={onSave}
-				disabled={isLoading}
-			/>
+			{error && (
+				<View style={styles.errorContainer}>
+					<Text style={styles.errorText}>{error}</Text>
+				</View>
+			)}
 		</View>
 	)
 }

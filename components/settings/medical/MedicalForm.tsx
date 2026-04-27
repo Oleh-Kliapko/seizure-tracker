@@ -1,5 +1,5 @@
 // components/settings/medical/MedicalForm.tsx
-import { Button, Divider } from "@/components/ui"
+import { Divider } from "@/components/ui"
 import { useAppTheme } from "@/hooks"
 import { Text, View } from "react-native"
 import { getStyles } from "../getStyles"
@@ -23,8 +23,7 @@ type Props = {
 	onHeightChange: (v: string) => void
 	onWeightChange: (v: string) => void
 	onAnamnesisChange: (v: string) => void
-	onSave: () => void
-	isLoading: boolean
+	onBlur: () => void
 	error: string | null
 }
 
@@ -33,22 +32,12 @@ export function MedicalForm(props: Props) {
 	const styles = getStyles(theme)
 
 	const {
-		month,
-		year,
-		bloodType,
-		rhFactor,
-		height,
-		weight,
-		anamnesis,
-		onMonthChange,
-		onYearChange,
-		onBloodTypeChange,
-		onRhFactorChange,
-		onHeightChange,
-		onWeightChange,
+		month, year, bloodType, rhFactor, height, weight, anamnesis,
+		onMonthChange, onYearChange,
+		onBloodTypeChange, onRhFactorChange,
+		onHeightChange, onWeightChange,
 		onAnamnesisChange,
-		onSave,
-		isLoading,
+		onBlur,
 		error,
 	} = props
 
@@ -77,21 +66,18 @@ export function MedicalForm(props: Props) {
 				weight={weight}
 				onHeightChange={onHeightChange}
 				onWeightChange={onWeightChange}
+				onBlur={onBlur}
 			/>
 
 			<Divider label="" />
 
-			<AnamnesisInput value={anamnesis} onChange={onAnamnesisChange} />
+			<AnamnesisInput value={anamnesis} onChange={onAnamnesisChange} onBlur={onBlur} />
 
-			<View style={styles.errorContainer}>
-				{error && <Text style={styles.errorText}>{error}</Text>}
-			</View>
-
-			<Button
-				title={isLoading ? "Збереження..." : "Зберегти"}
-				onPress={onSave}
-				disabled={isLoading}
-			/>
+			{error && (
+				<View style={styles.errorContainer}>
+					<Text style={styles.errorText}>{error}</Text>
+				</View>
+			)}
 		</View>
 	)
 }

@@ -1,12 +1,22 @@
 // hooks/useMedicalForm.ts
 
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useUpdateProfile } from "./useUpdateProfile"
 import { useUser } from "./useUser"
 
+type MedicalState = {
+	month: number
+	year: number
+	bloodType: string
+	rhFactor: string
+	height: string
+	weight: string
+	anamnesis: string
+}
+
 export function useMedicalForm() {
 	const { profile, isLoading: isLoadingProfile } = useUser()
-	const { updateProfile, isLoading, error } = useUpdateProfile()
+	const { updateProfile, error } = useUpdateProfile()
 
 	const [month, setMonth] = useState<number>(0)
 	const [year, setYear] = useState<number>(0)
@@ -32,55 +42,47 @@ export function useMedicalForm() {
 		setAnamnesis(anamnesis ?? "")
 	}, [profile])
 
-	const handleSave = async () => {
-		if (
-			height &&
-			(isNaN(Number(height)) || Number(height) < 30 || Number(height) > 250)
-		) {
+	const stateRef = useRef<MedicalState>({
+		month, year, bloodType, rhFactor, height, weight, anamnesis,
+	})
+	stateRef.current = { month, year, bloodType, rhFactor, height, weight, anamnesis }
+
+	const autoSave = useCallback(async (overrides: Partial<MedicalState> = {}) => {
+		const s: MedicalState = { ...stateRef.current, ...overrides }
+
+		if (s.height && (isNaN(Number(s.height)) || Number(s.height) < 30 || Number(s.height) > 250)) {
 			setValidationError("Ріст має бути між 30 і 250 см")
 			return
 		}
-
-		if (
-			weight &&
-			(isNaN(Number(weight)) || Number(weight) < 3 || Number(weight) > 300)
-		) {
+		if (s.weight && (isNaN(Number(s.weight)) || Number(s.weight) < 3 || Number(s.weight) > 300)) {
 			setValidationError("Вага має бути між 3 і 300 кг")
 			return
 		}
 
 		setValidationError(null)
 
-		const medicalInfo: Record<string, any> = {}
-		if (year) medicalInfo.firstSeizureDate = { year }
-		if (month && year) medicalInfo.firstSeizureDate = { month, year }
-		if (bloodType) medicalInfo.bloodType = bloodType
-		if (rhFactor) medicalInfo.rhFactor = rhFactor
-		if (height) medicalInfo.height = Number(height)
-		if (weight) medicalInfo.weight = Number(weight)
-		if (anamnesis) medicalInfo.anamnesis = anamnesis
+		const medicalInfo: Record<string, unknown> = {}
+		if (s.year) medicalInfo.firstSeizureDate = { year: s.year }
+		if (s.month && s.year) medicalInfo.firstSeizureDate = { month: s.month, year: s.year }
+		if (s.bloodType) medicalInfo.bloodType = s.bloodType
+		if (s.rhFactor) medicalInfo.rhFactor = s.rhFactor
+		if (s.height) medicalInfo.height = Number(s.height)
+		if (s.weight) medicalInfo.weight = Number(s.weight)
+		if (s.anamnesis) medicalInfo.anamnesis = s.anamnesis
 
 		await updateProfile({ medicalInfo })
-	}
+	}, [updateProfile])
 
 	return {
-		month,
-		setMonth,
-		year,
-		setYear,
-		bloodType,
-		setBloodType,
-		rhFactor,
-		setRhFactor,
-		height,
-		setHeight,
-		weight,
-		setWeight,
-		anamnesis,
-		setAnamnesis,
-		isLoading,
+		month, setMonth,
+		year, setYear,
+		bloodType, setBloodType,
+		rhFactor, setRhFactor,
+		height, setHeight,
+		weight, setWeight,
+		anamnesis, setAnamnesis,
 		isLoadingProfile,
 		displayError: validationError ?? error ?? null,
-		handleSave,
+		autoSave,
 	}
 }

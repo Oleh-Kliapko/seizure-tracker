@@ -2,13 +2,13 @@
 
 import { Guardian } from "@/models/user"
 import { validateEmail, validatePhone } from "@/utils"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useUpdateProfile } from "./useUpdateProfile"
 import { useUser } from "./useUser"
 
 export function useGuardiansForm() {
 	const { profile, isLoading: isLoadingProfile } = useUser()
-	const { updateProfile, isLoading, error } = useUpdateProfile()
+	const { updateProfile, error } = useUpdateProfile()
 
 	const [guardians, setGuardians] = useState<Guardian[]>([])
 	const [validationError, setValidationError] = useState<string | null>(null)
@@ -17,6 +17,39 @@ export function useGuardiansForm() {
 		if (!profile?.guardians) return
 		setGuardians(profile.guardians)
 	}, [profile])
+
+	const guardiansRef = useRef<Guardian[]>([])
+	guardiansRef.current = guardians
+
+	const autoSave = useCallback(async (overrides: { guardians?: Guardian[] } = {}) => {
+		const g = overrides.guardians ?? guardiansRef.current
+		for (const guardian of g) {
+			if (!guardian.fullName.trim()) {
+				setValidationError("Введіть ПІБ для кожного опікуна")
+				return
+			}
+			if (!guardian.relation) {
+				setValidationError("Оберіть ступінь спорідненості для кожного опікуна")
+				return
+			}
+			if (guardian.phone) {
+				const { isValid, error } = validatePhone(guardian.phone)
+				if (!isValid) {
+					setValidationError(error)
+					return
+				}
+			}
+			if (guardian.email) {
+				const { isValid, error } = validateEmail(guardian.email)
+				if (!isValid) {
+					setValidationError(error)
+					return
+				}
+			}
+		}
+		setValidationError(null)
+		await updateProfile({ guardians: g })
+	}, [updateProfile])
 
 	const addGuardian = () => {
 		setGuardians(prev => [
@@ -31,54 +64,21 @@ export function useGuardiansForm() {
 		await updateProfile({ guardians: updated })
 	}
 
-	const updateGuardian = (
-		index: number,
-		field: keyof Guardian,
-		value: string,
-	) => {
-		setGuardians(prev =>
-			prev.map((g, i) => (i === index ? { ...g, [field]: value } : g)),
-		)
-	}
-
-	const handleSave = async () => {
-		for (const g of guardians) {
-			if (!g.fullName.trim()) {
-				setValidationError("Введіть ПІБ для кожного опікуна")
-				return
-			}
-			if (!g.relation) {
-				setValidationError("Оберіть ступінь спорідненості для кожного опікуна")
-				return
-			}
-			if (g.phone) {
-				const { isValid, error } = validatePhone(g.phone)
-				if (!isValid) {
-					setValidationError(error)
-					return
-				}
-			}
-			if (g.email) {
-				const { isValid, error } = validateEmail(g.email)
-				if (!isValid) {
-					setValidationError(error)
-					return
-				}
-			}
-		}
-
-		setValidationError(null)
-		await updateProfile({ guardians })
+	const updateGuardian = (index: number, field: keyof Guardian, value: string) => {
+		setGuardians(prev => {
+			const updated = prev.map((g, i) => (i === index ? { ...g, [field]: value } : g))
+			if (field === "relation") autoSave({ guardians: updated })
+			return updated
+		})
 	}
 
 	return {
 		guardians,
-		isLoading,
 		isLoadingProfile,
 		displayError: validationError ?? error ?? null,
 		addGuardian,
 		removeGuardian,
 		updateGuardian,
-		handleSave,
+		autoSave,
 	}
 }

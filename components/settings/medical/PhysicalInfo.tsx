@@ -7,6 +7,7 @@ type Props = {
 	weight: string
 	onHeightChange: (v: string) => void
 	onWeightChange: (v: string) => void
+	onBlur: () => void
 }
 
 export function PhysicalInfo({
@@ -14,6 +15,7 @@ export function PhysicalInfo({
 	weight,
 	onHeightChange,
 	onWeightChange,
+	onBlur,
 }: Props) {
 	return (
 		<>
@@ -21,6 +23,7 @@ export function PhysicalInfo({
 				label="Ріст (см)"
 				value={height}
 				onChangeText={onHeightChange}
+				onBlur={onBlur}
 				placeholder="Наприклад: 175"
 				keyboardType="number-pad"
 				maxLength={3}
@@ -29,6 +32,7 @@ export function PhysicalInfo({
 				label="Вага (кг)"
 				value={weight}
 				onChangeText={onWeightChange}
+				onBlur={onBlur}
 				placeholder="Наприклад: 70"
 				keyboardType="number-pad"
 				maxLength={3}

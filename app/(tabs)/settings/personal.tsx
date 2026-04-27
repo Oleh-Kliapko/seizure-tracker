@@ -11,10 +11,8 @@ export default function PersonalScreen() {
 		fields,
 		birthDate,
 		setBirthDate,
-		isLoading,
-		isLoadingProfile,
 		displayError,
-		handleSave,
+		autoSave,
 	} = usePersonalForm()
 
 	return (
@@ -34,9 +32,8 @@ export default function PersonalScreen() {
 					<PersonalForm
 						fields={fields}
 						birthDate={birthDate}
-						onBirthDateChange={setBirthDate}
-						onSave={handleSave}
-						isLoading={isLoading || isLoadingProfile}
+						onBirthDateChange={v => { setBirthDate(v); autoSave({ birthDate: v }) }}
+						onBlur={autoSave}
 						displayError={displayError}
 					/>
 				</ScrollView>

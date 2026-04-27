@@ -8,24 +8,15 @@ import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 export default function MedicalScreen() {
 	const { spacing } = useAppTheme()
 	const {
-		month,
-		setMonth,
-		year,
-		setYear,
-		bloodType,
-		setBloodType,
-		rhFactor,
-		setRhFactor,
-		height,
-		setHeight,
-		weight,
-		setWeight,
-		anamnesis,
-		setAnamnesis,
-		isLoading,
-		isLoadingProfile,
+		month, setMonth,
+		year, setYear,
+		bloodType, setBloodType,
+		rhFactor, setRhFactor,
+		height, setHeight,
+		weight, setWeight,
+		anamnesis, setAnamnesis,
 		displayError,
-		handleSave,
+		autoSave,
 	} = useMedicalForm()
 
 	return (
@@ -48,15 +39,14 @@ export default function MedicalScreen() {
 						height={height}
 						weight={weight}
 						anamnesis={anamnesis}
-						onMonthChange={setMonth}
-						onYearChange={setYear}
-						onBloodTypeChange={setBloodType}
-						onRhFactorChange={setRhFactor}
+						onMonthChange={v => { setMonth(v); autoSave({ month: v }) }}
+						onYearChange={v => { setYear(v); autoSave({ year: v }) }}
+						onBloodTypeChange={v => { setBloodType(v); autoSave({ bloodType: v }) }}
+						onRhFactorChange={v => { setRhFactor(v); autoSave({ rhFactor: v }) }}
 						onHeightChange={setHeight}
 						onWeightChange={setWeight}
 						onAnamnesisChange={setAnamnesis}
-						onSave={handleSave}
-						isLoading={isLoading || isLoadingProfile}
+						onBlur={autoSave}
 						error={displayError}
 					/>
 				</ScrollView>

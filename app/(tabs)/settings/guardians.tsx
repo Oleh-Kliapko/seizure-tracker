@@ -9,13 +9,11 @@ export default function GuardiansScreen() {
 	const { spacing } = useAppTheme()
 	const {
 		guardians,
-		isLoading,
-		isLoadingProfile,
 		displayError,
 		addGuardian,
 		removeGuardian,
 		updateGuardian,
-		handleSave,
+		autoSave,
 	} = useGuardiansForm()
 
 	return (
@@ -35,8 +33,7 @@ export default function GuardiansScreen() {
 						onAdd={addGuardian}
 						onRemove={removeGuardian}
 						onUpdate={updateGuardian}
-						onSave={handleSave}
-						isLoading={isLoading || isLoadingProfile}
+						onBlur={autoSave}
 						error={displayError}
 					/>
 				</ScrollView>
