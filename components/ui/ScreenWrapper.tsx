@@ -17,7 +17,7 @@ export function ScreenWrapper({
 	const { colors } = useAppTheme()
 
 	return (
-		<View style={[{ flex: 1 }, { backgroundColor: colors.background }]}>
+		<View style={{ flex: 1, backgroundColor: colors.background }}>
 			<AppBackground
 				color={from === "default" ? colors.primary : colors.secondary}
 			/>

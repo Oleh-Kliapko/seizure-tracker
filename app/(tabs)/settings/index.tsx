@@ -42,7 +42,7 @@ export default function ProfileScreen() {
 					onEdit={() => {}}
 				/>
 
-				<View style={{ flex: 1, gap: spacing.xl }}>
+				<View style={{ flex: 1, gap: spacing.md }}>
 					<ProfileMenu />
 				</View>
 

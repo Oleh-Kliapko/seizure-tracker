@@ -9,15 +9,17 @@ import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 
 export default function PersonalScreen() {
 	const { spacing } = useAppTheme()
-	const {
-		fields,
-		birthDate,
-		setBirthDate,
-		displayError,
-		autoSave,
-	} = usePersonalForm()
+	const { fields, birthDate, setBirthDate, displayError, autoSave } =
+		usePersonalForm()
 
-	useFocusEffect(useCallback(() => () => { autoSave() }, [autoSave]))
+	useFocusEffect(
+		useCallback(
+			() => () => {
+				autoSave()
+			},
+			[autoSave],
+		),
+	)
 
 	return (
 		<ScreenWrapper>
@@ -36,7 +38,10 @@ export default function PersonalScreen() {
 					<PersonalForm
 						fields={fields}
 						birthDate={birthDate}
-						onBirthDateChange={v => { setBirthDate(v); autoSave({ birthDate: v }) }}
+						onBirthDateChange={v => {
+							setBirthDate(v)
+							autoSave({ birthDate: v })
+						}}
 						onBlur={autoSave}
 						displayError={displayError}
 					/>
