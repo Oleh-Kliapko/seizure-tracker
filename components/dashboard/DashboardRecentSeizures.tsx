@@ -36,8 +36,8 @@ export function DashboardRecentSeizures({ seizures }: Props) {
 					fontFamily: fonts.medium,
 					fontSize: fontSize.sm,
 					color: colors.textSecondary,
-					paddingTop: spacing.md,
-					paddingBottom: spacing.sm,
+					paddingTop: spacing.sm,
+					paddingBottom: spacing.xs,
 				}}
 			>
 				Останні приступи
@@ -58,7 +58,7 @@ export function DashboardRecentSeizures({ seizures }: Props) {
 							style={{
 								flexDirection: "row",
 								alignItems: "center",
-								paddingVertical: spacing.sm,
+								paddingVertical: spacing.xs,
 								gap: spacing.sm,
 							}}
 						>
@@ -107,7 +107,7 @@ export function DashboardRecentSeizures({ seizures }: Props) {
 					flexDirection: "row",
 					alignItems: "center",
 					justifyContent: "flex-end",
-					paddingVertical: spacing.sm,
+					paddingVertical: spacing.xs,
 					gap: spacing.xs,
 				}}
 			>
