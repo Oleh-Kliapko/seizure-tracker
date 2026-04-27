@@ -78,7 +78,7 @@ export function DashboardHero({ lastSeizure, daysSinceLastSeizure }: Props) {
 							Сьогодні
 						</Text>
 					) : (
-						<View style={{ alignItems: "center" }}>
+						<View style={{ flexDirection: "row", alignItems: "flex-end", justifyContent: "center", gap: 6 }}>
 							<Text
 								style={{
 									fontFamily: fonts.bold,
@@ -95,6 +95,7 @@ export function DashboardHero({ lastSeizure, daysSinceLastSeizure }: Props) {
 									fontSize: fontSize.lg,
 									color: "#fff",
 									opacity: 0.85,
+									marginBottom: 7,
 								}}
 							>
 								{daysWord(daysSinceLastSeizure!)}
