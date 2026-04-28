@@ -1,4 +1,4 @@
-import { cloudinaryConfig, CLOUDINARY_UPLOAD_URL } from "@/config/cloudinary"
+import { cloudinaryConfig, CLOUDINARY_IMAGE_UPLOAD_URL, CLOUDINARY_UPLOAD_URL } from "@/config/cloudinary"
 
 export type CloudinaryUploadResponse = {
 	url: string
@@ -6,6 +6,29 @@ export type CloudinaryUploadResponse = {
 }
 
 type UploadProgress = (progress: number) => void
+
+export async function uploadImageToCloudinary(localUri: string): Promise<CloudinaryUploadResponse> {
+	const formData = new FormData()
+	formData.append("file", {
+		uri: localUri,
+		type: "image/jpeg",
+		name: `avatar_${Date.now()}.jpg`,
+	} as any)
+	formData.append("upload_preset", cloudinaryConfig.uploadPreset)
+
+	const response = await fetch(CLOUDINARY_IMAGE_UPLOAD_URL, {
+		method: "POST",
+		body: formData,
+	})
+
+	if (!response.ok) {
+		const err = await response.json()
+		throw new Error(err.error?.message ?? "Помилка завантаження зображення")
+	}
+
+	const data = await response.json()
+	return { url: data.secure_url, publicId: data.public_id }
+}
 
 export async function uploadVideoToCloudinary(
 	localUri: string,

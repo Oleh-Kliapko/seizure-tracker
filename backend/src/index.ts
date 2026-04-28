@@ -4,7 +4,7 @@ dotenv.config()
 import express, { Request, Response } from "express"
 import cors from "cors"
 import nodemailer from "nodemailer"
-import { deleteVideoFromCloudinary } from "./services/cloudinaryService.js"
+import { deleteImageFromCloudinary, deleteVideoFromCloudinary } from "./services/cloudinaryService.js"
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -49,6 +49,32 @@ app.post("/api/videos/delete", async (req: Request, res: Response) => {
 	} catch (error: any) {
 		console.error("Error deleting video:", error.message)
 		res.status(500).json({ error: error.message || "Failed to delete video" })
+	}
+})
+
+// Delete avatar endpoint
+app.post("/api/images/delete", async (req: Request, res: Response) => {
+	try {
+		const { publicId } = req.body
+
+		if (!publicId || typeof publicId !== "string") {
+			res.status(400).json({ error: "Missing or invalid publicId" })
+			return
+		}
+
+		const apiKey = req.headers["x-api-key"]
+		const expectedKey = process.env.API_KEY
+
+		if (!expectedKey || apiKey !== expectedKey) {
+			res.status(401).json({ error: "Unauthorized" })
+			return
+		}
+
+		await deleteImageFromCloudinary(publicId)
+		res.json({ success: true })
+	} catch (error: any) {
+		console.error("Error deleting image:", error.message)
+		res.status(500).json({ error: error.message || "Failed to delete image" })
 	}
 })
 

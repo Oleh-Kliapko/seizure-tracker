@@ -51,6 +51,7 @@ export type User = {
 	cityOfBirth?: string
 	address?: string
 	avatarUrl?: string
+	avatarPublicId?: string
 
 	medicalInfo?: MedicalInfo
 

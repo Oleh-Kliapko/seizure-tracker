@@ -1,7 +1,8 @@
 // hooks/useUser.ts
 
+import { db } from "@/config/firebase"
 import { User } from "@/models/user"
-import { getUser } from "@/services"
+import { doc, onSnapshot } from "firebase/firestore"
 import { useEffect, useState } from "react"
 import { useAuth } from "./useAuth"
 
@@ -16,9 +17,12 @@ export function useUser() {
 			return
 		}
 
-		getUser(user.uid)
-			.then(setProfile)
-			.finally(() => setIsLoading(false))
+		const unsubscribe = onSnapshot(doc(db, "users", user.uid), snap => {
+			setProfile(snap.exists() ? (snap.data() as User) : null)
+			setIsLoading(false)
+		})
+
+		return unsubscribe
 	}, [user])
 
 	return { profile, isLoading }

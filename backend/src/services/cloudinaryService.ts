@@ -30,19 +30,14 @@ function generateSignature(
 	return signature
 }
 
-export async function deleteVideoFromCloudinary(
-	userId: string,
+async function deleteFromCloudinary(
 	publicId: string,
+	resourceType: "video" | "image",
 ): Promise<void> {
 	const { cloudName, apiKey, apiSecret } = getCloudinaryConfig()
 	const timestamp = Math.floor(Date.now() / 1000).toString()
 
-	// Signature should only include public_id and timestamp, NOT api_key
-	const signatureParams: Record<string, string> = {
-		public_id: publicId,
-		timestamp,
-	}
-
+	const signatureParams: Record<string, string> = { public_id: publicId, timestamp }
 	const signature = generateSignature(signatureParams, apiSecret)
 
 	const formData = new URLSearchParams()
@@ -51,18 +46,23 @@ export async function deleteVideoFromCloudinary(
 	formData.append("timestamp", timestamp)
 	formData.append("signature", signature)
 
-	const url = `https://api.cloudinary.com/v1_1/${cloudName}/video/destroy`
-
 	try {
-		await axios.post(url, formData, {
-			headers: {
-				"Content-Type": "application/x-www-form-urlencoded",
-			},
-		})
+		await axios.post(
+			`https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/destroy`,
+			formData,
+			{ headers: { "Content-Type": "application/x-www-form-urlencoded" } },
+		)
 	} catch (error: any) {
 		throw new Error(
-			error.response?.data?.error?.message ||
-				"Failed to delete video from Cloudinary",
+			error.response?.data?.error?.message || `Failed to delete ${resourceType} from Cloudinary`,
 		)
 	}
+}
+
+export async function deleteVideoFromCloudinary(userId: string, publicId: string): Promise<void> {
+	await deleteFromCloudinary(publicId, "video")
+}
+
+export async function deleteImageFromCloudinary(publicId: string): Promise<void> {
+	await deleteFromCloudinary(publicId, "image")
 }

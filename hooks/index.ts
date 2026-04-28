@@ -1,6 +1,7 @@
 // hooks/index.ts
 
 import { useAppFonts } from "./useAppFonts"
+import { useAvatarUpload } from "./useAvatarUpload"
 import { useAppSettingsForm } from "./useAppSettingsForm"
 import {
 	ThemeProvider,
@@ -33,6 +34,7 @@ import { useVideoUpload } from "./useVideoUpload"
 export {
 	ThemeProvider,
 	useAppFonts,
+	useAvatarUpload,
 	useAppSettingsForm,
 	useAppTheme,
 	useAuth,
