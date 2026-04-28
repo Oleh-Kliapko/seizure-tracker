@@ -1,8 +1,11 @@
 // hooks/useAvatarUpload.ts
 
 import { auth, db } from "@/config/firebase"
-import { deleteImageFromCloudinary, uploadImageToCloudinary } from "@/services/cloudinary"
 import { updateUser } from "@/services"
+import {
+	deleteImageFromCloudinary,
+	uploadImageToCloudinary,
+} from "@/services/cloudinary"
 import * as ImagePicker from "expo-image-picker"
 import { deleteField, doc, updateDoc } from "firebase/firestore"
 import { useState } from "react"
@@ -48,7 +51,8 @@ export function useAvatarUpload() {
 						return
 					}
 				} else {
-					const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
+					const { status } =
+						await ImagePicker.requestMediaLibraryPermissionsAsync()
 					if (status !== "granted") {
 						setError("Немає доступу до галереї")
 						return
@@ -63,12 +67,20 @@ export function useAvatarUpload() {
 
 				if (result.canceled || !result.assets[0]?.uri) return
 
+				const asset = result.assets[0]
+				const MAX_SIZE = 3 * 1024 * 1024
+				if (asset.fileSize && asset.fileSize > MAX_SIZE) {
+					setError("Фото занадто велике. Максимум 3 МБ")
+					return
+				}
+
 				try {
 					setIsUploading(true)
 					setError(null)
-					const { url, publicId } = await uploadImageToCloudinary(result.assets[0].uri)
+					const { url, publicId } = await uploadImageToCloudinary(asset.uri)
 					const uid = auth.currentUser?.uid
-					if (uid) await updateUser(uid, { avatarUrl: url, avatarPublicId: publicId })
+					if (uid)
+						await updateUser(uid, { avatarUrl: url, avatarPublicId: publicId })
 				} catch (e: any) {
 					setError(e.message ?? "Помилка завантаження")
 				} finally {

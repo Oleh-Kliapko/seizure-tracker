@@ -7,7 +7,8 @@ export function parseFirebaseError(code: string): string {
 		case "auth/user-not-found":
 			return "Користувача не знайдено"
 		case "auth/wrong-password":
-			return "Невірний пароль"
+		case "auth/invalid-credential":
+			return "Невірний email або пароль"
 		case "auth/email-already-in-use":
 			return "Email вже використовується"
 		case "auth/weak-password":
@@ -16,6 +17,10 @@ export function parseFirebaseError(code: string): string {
 			return "Забагато спроб. Спробуйте пізніше"
 		case "auth/network-request-failed":
 			return "Помилка мережі. Перевірте підключення"
+		case "auth/account-exists-with-different-credential":
+			return "Цей email вже використовується з іншим способом входу"
+		case "auth/requires-recent-login":
+			return "Для цієї дії потрібно повторно увійти"
 		default:
 			return "Сталася помилка. Спробуйте ще раз"
 	}
