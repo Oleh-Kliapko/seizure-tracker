@@ -83,12 +83,12 @@ export const htmlReport = (
 
     .cal-count { font-size: 13px; font-weight: bold; line-height: 1; }
 
-    .cal-severe { background: #EF4444 !important; border-color: #EF4444 !important; }
+    .cal-severe { background: #7B1FA2 !important; border-color: #7B1FA2 !important; }
     .cal-severe .cal-count { color: #fff; }
-    .cal-medium { background: #F97316 !important; border-color: #F97316 !important; }
+    .cal-medium { background: #F06292 !important; border-color: #F06292 !important; }
     .cal-medium .cal-count { color: #fff; }
-    .cal-light { background: #FACC15 !important; border-color: #FACC15 !important; }
-    .cal-light .cal-count { color: #1F2937; }
+    .cal-light { background: #E6A817 !important; border-color: #E6A817 !important; }
+    .cal-light .cal-count { color: #fff; }
   </style>
 </head>
 <body>
@@ -180,9 +180,9 @@ export const htmlReport = (
   <div class="calendar-page">
     <h2>Календар приступів за період з ${formatDate(from)} по ${formatDate(to)}</h2>
     <div class="legend">
-      <span class="legend-item"><span class="legend-box" style="background:#EF4444"></span>Важкий</span>
-      <span class="legend-item"><span class="legend-box" style="background:#F97316"></span>Середній</span>
-      <span class="legend-item"><span class="legend-box" style="background:#FACC15"></span>Легкий / не визначено</span>
+      <span class="legend-item"><span class="legend-box" style="background:#7B1FA2"></span>Важкий</span>
+      <span class="legend-item"><span class="legend-box" style="background:#F06292"></span>Середній</span>
+      <span class="legend-item"><span class="legend-box" style="background:#E6A817"></span>Легкий / не визначено</span>
       <span class="legend-item"><span style="font-size: 13px; font-weight: bold;">N</span> — кількість приступів за день</span>
     </div>
     <div class="months-grid">

@@ -3,13 +3,18 @@
 import { LogoutButton, ProfileAvatar, ProfileMenu } from "@/components/settings"
 import { ScreenWrapper } from "@/components/ui"
 import { useAppTheme, useAuthActions, useAvatarUpload, useUser } from "@/hooks"
-import { ActivityIndicator, ScrollView, View } from "react-native"
+import { useEffect } from "react"
+import { ActivityIndicator, Alert, ScrollView, View } from "react-native"
 
 export default function ProfileScreen() {
 	const { colors, spacing } = useAppTheme()
 	const { profile, isLoading } = useUser()
 	const { logout } = useAuthActions()
-	const { pickAndUpload, removeAvatar, isUploading } = useAvatarUpload()
+	const { pickAndUpload, removeAvatar, isUploading, error: avatarError } = useAvatarUpload()
+
+	useEffect(() => {
+		if (avatarError) Alert.alert("Помилка", avatarError)
+	}, [avatarError])
 
 	if (isLoading) {
 		return (
