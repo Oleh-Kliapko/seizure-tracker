@@ -113,7 +113,7 @@ app.post("/api/emails/send-report", async (req: Request, res: Response) => {
 				user: process.env.SMTP_USER,
 				pass: process.env.SMTP_PASS,
 			},
-		})
+		} as any)
 
 		// Send email
 		const mailOptions = {
