@@ -246,12 +246,12 @@ async function generateTableRows(
 			if (includeQr) {
 				if (s.videoUrl) {
 					try {
-						const qrSvg = await QRCode.toString(s.videoUrl, {
-							type: "image/svg+xml",
+						const qrSvg = (await QRCode.toString(s.videoUrl, {
+							type: "svg",
 							width: 80,
 							margin: 0,
 							color: { dark: "#4A90E2", light: "#ffffff" },
-						})
+						})) as string
 						qrCell = `<div><img src="data:image/svg+xml;charset=utf-8,${encodeURIComponent(qrSvg)}" alt="QR" style="width: 60px; height: 60px;"/></div>`
 					} catch {
 						qrCell = `<div><span style="font-size: 9px; color: #4A90E2;">🎥</span></div>`

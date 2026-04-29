@@ -1,27 +1,31 @@
 // utils/parseFirebaseError.ts
 
+import { ERROR_MESSAGES } from "@/constants/errorMessages"
+
 export function parseFirebaseError(code: string): string {
 	switch (code) {
 		case "auth/invalid-email":
-			return "Невірний формат email"
+			return ERROR_MESSAGES.invalidEmail
+		case "auth/invalid-phone":
+			return ERROR_MESSAGES.invalidPhone
 		case "auth/user-not-found":
-			return "Користувача не знайдено"
+			return ERROR_MESSAGES.userNotFound
 		case "auth/wrong-password":
 		case "auth/invalid-credential":
-			return "Невірний email або пароль"
+			return ERROR_MESSAGES.wrongPassword
 		case "auth/email-already-in-use":
-			return "Email вже використовується"
+			return ERROR_MESSAGES.emailInUse
 		case "auth/weak-password":
-			return "Пароль має бути не менше 6 символів"
+			return ERROR_MESSAGES.weakPassword
 		case "auth/too-many-requests":
-			return "Забагато спроб. Спробуйте пізніше"
+			return ERROR_MESSAGES.tooManyRequests
 		case "auth/network-request-failed":
-			return "Помилка мережі. Перевірте підключення"
+			return ERROR_MESSAGES.networkError
 		case "auth/account-exists-with-different-credential":
-			return "Цей email вже використовується з іншим способом входу"
+			return ERROR_MESSAGES.accountExistsWithDifferentCredential
 		case "auth/requires-recent-login":
-			return "Для цієї дії потрібно повторно увійти"
+			return ERROR_MESSAGES.requiresRecentLogin
 		default:
-			return "Сталася помилка. Спробуйте ще раз"
+			return ERROR_MESSAGES.generic
 	}
 }

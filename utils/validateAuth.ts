@@ -1,18 +1,13 @@
 // utils/validateAuth.ts
 
+import { ERROR_MESSAGES } from "@/constants/errorMessages"
 import { validate, ValidationResult } from "./validation"
-
-const errorMsg = {
-	required: "Всі поля обов'язкові",
-	passwordLength: "Пароль має бути не менше 6 символів",
-	passwordMatch: "Паролі не співпадають",
-}
 
 export function validateLogin(
 	email: string,
 	password: string,
 ): ValidationResult {
-	return validate([[!email.trim() || !password.trim(), errorMsg.required]])
+	return validate([[!email.trim() || !password.trim(), ERROR_MESSAGES.requiredFields]])
 }
 
 export function validateRegister(
@@ -23,9 +18,9 @@ export function validateRegister(
 	return validate([
 		[
 			!email.trim() || !password.trim() || !confirmPassword.trim(),
-			errorMsg.required,
+			ERROR_MESSAGES.requiredFields,
 		],
-		[password.length < 6, errorMsg.passwordLength],
-		[password !== confirmPassword, errorMsg.passwordMatch],
+		[password.length < 6, ERROR_MESSAGES.weakPassword],
+		[password !== confirmPassword, ERROR_MESSAGES.passwordMatch],
 	])
 }
