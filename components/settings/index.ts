@@ -1,6 +1,7 @@
 // components/ui/settings/index.ts
 import { AppSettingsForm } from "./app-settings/AppSettingsForm"
 import { ChangePasswordForm } from "./app-settings/ChangePasswordForm"
+import { SetPasswordForm } from "./app-settings/SetPasswordForm"
 import { GuardiansList } from "./guardians/GuardiansList"
 import { LogoutButton } from "./LogoutButton"
 import { MedicalForm } from "./medical/MedicalForm"
@@ -12,6 +13,7 @@ import { ProfileMenu } from "./ProfileMenu"
 export {
 	AppSettingsForm,
 	ChangePasswordForm,
+	SetPasswordForm,
 	GuardiansList,
 	LogoutButton,
 	MedicalForm,
