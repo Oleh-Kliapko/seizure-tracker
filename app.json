@@ -49,6 +49,13 @@
         {
           "iosUrlScheme": "com.googleusercontent.apps.899051190770-b9pgl03milrsig9vgf8611n3otel30bj"
         }
+      ],
+      "@react-native-firebase/app",
+      [
+        "@react-native-firebase/app-check",
+        {
+          "isTokenAutoRefreshEnabled": true
+        }
       ]
     ],
     "experiments": {
