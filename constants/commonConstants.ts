@@ -55,9 +55,9 @@ export const CHANNELS: { label: string; value: CommunicationChannel }[] = [
 ]
 
 export const LINKS = [
-	{ label: "Питання та відповіді", key: "faq" },
-	{ label: "Угода користувача", key: "terms" },
-	{ label: "Обробка персональних даних", key: "privacy" },
+	{ label: "Питання та відповіді", key: "faq", url: "https://oleh-kliapko.github.io/seizure-tracker/faq" },
+	{ label: "Угода користувача", key: "terms", url: "https://oleh-kliapko.github.io/seizure-tracker/terms" },
+	{ label: "Обробка персональних даних", key: "privacy", url: "https://oleh-kliapko.github.io/seizure-tracker/privacy" },
 ]
 
 export const SEIZURE_TYPES: { label: string; value: SeizureType }[] = [

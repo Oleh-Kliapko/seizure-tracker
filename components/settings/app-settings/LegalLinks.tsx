@@ -3,15 +3,15 @@
 import { LINKS } from "@/constants/commonConstants"
 import { useAppTheme } from "@/hooks"
 import { ChevronRight } from "lucide-react-native"
-import { Text, TouchableOpacity, View } from "react-native"
+import { Linking, Text, TouchableOpacity, View } from "react-native"
 import { getStyles } from "../getStyles"
 
 export function LegalLinks() {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
 
-	const handlePress = (key: string) => {
-		// TODO: відкрити відповідну сторінку або WebView
+	const handlePress = (url: string) => {
+		Linking.openURL(url)
 	}
 
 	return (
@@ -21,7 +21,7 @@ export function LegalLinks() {
 				<View key={link.key}>
 					<TouchableOpacity
 						style={styles.legalLink}
-						onPress={() => handlePress(link.key)}
+						onPress={() => handlePress(link.url)}
 						activeOpacity={0.7}
 					>
 						<Text style={styles.legalLinkText}>{link.label}</Text>
