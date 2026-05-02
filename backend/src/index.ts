@@ -1,10 +1,15 @@
+import { setDefaultResultOrder } from "dns"
 import dotenv from "dotenv"
 dotenv.config()
+setDefaultResultOrder("ipv4first")
 
-import express, { Request, Response } from "express"
 import cors from "cors"
+import express, { Request, Response } from "express"
 import nodemailer from "nodemailer"
-import { deleteImageFromCloudinary, deleteVideoFromCloudinary } from "./services/cloudinaryService.js"
+import {
+	deleteImageFromCloudinary,
+	deleteVideoFromCloudinary,
+} from "./services/cloudinaryService.js"
 
 const app = express()
 const PORT = process.env.PORT || 3000
