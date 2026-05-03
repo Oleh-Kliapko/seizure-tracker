@@ -18,19 +18,10 @@ i18n.use(initReactI18next).init({
 	interpolation: { escapeValue: false },
 })
 
-// Async: load saved language or detect from device
+// Async: load saved language preference
 AsyncStorage.getItem(LANGUAGE_STORAGE_KEY).then(saved => {
 	if (saved === "uk" || saved === "en") {
 		i18n.changeLanguage(saved)
-		return
-	}
-	// No saved preference — try expo-localization
-	try {
-		const { getLocales } = require("expo-localization")
-		const code: string = getLocales()?.[0]?.languageCode ?? "en"
-		i18n.changeLanguage(code === "uk" || code === "ru" ? "uk" : "en")
-	} catch {
-		// expo-localization not available in this build — stay with "en"
 	}
 })
 
