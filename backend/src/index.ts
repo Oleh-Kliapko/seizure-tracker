@@ -1,7 +1,10 @@
-import { setDefaultResultOrder } from "dns"
+import { resolve4, setDefaultResultOrder } from "dns"
+import { promisify } from "util"
 import dotenv from "dotenv"
 dotenv.config()
 setDefaultResultOrder("ipv4first")
+
+const resolve4Async = promisify(resolve4)
 
 import cors from "cors"
 import express, { Request, Response } from "express"
@@ -109,17 +112,26 @@ app.post("/api/emails/send-report", async (req: Request, res: Response) => {
 			return
 		}
 
+		// Resolve SMTP hostname to explicit IPv4 to avoid ENETUNREACH on IPv6-only paths
+		const smtpHostname = process.env.SMTP_HOST!
+		let smtpHost = smtpHostname
+		try {
+			const addresses = await resolve4Async(smtpHostname)
+			if (addresses[0]) smtpHost = addresses[0]
+		} catch {
+			// fallback to hostname
+		}
+
 		// Setup email transporter
 		const transporter = nodemailer.createTransport({
-			host: process.env.SMTP_HOST,
+			host: smtpHost,
 			port: Number(process.env.SMTP_PORT) || 587,
 			secure: process.env.SMTP_SECURE === "true",
-			family: 4,
 			auth: {
 				user: process.env.SMTP_USER,
 				pass: process.env.SMTP_PASS,
 			},
-		} as any)
+		})
 
 		// Send email
 		const mailOptions = {

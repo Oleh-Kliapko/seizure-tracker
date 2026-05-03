@@ -5,6 +5,7 @@ import {
 	AppName,
 	AppSlogan,
 	AuthFooterLink,
+	AuthLanguageSwitcher,
 	Button,
 	Divider,
 	FormInput,
@@ -50,6 +51,7 @@ export default function Login() {
 					contentContainerStyle={styles.scrollContent}
 					keyboardShouldPersistTaps="handled"
 				>
+					<AuthLanguageSwitcher />
 					<View style={styles.logoContainer}>
 						<AppLogo size={80} />
 						<AppName marginTop={4} />
