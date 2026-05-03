@@ -29,6 +29,7 @@
     "exportNoSeizures": "За вибраний період приступів не знайдено",
     "exportError": "Помилка експорту. Спробуйте ще раз",
     "sendError": "Помилка відправлення. Спробуйте ще раз",
+    "reportCooldown": "Звіт вже надіслано. Наступний доступний: {{date}}",
     "unknownError": "Невідома помилка",
     "googleUnavailable": "Google Sign-In недоступний",
     "authCancelled": "Авторизацію скасовано",

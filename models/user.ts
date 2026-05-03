@@ -60,4 +60,6 @@ export type User = {
 	guardians?: Guardian[]
 
 	appSettings?: AppSettings
+
+	lastReportSentAt?: number
 }

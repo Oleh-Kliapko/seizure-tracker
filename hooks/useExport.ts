@@ -1,7 +1,8 @@
 // hooks/useExport.ts
 
-import { exportSeizuresToPdf, getSeizuresByPeriod } from "@/services"
+import { exportSeizuresToPdf, getSeizuresByPeriod, updateUser } from "@/services"
 import { generateSeizureReportHtml } from "@/utils"
+import { REPORT_COOLDOWN_DAYS } from "@/constants/commonConstants"
 import i18n from "@/config/i18n"
 import { useState } from "react"
 import * as Print from "expo-print"
@@ -46,6 +47,15 @@ export function useExport() {
 			setIsLoading(true)
 			setError(null)
 
+			const cooldownMs = REPORT_COOLDOWN_DAYS * 24 * 60 * 60 * 1000
+			if (profile.lastReportSentAt && Date.now() - profile.lastReportSentAt < cooldownMs) {
+				const nextAvailable = new Date(profile.lastReportSentAt + cooldownMs)
+				const locale = i18n.language === "uk" ? "uk-UA" : "en-US"
+				const dateStr = nextAvailable.toLocaleDateString(locale, { day: "2-digit", month: "2-digit", year: "numeric" })
+				setError(i18n.t("error.reportCooldown", { date: dateStr }))
+				return
+			}
+
 			const seizures = await getSeizuresByPeriod(user.uid, from, to)
 
 			if (seizures.length === 0) {
@@ -89,6 +99,7 @@ export function useExport() {
 				return
 			}
 
+			await updateUser(user.uid, { lastReportSentAt: Date.now() })
 			setError(null)
 		} catch (e: any) {
 			console.log("[Email Export] EXCEPTION:", e.message, e)

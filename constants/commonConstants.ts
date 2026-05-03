@@ -92,6 +92,8 @@ export const EXTERNAL_TRIGGERS: { labelKey: string; value: ExternalTrigger }[] =
 	{ labelKey: "trigger.custom", value: "custom" },
 ]
 
+export const REPORT_COOLDOWN_DAYS = 7
+
 export const MOODS = [1, 2, 3, 4, 5]
 export const MOOD_EMOJI: Record<number, string> = {
 	1: "😞",

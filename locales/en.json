@@ -29,6 +29,7 @@
     "exportNoSeizures": "No seizures found for the selected period",
     "exportError": "Export error. Please try again",
     "sendError": "Send error. Please try again",
+    "reportCooldown": "Report already sent. Next available: {{date}}",
     "unknownError": "Unknown error",
     "googleUnavailable": "Google Sign-In is not available",
     "authCancelled": "Sign-in cancelled",
