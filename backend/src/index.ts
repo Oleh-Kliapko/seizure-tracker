@@ -1,14 +1,9 @@
-import { resolve4, setDefaultResultOrder } from "dns"
-import { promisify } from "util"
 import dotenv from "dotenv"
 dotenv.config()
-setDefaultResultOrder("ipv4first")
-
-const resolve4Async = promisify(resolve4)
 
 import cors from "cors"
 import express, { Request, Response } from "express"
-import nodemailer from "nodemailer"
+import { Resend } from "resend"
 import {
 	deleteImageFromCloudinary,
 	deleteVideoFromCloudinary,
@@ -112,30 +107,10 @@ app.post("/api/emails/send-report", async (req: Request, res: Response) => {
 			return
 		}
 
-		// Resolve SMTP hostname to explicit IPv4 to avoid ENETUNREACH on IPv6-only paths
-		const smtpHostname = process.env.SMTP_HOST!
-		let smtpHost = smtpHostname
-		try {
-			const addresses = await resolve4Async(smtpHostname)
-			if (addresses[0]) smtpHost = addresses[0]
-		} catch {
-			// fallback to hostname
-		}
+		const resend = new Resend(process.env.RESEND_API_KEY)
 
-		// Setup email transporter
-		const transporter = nodemailer.createTransport({
-			host: smtpHost,
-			port: Number(process.env.SMTP_PORT) || 587,
-			secure: process.env.SMTP_SECURE === "true",
-			auth: {
-				user: process.env.SMTP_USER,
-				pass: process.env.SMTP_PASS,
-			},
-		})
-
-		// Send email
-		const mailOptions = {
-			from: process.env.SMTP_FROM || process.env.SMTP_USER,
+		await resend.emails.send({
+			from: process.env.RESEND_FROM!,
 			to: email,
 			subject: isUk
 				? `SeizureTracker Звіт - ${patientName || "Пацієнт"}`
@@ -160,9 +135,7 @@ app.post("/api/emails/send-report", async (req: Request, res: Response) => {
 					contentType: "application/pdf",
 				},
 			],
-		}
-
-		await transporter.sendMail(mailOptions)
+		})
 
 		res.json({ success: true, message: "Email sent successfully" })
 	} catch (error: any) {
