@@ -30,7 +30,7 @@
 
 - Автоматична генерація звіту за обраний період
 - QR-коди для відеозаписів
-- Відправка звіту на email
+- Відправка звіту на email (не частіше 1 разу на 7 днів)
 
 **👤 Профіль**
 
@@ -47,6 +47,7 @@
 
 - Світла / темна тема
 - Підтримка планшетів
+- Українська та англійська мови (перемикач прапорів на екрані входу та в налаштуваннях)
 
 ---
 
@@ -61,6 +62,8 @@
 | Медіа       | Cloudinary (відео, фото)       |
 | PDF         | expo-print + expo-sharing      |
 | Бекенд      | Node.js + Express (Render)     |
+| Email       | Resend API                     |
+| i18n        | i18next + react-i18next        |
 | Мова        | TypeScript                     |
 
 ---
@@ -101,6 +104,7 @@ EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 EXPO_PUBLIC_FIREBASE_APP_ID=your_app_id
 EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID=your_measurement_id
 EXPO_PUBLIC_BACKEND_URL=https://your-backend.onrender.com
+EXPO_PUBLIC_BACKEND_API_KEY=your_api_key
 ```
 
 #### 3. Firebase конфігурація
@@ -156,7 +160,7 @@ npx expo start --dev-client
 ```bash
 cd backend
 npm install
-cp .env.example .env   # заповніть змінні Cloudinary + SMTP
+cp .env.example .env   # заповніть змінні Cloudinary + Resend
 npm run dev
 ```
 

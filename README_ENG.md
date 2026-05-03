@@ -30,7 +30,7 @@ A mobile app for tracking epileptic seizures, medications, and daily health metr
 
 - Auto-generate reports for any date range
 - QR codes linking to seizure videos
-- Email delivery
+- Email delivery (rate-limited to 1 report per 7 days)
 
 **👤 Profile**
 
@@ -47,6 +47,7 @@ A mobile app for tracking epileptic seizures, medications, and daily health metr
 
 - Light / dark theme
 - Tablet support
+- Ukrainian and English languages (flag switcher on login screen and in settings)
 
 ---
 
@@ -61,6 +62,8 @@ A mobile app for tracking epileptic seizures, medications, and daily health metr
 | Media      | Cloudinary (video, photos)     |
 | PDF        | expo-print + expo-sharing      |
 | Backend    | Node.js + Express (Render)     |
+| Email      | Resend API                     |
+| i18n       | i18next + react-i18next        |
 | Language   | TypeScript                     |
 
 ---
@@ -101,6 +104,7 @@ EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 EXPO_PUBLIC_FIREBASE_APP_ID=your_app_id
 EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID=your_measurement_id
 EXPO_PUBLIC_BACKEND_URL=https://your-backend.onrender.com
+EXPO_PUBLIC_BACKEND_API_KEY=your_api_key
 ```
 
 #### 3. Firebase configuration
@@ -156,7 +160,7 @@ The backend is deployed on [Render](https://render.com). For local development:
 ```bash
 cd backend
 npm install
-cp .env.example .env   # fill in Cloudinary + SMTP variables
+cp .env.example .env   # fill in Cloudinary + Resend variables
 npm run dev
 ```
 
