@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/Button"
 import { useAppTheme } from "@/hooks"
 import { useIsDarkTheme } from "@/hooks/useAppTheme"
 import { useAuth, useUser } from "@/hooks"
+import { REPORT_COOLDOWN_DAYS } from "@/constants/commonConstants"
 import DateTimePicker from "@react-native-community/datetimepicker"
 import { FileDown, Mail } from "lucide-react-native"
 import { useEffect, useState } from "react"
@@ -60,7 +61,10 @@ export function ExportForm({ onExport, onExportEmail, isLoading, error }: Props)
 	return (
 		<View style={styles.card}>
 			<Text style={styles.title}>{t('history.exportTitle')}</Text>
-			<Text style={styles.subtitle}>{t('history.exportSubtitle')}</Text>
+			<View style={styles.rulesList}>
+				<Text style={styles.subtitle}>{"• "}{t('history.exportRule1')}</Text>
+				<Text style={styles.subtitle}>{"• "}{t('history.exportRule2', { days: REPORT_COOLDOWN_DAYS })}</Text>
+			</View>
 
 			<View style={styles.row}>
 				<TouchableOpacity

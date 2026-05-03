@@ -29,12 +29,15 @@ export const getStyles = (theme: AppTheme) => {
 			textTransform: "uppercase" as const,
 			letterSpacing: 0.5,
 		},
+		rulesList: {
+			marginTop: 4,
+			marginBottom: spacing.md,
+			gap: 2,
+		},
 		subtitle: {
 			fontFamily: fonts.regular,
 			fontSize: fontSize.sm,
 			color: textSecondary,
-			marginTop: 2,
-			marginBottom: spacing.md,
 		},
 		row: {
 			flexDirection: "row",
