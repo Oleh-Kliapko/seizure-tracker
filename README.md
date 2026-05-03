@@ -11,36 +11,42 @@
 ### ✨ Можливості
 
 **📋 Щоденник нападів**
+
 - Фіксація дати, часу, тривалості, типу та тяжкості нападу
-- Відео- та фотофіксація нападу з завантаженням у хмару
+- Відеофіксація нападу з завантаженням у хмару
 - Внутрішні та зовнішні тригери
 - Календар нападів з фільтрами по тяжкості
 - Діаграма розподілу нападів по часу доби
 
 **💊 Ліки**
+
 - Реєстрація препаратів з дозуванням та розкладом
 - Щоденне відмічання прийому ліків
 
 **📊 Щоденний трекінг**
+
 - Пульс, артеріальний тиск, температура
 - Настрій (1–5), нотатки
 
 **📄 PDF-звіти**
+
 - Автоматична генерація звіту за обраний період
 - QR-коди для відеозаписів
 - Відправка звіту на email
 
 **👤 Профіль**
+
 - Особисті та медичні дані (група крові, резус-фактор, тощо)
 - Контакти опікунів
-- Фото аватара
 
 **🔐 Безпека**
+
 - Email/пароль та Google Sign-In
 - Верифікація email при реєстрації
 - Правила безпеки Firestore (дані доступні виключно їх власнику)
 
 **🎨 Інтерфейс**
+
 - Світла / темна тема
 - Підтримка планшетів
 
@@ -48,16 +54,16 @@
 
 ### 🛠 Технологічний стек
 
-| Шар | Технологія |
-|-----|-----------|
-| Фреймворк | React Native + Expo (SDK 54) |
-| Навігація | Expo Router v6 (file-based) |
-| База даних | Firebase Firestore |
+| Шар         | Технологія                     |
+| ----------- | ------------------------------ |
+| Фреймворк   | React Native + Expo (SDK 54)   |
+| Навігація   | Expo Router v6 (file-based)    |
+| База даних  | Firebase Firestore             |
 | Авторизація | Firebase Auth (Email + Google) |
-| Медіа | Cloudinary (відео, фото) |
-| PDF | expo-print + expo-sharing |
-| Бекенд | Node.js + Express (Render) |
-| Мова | TypeScript |
+| Медіа       | Cloudinary (відео, фото)       |
+| PDF         | expo-print + expo-sharing      |
+| Бекенд      | Node.js + Express (Render)     |
+| Мова        | TypeScript                     |
 
 ---
 
@@ -157,6 +163,7 @@ npm run dev
 ```
 
 Ендпоінти:
+
 - `GET  /health` — перевірка доступності
 - `POST /api/videos/delete` — видалення відео з Cloudinary
 - `POST /api/images/delete` — видалення фото з Cloudinary
@@ -190,6 +197,7 @@ seizure-tracker/
 ### 📄 Правові документи
 
 Розміщені на GitHub Pages:
+
 - [FAQ](https://oleh-kliapko.github.io/seizure-tracker/faq)
 - [Угода користувача](https://oleh-kliapko.github.io/seizure-tracker/terms)
 - [Обробка персональних даних](https://oleh-kliapko.github.io/seizure-tracker/privacy)
@@ -205,36 +213,43 @@ A mobile app for tracking epileptic seizures, medications, and daily health metr
 ### ✨ Features
 
 **📋 Seizure Diary**
+
 - Log date, time, duration, type, and severity of each seizure
-- Video/photo capture with cloud upload
+- Video capture with cloud upload
 - Internal and external triggers
 - Seizure calendar with severity filters
 - Time-of-day distribution chart
 
 **💊 Medications**
+
 - Register medications with dosage and schedule
 - Daily medication intake tracking
 
 **📊 Daily Tracking**
+
 - Heart rate, blood pressure, temperature
 - Mood (1–5), notes
 
 **📄 PDF Reports**
+
 - Auto-generate reports for any date range
 - QR codes linking to seizure videos
 - Email delivery
 
 **👤 Profile**
+
 - Personal and medical data (blood type, Rh factor, etc.)
 - Guardian contacts
 - Profile photo
 
 **🔐 Security**
+
 - Email/password and Google Sign-In
 - Email verification on registration
 - Firestore security rules (data accessible only by its owner)
 
 **🎨 UI**
+
 - Light / dark theme
 - Tablet support
 
@@ -242,16 +257,16 @@ A mobile app for tracking epileptic seizures, medications, and daily health metr
 
 ### 🛠 Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Framework | React Native + Expo (SDK 54) |
-| Navigation | Expo Router v6 (file-based) |
-| Database | Firebase Firestore |
-| Auth | Firebase Auth (Email + Google) |
-| Media | Cloudinary (video, photos) |
-| PDF | expo-print + expo-sharing |
-| Backend | Node.js + Express (Render) |
-| Language | TypeScript |
+| Layer      | Technology                     |
+| ---------- | ------------------------------ |
+| Framework  | React Native + Expo (SDK 54)   |
+| Navigation | Expo Router v6 (file-based)    |
+| Database   | Firebase Firestore             |
+| Auth       | Firebase Auth (Email + Google) |
+| Media      | Cloudinary (video, photos)     |
+| PDF        | expo-print + expo-sharing      |
+| Backend    | Node.js + Express (Render)     |
+| Language   | TypeScript                     |
 
 ---
 
@@ -351,6 +366,7 @@ npm run dev
 ```
 
 Endpoints:
+
 - `GET  /health` — health check
 - `POST /api/videos/delete` — delete video from Cloudinary
 - `POST /api/images/delete` — delete photo from Cloudinary
@@ -384,6 +400,7 @@ seizure-tracker/
 ### 📄 Legal
 
 Hosted on GitHub Pages:
+
 - [FAQ](https://oleh-kliapko.github.io/seizure-tracker/faq)
 - [Terms of Use](https://oleh-kliapko.github.io/seizure-tracker/terms)
 - [Privacy Policy](https://oleh-kliapko.github.io/seizure-tracker/privacy)
