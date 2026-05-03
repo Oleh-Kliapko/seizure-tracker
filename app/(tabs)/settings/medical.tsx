@@ -10,18 +10,32 @@ import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 export default function MedicalScreen() {
 	const { spacing } = useAppTheme()
 	const {
-		month, setMonth,
-		year, setYear,
-		bloodType, setBloodType,
-		rhFactor, setRhFactor,
-		height, setHeight,
-		weight, setWeight,
-		anamnesis, setAnamnesis,
+		month,
+		setMonth,
+		year,
+		setYear,
+		bloodType,
+		setBloodType,
+		rhFactor,
+		setRhFactor,
+		height,
+		setHeight,
+		weight,
+		setWeight,
+		anamnesis,
+		setAnamnesis,
 		displayError,
 		autoSave,
 	} = useMedicalForm()
 
-	useFocusEffect(useCallback(() => () => { autoSave() }, [autoSave]))
+	useFocusEffect(
+		useCallback(
+			() => () => {
+				autoSave()
+			},
+			[autoSave],
+		),
+	)
 
 	return (
 		<ScreenWrapper>
@@ -43,10 +57,22 @@ export default function MedicalScreen() {
 						height={height}
 						weight={weight}
 						anamnesis={anamnesis}
-						onMonthChange={v => { setMonth(v); autoSave({ month: v }) }}
-						onYearChange={v => { setYear(v); autoSave({ year: v }) }}
-						onBloodTypeChange={v => { setBloodType(v); autoSave({ bloodType: v }) }}
-						onRhFactorChange={v => { setRhFactor(v); autoSave({ rhFactor: v }) }}
+						onMonthChange={v => {
+							setMonth(v)
+							autoSave({ month: v })
+						}}
+						onYearChange={v => {
+							setYear(v)
+							autoSave({ year: v })
+						}}
+						onBloodTypeChange={v => {
+							setBloodType(v)
+							autoSave({ bloodType: v })
+						}}
+						onRhFactorChange={v => {
+							setRhFactor(v)
+							autoSave({ rhFactor: v })
+						}}
 						onHeightChange={setHeight}
 						onWeightChange={setWeight}
 						onAnamnesisChange={setAnamnesis}

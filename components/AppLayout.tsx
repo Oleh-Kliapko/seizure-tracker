@@ -11,9 +11,11 @@ export function AppLayout() {
 	const { user, isLoading } = useAuth()
 	const baseTheme = isDark ? MD3DarkTheme : MD3LightTheme
 
+	// Check and wake up backend
 	useEffect(() => {
 		const url = process.env.EXPO_PUBLIC_BACKEND_URL
 		if (!url) return
+
 		fetch(`${url}/health`).catch(() => {})
 	}, [])
 
@@ -70,7 +72,18 @@ export function AppLayout() {
 				<Stack.Screen name="(auth)" />
 			</Stack>
 			{!user && <Redirect href="/(auth)/login" />}
-			{user && <Redirect href="/(tabs)" />}
+			{user &&
+				!user.emailVerified &&
+				user.providerData.some(p => p.providerId === "password") &&
+				!user.providerData.some(p => p.providerId === "google.com") && (
+					<Redirect href="/(auth)/verify-email" />
+				)}
+			{user &&
+				(user.emailVerified ||
+					!user.providerData.some(p => p.providerId === "password") ||
+					user.providerData.some(p => p.providerId === "google.com")) && (
+					<Redirect href="/(tabs)" />
+				)}
 		</PaperProvider>
 	)
 }

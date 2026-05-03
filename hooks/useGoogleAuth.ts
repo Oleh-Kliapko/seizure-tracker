@@ -102,7 +102,7 @@ export function useGoogleAuth() {
 
 			const existingUser = await getUser(user.uid)
 			if (!existingUser) {
-				await createUser(user.uid, user.email ?? "")
+				await createUser(user.uid, user.email ?? "", true)
 			}
 
 			return true

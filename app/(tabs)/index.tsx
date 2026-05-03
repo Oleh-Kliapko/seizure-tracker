@@ -10,9 +10,9 @@ import {
 import { ScreenHeader, ScreenWrapper } from "@/components/ui"
 import { useAppTheme } from "@/hooks"
 import { useDashboard } from "@/hooks/useDashboard"
-import { router } from "expo-router"
 import { format } from "date-fns"
 import { uk } from "date-fns/locale"
+import { router } from "expo-router"
 import {
 	ActivityIndicator,
 	ScrollView,
@@ -50,7 +50,9 @@ export default function Dashboard() {
 			/>
 
 			{isLoading ? (
-				<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+				<View
+					style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+				>
 					<ActivityIndicator color={colors.primary} />
 				</View>
 			) : !hasSeizures ? (
@@ -71,7 +73,7 @@ export default function Dashboard() {
 							textAlign: "center",
 						}}
 					>
-						Тут з'явиться статистика після першого запису
+						Тут з&apos;явиться статистика після першого запису
 					</Text>
 					<Text
 						style={{
@@ -93,14 +95,23 @@ export default function Dashboard() {
 							borderRadius: 999,
 						}}
 					>
-						<Text style={{ fontFamily: fonts.medium, fontSize: fontSize.md, color: "#fff" }}>
+						<Text
+							style={{
+								fontFamily: fonts.medium,
+								fontSize: fontSize.md,
+								color: "#fff",
+							}}
+						>
 							+ Додати приступ
 						</Text>
 					</TouchableOpacity>
 				</View>
 			) : (
 				<ScrollView
-					contentContainerStyle={{ padding: spacing.lg, paddingTop: spacing.sm }}
+					contentContainerStyle={{
+						padding: spacing.lg,
+						paddingTop: spacing.sm,
+					}}
 					showsVerticalScrollIndicator={false}
 				>
 					<DashboardHero

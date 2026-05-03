@@ -5,6 +5,7 @@ import { createUser } from "@/services"
 import { parseFirebaseError } from "@/utils"
 import {
 	createUserWithEmailAndPassword,
+	sendEmailVerification,
 	signInWithEmailAndPassword,
 	signOut,
 } from "firebase/auth"
@@ -46,6 +47,7 @@ export function useAuthActions() {
 				password,
 			)
 			await createUser(user.uid, email)
+			await sendEmailVerification(user)
 		} catch (e: any) {
 			setError({ message: parseFirebaseError(e.code) })
 		} finally {

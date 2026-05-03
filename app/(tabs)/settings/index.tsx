@@ -10,7 +10,12 @@ export default function ProfileScreen() {
 	const { colors, spacing } = useAppTheme()
 	const { profile, isLoading } = useUser()
 	const { logout } = useAuthActions()
-	const { pickAndUpload, removeAvatar, isUploading, error: avatarError } = useAvatarUpload()
+	const {
+		pickAndUpload,
+		removeAvatar,
+		isUploading,
+		error: avatarError,
+	} = useAvatarUpload()
 
 	useEffect(() => {
 		if (avatarError) Alert.alert("Помилка", avatarError)
@@ -48,7 +53,9 @@ export default function ProfileScreen() {
 					avatarUrl={profile?.avatarUrl}
 					isUploading={isUploading}
 					onEdit={pickAndUpload}
-					onDelete={() => removeAvatar(profile?.avatarPublicId, profile?.avatarUrl)}
+					onDelete={() =>
+						removeAvatar(profile?.avatarPublicId, profile?.avatarUrl)
+					}
 				/>
 
 				<View style={{ flex: 1, gap: spacing.md }}>

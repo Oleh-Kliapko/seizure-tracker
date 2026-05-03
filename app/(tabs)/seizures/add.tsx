@@ -30,16 +30,11 @@ export default function AddSeizureScreen() {
 		setSleepHoursBefore,
 		description,
 		setDescription,
-		videoUrl,
-		setVideoUrl,
 		isLoading,
 		error,
 		toggleInternalTrigger,
 		toggleExternalTrigger,
 		handleSave,
-		isUploading,
-		uploadProgress,
-		cancelUpload,
 	} = useSeizureForm()
 
 	return (
@@ -67,7 +62,6 @@ export default function AddSeizureScreen() {
 						isMedicationTaken={isMedicationTaken}
 						sleepHoursBefore={sleepHoursBefore}
 						description={description}
-						videoUrl={videoUrl}
 						isLoading={isLoading}
 						error={error}
 						onStartChange={setStartedAt}
@@ -82,11 +76,7 @@ export default function AddSeizureScreen() {
 						onMedicationChange={setIsMedicationTaken}
 						onSleepHoursChange={setSleepHoursBefore}
 						onDescriptionChange={setDescription}
-						onVideoChange={setVideoUrl}
 						onSave={handleSave}
-						isUploading={isUploading}
-						uploadProgress={uploadProgress}
-						onCancelUpload={cancelUpload}
 					/>
 				</ScrollView>
 			</KeyboardAvoidingView>

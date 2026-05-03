@@ -25,24 +25,42 @@ import {
 export default function TrackingScreen() {
 	const { colors, fonts, fontSize, spacing } = useAppTheme()
 	const {
-		temperature, setTemperature,
-		pulse, setPulse,
-		systolicPressure, setSystolicPressure,
-		diastolicPressure, setDiastolicPressure,
-		oxygenSaturation, setOxygenSaturation,
-		sleepDuration, setSleepDuration,
-		sleepQuality, setSleepQuality,
-		mood, setMood,
-		activityLevel, setActivityLevel,
-		urinationCount, setUrinationCount,
-		bowelMovements, setBowelMovements,
-		internalTriggers, externalTriggers,
-		toggleInternalTrigger, toggleExternalTrigger,
-		medications, medIntakes,
-		addIntake, removeIntake,
-		patientNotes, setPatientNotes,
-		doctorNotes, setDoctorNotes,
-		isLoading, error,
+		temperature,
+		setTemperature,
+		pulse,
+		setPulse,
+		systolicPressure,
+		setSystolicPressure,
+		diastolicPressure,
+		setDiastolicPressure,
+		oxygenSaturation,
+		setOxygenSaturation,
+		sleepDuration,
+		setSleepDuration,
+		sleepQuality,
+		setSleepQuality,
+		mood,
+		setMood,
+		activityLevel,
+		setActivityLevel,
+		urinationCount,
+		setUrinationCount,
+		bowelMovements,
+		setBowelMovements,
+		internalTriggers,
+		externalTriggers,
+		toggleInternalTrigger,
+		toggleExternalTrigger,
+		medications,
+		medIntakes,
+		addIntake,
+		removeIntake,
+		patientNotes,
+		setPatientNotes,
+		doctorNotes,
+		setDoctorNotes,
+		isLoading,
+		error,
 		autoSave,
 	} = useTrackingForm()
 
@@ -50,14 +68,12 @@ export default function TrackingScreen() {
 
 	return (
 		<ScreenWrapper>
-			<ScreenHeader
-				title="Трекінг"
-				subtitle={today}
-				showBackButton={false}
-			/>
+			<ScreenHeader title="Трекінг" subtitle={today} showBackButton={false} />
 
 			{isLoading ? (
-				<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+				<View
+					style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+				>
 					<ActivityIndicator color={colors.primary} />
 				</View>
 			) : (
@@ -73,8 +89,14 @@ export default function TrackingScreen() {
 						<TrackingWellbeing
 							mood={mood}
 							activityLevel={activityLevel}
-							onMoodChange={v => { setMood(v); autoSave({ mood: v }) }}
-							onActivityChange={v => { setActivityLevel(v); autoSave({ activityLevel: v }) }}
+							onMoodChange={v => {
+								setMood(v)
+								autoSave({ mood: v })
+							}}
+							onActivityChange={v => {
+								setActivityLevel(v)
+								autoSave({ activityLevel: v })
+							}}
 						/>
 
 						<TrackingVitals
@@ -95,7 +117,10 @@ export default function TrackingScreen() {
 							sleepDuration={sleepDuration}
 							sleepQuality={sleepQuality}
 							onDurationChange={setSleepDuration}
-							onQualityChange={v => { setSleepQuality(v); autoSave({ sleepQuality: v }) }}
+							onQualityChange={v => {
+								setSleepQuality(v)
+								autoSave({ sleepQuality: v })
+							}}
 							onSave={autoSave}
 						/>
 
@@ -109,8 +134,14 @@ export default function TrackingScreen() {
 						<TrackingToilet
 							urinationCount={urinationCount}
 							bowelMovements={bowelMovements}
-							onUrinationChange={v => { setUrinationCount(v); autoSave({ urinationCount: v }) }}
-							onBowelChange={v => { setBowelMovements(v); autoSave({ bowelMovements: v }) }}
+							onUrinationChange={v => {
+								setUrinationCount(v)
+								autoSave({ urinationCount: v })
+							}}
+							onBowelChange={v => {
+								setBowelMovements(v)
+								autoSave({ bowelMovements: v })
+							}}
 						/>
 
 						<TrackingTriggers

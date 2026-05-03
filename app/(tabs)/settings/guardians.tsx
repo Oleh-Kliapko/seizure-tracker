@@ -18,7 +18,14 @@ export default function GuardiansScreen() {
 		autoSave,
 	} = useGuardiansForm()
 
-	useFocusEffect(useCallback(() => () => { autoSave() }, [autoSave]))
+	useFocusEffect(
+		useCallback(
+			() => () => {
+				autoSave()
+			},
+			[autoSave],
+		),
+	)
 
 	return (
 		<ScreenWrapper>

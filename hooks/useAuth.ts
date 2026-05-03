@@ -1,7 +1,7 @@
 // hooks/useAuth.ts
 
 import { auth } from "@/config/firebase"
-import { onAuthStateChanged, User } from "firebase/auth"
+import { onIdTokenChanged, User } from "firebase/auth"
 import { useEffect, useState } from "react"
 
 type AuthState = {
@@ -14,7 +14,7 @@ export function useAuth(): AuthState {
 	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
-		const unsubscribe = onAuthStateChanged(auth, user => {
+		const unsubscribe = onIdTokenChanged(auth, user => {
 			setUser(user)
 			setIsLoading(false)
 		})

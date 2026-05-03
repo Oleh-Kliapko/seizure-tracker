@@ -13,6 +13,7 @@ import { useAuth } from "./useAuth"
 import { useAuthActions } from "./useAuthActions"
 import { useChangePasswordForm } from "./useChangePasswordForm"
 import { useSetPasswordForm } from "./useSetPasswordForm"
+import { useVerifyEmailActions } from "./useVerifyEmailActions"
 import { useDeleteAccount } from "./useDeleteAccount"
 import { useExport } from "./useExport"
 import { useGoogleAuth } from "./useGoogleAuth"
@@ -42,6 +43,7 @@ export {
 	useAuthActions,
 	useChangePasswordForm,
 	useSetPasswordForm,
+	useVerifyEmailActions,
 	useDeleteAccount,
 	useExport,
 	useGoogleAuth,

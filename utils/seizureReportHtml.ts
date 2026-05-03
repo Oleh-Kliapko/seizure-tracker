@@ -139,7 +139,9 @@ export const htmlReport = (
     <p>${stats.topTriggers}</p>
   </div>
 
-  ${rowsWithVideo ? `
+  ${
+		rowsWithVideo
+			? `
   <div class="table-section">
     <h3>🎥 Приступи з відеозаписом</h3>
     <div class="data-table">
@@ -156,9 +158,13 @@ export const htmlReport = (
       ${rowsWithVideo}
     </div>
   </div>
-  ` : ""}
+  `
+			: ""
+	}
 
-  ${rowsWithoutVideo ? `
+  ${
+		rowsWithoutVideo
+			? `
   <div class="table-section">
     <h3>Приступи без відеозаписів</h3>
     <div class="data-table">
@@ -174,9 +180,13 @@ export const htmlReport = (
       ${rowsWithoutVideo}
     </div>
   </div>
-  ` : ""}
+  `
+			: ""
+	}
 
-  ${calendarHtml ? `
+  ${
+		calendarHtml
+			? `
   <div class="calendar-page">
     <h2>Календар приступів за період з ${formatDate(from)} по ${formatDate(to)}</h2>
     <div class="legend">
@@ -189,7 +199,9 @@ export const htmlReport = (
       ${calendarHtml}
     </div>
   </div>
-  ` : ""}
+  `
+			: ""
+	}
 
   <div class="footer">
     <p>Сформовано додатком SeizureTracker • ${new Date().toLocaleString("uk-UA")}</p>

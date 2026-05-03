@@ -1,5 +1,6 @@
 // app/(tabs)/history.tsx
 
+import type { HistoryPeriod } from "@/components/history"
 import {
 	ExportForm,
 	HistoryCalendar,
@@ -8,7 +9,6 @@ import {
 	HistoryTriggerBars,
 	getPeriodRange,
 } from "@/components/history"
-import type { HistoryPeriod } from "@/components/history"
 import { ScreenHeader, ScreenWrapper } from "@/components/ui"
 import { useAppTheme, useExport } from "@/hooks"
 import { useHistoryData } from "@/hooks/useHistoryData"
@@ -16,7 +16,13 @@ import { useFocusEffect } from "expo-router"
 import { useCallback, useMemo, useState } from "react"
 import { ActivityIndicator, ScrollView, Text, View } from "react-native"
 
-function SectionCard({ title, children }: { title: string; children: React.ReactNode }) {
+function SectionCard({
+	title,
+	children,
+}: {
+	title: string
+	children: React.ReactNode
+}) {
 	const { colors, fonts, spacing, radius } = useAppTheme()
 	return (
 		<View
@@ -46,12 +52,18 @@ function SectionCard({ title, children }: { title: string; children: React.React
 
 export default function History() {
 	const { colors, fonts, spacing } = useAppTheme()
-	const { exportPdf, exportPdfToEmail, isLoading: isExporting, error: exportError } = useExport()
+	const {
+		exportPdf,
+		exportPdfToEmail,
+		isLoading: isExporting,
+		error: exportError,
+	} = useExport()
 
 	const [period, setPeriod] = useState<HistoryPeriod>("month")
 	const [refreshKey, setRefreshKey] = useState(0)
 	const { from, to } = useMemo(() => getPeriodRange(period), [period])
-	const { seizures, seizuresByDate, timeOfDay, topTriggers, isLoading } = useHistoryData(from, to, refreshKey)
+	const { seizures, seizuresByDate, timeOfDay, topTriggers, isLoading } =
+		useHistoryData(from, to, refreshKey)
 
 	useFocusEffect(
 		useCallback(() => {
@@ -88,7 +100,11 @@ export default function History() {
 						</SectionCard>
 
 						<SectionCard title="Календар">
-							<HistoryCalendar seizuresByDate={seizuresByDate} from={from} to={to} />
+							<HistoryCalendar
+								seizuresByDate={seizuresByDate}
+								from={from}
+								to={to}
+							/>
 						</SectionCard>
 
 						<SectionCard title="Розподіл по часу доби">

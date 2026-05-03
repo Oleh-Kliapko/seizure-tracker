@@ -6,7 +6,13 @@ import { useAppTheme } from "@/hooks"
 import { useMedicationsForm } from "@/hooks/useMedicationsForm"
 import { useFocusEffect } from "@react-navigation/native"
 import { useCallback } from "react"
-import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, View } from "react-native"
+import {
+	ActivityIndicator,
+	KeyboardAvoidingView,
+	Platform,
+	ScrollView,
+	View,
+} from "react-native"
 
 export default function MedicationsScreen() {
 	const { colors, spacing } = useAppTheme()
@@ -23,14 +29,23 @@ export default function MedicationsScreen() {
 		saveAllEntries,
 	} = useMedicationsForm()
 
-	useFocusEffect(useCallback(() => () => { saveAllEntries() }, [saveAllEntries]))
+	useFocusEffect(
+		useCallback(
+			() => () => {
+				saveAllEntries()
+			},
+			[saveAllEntries],
+		),
+	)
 
 	return (
 		<ScreenWrapper>
 			<ScreenHeader title="Ліки" />
 
 			{isLoading ? (
-				<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+				<View
+					style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+				>
 					<ActivityIndicator color={colors.primary} size="large" />
 				</View>
 			) : (

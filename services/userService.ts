@@ -4,14 +4,14 @@ import { db } from "@/config/firebase"
 import { User } from "@/models"
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore"
 
-export async function createUser(uid: string, email: string): Promise<void> {
+export async function createUser(uid: string, email: string, isEmailVerified = false): Promise<void> {
 	const displayName = email.split("@")[0]
 
 	const user: User = {
 		uid,
 		email,
 		displayName,
-		isEmailVerified: false,
+		isEmailVerified,
 		createdAt: new Date(),
 		updatedAt: new Date(),
 	}
