@@ -3,6 +3,12 @@
 import { ERROR_MESSAGES } from "@/constants/errorMessages"
 import { validate, ValidationResult } from "./validation"
 
+const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/
+
+export function validatePassword(password: string): ValidationResult {
+	return validate([[!PASSWORD_REGEX.test(password), ERROR_MESSAGES.weakPassword]])
+}
+
 export function validateLogin(
 	email: string,
 	password: string,
@@ -20,7 +26,7 @@ export function validateRegister(
 			!email.trim() || !password.trim() || !confirmPassword.trim(),
 			ERROR_MESSAGES.requiredFields,
 		],
-		[password.length < 6, ERROR_MESSAGES.weakPassword],
+		[!PASSWORD_REGEX.test(password), ERROR_MESSAGES.weakPassword],
 		[password !== confirmPassword, ERROR_MESSAGES.passwordMatch],
 	])
 }

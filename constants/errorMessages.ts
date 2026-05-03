@@ -7,7 +7,7 @@ export const ERROR_MESSAGES = {
 	userNotFound: "Користувача не знайдено",
 	wrongPassword: "Невірний email або пароль",
 	emailInUse: "Email вже використовується",
-	weakPassword: "Пароль має бути не менше 6 символів",
+	weakPassword: "Пароль повинен містити мінімум 8 символів, велику літеру, цифру та спецсимвол",
 	tooManyRequests: "Забагато спроб. Спробуйте пізніше",
 	networkError: "Помилка мережі. Перевірте підключення",
 	accountExistsWithDifferentCredential:

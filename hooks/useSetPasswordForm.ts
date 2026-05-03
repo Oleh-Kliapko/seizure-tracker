@@ -2,7 +2,7 @@
 
 import { auth } from "@/config/firebase"
 import { ERROR_MESSAGES } from "@/constants/errorMessages"
-import { parseFirebaseError } from "@/utils"
+import { parseFirebaseError, validatePassword } from "@/utils"
 import { EmailAuthProvider, linkWithCredential } from "firebase/auth"
 import { useState } from "react"
 
@@ -14,8 +14,9 @@ export function useSetPasswordForm() {
 	const [isSuccess, setIsSuccess] = useState(false)
 
 	const handleSave = async () => {
-		if (newPassword.length < 6) {
-			setError(ERROR_MESSAGES.weakPassword)
+		const { isValid, error: validationError } = validatePassword(newPassword)
+		if (!isValid) {
+			setError(validationError)
 			return
 		}
 		if (newPassword !== confirmPassword) {
