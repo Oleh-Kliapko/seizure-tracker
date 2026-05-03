@@ -3,6 +3,7 @@
 import { useAppTheme, useIsDarkTheme } from "@/hooks"
 import { Seizure } from "@/models/seizure"
 import { Text, View } from "react-native"
+import { useTranslation } from "react-i18next"
 
 type Props = {
 	seizuresByDate: Record<string, Seizure[]>
@@ -22,11 +23,6 @@ const SEVERITY_COLORS_LIGHT: Record<number, string> = {
 	3: "#7B1FA2",
 }
 
-const DAY_NAMES = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"]
-const MONTH_NAMES = [
-	"Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень",
-	"Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень",
-]
 
 function getMonthsInRange(from: number, to: number): { year: number; month: number }[] {
 	const result: { year: number; month: number }[] = []
@@ -66,8 +62,13 @@ function maxSeverityColor(seizures: Seizure[], palette: Record<number, string>):
 export function HistoryCalendar({ seizuresByDate, from, to }: Props) {
 	const { colors, fonts, spacing, radius } = useAppTheme()
 	const isDark = useIsDarkTheme()
+	const { t } = useTranslation()
 	const severityColors = isDark ? SEVERITY_COLORS_DARK : SEVERITY_COLORS_LIGHT
 	const months = getMonthsInRange(from, to)
+	const DAY_NAMES = [
+		t("history.dayMon"), t("history.dayTue"), t("history.dayWed"),
+		t("history.dayThu"), t("history.dayFri"), t("history.daySat"), t("history.daySun"),
+	]
 	const today = new Date()
 
 	return (
@@ -94,7 +95,7 @@ export function HistoryCalendar({ seizuresByDate, from, to }: Props) {
 								letterSpacing: 0.5,
 							}}
 						>
-							{MONTH_NAMES[month]} {year}
+							{t(`month.${month + 1}`)} {year}
 						</Text>
 
 						<View style={{ flexDirection: "row", marginBottom: 4 }}>

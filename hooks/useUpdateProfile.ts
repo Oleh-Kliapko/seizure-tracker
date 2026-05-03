@@ -1,4 +1,5 @@
 // hooks/useUpdateProfile.ts
+import i18n from "@/config/i18n"
 
 import { User } from "@/models"
 import { updateUser } from "@/services"
@@ -21,7 +22,7 @@ export function useUpdateProfile() {
 			await updateUser(user.uid, data)
 			setIsSuccess(true)
 		} catch (e) {
-			setError("Помилка збереження. Спробуйте ще раз")
+			setError(i18n.t("error.savingError"))
 			return e
 		} finally {
 			setIsLoading(false)

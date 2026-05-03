@@ -82,7 +82,7 @@ export function DashboardToday({ trackingFilledSections, medications, medication
 	const medLabel =
 		medications.length === 0
 			? t('dashboard.medicationsNotConfigured')
-			: `${medicationsTakenToday} з ${medications.length}`
+			: `${medicationsTakenToday} ${t("tracking.of")} ${medications.length}`
 	const medOk = medications.length > 0 && medicationsTakenToday === medications.length
 	const medRoute =
 		medications.length === 0

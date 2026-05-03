@@ -4,6 +4,7 @@ import { useAppTheme } from "@/hooks"
 import { TimeOfDay } from "@/hooks/useHistoryData"
 import { Text, View } from "react-native"
 import { G, Path, Svg, Text as SvgText } from "react-native-svg"
+import { useTranslation } from "react-i18next"
 
 function polarToCartesian(cx: number, cy: number, r: number, deg: number) {
 	const rad = ((deg - 90) * Math.PI) / 180
@@ -38,16 +39,16 @@ function slicePath(
 
 type SegmentDef = {
 	key: keyof TimeOfDay
-	label: string
+	labelKey: string
 	color: string
 	emoji: string
 }
 
-const SEGMENTS: SegmentDef[] = [
-	{ key: "night", label: "Ніч (0–6)", color: "#5C6BC0", emoji: "🌙" },
-	{ key: "morning", label: "Ранок (6–12)", color: "#FFA726", emoji: "🌅" },
-	{ key: "afternoon", label: "День (12–18)", color: "#26C6DA", emoji: "☀️" },
-	{ key: "evening", label: "Вечір (18–24)", color: "#AB47BC", emoji: "🌆" },
+const SEGMENT_DEFS: SegmentDef[] = [
+	{ key: "night", labelKey: "history.night", color: "#5C6BC0", emoji: "🌙" },
+	{ key: "morning", labelKey: "history.morning", color: "#FFA726", emoji: "🌅" },
+	{ key: "afternoon", labelKey: "history.afternoon", color: "#26C6DA", emoji: "☀️" },
+	{ key: "evening", labelKey: "history.evening", color: "#AB47BC", emoji: "🌆" },
 ]
 
 type Props = {
@@ -56,6 +57,8 @@ type Props = {
 
 export function HistoryDonutChart({ data }: Props) {
 	const { colors, fonts, spacing } = useAppTheme()
+	const { t } = useTranslation()
+	const SEGMENTS = SEGMENT_DEFS.map(s => ({ ...s, label: t(s.labelKey) }))
 	const total = Object.values(data).reduce((a, b) => a + b, 0)
 
 	const SIZE = 160
@@ -68,7 +71,7 @@ export function HistoryDonutChart({ data }: Props) {
 		return (
 			<View style={{ alignItems: "center", paddingVertical: spacing.lg }}>
 				<Text style={{ fontFamily: fonts.regular, fontSize: 14, color: colors.textSecondary }}>
-					Немає даних за цей період
+					{t("history.noData")}
 				</Text>
 			</View>
 		)
@@ -132,7 +135,7 @@ export function HistoryDonutChart({ data }: Props) {
 						{total}
 					</Text>
 					<Text style={{ fontFamily: fonts.regular, fontSize: 11, color: colors.textSecondary }}>
-						всього
+						{t("history.total")}
 					</Text>
 				</View>
 			</View>

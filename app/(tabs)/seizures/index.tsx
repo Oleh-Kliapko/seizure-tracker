@@ -19,10 +19,12 @@ import {
 	TouchableOpacity,
 	View,
 } from "react-native"
+import { useTranslation } from "react-i18next"
 
 export default function SeizuresScreen() {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 	const {
 		seizures,
 		paginated,
@@ -41,7 +43,7 @@ export default function SeizuresScreen() {
 	return (
 		<ScreenWrapper>
 			<ScreenHeader
-				title="Приступи"
+				title={t("seizure.listTitle")}
 				showBackButton={false}
 				right={
 					<TouchableOpacity
@@ -77,10 +79,8 @@ export default function SeizuresScreen() {
 
 					{paginated.length === 0 ? (
 						<View style={styles.emptyContainer}>
-							<Text style={styles.emptyText}>Приступів ще немає</Text>
-							<Text style={styles.emptySubtext}>
-								Натисніть кнопку додавання справа вгорі
-							</Text>
+							<Text style={styles.emptyText}>{t("seizure.emptyTitle")}</Text>
+							<Text style={styles.emptySubtext}>{t("seizure.emptyHint")}</Text>
 						</View>
 					) : (
 						paginated.map(s => (

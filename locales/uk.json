@@ -17,7 +17,45 @@
     "generic": "Сталася помилка. Спробуйте ще раз",
     "emailNotVerified": "Email ще не підтверджено. Перевірте пошту.",
     "enterCurrentPassword": "Введіть поточний пароль",
-    "passwordSame": "Новий пароль має відрізнятись від поточного"
+    "passwordSame": "Новий пароль має відрізнятись від поточного",
+    "fileSizeUnknown": "Не вдалося отримати розмір файлу",
+    "deleteSeizureError": "Помилка видалення приступу",
+    "cloudinaryDeleteError": "Відео не видалилось з Cloudinary: {{error}}",
+    "noGalleryAccess": "Немає доступу до галереї",
+    "noCameraAccess": "Немає доступу до камери",
+    "cameraUnavailable": "Камера недоступна на цьому пристрої",
+    "photoTooLarge": "Фото занадто велике. Максимум 3 МБ",
+    "avatarDeleteError": "Помилка видалення",
+    "exportNoSeizures": "За вибраний період приступів не знайдено",
+    "exportError": "Помилка експорту. Спробуйте ще раз",
+    "sendError": "Помилка відправлення. Спробуйте ще раз",
+    "unknownError": "Невідома помилка",
+    "googleUnavailable": "Google Sign-In недоступний",
+    "authCancelled": "Авторизацію скасовано",
+    "tokenError": "Не вдалось отримати токен",
+    "authInProgress": "Авторизація вже виконується",
+    "googlePlayUnavailable": "Google Play недоступний",
+    "authError": "Помилка авторизації",
+    "fileNotFound": "Файл не знайдено",
+    "uploadCancelled": "Завантаження скасовано",
+    "videoUploadError": "Помилка завантаження відео",
+    "loadingError": "Помилка завантаження",
+    "googleConfirmError": "Помилка підтвердження Google акаунту",
+    "confirmPasswordPrompt": "Введіть пароль для підтвердження",
+    "videoSizeExceeded": "Відео перевищує ліміт {{size}}MB",
+    "videoLimitReached": "Досягнуто ліміт відео ({{count}} шт). Видаліть старі відео",
+    "imageUploadError": "Помилка завантаження зображення",
+    "invalidServerResponse": "Невірна відповідь від сервера",
+    "cloudinaryUploadError": "Помилка завантаження на Cloudinary",
+    "uploadStatusError": "Помилка завантаження: {{status}}",
+    "uploadTimeout": "Час очікування завантаження закінчився",
+    "deleteImageError": "Помилка видалення зображення",
+    "deleteVideoCloudError": "Помилка видалення відео",
+    "uploadStartError": "Не вдалося почати завантаження",
+    "savingError": "Помилка збереження. Спробуйте ще раз",
+    "savingErrorShort": "Помилка збереження",
+    "deleteError": "Помилка видалення",
+    "savingSeizureError": "Помилка збереження. Спробуйте ще раз"
   },
   "common": {
     "save": "Зберегти",
@@ -28,7 +66,18 @@
     "continue": "Продовжити",
     "logout": "Вийти",
     "add": "Додати",
-    "error": "Помилка"
+    "error": "Помилка",
+    "slogan": "Твій особистий щоденник здоров'я",
+    "or": "або",
+    "other": "Інше",
+    "share": "Поділитись звітом",
+    "takePhoto": "Зробити фото",
+    "chooseFromGallery": "Вибрати з галереї",
+    "hour": "Година",
+    "minutes": "Хвилини",
+    "minutesShort": "хв",
+    "hoursShort": "год",
+    "of": "з"
   },
   "picker": {
     "placeholder": "—"
@@ -150,7 +199,10 @@
     "medicationsNotConfigured": "Не налаштовані",
     "seizure_1": "приступ",
     "seizure_2_4": "приступи",
-    "seizure_other": "приступів"
+    "seizure_other": "приступів",
+    "recentSeizures": "Останні приступи",
+    "allSeizures": "Всі приступи",
+    "heatmapTitle": "Приступи за 30 днів"
   },
   "tracking": {
     "title": "Трекінг",
@@ -182,7 +234,12 @@
     "notesPlaceholder": "Нотатки...",
     "triggers": "Тригери",
     "internalTriggers": "Внутрішні",
-    "externalTriggers": "Зовнішні"
+    "externalTriggers": "Зовнішні",
+    "drug": "Препарат",
+    "dailyDoseLabel": "денна доза",
+    "quantity": "Кількість",
+    "record": "Записати",
+    "of": "з"
   },
   "history": {
     "title": "Історія",
@@ -205,7 +262,21 @@
     "emailModalTitle": "Відправити звіт на імейл",
     "emailModalDescription": "Відправлення може зайняти близько 1 хвилини",
     "emailPlaceholder": "Імейл адреса",
-    "send": "Відправити"
+    "send": "Відправити",
+    "dayMon": "Пн",
+    "dayTue": "Вт",
+    "dayWed": "Ср",
+    "dayThu": "Чт",
+    "dayFri": "Пт",
+    "daySat": "Сб",
+    "daySun": "Нд",
+    "night": "Ніч (0–6)",
+    "morning": "Ранок (6–12)",
+    "afternoon": "День (12–18)",
+    "evening": "Вечір (18–24)",
+    "noData": "Немає даних за цей період",
+    "total": "всього",
+    "noTriggers": "Тригери не вказані за цей період"
   },
   "seizure": {
     "addTitle": "Додати приступ",
@@ -229,7 +300,22 @@
     "dateTime": "Час приступу",
     "startTime": "Початок",
     "specifyEndTime": "Вказати час закінчення",
-    "endTime": "Закінчення"
+    "endTime": "Закінчення",
+    "listTitle": "Приступи",
+    "emptyTitle": "Приступів ще немає",
+    "emptyHint": "Натисніть кнопку додавання справа вгорі",
+    "statsTotal": "Всього",
+    "statsLight": "Легких",
+    "statsMedium": "Середніх",
+    "statsHeavy": "Важких",
+    "before": "до",
+    "after": "після",
+    "endTimeBeforeStart": "Час закінчення не може бути раніше часу початку",
+    "specifyCustomType": "Вкажіть власний тип приступу",
+    "specifyStartTime": "Вкажіть дату та час початку приступу",
+    "confirmDeleteTitle": "Видалити приступ",
+    "confirmDeleteMessage": "Ця дія незворотня. Приступ буде видалено назавжди.",
+    "confirmDeleteBtn": "Видалити"
   },
   "settings": {
     "personal": "Особисті дані",
@@ -256,7 +342,20 @@
   },
   "personal": {
     "birthDate": "Дата народження",
-    "selectDate": "Оберіть дату"
+    "selectDate": "Оберіть дату",
+    "lastNameLabel": "Прізвище",
+    "lastNamePlaceholder": "Введіть прізвище",
+    "firstNameLabel": "Ім'я",
+    "firstNamePlaceholder": "Введіть ім'я",
+    "middleNameLabel": "По батькові",
+    "middleNamePlaceholder": "Введіть по батькові",
+    "phoneLabel": "Телефон",
+    "countryLabel": "Країна народження",
+    "countryPlaceholder": "Введіть країну",
+    "cityLabel": "Місто народження",
+    "cityPlaceholder": "Введіть місто",
+    "addressLabel": "Адреса проживання",
+    "addressPlaceholder": "Введіть адресу"
   },
   "medical": {
     "firstSeizure": "Перший приступ",
@@ -266,7 +365,9 @@
     "weight": "Вага (кг)",
     "weightPlaceholder": "Наприклад: 70",
     "anamnesis": "Основний анамнез",
-    "anamnesisPlaceholder": "Опишіть основний анамнез..."
+    "anamnesisPlaceholder": "Опишіть основний анамнез...",
+    "heightRange": "Ріст має бути між 30 і 250 см",
+    "weightRange": "Вага має бути між 3 і 300 кг"
   },
   "guardians": {
     "title": "Опікун {{index}}",
@@ -275,7 +376,10 @@
     "fullNamePlaceholder": "Прізвище Ім'я По батькові",
     "emailPlaceholder": "email@example.com",
     "phone": "Телефон",
-    "phonePlaceholder": "+380XXXXXXXXX"
+    "phonePlaceholder": "+380XXXXXXXXX",
+    "addGuardian": "Додати опікуна",
+    "validationFullName": "Введіть ПІБ для кожного опікуна",
+    "validationRelation": "Оберіть ступінь спорідненості для кожного опікуна"
   },
   "medications": {
     "title": "Препарат {{index}}",
@@ -296,5 +400,67 @@
     "confirmNewPassword": "Підтвердити новий пароль",
     "passwordSet": "Пароль успішно встановлено ✓",
     "passwordChanged": "Пароль успішно змінено ✓"
+  },
+  "tabs": {
+    "home": "Головна",
+    "seizures": "Приступи",
+    "tracking": "Трекінг",
+    "history": "Історія",
+    "profile": "Профіль"
+  },
+  "video": {
+    "title": "Відео",
+    "maxSize": "Макс. {{size}}МБ • до {{count}} відео",
+    "addFromGallery": "Додати відео з галереї",
+    "uploading": "Завантаження... {{progress}}%",
+    "uploadingShort": "Завантаження...",
+    "deleting": "Видалення...",
+    "deleteVideo": "Видалити відео",
+    "addVideo": "Додати відео"
+  },
+  "doseUnit": {
+    "tablets": "таблетки",
+    "capsules": "капсули",
+    "drops": "краплі",
+    "ml": "мл",
+    "injections": "уколи"
+  },
+  "report": {
+    "title": "Звіт про приступи",
+    "period": "Період",
+    "generated": "Дата формування",
+    "patientData": "Дані пацієнта",
+    "fullName": "ПІБ",
+    "birthDate": "Дата народження",
+    "phone": "Телефон",
+    "height": "Зріст",
+    "weight": "Вага",
+    "anamnesis": "Анамнез",
+    "cm": "см",
+    "kg": "кг",
+    "totalSeizures": "Всього приступів",
+    "avgDuration": "Середня тривалість",
+    "light": "Легких",
+    "medium": "Середніх",
+    "severe": "Важких",
+    "topTriggers": "Найчастіші тригери",
+    "withVideo": "Приступи з відеозаписом",
+    "withoutVideo": "Приступи без відеозаписів",
+    "colDate": "Дата",
+    "colTime": "Час",
+    "colDuration": "Тривалість",
+    "colType": "Тип",
+    "colSeverity": "Сила",
+    "colTriggers": "Тригери",
+    "colDescription": "Опис",
+    "colVideo": "Відео",
+    "calendarTitle": "Календар приступів за період з {{from}} по {{to}}",
+    "legendSevere": "Важкий",
+    "legendMedium": "Середній",
+    "legendLight": "Легкий / не визначено",
+    "legendCount": "N — кількість приступів за день",
+    "footer": "Сформовано додатком SeizureTracker",
+    "minutes": "хв",
+    "hours": "год"
   }
 }

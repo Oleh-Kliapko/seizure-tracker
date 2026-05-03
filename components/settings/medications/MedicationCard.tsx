@@ -3,7 +3,7 @@
 import { FormInput, TimePickerModal } from "@/components/ui"
 import { useAppTheme } from "@/hooks"
 import { MedEntry } from "@/hooks/useMedicationsForm"
-import { DOSE_UNITS } from "@/models/medication"
+import { DOSE_UNIT_LABEL_KEYS, DOSE_UNITS } from "@/models/medication"
 import { Clock, Plus, Trash2, X } from "lucide-react-native"
 import { useState } from "react"
 import { Text, TouchableOpacity, View } from "react-native"
@@ -92,7 +92,7 @@ export function MedicationCard({
 										color: active ? colors.primary : colors.textSecondary,
 									}}
 								>
-									{unit}
+									{t(DOSE_UNIT_LABEL_KEYS[unit])}
 								</Text>
 							</TouchableOpacity>
 						)

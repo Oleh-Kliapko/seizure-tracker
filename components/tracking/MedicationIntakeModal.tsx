@@ -5,6 +5,8 @@ import { Medication } from "@/models/medication"
 import { useState } from "react"
 import { Modal, ScrollView, Text, TouchableOpacity, View } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { useTranslation } from "react-i18next"
+import { DOSE_UNIT_LABEL_KEYS, normalizeDoseUnit } from "@/models/medication"
 
 type Props = {
 	visible: boolean
@@ -16,6 +18,7 @@ type Props = {
 export function MedicationIntakeModal({ visible, medications, onClose, onAdd }: Props) {
 	const { colors, fonts, fontSize, spacing, radius } = useAppTheme()
 	const insets = useSafeAreaInsets()
+	const { t } = useTranslation()
 	const [selectedId, setSelectedId] = useState(medications[0]?.id ?? "")
 	const [amount, setAmount] = useState(1)
 
@@ -62,7 +65,7 @@ export function MedicationIntakeModal({ visible, medications, onClose, onAdd }: 
 						marginBottom: spacing.md,
 					}}
 				>
-					Препарат
+					{t("tracking.drug")}
 				</Text>
 
 				<ScrollView
@@ -133,7 +136,7 @@ export function MedicationIntakeModal({ visible, medications, onClose, onAdd }: 
 											color: colors.textSecondary,
 										}}
 									>
-										денна доза: {med.doseAmount} {med.doseUnit}
+										{t("tracking.dailyDoseLabel")}: {med.doseAmount} {t(DOSE_UNIT_LABEL_KEYS[normalizeDoseUnit(med.doseUnit)])}
 									</Text>
 								</View>
 							</TouchableOpacity>
@@ -159,7 +162,7 @@ export function MedicationIntakeModal({ visible, medications, onClose, onAdd }: 
 							letterSpacing: 0.5,
 						}}
 					>
-						Кількість
+						{t("tracking.quantity")}
 					</Text>
 					<View style={{ flexDirection: "row", alignItems: "center", gap: spacing.md }}>
 						<TouchableOpacity
@@ -180,7 +183,7 @@ export function MedicationIntakeModal({ visible, medications, onClose, onAdd }: 
 						</TouchableOpacity>
 
 						<Text style={{ fontFamily: fonts.medium, fontSize: fontSize.lg, color: colors.onSurface, minWidth: 60, textAlign: "center" }}>
-							{formatAmount(amount)} {selected?.doseUnit ?? ""}
+							{formatAmount(amount)} {selected ? t(DOSE_UNIT_LABEL_KEYS[selected.doseUnit]) : ""}
 						</Text>
 
 						<TouchableOpacity
@@ -217,7 +220,7 @@ export function MedicationIntakeModal({ visible, medications, onClose, onAdd }: 
 						}}
 					>
 						<Text style={{ fontFamily: fonts.medium, fontSize: fontSize.md, color: colors.onSurface }}>
-							Скасувати
+							{t("common.cancel")}
 						</Text>
 					</TouchableOpacity>
 					<TouchableOpacity
@@ -232,7 +235,7 @@ export function MedicationIntakeModal({ visible, medications, onClose, onAdd }: 
 						}}
 					>
 						<Text style={{ fontFamily: fonts.medium, fontSize: fontSize.md, color: "#fff" }}>
-							Записати
+							{t("tracking.record")}
 						</Text>
 					</TouchableOpacity>
 				</View>

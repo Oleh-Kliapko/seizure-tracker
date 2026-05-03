@@ -10,6 +10,7 @@ import {
 	Settings,
 	Zap,
 } from "lucide-react-native"
+import { useTranslation } from "react-i18next"
 
 export default function TabsLayout() {
 	const {
@@ -17,6 +18,7 @@ export default function TabsLayout() {
 		iconSize: { md },
 		fontSize: { sm },
 	} = useAppTheme()
+	const { t } = useTranslation()
 
 	return (
 		<Tabs
@@ -39,14 +41,14 @@ export default function TabsLayout() {
 			<Tabs.Screen
 				name="index"
 				options={{
-					title: "Головна",
+					title: t("tabs.home"),
 					tabBarIcon: ({ color }) => <House size={md} color={color} />,
 				}}
 			/>
 			<Tabs.Screen
 				name="seizures"
 				options={{
-					title: "Приступи",
+					title: t("tabs.seizures"),
 					tabBarIcon: ({ color }) => <Zap size={md} color={color} />,
 					href: "/(tabs)/seizures",
 				}}
@@ -54,21 +56,21 @@ export default function TabsLayout() {
 			<Tabs.Screen
 				name="tracking"
 				options={{
-					title: "Трекінг",
+					title: t("tabs.tracking"),
 					tabBarIcon: ({ color }) => <ChartBar size={md} color={color} />,
 				}}
 			/>
 			<Tabs.Screen
 				name="history"
 				options={{
-					title: "Історія",
+					title: t("tabs.history"),
 					tabBarIcon: ({ color }) => <CalendarDays size={md} color={color} />,
 				}}
 			/>
 			<Tabs.Screen
 				name="settings"
 				options={{
-					title: "Профіль",
+					title: t("tabs.profile"),
 					tabBarIcon: ({ color }) => <Settings size={md} color={color} />,
 				}}
 			/>

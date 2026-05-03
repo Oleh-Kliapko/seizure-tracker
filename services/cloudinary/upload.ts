@@ -1,4 +1,5 @@
 import { cloudinaryConfig, CLOUDINARY_IMAGE_UPLOAD_URL, CLOUDINARY_UPLOAD_URL } from "@/config/cloudinary"
+import i18n from "@/config/i18n"
 
 export type CloudinaryUploadResponse = {
 	url: string
@@ -23,7 +24,7 @@ export async function uploadImageToCloudinary(localUri: string): Promise<Cloudin
 
 	if (!response.ok) {
 		const err = await response.json()
-		throw new Error(err.error?.message ?? "Помилка завантаження зображення")
+		throw new Error(err.error?.message ?? i18n.t("error.imageUploadError"))
 	}
 
 	const data = await response.json()
@@ -68,7 +69,7 @@ export async function uploadVideoToCloudinary(
 						publicId: response.public_id,
 					})
 				} catch (e) {
-					reject(new Error("Невірна відповідь від сервера"))
+					reject(new Error(i18n.t("error.invalidServerResponse")))
 				}
 			} else {
 				try {
@@ -76,34 +77,34 @@ export async function uploadVideoToCloudinary(
 					reject(
 						new Error(
 							errorResponse.error?.message ||
-								"Помилка завантаження на Cloudinary",
+								i18n.t("error.cloudinaryUploadError"),
 						),
 					)
 				} catch {
-					reject(new Error(`Помилка завантаження: ${xhr.status}`))
+					reject(new Error(i18n.t("error.uploadStatusError", { status: xhr.status })))
 				}
 			}
 		})
 
 		xhr.addEventListener("error", () => {
-			reject(new Error("Помилка мережі"))
+			reject(new Error(i18n.t("error.networkError")))
 		})
 
 		xhr.addEventListener("timeout", () => {
 			xhr.abort()
-			reject(new Error("Час очікування завантаження закінчився"))
+			reject(new Error(i18n.t("error.uploadTimeout")))
 		})
 
 		signal?.addEventListener("abort", () => {
 			xhr.abort()
-			reject(new Error("Завантаження скасовано"))
+			reject(new Error("UPLOAD_CANCELLED"))
 		})
 
 		try {
 			xhr.open("POST", CLOUDINARY_UPLOAD_URL)
 			xhr.send(formData)
 		} catch (e) {
-			reject(new Error("Не вдалося почати завантаження"))
+			reject(new Error(i18n.t("error.uploadStartError")))
 		}
 	})
 }

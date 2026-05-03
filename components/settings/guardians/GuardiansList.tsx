@@ -4,6 +4,7 @@ import { useAppTheme } from "@/hooks"
 import { Guardian } from "@/models/user"
 import { UserPlus } from "lucide-react-native"
 import { Text, TouchableOpacity, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "../getStyles"
 import { GuardianForm } from "./GuardianForm"
 
@@ -26,6 +27,7 @@ export function GuardiansList({
 }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 
 	return (
 		<View style={styles.card}>
@@ -46,7 +48,7 @@ export function GuardiansList({
 				activeOpacity={0.7}
 			>
 				<UserPlus size={20} color={theme.colors.primary} />
-				<Text style={styles.addBtnText}>Додати опікуна</Text>
+				<Text style={styles.addBtnText}>{t("guardians.addGuardian")}</Text>
 			</TouchableOpacity>
 
 			{error && (

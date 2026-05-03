@@ -1,6 +1,7 @@
 // hooks/useAvatarUpload.ts
 
 import { auth, db } from "@/config/firebase"
+import i18n from "@/config/i18n"
 import { updateUser } from "@/services"
 import {
 	deleteImageFromCloudinary,
@@ -25,7 +26,7 @@ export function useAvatarUpload() {
 	const pickAndUpload = () => {
 		ActionSheetIOS.showActionSheetWithOptions(
 			{
-				options: ["Скасувати", "Зробити фото", "Вибрати з галереї"],
+				options: [i18n.t("common.cancel"), i18n.t("common.takePhoto"), i18n.t("common.chooseFromGallery")],
 				cancelButtonIndex: 0,
 			},
 			async buttonIndex => {
@@ -36,7 +37,7 @@ export function useAvatarUpload() {
 				if (buttonIndex === 1) {
 					const { status } = await ImagePicker.requestCameraPermissionsAsync()
 					if (status !== "granted") {
-						setError("Немає доступу до камери")
+						setError(i18n.t("error.noCameraAccess"))
 						return
 					}
 					try {
@@ -47,14 +48,14 @@ export function useAvatarUpload() {
 							quality: 0.8,
 						})
 					} catch {
-						setError("Камера недоступна на цьому пристрої")
+						setError(i18n.t("error.cameraUnavailable"))
 						return
 					}
 				} else {
 					const { status } =
 						await ImagePicker.requestMediaLibraryPermissionsAsync()
 					if (status !== "granted") {
-						setError("Немає доступу до галереї")
+						setError(i18n.t("error.noGalleryAccess"))
 						return
 					}
 					result = await ImagePicker.launchImageLibraryAsync({
@@ -70,7 +71,7 @@ export function useAvatarUpload() {
 				const asset = result.assets[0]
 				const MAX_SIZE = 3 * 1024 * 1024
 				if (asset.fileSize && asset.fileSize > MAX_SIZE) {
-					setError("Фото занадто велике. Максимум 3 МБ")
+					setError(i18n.t("error.photoTooLarge"))
 					return
 				}
 
@@ -82,7 +83,7 @@ export function useAvatarUpload() {
 					if (uid)
 						await updateUser(uid, { avatarUrl: url, avatarPublicId: publicId })
 				} catch (e: any) {
-					setError(e.message ?? "Помилка завантаження")
+					setError(e.message ?? i18n.t("error.uploadError"))
 				} finally {
 					setIsUploading(false)
 				}
@@ -104,7 +105,7 @@ export function useAvatarUpload() {
 				updatedAt: new Date(),
 			})
 		} catch (e: any) {
-			setError(e.message ?? "Помилка видалення")
+			setError(e.message ?? i18n.t("error.avatarDeleteError"))
 		} finally {
 			setIsUploading(false)
 		}

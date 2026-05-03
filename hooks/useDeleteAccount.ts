@@ -1,6 +1,7 @@
 // hooks/useDeleteAccount.ts — оновлений з Google reauth
 
 import { auth, db } from "@/config/firebase"
+import i18n from "@/config/i18n"
 import { parseFirebaseError } from "@/utils"
 import {
 	deleteUser,
@@ -34,7 +35,7 @@ export function useDeleteAccount() {
 
 			if (isPasswordUser) {
 				if (!password?.trim()) {
-					setError("Введіть пароль для підтвердження")
+					setError(i18n.t("error.confirmPasswordPrompt"))
 					return
 				}
 				const credential = EmailAuthProvider.credential(user.email!, password)
@@ -43,7 +44,7 @@ export function useDeleteAccount() {
 				// Google реавторизація
 				const success = await reauthWithGoogle()
 				if (!success) {
-					setError(googleError ?? "Помилка підтвердження Google акаунту")
+					setError(googleError ?? i18n.t("error.googleConfirmError"))
 					return
 				}
 			}

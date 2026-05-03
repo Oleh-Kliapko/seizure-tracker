@@ -4,6 +4,7 @@ import {
 	checkVideoLimits,
 	uploadVideoToCloudinary,
 } from "@/services/cloudinary"
+import i18n from "@/config/i18n"
 import { getInfoAsync } from "expo-file-system/legacy"
 import { useRef, useState } from "react"
 import { useAuth } from "./useAuth"
@@ -21,7 +22,7 @@ export function useVideoUpload() {
 		localUri: string,
 	): Promise<{ url: string | null; publicId: string | null; error: string | null }> => {
 		if (!user) {
-			return { url: null, publicId: null, error: "Користувач не знайдений" }
+			return { url: null, publicId: null, error: i18n.t("error.userNotFound") }
 		}
 
 		try {
@@ -31,8 +32,8 @@ export function useVideoUpload() {
 
 			const fileInfo = await getInfoAsync(localUri, { size: true } as any)
 			if (!fileInfo.exists) {
-				setError("Файл не знайдено")
-				return { url: null, publicId: null, error: "Файл не знайдено" }
+				setError(i18n.t("error.fileNotFound"))
+				return { url: null, publicId: null, error: i18n.t("error.fileNotFound") }
 			}
 
 			const fileSize = (fileInfo as any).size ?? 0
@@ -54,10 +55,10 @@ export function useVideoUpload() {
 			console.log("Video uploaded successfully:", { url: response.url, publicId: response.publicId })
 			return { url: response.url, publicId: response.publicId, error: null }
 		} catch (e: any) {
-			if (e.message === "Завантаження скасовано") {
-				setError("Завантаження скасовано")
+			if (e.message === "UPLOAD_CANCELLED") {
+				setError(i18n.t("error.uploadCancelled"))
 			} else {
-				setError("Помилка завантаження відео")
+				setError(i18n.t("error.videoUploadError"))
 			}
 			return { url: null, publicId: null, error: e.message }
 		} finally {

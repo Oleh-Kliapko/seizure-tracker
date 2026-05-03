@@ -13,7 +13,8 @@ import QRCode from "qrcode"
 import { htmlReport } from "./seizureReportHtml"
 
 function formatDate(ts: number): string {
-	return new Date(ts).toLocaleDateString("uk-UA", {
+	const locale = i18n.language === "uk" ? "uk-UA" : "en-US"
+	return new Date(ts).toLocaleDateString(locale, {
 		day: "2-digit",
 		month: "2-digit",
 		year: "numeric",
@@ -21,7 +22,8 @@ function formatDate(ts: number): string {
 }
 
 function formatTime(ts: number): string {
-	return new Date(ts).toLocaleTimeString("uk-UA", {
+	const locale = i18n.language === "uk" ? "uk-UA" : "en-US"
+	return new Date(ts).toLocaleTimeString(locale, {
 		hour: "2-digit",
 		minute: "2-digit",
 	})
@@ -30,10 +32,12 @@ function formatTime(ts: number): string {
 function formatDuration(start: number, end?: number): string {
 	if (!end) return "—"
 	const mins = Math.round((end - start) / 60000)
-	if (mins < 60) return `${mins} хв`
+	const minLabel = i18n.t("report.minutes")
+	const hourLabel = i18n.t("report.hours")
+	if (mins < 60) return `${mins} ${minLabel}`
 	const h = Math.floor(mins / 60)
 	const m = mins % 60
-	return m > 0 ? `${h} год ${m} хв` : `${h} год`
+	return m > 0 ? `${h} ${hourLabel} ${m} ${minLabel}` : `${h} ${hourLabel}`
 }
 
 function getTypeLabel(seizure: Seizure): string {
@@ -101,20 +105,6 @@ function getStats(seizures: Seizure[]) {
 	return { total, avgDuration, severe, medium, light, topTriggers }
 }
 
-const MONTH_NAMES_UK = [
-	"Січень",
-	"Лютий",
-	"Березень",
-	"Квітень",
-	"Травень",
-	"Червень",
-	"Липень",
-	"Серпень",
-	"Вересень",
-	"Жовтень",
-	"Листопад",
-	"Грудень",
-]
 
 type DayData = { count: number; maxSeverity: number }
 
@@ -200,11 +190,11 @@ function buildMonthHtml(
 
 	return `
     <div class="month-block">
-      <h4 class="month-title">${MONTH_NAMES_UK[month]} ${year}</h4>
+      <h4 class="month-title">${i18n.t(`month.${month + 1}`)} ${year}</h4>
       <table class="calendar">
         <thead>
           <tr>
-            <th>Пн</th><th>Вт</th><th>Ср</th><th>Чт</th><th>Пт</th><th>Сб</th><th>Нд</th>
+            <th>${i18n.t("history.dayMon")}</th><th>${i18n.t("history.dayTue")}</th><th>${i18n.t("history.dayWed")}</th><th>${i18n.t("history.dayThu")}</th><th>${i18n.t("history.dayFri")}</th><th>${i18n.t("history.daySat")}</th><th>${i18n.t("history.daySun")}</th>
           </tr>
         </thead>
         <tbody>${rowsHtml}</tbody>

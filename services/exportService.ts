@@ -3,6 +3,7 @@
 import { Seizure } from "@/models"
 import { User } from "@/models/user"
 import { generateSeizureReportHtml } from "@/utils"
+import i18n from "@/config/i18n"
 import * as Print from "expo-print"
 import * as Sharing from "expo-sharing"
 
@@ -23,7 +24,7 @@ export async function exportSeizuresToPdf(
 	if (canShare) {
 		await Sharing.shareAsync(uri, {
 			mimeType: "application/pdf",
-			dialogTitle: "Поділитись звітом",
+			dialogTitle: i18n.t("common.share"),
 			UTI: "com.adobe.pdf",
 		})
 	}

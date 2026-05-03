@@ -68,7 +68,7 @@ export function useHistoryData(from: number, to: number, refreshKey?: number) {
 		for (const t of all) {
 			const label =
 				t.type === "custom"
-					? (typeof t.value === "string" ? t.value : "Інше")
+					? (typeof t.value === "string" ? t.value : i18n.t("common.other"))
 					: (ALL_TRIGGER_LABELS[t.type] ?? t.type)
 			triggerCounts[label] = (triggerCounts[label] ?? 0) + 1
 		}

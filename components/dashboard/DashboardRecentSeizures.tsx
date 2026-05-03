@@ -5,9 +5,10 @@ import { useAppTheme } from "@/hooks"
 import { Seizure } from "@/models/seizure"
 import { router } from "expo-router"
 import { format } from "date-fns"
-import { uk } from "date-fns/locale"
+import { uk, enUS } from "date-fns/locale"
 import { ChevronRight } from "lucide-react-native"
 import { Text, TouchableOpacity, View } from "react-native"
+import { useTranslation } from "react-i18next"
 
 type Props = {
 	seizures: Seizure[]
@@ -21,6 +22,8 @@ const SEVERITY_COLORS: Record<number, string> = {
 
 export function DashboardRecentSeizures({ seizures }: Props) {
 	const { colors, fonts, fontSize, spacing, radius } = useAppTheme()
+	const { t, i18n } = useTranslation()
+	const dateFnsLocale = i18n.language === "uk" ? uk : enUS
 
 	return (
 		<View
@@ -40,13 +43,13 @@ export function DashboardRecentSeizures({ seizures }: Props) {
 					paddingBottom: spacing.xs,
 				}}
 			>
-				Останні приступи
+				{t("dashboard.recentSeizures")}
 			</Text>
 
 			{seizures.map((s, i) => {
-				const date = format(new Date(s.startedAt), "d MMM", { locale: uk })
+				const date = format(new Date(s.startedAt), "d MMM", { locale: dateFnsLocale })
 				const time = format(new Date(s.startedAt), "HH:mm")
-				const severity = s.severity ? SEVERITY_LABELS[s.severity] : "—"
+				const severity = s.severity ? t(SEVERITY_LABELS[s.severity]) : "—"
 				const severityColor = s.severity ? SEVERITY_COLORS[s.severity] : colors.textSecondary
 
 				return (
@@ -112,7 +115,7 @@ export function DashboardRecentSeizures({ seizures }: Props) {
 				}}
 			>
 				<Text style={{ fontFamily: fonts.medium, fontSize: fontSize.sm, color: colors.primary }}>
-					Всі приступи
+					{t("dashboard.allSeizures")}
 				</Text>
 				<ChevronRight size={16} color={colors.primary} />
 			</TouchableOpacity>

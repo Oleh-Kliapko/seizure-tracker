@@ -2,6 +2,7 @@
 
 import { auth } from "@/config/firebase"
 import { GOOGLE_AUTH_CONFIG } from "@/config/googleAuth"
+import i18n from "@/config/i18n"
 import { createUser, getUser } from "@/services"
 import { parseFirebaseError } from "@/utils"
 let GoogleSignin: any
@@ -49,7 +50,7 @@ export function useGoogleAuth() {
 
 	const getGoogleCredential = async (): Promise<GoogleAuthResult> => {
 		if (!GoogleSignin) {
-			return { success: false, error: "Google Sign-In недоступний" }
+			return { success: false, error: i18n.t("error.googleUnavailable") }
 		}
 		try {
 			await GoogleSignin.hasPlayServices({
@@ -58,25 +59,25 @@ export function useGoogleAuth() {
 			const response = await GoogleSignin.signIn()
 
 			if (response.type === "cancelled") {
-				return { success: false, error: "Авторизацію скасовано" }
+				return { success: false, error: i18n.t("error.authCancelled") }
 			}
 
 			const idToken = response.data?.idToken
 			if (!idToken) {
-				return { success: false, error: "Не вдалось отримати токен" }
+				return { success: false, error: i18n.t("error.tokenError") }
 			}
 
 			const credential = GoogleAuthProvider.credential(idToken)
 			return { success: true, credential }
 		} catch (e: any) {
 			if (e.code === statusCodes.SIGN_IN_CANCELLED) {
-				return { success: false, error: "Авторизацію скасовано" }
+				return { success: false, error: i18n.t("error.authCancelled") }
 			}
 			if (e.code === statusCodes.IN_PROGRESS) {
-				return { success: false, error: "Авторизація вже виконується" }
+				return { success: false, error: i18n.t("error.authInProgress") }
 			}
 			if (e.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-				return { success: false, error: "Google Play недоступний" }
+				return { success: false, error: i18n.t("error.googlePlayUnavailable") }
 			}
 			return { success: false, error: parseFirebaseError(e.code) }
 		}
@@ -94,7 +95,7 @@ export function useGoogleAuth() {
 			} = await getGoogleCredential()
 
 			if (!success || !credential) {
-				setError(authError ?? "Помилка авторизації")
+				setError(authError ?? i18n.t("error.authError"))
 				return false
 			}
 
@@ -126,13 +127,13 @@ export function useGoogleAuth() {
 			} = await getGoogleCredential()
 
 			if (!success || !credential) {
-				setError(authError ?? "Помилка авторизації")
+				setError(authError ?? i18n.t("error.authError"))
 				return false
 			}
 
 			const user = auth.currentUser
 			if (!user) {
-				setError("Користувач не знайдений")
+				setError(i18n.t("error.userNotFound"))
 				return false
 			}
 

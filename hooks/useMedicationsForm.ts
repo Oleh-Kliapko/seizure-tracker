@@ -1,4 +1,5 @@
 // hooks/useMedicationsForm.ts
+import i18n from "@/config/i18n"
 
 import { DoseUnit, Medication } from "@/models/medication"
 import {
@@ -24,7 +25,7 @@ function medToEntry(m: Medication): MedEntry {
 		id: m.id,
 		name: m.name,
 		doseAmount: String(m.doseAmount ?? 1),
-		doseUnit: m.doseUnit ?? "таблетки",
+		doseUnit: m.doseUnit ?? "tablets",
 		scheduledTimes: m.scheduledTimes ?? [],
 		notes: m.notes ?? "",
 	}
@@ -46,7 +47,7 @@ export function useMedicationsForm() {
 			const meds = await getMedications(user.uid)
 			setEntries(meds.map(medToEntry))
 		} catch {
-			setError("Помилка завантаження")
+			setError(i18n.t("error.loadingError"))
 		} finally {
 			setIsLoading(false)
 		}
@@ -66,7 +67,7 @@ export function useMedicationsForm() {
 				patientId: user.uid,
 				name: e.name.trim(),
 				doseAmount: amount,
-				doseUnit: (e.doseUnit || "таблетки") as DoseUnit,
+				doseUnit: (e.doseUnit || "tablets") as DoseUnit,
 				...(e.scheduledTimes.length > 0 ? { scheduledTimes: e.scheduledTimes } : {}),
 				...(e.notes.trim() ? { notes: e.notes.trim() } : {}),
 			}
@@ -78,14 +79,14 @@ export function useMedicationsForm() {
 			}
 			setError(null)
 		} catch {
-			setError("Помилка збереження")
+			setError(i18n.t("error.savingErrorShort"))
 		}
 	}, [user])
 
 	const addEntry = () =>
 		setEntries(prev => [
 			...prev,
-			{ name: "", doseAmount: "1", doseUnit: "таблетки", scheduledTimes: [], notes: "" },
+			{ name: "", doseAmount: "1", doseUnit: "tablets", scheduledTimes: [], notes: "" },
 		])
 
 	const removeEntry = async (index: number) => {
@@ -95,7 +96,7 @@ export function useMedicationsForm() {
 			try {
 				await deleteMedication(user.uid, entry.id)
 			} catch {
-				setError("Помилка видалення")
+				setError(i18n.t("error.deleteError"))
 			}
 		}
 	}

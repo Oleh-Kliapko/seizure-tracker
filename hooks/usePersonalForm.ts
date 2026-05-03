@@ -1,5 +1,6 @@
 // hooks/usePersonalForm.ts
 
+import i18n from "@/config/i18n"
 import { validatePhone } from "@/utils"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useUpdateProfile } from "./useUpdateProfile"
@@ -75,52 +76,52 @@ export function usePersonalForm() {
 
 	const fields = [
 		{
-			label: "Прізвище",
+			label: i18n.t("personal.lastNameLabel"),
 			value: lastName,
 			onChange: setLastName,
-			placeholder: "Введіть прізвище",
+			placeholder: i18n.t("personal.lastNamePlaceholder"),
 			autoCapitalize: "words" as const,
 		},
 		{
-			label: "Ім'я",
+			label: i18n.t("personal.firstNameLabel"),
 			value: firstName,
 			onChange: setFirstName,
-			placeholder: "Введіть ім'я",
+			placeholder: i18n.t("personal.firstNamePlaceholder"),
 			autoCapitalize: "words" as const,
 		},
 		{
-			label: "По батькові",
+			label: i18n.t("personal.middleNameLabel"),
 			value: middleName,
 			onChange: setMiddleName,
-			placeholder: "Введіть по батькові",
+			placeholder: i18n.t("personal.middleNamePlaceholder"),
 			autoCapitalize: "words" as const,
 		},
 		{
-			label: "Телефон",
+			label: i18n.t("personal.phoneLabel"),
 			value: phone,
 			onChange: setPhone,
 			placeholder: "+380XXXXXXXXX",
 			keyboardType: "phone-pad" as const,
 		},
 		{
-			label: "Країна народження",
+			label: i18n.t("personal.countryLabel"),
 			value: countryOfBirth,
 			onChange: setCountryOfBirth,
-			placeholder: "Введіть країну",
+			placeholder: i18n.t("personal.countryPlaceholder"),
 			autoCapitalize: "words" as const,
 		},
 		{
-			label: "Місто народження",
+			label: i18n.t("personal.cityLabel"),
 			value: cityOfBirth,
 			onChange: setCityOfBirth,
-			placeholder: "Введіть місто",
+			placeholder: i18n.t("personal.cityPlaceholder"),
 			autoCapitalize: "words" as const,
 		},
 		{
-			label: "Адреса проживання",
+			label: i18n.t("personal.addressLabel"),
 			value: address,
 			onChange: setAddress,
-			placeholder: "Введіть адресу",
+			placeholder: i18n.t("personal.addressPlaceholder"),
 		},
 	]
 

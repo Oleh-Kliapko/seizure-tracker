@@ -200,7 +200,8 @@ export const getStyles = (theme: AppTheme) => {
 
 		relationsRow: {
 			flexDirection: "row",
-			justifyContent: "space-between",
+			flexWrap: "wrap",
+			gap: spacing.sm,
 			marginBottom: spacing.lg,
 		},
 

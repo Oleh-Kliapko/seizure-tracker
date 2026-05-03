@@ -1,4 +1,5 @@
 // hooks/useSeizureEditForm.ts
+import i18n from "@/config/i18n"
 
 import {
 	ExternalTrigger,
@@ -68,7 +69,7 @@ export function useSeizureEditForm() {
 			setSleepHoursBefore(seizure.sleepHoursBefore)
 			setDescription(seizure.description ?? "")
 		} catch {
-			setError("Помилка завантаження")
+			setError(i18n.t("error.loadingError"))
 		} finally {
 			setIsFetching(false)
 		}
@@ -98,12 +99,12 @@ export function useSeizureEditForm() {
 		if (!user || !id) return
 
 		if (endedAt && endedAt < startedAt) {
-			setError("Час закінчення не може бути раніше часу початку")
+			setError(i18n.t("seizure.endTimeBeforeStart"))
 			return
 		}
 
 		if (type === "custom" && !customType.trim()) {
-			setError("Вкажіть власний тип приступу")
+			setError(i18n.t("seizure.specifyCustomType"))
 			return
 		}
 
@@ -132,7 +133,7 @@ export function useSeizureEditForm() {
 			router.back()
 		} catch (e: any) {
 			console.error("Save error:", e.message, JSON.stringify(e))
-			setError("Помилка збереження. Спробуйте ще раз")
+			setError(i18n.t("error.savingError"))
 		} finally {
 			setIsLoading(false)
 		}
@@ -140,12 +141,12 @@ export function useSeizureEditForm() {
 
 	const handleDelete = () => {
 		Alert.alert(
-			"Видалити приступ",
-			"Ця дія незворотня. Приступ буде видалено назавжди.",
+			i18n.t("seizure.confirmDeleteTitle"),
+			i18n.t("seizure.confirmDeleteMessage"),
 			[
-				{ text: "Скасувати", style: "cancel" },
+				{ text: i18n.t("common.cancel"), style: "cancel" },
 				{
-					text: "Видалити",
+					text: i18n.t("seizure.confirmDeleteBtn"),
 					style: "destructive",
 					onPress: async () => {
 						if (!user || !id) return
@@ -154,7 +155,7 @@ export function useSeizureEditForm() {
 							await deleteSeizure(user.uid, id)
 							router.back()
 						} catch {
-							setError("Помилка видалення")
+							setError(i18n.t("error.deleteError"))
 						} finally {
 							setIsLoading(false)
 						}

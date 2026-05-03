@@ -3,8 +3,9 @@
 import { HeatmapDay } from "@/hooks/useDashboard"
 import { useAppTheme } from "@/hooks"
 import { format } from "date-fns"
-import { uk } from "date-fns/locale"
+import { uk, enUS } from "date-fns/locale"
 import { Text, View } from "react-native"
+import { useTranslation } from "react-i18next"
 
 function dotColor(count: number, colors: ReturnType<typeof useAppTheme>["colors"]): string {
 	if (count === 0) return colors.border
@@ -19,12 +20,14 @@ type Props = {
 
 export function DashboardHeatmap({ days }: Props) {
 	const { colors, fonts, fontSize, spacing, radius } = useAppTheme()
+	const { t, i18n } = useTranslation()
+	const dateFnsLocale = i18n.language === "uk" ? uk : enUS
 
 	const firstRow = days.slice(0, 15)
 	const secondRow = days.slice(15)
 
-	const firstDay = days[0] ? format(new Date(days[0].dateStr), "d MMM", { locale: uk }) : ""
-	const lastDay = days[29] ? format(new Date(days[29].dateStr), "d MMM", { locale: uk }) : ""
+	const firstDay = days[0] ? format(new Date(days[0].dateStr), "d MMM", { locale: dateFnsLocale }) : ""
+	const lastDay = days[29] ? format(new Date(days[29].dateStr), "d MMM", { locale: dateFnsLocale }) : ""
 
 	return (
 		<View
@@ -43,7 +46,7 @@ export function DashboardHeatmap({ days }: Props) {
 					marginBottom: spacing.sm,
 				}}
 			>
-				Приступи за 30 днів
+				{t("dashboard.heatmapTitle")}
 			</Text>
 
 			<View style={{ gap: 4 }}>

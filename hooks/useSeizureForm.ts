@@ -1,4 +1,5 @@
 // hooks/useSeizureForm.ts
+import i18n from "@/config/i18n"
 
 import {
 	ExternalTrigger,
@@ -69,17 +70,17 @@ export function useSeizureForm() {
 		if (!user) return
 
 		if (!startedAt) {
-			setError("Вкажіть дату та час початку приступу")
+			setError(i18n.t("seizure.specifyStartTime"))
 			return
 		}
 
 		if (endedAt && endedAt < startedAt) {
-			setError("Час закінчення не може бути раніше часу початку")
+			setError(i18n.t("seizure.endTimeBeforeStart"))
 			return
 		}
 
 		if (type === "custom" && !customType.trim()) {
-			setError("Вкажіть власний тип приступу")
+			setError(i18n.t("seizure.specifyCustomType"))
 			return
 		}
 
@@ -120,7 +121,7 @@ export function useSeizureForm() {
 
 				if (!uploadedUrl) {
 					await deleteSeizure(user.uid, seizureId)
-					setError(videoError ?? "Помилка завантаження відео")
+					setError(videoError ?? i18n.t("error.videoUploadError"))
 					return
 				}
 
@@ -129,7 +130,7 @@ export function useSeizureForm() {
 
 			router.back()
 		} catch {
-			setError("Помилка збереження. Спробуйте ще раз")
+			setError(i18n.t("error.savingError"))
 		} finally {
 			setIsLoading(false)
 		}

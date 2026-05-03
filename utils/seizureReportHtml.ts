@@ -1,3 +1,4 @@
+import i18n from "@/config/i18n"
 import { User } from "../models"
 
 export const htmlReport = (
@@ -11,11 +12,11 @@ export const htmlReport = (
 	patientName: string,
 	calendarHtml: string,
 ) => `<!DOCTYPE html>
-<html lang="uk">
+<html lang="${i18n.language}">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Звіт про приступи</title>
+  <title>${i18n.t("report.title")}</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     body { font-family: Arial, sans-serif; font-size: 12px; color: #1F2937; padding: 48px 32px; }
@@ -93,49 +94,49 @@ export const htmlReport = (
 </head>
 <body>
   <div class="header">
-    <h1>SeizureTracker — Звіт про приступи</h1>
-    <p>Період: ${formatDate(from)} — ${formatDate(to)}</p>
-    <p>Дата формування: ${formatDate(Date.now())}</p>
+    <h1>SeizureTracker — ${i18n.t("report.title")}</h1>
+    <p>${i18n.t("report.period")}: ${formatDate(from)} — ${formatDate(to)}</p>
+    <p>${i18n.t("report.generated")}: ${formatDate(Date.now())}</p>
   </div>
 
   <div class="patient-info">
-    <h2>Дані пацієнта</h2>
+    <h2>${i18n.t("report.patientData")}</h2>
     <div class="patient-row">
-      <div class="patient-field"><span>ПІБ: </span><strong>${patientName}</strong></div>
-      ${user.birthDate ? `<div class="patient-field"><span>Дата народження: </span>${formatDate(user.birthDate)}</div>` : ""}
+      <div class="patient-field"><span>${i18n.t("report.fullName")}: </span><strong>${patientName}</strong></div>
+      ${user.birthDate ? `<div class="patient-field"><span>${i18n.t("report.birthDate")}: </span>${formatDate(user.birthDate)}</div>` : ""}
       <div class="patient-field"><span>Email: </span>${user.email}</div>
-      ${user.phone ? `<div class="patient-field"><span>Телефон: </span>${user.phone}</div>` : ""}
-      ${user.medicalInfo?.height ? `<div class="patient-field"><span>Зріст: </span>${user.medicalInfo.height} см</div>` : ""}
-      ${user.medicalInfo?.weight ? `<div class="patient-field"><span>Вага: </span>${user.medicalInfo.weight} кг</div>` : ""}
-      ${user.medicalInfo?.anamnesis ? `<div class="patient-field"><span>Анамнез: </span>${user.medicalInfo.anamnesis}</div>` : ""}
+      ${user.phone ? `<div class="patient-field"><span>${i18n.t("report.phone")}: </span>${user.phone}</div>` : ""}
+      ${user.medicalInfo?.height ? `<div class="patient-field"><span>${i18n.t("report.height")}: </span>${user.medicalInfo.height} ${i18n.t("report.cm")}</div>` : ""}
+      ${user.medicalInfo?.weight ? `<div class="patient-field"><span>${i18n.t("report.weight")}: </span>${user.medicalInfo.weight} ${i18n.t("report.kg")}</div>` : ""}
+      ${user.medicalInfo?.anamnesis ? `<div class="patient-field"><span>${i18n.t("report.anamnesis")}: </span>${user.medicalInfo.anamnesis}</div>` : ""}
     </div>
   </div>
 
   <div class="stats">
     <div class="stat-card">
       <div class="value">${stats.total}</div>
-      <div class="label">Всього приступів</div>
+      <div class="label">${i18n.t("report.totalSeizures")}</div>
     </div>
     <div class="stat-card">
-      <div class="value">${stats.avgDuration} хв</div>
-      <div class="label">Середня тривалість</div>
+      <div class="value">${stats.avgDuration} ${i18n.t("report.minutes")}</div>
+      <div class="label">${i18n.t("report.avgDuration")}</div>
     </div>
     <div class="stat-card">
       <div class="value" style="color: #fddcde">${stats.light}</div>
-      <div class="label">Легких</div>
+      <div class="label">${i18n.t("report.light")}</div>
     </div>
     <div class="stat-card">
       <div class="value" style="color: #fdc1c8">${stats.medium}</div>
-      <div class="label">Середніх</div>
+      <div class="label">${i18n.t("report.medium")}</div>
     </div>
     <div class="stat-card">
       <div class="value" style="color: #f8a3ad">${stats.severe}</div>
-      <div class="label">Важких</div>
+      <div class="label">${i18n.t("report.severe")}</div>
     </div>
   </div>
 
   <div class="triggers-section">
-    <h2>Найчастіші тригери</h2>
+    <h2>${i18n.t("report.topTriggers")}</h2>
     <p>${stats.topTriggers}</p>
   </div>
 
@@ -143,17 +144,17 @@ export const htmlReport = (
 		rowsWithVideo
 			? `
   <div class="table-section">
-    <h3>🎥 Приступи з відеозаписом</h3>
+    <h3>🎥 ${i18n.t("report.withVideo")}</h3>
     <div class="data-table">
       <div class="data-header cols-with-video">
-        <div>Дата</div>
-        <div>Час</div>
-        <div>Тривалість</div>
-        <div>Тип</div>
-        <div>Сила</div>
-        <div>Тригери</div>
-        <div>Опис</div>
-        <div>Відео</div>
+        <div>${i18n.t("report.colDate")}</div>
+        <div>${i18n.t("report.colTime")}</div>
+        <div>${i18n.t("report.colDuration")}</div>
+        <div>${i18n.t("report.colType")}</div>
+        <div>${i18n.t("report.colSeverity")}</div>
+        <div>${i18n.t("report.colTriggers")}</div>
+        <div>${i18n.t("report.colDescription")}</div>
+        <div>${i18n.t("report.colVideo")}</div>
       </div>
       ${rowsWithVideo}
     </div>
@@ -166,16 +167,16 @@ export const htmlReport = (
 		rowsWithoutVideo
 			? `
   <div class="table-section">
-    <h3>Приступи без відеозаписів</h3>
+    <h3>${i18n.t("report.withoutVideo")}</h3>
     <div class="data-table">
       <div class="data-header cols-no-video">
-        <div>Дата</div>
-        <div>Час</div>
-        <div>Тривалість</div>
-        <div>Тип</div>
-        <div>Сила</div>
-        <div>Тригери</div>
-        <div>Опис</div>
+        <div>${i18n.t("report.colDate")}</div>
+        <div>${i18n.t("report.colTime")}</div>
+        <div>${i18n.t("report.colDuration")}</div>
+        <div>${i18n.t("report.colType")}</div>
+        <div>${i18n.t("report.colSeverity")}</div>
+        <div>${i18n.t("report.colTriggers")}</div>
+        <div>${i18n.t("report.colDescription")}</div>
       </div>
       ${rowsWithoutVideo}
     </div>
@@ -188,12 +189,12 @@ export const htmlReport = (
 		calendarHtml
 			? `
   <div class="calendar-page">
-    <h2>Календар приступів за період з ${formatDate(from)} по ${formatDate(to)}</h2>
+    <h2>${i18n.t("report.calendarTitle", { from: formatDate(from), to: formatDate(to) })}</h2>
     <div class="legend">
-      <span class="legend-item"><span class="legend-box" style="background:#7B1FA2"></span>Важкий</span>
-      <span class="legend-item"><span class="legend-box" style="background:#F06292"></span>Середній</span>
-      <span class="legend-item"><span class="legend-box" style="background:#E6A817"></span>Легкий / не визначено</span>
-      <span class="legend-item"><span style="font-size: 13px; font-weight: bold;">N</span> — кількість приступів за день</span>
+      <span class="legend-item"><span class="legend-box" style="background:#7B1FA2"></span>${i18n.t("report.legendSevere")}</span>
+      <span class="legend-item"><span class="legend-box" style="background:#F06292"></span>${i18n.t("report.legendMedium")}</span>
+      <span class="legend-item"><span class="legend-box" style="background:#E6A817"></span>${i18n.t("report.legendLight")}</span>
+      <span class="legend-item"><span style="font-size: 13px; font-weight: bold;">N</span> — ${i18n.t("report.legendCount")}</span>
     </div>
     <div class="months-grid">
       ${calendarHtml}
@@ -204,7 +205,7 @@ export const htmlReport = (
 	}
 
   <div class="footer">
-    <p>Сформовано додатком SeizureTracker • ${new Date().toLocaleString("uk-UA")}</p>
+    <p>${i18n.t("report.footer")} • ${new Date().toLocaleString(i18n.language === "uk" ? "uk-UA" : "en-US")}</p>
   </div>
 </body>
 </html>

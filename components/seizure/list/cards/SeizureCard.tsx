@@ -77,12 +77,12 @@ export function SeizureCard({ seizure: initialSeizure, onPress }: Props) {
 				<View style={styles.cardMoodRow}>
 					{seizure.moodBefore && (
 						<Text style={styles.cardMoodText}>
-							{MOOD_EMOJI[seizure.moodBefore]} до
+							{MOOD_EMOJI[seizure.moodBefore]} {t("seizure.before")}
 						</Text>
 					)}
 					{seizure.moodAfter && (
 						<Text style={styles.cardMoodText}>
-							{MOOD_EMOJI[seizure.moodAfter]} після
+							{MOOD_EMOJI[seizure.moodAfter]} {t("seizure.after")}
 						</Text>
 					)}
 				</View>

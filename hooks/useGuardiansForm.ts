@@ -1,5 +1,6 @@
 // hooks/useGuardiansForm.ts
 
+import i18n from "@/config/i18n"
 import { Guardian } from "@/models/user"
 import { validateEmail, validatePhone } from "@/utils"
 import { useCallback, useEffect, useRef, useState } from "react"
@@ -25,11 +26,11 @@ export function useGuardiansForm() {
 		const g = overrides.guardians ?? guardiansRef.current
 		for (const guardian of g) {
 			if (!guardian.fullName.trim()) {
-				setValidationError("Введіть ПІБ для кожного опікуна")
+				setValidationError(i18n.t("guardians.validationFullName"))
 				return
 			}
 			if (!guardian.relation) {
-				setValidationError("Оберіть ступінь спорідненості для кожного опікуна")
+				setValidationError(i18n.t("guardians.validationRelation"))
 				return
 			}
 			if (guardian.phone) {

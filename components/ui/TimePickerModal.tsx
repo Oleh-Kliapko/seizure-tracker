@@ -10,6 +10,7 @@ import {
 	View,
 } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { useTranslation } from "react-i18next"
 
 const HOURS = Array.from({ length: 24 }, (_, i) => i)
 const MINUTES = [0, 30]
@@ -24,6 +25,7 @@ type Props = {
 export function TimePickerModal({ visible, onClose, onAdd }: Props) {
 	const { colors, fonts, fontSize, spacing, radius } = useAppTheme()
 	const insets = useSafeAreaInsets()
+	const { t } = useTranslation()
 	const [hour, setHour] = useState(8)
 	const [minute, setMinute] = useState(0)
 
@@ -78,7 +80,7 @@ export function TimePickerModal({ visible, onClose, onAdd }: Props) {
 								letterSpacing: 0.5,
 							}}
 						>
-							Година
+							{t("common.hour")}
 						</Text>
 						<FlatList
 							data={HOURS}
@@ -146,7 +148,7 @@ export function TimePickerModal({ visible, onClose, onAdd }: Props) {
 								letterSpacing: 0.5,
 							}}
 						>
-							Хвилини
+							{t("common.minutes")}
 						</Text>
 						{MINUTES.map(m => {
 							const active = m === minute
@@ -199,7 +201,7 @@ export function TimePickerModal({ visible, onClose, onAdd }: Props) {
 								color: colors.onSurface,
 							}}
 						>
-							Скасувати
+							{t("common.cancel")}
 						</Text>
 					</TouchableOpacity>
 					<TouchableOpacity
@@ -220,7 +222,7 @@ export function TimePickerModal({ visible, onClose, onAdd }: Props) {
 								color: "#fff",
 							}}
 						>
-							Додати
+							{t("common.add")}
 						</Text>
 					</TouchableOpacity>
 				</View>

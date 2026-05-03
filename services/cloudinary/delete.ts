@@ -1,3 +1,5 @@
+import i18n from "@/config/i18n"
+
 const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL || "http://localhost:3000"
 const BACKEND_API_KEY = process.env.EXPO_PUBLIC_BACKEND_API_KEY
 
@@ -17,14 +19,14 @@ export async function deleteImageFromCloudinary(publicId: string): Promise<strin
 		if (!response.ok) {
 			try {
 				const errorData = await response.json()
-				return errorData.error || "Помилка видалення зображення"
+				return errorData.error || i18n.t("error.deleteImageError")
 			} catch {
-				return "Помилка видалення зображення"
+				return i18n.t("error.deleteImageError")
 			}
 		}
 		return null
 	} catch {
-		return "Помилка видалення зображення"
+		return i18n.t("error.deleteImageError")
 	}
 }
 
@@ -53,13 +55,13 @@ export async function deleteVideoFromCloudinary(
 		if (!response.ok) {
 			try {
 				const errorData = await response.json()
-				return errorData.error || "Помилка видалення відео"
+				return errorData.error || i18n.t("error.deleteVideoCloudError")
 			} catch {
-				return "Помилка видалення відео"
+				return i18n.t("error.deleteVideoCloudError")
 			}
 		}
 		return null
 	} catch (error: any) {
-		return "Помилка видалення відео"
+		return i18n.t("error.deleteVideoCloudError")
 	}
 }

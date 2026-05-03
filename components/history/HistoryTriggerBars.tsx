@@ -3,6 +3,7 @@
 import { useAppTheme } from "@/hooks"
 import { TriggerStat } from "@/hooks/useHistoryData"
 import { Text, View } from "react-native"
+import { useTranslation } from "react-i18next"
 
 type Props = {
 	data: TriggerStat[]
@@ -10,12 +11,13 @@ type Props = {
 
 export function HistoryTriggerBars({ data }: Props) {
 	const { colors, fonts, spacing, radius } = useAppTheme()
+	const { t } = useTranslation()
 
 	if (data.length === 0) {
 		return (
 			<View style={{ paddingVertical: spacing.md, alignItems: "center" }}>
 				<Text style={{ fontFamily: fonts.regular, fontSize: 14, color: colors.textSecondary }}>
-					Тригери не вказані за цей період
+					{t("history.noTriggers")}
 				</Text>
 			</View>
 		)

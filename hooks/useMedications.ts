@@ -2,6 +2,7 @@
 
 import { Medication } from "@/models/medication"
 import { deleteMedication, getMedications } from "@/services"
+import i18n from "@/config/i18n"
 import { useCallback, useEffect, useState } from "react"
 import { useAuth } from "./useAuth"
 
@@ -19,7 +20,7 @@ export function useMedications() {
 			const meds = await getMedications(user.uid)
 			setMedications(meds)
 		} catch {
-			setError("Помилка завантаження")
+			setError(i18n.t("error.loadingError"))
 		} finally {
 			setIsLoading(false)
 		}

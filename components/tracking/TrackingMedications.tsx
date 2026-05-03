@@ -1,8 +1,9 @@
 // components/tracking/TrackingMedications.tsx
 
+import i18n from "@/config/i18n"
 import { useAppTheme } from "@/hooks"
 import { MedIntake } from "@/hooks/useTrackingForm"
-import { Medication } from "@/models/medication"
+import { DOSE_UNIT_LABEL_KEYS, Medication, normalizeDoseUnit } from "@/models/medication"
 import { CheckCircle, Plus, X } from "lucide-react-native"
 import { useState } from "react"
 import { Text, TouchableOpacity, View } from "react-native"
@@ -18,7 +19,7 @@ type Props = {
 }
 
 function formatTime(ts: number) {
-	return new Date(ts).toLocaleTimeString("uk-UA", {
+	return new Date(ts).toLocaleTimeString(i18n.language === "uk" ? "uk-UA" : "en-US", {
 		hour: "2-digit",
 		minute: "2-digit",
 	})
@@ -74,7 +75,7 @@ export function TrackingMedications({
 							<View style={{ flex: 1 }}>
 								<Text style={styles.medName}>{med.name}</Text>
 								<Text style={styles.medDose}>
-									{t('tracking.dailyDose')} {required} {med.doseUnit}
+									{t('tracking.dailyDose')} {required} {t(DOSE_UNIT_LABEL_KEYS[normalizeDoseUnit(med.doseUnit)])}
 									{med.scheduledTimes && med.scheduledTimes.length > 0
 										? ` (${med.scheduledTimes.join(", ")})`
 										: ""}
@@ -96,7 +97,7 @@ export function TrackingMedications({
 													: colors.textSecondary,
 										}}
 									>
-										{taken} / {required} {med.doseUnit}
+										{taken} / {required} {t(DOSE_UNIT_LABEL_KEYS[normalizeDoseUnit(med.doseUnit)])}
 									</Text>
 								</View>
 								{!done && taken === 0 && (
@@ -182,7 +183,7 @@ export function TrackingMedications({
 										color: colors.textSecondary,
 									}}
 								>
-									{intake.amount} {med?.doseUnit ?? ""}
+									{intake.amount} {med ? t(DOSE_UNIT_LABEL_KEYS[normalizeDoseUnit(med.doseUnit)]) : ""}
 								</Text>
 								<TouchableOpacity
 									onPress={() => onRemoveIntake(index)}

@@ -2,6 +2,7 @@
 
 import { exportSeizuresToPdf, getSeizuresByPeriod } from "@/services"
 import { generateSeizureReportHtml } from "@/utils"
+import i18n from "@/config/i18n"
 import { useState } from "react"
 import * as Print from "expo-print"
 import { useAuth } from "./useAuth"
@@ -26,13 +27,13 @@ export function useExport() {
 			const seizures = await getSeizuresByPeriod(user.uid, from, to)
 
 			if (seizures.length === 0) {
-				setError("За вибраний період приступів не знайдено")
+				setError(i18n.t("error.exportNoSeizures"))
 				return
 			}
 
 			await exportSeizuresToPdf(profile, seizures, from, to)
 		} catch {
-			setError("Помилка експорту. Спробуйте ще раз")
+			setError(i18n.t("error.exportError"))
 		} finally {
 			setIsLoading(false)
 		}
@@ -48,7 +49,7 @@ export function useExport() {
 			const seizures = await getSeizuresByPeriod(user.uid, from, to)
 
 			if (seizures.length === 0) {
-				setError("За вибраний період приступів не знайдено")
+				setError(i18n.t("error.exportNoSeizures"))
 				return
 			}
 
@@ -74,6 +75,7 @@ export function useExport() {
 				body: JSON.stringify({
 					email,
 					pdfBase64: fileContent,
+					locale: i18n.language,
 					patientName: [profile.lastName, profile.firstName, profile.middleName]
 						.filter(Boolean)
 						.join(" ") || profile.displayName,
@@ -82,15 +84,15 @@ export function useExport() {
 			console.log("[Email Export] 8. Response status:", response.status)
 
 			if (!response.ok) {
-				const errorData = await response.json().catch(() => ({ error: "Невідома помилка" }))
-				setError(errorData.error || "Помилка відправлення. Спробуйте ще раз")
+				const errorData = await response.json().catch(() => ({ error: i18n.t("error.unknownError") }))
+				setError(errorData.error || i18n.t("error.sendError"))
 				return
 			}
 
 			setError(null)
 		} catch (e: any) {
 			console.log("[Email Export] EXCEPTION:", e.message, e)
-			setError("Помилка відправлення. Спробуйте ще раз")
+			setError(i18n.t("error.sendError"))
 		} finally {
 			setIsLoading(false)
 		}

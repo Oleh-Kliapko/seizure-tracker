@@ -1,4 +1,5 @@
 // hooks/useTrackingForm.ts
+import i18n from "@/config/i18n"
 
 import { ExternalTrigger, InternalTrigger, TriggerItem } from "@/models"
 import { Medication } from "@/models/medication"
@@ -142,7 +143,7 @@ export function useTrackingForm() {
 			})
 			setError(null)
 		} catch {
-			setError("Помилка збереження")
+			setError(i18n.t("error.savingErrorShort"))
 		}
 	}, [user])
 

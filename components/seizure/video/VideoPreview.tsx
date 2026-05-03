@@ -3,6 +3,7 @@
 import { useAppTheme } from "@/hooks"
 import { Video, X } from "lucide-react-native"
 import { Text, TouchableOpacity, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { VideoPlayer } from "./VideoPlayer"
 import { getStyles } from "./getStyles"
 
@@ -14,6 +15,7 @@ type Props = {
 export function VideoPreview({ videoUrl, onDelete }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 	const isHttpUrl = videoUrl.startsWith("http")
 
 	if (isHttpUrl) {
@@ -30,7 +32,7 @@ export function VideoPreview({ videoUrl, onDelete }: Props) {
 				>
 					<X size={20} color={theme.colors.error} />
 					<Text style={[styles.videoBtnText, { color: theme.colors.error }]}>
-						Видалити відео
+						{t("video.deleteVideo")}
 					</Text>
 				</TouchableOpacity>
 			</View>

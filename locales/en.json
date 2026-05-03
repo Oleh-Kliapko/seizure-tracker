@@ -17,7 +17,45 @@
     "generic": "Something went wrong. Please try again",
     "emailNotVerified": "Email not verified yet. Please check your inbox.",
     "enterCurrentPassword": "Enter your current password",
-    "passwordSame": "New password must be different from the current one"
+    "passwordSame": "New password must be different from the current one",
+    "fileSizeUnknown": "Could not get file size",
+    "deleteSeizureError": "Error deleting seizure",
+    "cloudinaryDeleteError": "Video was not deleted from Cloudinary: {{error}}",
+    "noGalleryAccess": "No gallery access",
+    "noCameraAccess": "No camera access",
+    "cameraUnavailable": "Camera is not available on this device",
+    "photoTooLarge": "Photo is too large. Maximum 3 MB",
+    "avatarDeleteError": "Deletion error",
+    "exportNoSeizures": "No seizures found for the selected period",
+    "exportError": "Export error. Please try again",
+    "sendError": "Send error. Please try again",
+    "unknownError": "Unknown error",
+    "googleUnavailable": "Google Sign-In is not available",
+    "authCancelled": "Sign-in cancelled",
+    "tokenError": "Failed to get token",
+    "authInProgress": "Sign-in already in progress",
+    "googlePlayUnavailable": "Google Play is not available",
+    "authError": "Authentication error",
+    "fileNotFound": "File not found",
+    "uploadCancelled": "Upload cancelled",
+    "videoUploadError": "Video upload error",
+    "loadingError": "Loading error",
+    "googleConfirmError": "Google account confirmation error",
+    "confirmPasswordPrompt": "Enter password to confirm",
+    "videoSizeExceeded": "Video exceeds {{size}}MB limit",
+    "videoLimitReached": "Video limit reached ({{count}}). Please delete old videos",
+    "imageUploadError": "Image upload error",
+    "invalidServerResponse": "Invalid server response",
+    "cloudinaryUploadError": "Cloudinary upload error",
+    "uploadStatusError": "Upload error: {{status}}",
+    "uploadTimeout": "Upload timed out",
+    "deleteImageError": "Image deletion error",
+    "deleteVideoCloudError": "Video deletion error",
+    "uploadStartError": "Failed to start upload",
+    "savingError": "Save error. Please try again",
+    "savingErrorShort": "Save error",
+    "deleteError": "Deletion error",
+    "savingSeizureError": "Save error. Please try again"
   },
   "common": {
     "save": "Save",
@@ -28,7 +66,18 @@
     "continue": "Continue",
     "logout": "Log out",
     "add": "Add",
-    "error": "Error"
+    "error": "Error",
+    "slogan": "Your personal health diary",
+    "or": "or",
+    "other": "Other",
+    "share": "Share report",
+    "takePhoto": "Take photo",
+    "chooseFromGallery": "Choose from gallery",
+    "hour": "Hour",
+    "minutes": "Minutes",
+    "minutesShort": "min",
+    "hoursShort": "hr",
+    "of": "of"
   },
   "picker": {
     "placeholder": "—"
@@ -150,7 +199,10 @@
     "medicationsNotConfigured": "Not configured",
     "seizure_1": "seizure",
     "seizure_2_4": "seizures",
-    "seizure_other": "seizures"
+    "seizure_other": "seizures",
+    "recentSeizures": "Recent seizures",
+    "allSeizures": "All seizures",
+    "heatmapTitle": "Seizures over 30 days"
   },
   "tracking": {
     "title": "Tracking",
@@ -182,7 +234,12 @@
     "notesPlaceholder": "Notes...",
     "triggers": "Triggers",
     "internalTriggers": "Internal",
-    "externalTriggers": "External"
+    "externalTriggers": "External",
+    "drug": "Drug",
+    "dailyDoseLabel": "daily dose",
+    "quantity": "Quantity",
+    "record": "Record",
+    "of": "of"
   },
   "history": {
     "title": "History",
@@ -205,7 +262,21 @@
     "emailModalTitle": "Send report by email",
     "emailModalDescription": "Sending may take about 1 minute",
     "emailPlaceholder": "Email address",
-    "send": "Send"
+    "send": "Send",
+    "dayMon": "Mo",
+    "dayTue": "Tu",
+    "dayWed": "We",
+    "dayThu": "Th",
+    "dayFri": "Fr",
+    "daySat": "Sa",
+    "daySun": "Su",
+    "night": "Night (0–6)",
+    "morning": "Morning (6–12)",
+    "afternoon": "Afternoon (12–18)",
+    "evening": "Evening (18–24)",
+    "noData": "No data for this period",
+    "total": "total",
+    "noTriggers": "No triggers recorded for this period"
   },
   "seizure": {
     "addTitle": "Add seizure",
@@ -229,7 +300,22 @@
     "dateTime": "Seizure time",
     "startTime": "Start",
     "specifyEndTime": "Specify end time",
-    "endTime": "End"
+    "endTime": "End",
+    "listTitle": "Seizures",
+    "emptyTitle": "No seizures yet",
+    "emptyHint": "Tap the add button at the top right",
+    "statsTotal": "Total",
+    "statsLight": "Mild",
+    "statsMedium": "Moderate",
+    "statsHeavy": "Severe",
+    "before": "before",
+    "after": "after",
+    "endTimeBeforeStart": "End time cannot be before start time",
+    "specifyCustomType": "Please specify the custom seizure type",
+    "specifyStartTime": "Please specify the seizure start time",
+    "confirmDeleteTitle": "Delete seizure",
+    "confirmDeleteMessage": "This action is irreversible. The seizure will be deleted permanently.",
+    "confirmDeleteBtn": "Delete"
   },
   "settings": {
     "personal": "Personal data",
@@ -256,7 +342,20 @@
   },
   "personal": {
     "birthDate": "Date of birth",
-    "selectDate": "Select date"
+    "selectDate": "Select date",
+    "lastNameLabel": "Last name",
+    "lastNamePlaceholder": "Enter last name",
+    "firstNameLabel": "First name",
+    "firstNamePlaceholder": "Enter first name",
+    "middleNameLabel": "Middle name",
+    "middleNamePlaceholder": "Enter middle name",
+    "phoneLabel": "Phone",
+    "countryLabel": "Country of birth",
+    "countryPlaceholder": "Enter country",
+    "cityLabel": "City of birth",
+    "cityPlaceholder": "Enter city",
+    "addressLabel": "Address",
+    "addressPlaceholder": "Enter address"
   },
   "medical": {
     "firstSeizure": "First seizure",
@@ -266,7 +365,9 @@
     "weight": "Weight (kg)",
     "weightPlaceholder": "Example: 70",
     "anamnesis": "Medical history",
-    "anamnesisPlaceholder": "Describe the main medical history..."
+    "anamnesisPlaceholder": "Describe the main medical history...",
+    "heightRange": "Height must be between 30 and 250 cm",
+    "weightRange": "Weight must be between 3 and 300 kg"
   },
   "guardians": {
     "title": "Guardian {{index}}",
@@ -275,7 +376,10 @@
     "fullNamePlaceholder": "Last First Middle name",
     "emailPlaceholder": "email@example.com",
     "phone": "Phone",
-    "phonePlaceholder": "+380XXXXXXXXX"
+    "phonePlaceholder": "+380XXXXXXXXX",
+    "addGuardian": "Add guardian",
+    "validationFullName": "Enter full name for each guardian",
+    "validationRelation": "Select relation for each guardian"
   },
   "medications": {
     "title": "Medication {{index}}",
@@ -296,5 +400,67 @@
     "confirmNewPassword": "Confirm new password",
     "passwordSet": "Password set successfully ✓",
     "passwordChanged": "Password changed successfully ✓"
+  },
+  "tabs": {
+    "home": "Home",
+    "seizures": "Seizures",
+    "tracking": "Tracking",
+    "history": "History",
+    "profile": "Profile"
+  },
+  "video": {
+    "title": "Video",
+    "maxSize": "Max {{size}}MB • up to {{count}} videos",
+    "addFromGallery": "Add video from gallery",
+    "uploading": "Uploading... {{progress}}%",
+    "uploadingShort": "Uploading...",
+    "deleting": "Deleting...",
+    "deleteVideo": "Delete video",
+    "addVideo": "Add video"
+  },
+  "doseUnit": {
+    "tablets": "tablets",
+    "capsules": "capsules",
+    "drops": "drops",
+    "ml": "ml",
+    "injections": "injections"
+  },
+  "report": {
+    "title": "Seizure Report",
+    "period": "Period",
+    "generated": "Generated",
+    "patientData": "Patient Data",
+    "fullName": "Full Name",
+    "birthDate": "Date of Birth",
+    "phone": "Phone",
+    "height": "Height",
+    "weight": "Weight",
+    "anamnesis": "Anamnesis",
+    "cm": "cm",
+    "kg": "kg",
+    "totalSeizures": "Total Seizures",
+    "avgDuration": "Avg. Duration",
+    "light": "Light",
+    "medium": "Medium",
+    "severe": "Severe",
+    "topTriggers": "Top Triggers",
+    "withVideo": "Seizures with Video",
+    "withoutVideo": "Seizures without Video",
+    "colDate": "Date",
+    "colTime": "Time",
+    "colDuration": "Duration",
+    "colType": "Type",
+    "colSeverity": "Severity",
+    "colTriggers": "Triggers",
+    "colDescription": "Description",
+    "colVideo": "Video",
+    "calendarTitle": "Seizure Calendar {{from}} – {{to}}",
+    "legendSevere": "Severe",
+    "legendMedium": "Medium",
+    "legendLight": "Light / unspecified",
+    "legendCount": "N — seizures per day",
+    "footer": "Generated by SeizureTracker",
+    "minutes": "min",
+    "hours": "h"
   }
 }

@@ -3,6 +3,7 @@
 import { useAppTheme } from "@/hooks"
 import { Seizure } from "@/models"
 import { Text, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "./getStyles"
 
 type Props = {
@@ -12,6 +13,7 @@ type Props = {
 export function SeizureStatsHeader({ seizures }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 
 	const total = seizures.length
 	const severe = seizures.filter(s => s.severity === 3).length
@@ -22,28 +24,28 @@ export function SeizureStatsHeader({ seizures }: Props) {
 		<View style={styles.statsCard}>
 			<View style={styles.statItem}>
 				<Text style={styles.statValue}>{total}</Text>
-				<Text style={styles.statLabel}>Всього</Text>
+				<Text style={styles.statLabel}>{t("seizure.statsTotal")}</Text>
 			</View>
 			<View style={styles.statDivider} />
 			<View style={styles.statItem}>
 				<Text style={[styles.statValue, { color: theme.seizureColors.light }]}>
 					{light}
 				</Text>
-				<Text style={styles.statLabel}>Легких</Text>
+				<Text style={styles.statLabel}>{t("seizure.statsLight")}</Text>
 			</View>
 			<View style={styles.statDivider} />
 			<View style={styles.statItem}>
 				<Text style={[styles.statValue, { color: theme.seizureColors.medium }]}>
 					{medium}
 				</Text>
-				<Text style={styles.statLabel}>Середніх</Text>
+				<Text style={styles.statLabel}>{t("seizure.statsMedium")}</Text>
 			</View>
 			<View style={styles.statDivider} />
 			<View style={styles.statItem}>
 				<Text style={[styles.statValue, { color: theme.seizureColors.severe }]}>
 					{severe}
 				</Text>
-				<Text style={styles.statLabel}>Важких</Text>
+				<Text style={styles.statLabel}>{t("seizure.statsHeavy")}</Text>
 			</View>
 		</View>
 	)

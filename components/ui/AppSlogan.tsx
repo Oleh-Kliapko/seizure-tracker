@@ -1,6 +1,7 @@
 // components/ui/AppSlogan.tsx
 
 import { useAppTheme } from "@/hooks"
+import { useTranslation } from "react-i18next"
 import { Text } from "react-native"
 
 type Props = {
@@ -15,6 +16,7 @@ export function AppSlogan({
 	color = "#6B7280",
 }: Props) {
 	const { fonts, colors } = useAppTheme()
+	const { t } = useTranslation()
 
 	return (
 		<Text
@@ -25,7 +27,7 @@ export function AppSlogan({
 				color: color ?? colors.textSecondary,
 			}}
 		>
-			Твій особистий щоденник здоров&apos;я
+			{t("common.slogan")}
 		</Text>
 	)
 }

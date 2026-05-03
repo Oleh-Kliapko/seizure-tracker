@@ -10,6 +10,7 @@ import { AlertCircle, Plus, Trash2 } from "lucide-react-native"
 import { useState } from "react"
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native"
 import { useAuth } from "@/hooks"
+import { useTranslation } from "react-i18next"
 import { getInfoAsync } from "expo-file-system/legacy"
 
 type Props = {
@@ -20,6 +21,7 @@ type Props = {
 export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 	const { user } = useAuth()
 	const theme = useAppTheme()
+	const { t } = useTranslation()
 	const [isUploading, setIsUploading] = useState(false)
 	const [isDeleting, setIsDeleting] = useState(false)
 	const [error, setError] = useState<string | null>(null)
@@ -49,7 +51,7 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 			const fileSize = (fileInfo as any).size ?? 0
 
 			if (fileSize === 0) {
-				setError("Не вдалося отримати розмір файлу")
+				setError(t("error.fileSizeUnknown"))
 				return
 			}
 
@@ -69,7 +71,7 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 
 			await reloadSeizure()
 		} catch (e: any) {
-			setError(e.message || "Помилка завантаження")
+			setError(e.message || t("error.uploadError"))
 		} finally {
 			setIsUploading(false)
 		}
@@ -96,10 +98,10 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 			})
 
 			if (cloudinaryError) {
-				setError(`Відео не видалилось з Cloudinary: ${cloudinaryError}`)
+				setError(t("error.cloudinaryDeleteError", { error: cloudinaryError }))
 			}
 		} catch (e: any) {
-			setError("Помилка видалення приступу")
+			setError(t("error.deleteSeizureError"))
 		} finally {
 			setIsDeleting(false)
 		}
@@ -110,7 +112,7 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 			<View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
 				<ActivityIndicator size="small" color={theme.colors.primary} />
 				<Text style={{ color: theme.colors.onSurface, fontSize: 12 }}>
-					{isDeleting ? "Видалення..." : "Завантаження..."}
+					{isDeleting ? t("video.deleting") : t("video.uploadingShort")}
 				</Text>
 			</View>
 		)
@@ -141,7 +143,7 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 				}}
 			>
 				<Trash2 size={14} color={theme.colors.error} />
-				<Text style={{ color: theme.colors.error, fontSize: 12 }}>Видалити відео</Text>
+				<Text style={{ color: theme.colors.error, fontSize: 12 }}>{t("video.deleteVideo")}</Text>
 			</TouchableOpacity>
 		)
 	}
@@ -161,7 +163,7 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 			}}
 		>
 			<Plus size={14} color={theme.colors.primary} />
-			<Text style={{ color: theme.colors.primary, fontSize: 12 }}>Додати відео</Text>
+			<Text style={{ color: theme.colors.primary, fontSize: 12 }}>{t("video.addVideo")}</Text>
 		</TouchableOpacity>
 	)
 }

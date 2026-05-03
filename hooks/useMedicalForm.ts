@@ -1,4 +1,5 @@
 // hooks/useMedicalForm.ts
+import i18n from "@/config/i18n"
 
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useUpdateProfile } from "./useUpdateProfile"
@@ -51,11 +52,11 @@ export function useMedicalForm() {
 		const s: MedicalState = { ...stateRef.current, ...overrides }
 
 		if (s.height && (isNaN(Number(s.height)) || Number(s.height) < 30 || Number(s.height) > 250)) {
-			setValidationError("Ріст має бути між 30 і 250 см")
+			setValidationError(i18n.t("medical.heightRange"))
 			return
 		}
 		if (s.weight && (isNaN(Number(s.weight)) || Number(s.weight) < 3 || Number(s.weight) > 300)) {
-			setValidationError("Вага має бути між 3 і 300 кг")
+			setValidationError(i18n.t("medical.weightRange"))
 			return
 		}
 

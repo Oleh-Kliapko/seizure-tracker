@@ -86,7 +86,8 @@ app.post("/api/images/delete", async (req: Request, res: Response) => {
 // Send report email endpoint
 app.post("/api/emails/send-report", async (req: Request, res: Response) => {
 	try {
-		const { email, pdfBase64, patientName } = req.body
+		const { email, pdfBase64, patientName, locale } = req.body
+		const isUk = locale === "uk"
 
 		// Validation
 		if (!email || typeof email !== "string") {
@@ -124,11 +125,20 @@ app.post("/api/emails/send-report", async (req: Request, res: Response) => {
 		const mailOptions = {
 			from: process.env.SMTP_FROM || process.env.SMTP_USER,
 			to: email,
-			subject: `SeizureTracker Звіт - ${patientName || "Пацієнт"}`,
-			html: `
+			subject: isUk
+				? `SeizureTracker Звіт - ${patientName || "Пацієнт"}`
+				: `SeizureTracker Report - ${patientName || "Patient"}`,
+			html: isUk
+				? `
 				<h2>Ваш звіт про приступи</h2>
 				<p>Шановний користувачу!</p>
 				<p>Ваш звіт про приступи згенерований і прикріплений до цього листа.</p>
+				<p><strong>SeizureTracker</strong></p>
+			`
+				: `
+				<h2>Your Seizure Report</h2>
+				<p>Dear user!</p>
+				<p>Your seizure report has been generated and is attached to this email.</p>
 				<p><strong>SeizureTracker</strong></p>
 			`,
 			attachments: [

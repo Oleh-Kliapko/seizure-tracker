@@ -4,6 +4,7 @@ import { useAppTheme } from "@/hooks"
 import * as ImagePicker from "expo-image-picker"
 import { Video } from "lucide-react-native"
 import { Text, TouchableOpacity } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "./getStyles"
 
 type Props = {
@@ -13,6 +14,7 @@ type Props = {
 export function VideoPickButton({ onVideoPicked }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 
 	const pickVideo = async () => {
 		const result = await ImagePicker.launchImageLibraryAsync({
@@ -33,7 +35,7 @@ export function VideoPickButton({ onVideoPicked }: Props) {
 			activeOpacity={0.7}
 		>
 			<Video size={20} color={theme.colors.primary} />
-			<Text style={styles.videoBtnText}>Додати відео з галереї</Text>
+			<Text style={styles.videoBtnText}>{t("video.addFromGallery")}</Text>
 		</TouchableOpacity>
 	)
 }
