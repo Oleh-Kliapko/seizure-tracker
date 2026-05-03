@@ -5,6 +5,7 @@ import { View } from "react-native"
 import { ChangePasswordSection } from "./ChangePasswordSection"
 import { CommunicationSelector } from "./CommunicationSelector"
 import { DangerZone } from "./DangerZone"
+import { LanguageSelector } from "./LanguageSelector"
 import { LegalLinks } from "./LegalLinks"
 import { ThemeSelector } from "./ThemeSelector"
 
@@ -25,6 +26,7 @@ export function AppSettingsForm({
 }: Props) {
 	return (
 		<View>
+			<LanguageSelector />
 			<ThemeSelector value={themeMode} onChange={onThemeChange} />
 			<CommunicationSelector
 				value={communicationChannel}

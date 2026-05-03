@@ -1,36 +1,42 @@
 // config/i18n.ts
 
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import i18n from "i18next"
 import { initReactI18next } from "react-i18next"
-import { NativeModules, Platform } from "react-native"
 import en from "../locales/en.json"
 import uk from "../locales/uk.json"
 
-function getDeviceLocale(): string {
-	try {
-		if (Platform.OS === "ios") {
-			const settings = NativeModules.SettingsManager?.settings
-			const raw: string = settings?.AppleLocale ?? settings?.AppleLanguages?.[0] ?? "en"
-			return raw.split(/[-_]/)[0]
-		}
-		const raw: string = NativeModules.I18nManager?.localeIdentifier ?? "en"
-		return raw.split(/[-_]/)[0]
-	} catch {
-		return Intl.DateTimeFormat().resolvedOptions().locale.split("-")[0] ?? "en"
-	}
-}
-
-const deviceLocale = getDeviceLocale()
-const language = deviceLocale === "uk" || deviceLocale === "ru" ? "uk" : "en"
+export const LANGUAGE_STORAGE_KEY = "@app_language"
 
 i18n.use(initReactI18next).init({
 	resources: {
 		uk: { translation: uk },
 		en: { translation: en },
 	},
-	lng: language,
-	fallbackLng: "uk",
+	lng: "en",
+	fallbackLng: "en",
 	interpolation: { escapeValue: false },
 })
+
+// Async: load saved language or detect from device
+AsyncStorage.getItem(LANGUAGE_STORAGE_KEY).then(saved => {
+	if (saved === "uk" || saved === "en") {
+		i18n.changeLanguage(saved)
+		return
+	}
+	// No saved preference — try expo-localization
+	try {
+		const { getLocales } = require("expo-localization")
+		const code: string = getLocales()?.[0]?.languageCode ?? "en"
+		i18n.changeLanguage(code === "uk" || code === "ru" ? "uk" : "en")
+	} catch {
+		// expo-localization not available in this build — stay with "en"
+	}
+})
+
+export async function setAppLanguage(lang: "uk" | "en"): Promise<void> {
+	await AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, lang)
+	i18n.changeLanguage(lang)
+}
 
 export default i18n
