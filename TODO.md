@@ -41,19 +41,20 @@
 - [x] Firestore правила безпеки
 - [x] FAQ, Угода, Обробка даних — в LegalLinks є заглушки // TODO: відкрити WebView
 - [x] Верифікація email при реєстрації через email/пароль
+- [x] Складніший пароль
+- [x] i18n — англійська мова через `i18next` (бере мову з мобільника чи планшета, якщо UKR чи RU - то українська, все інше - англійська)
 
 ---
 
 ## 🚧 В роботі
 
 - [ ] Face ID через `expo-local-authentication`
-- [ ] i18n — англійська мова через `i18next` (бере мову з мобільника чи планшета, якщо UKR чи RU - то українська, все інше - англійська)
-- [ ] Складніший пароль
 
 ---
 
 ## 🔮 Після MVP
 
+- [ ] Купити домен для продакшн email (напр. `seizuretracker.app`, ~$10-15/рік на namecheap.com) → верифікувати в Resend → замінити `onboarding@resend.dev` на `noreply@seizuretracker.app`
 - [ ] Перехід з Expo Go на Dev Client (99 баксів за акаунт)
 - [ ] Захист від ботів / DDOS (Firebase App Check) — потребує $99 Apple Developer акаунту для DeviceCheck/App Attest; код готовий, залишилось налаштувати в Firebase Console
 - [ ] Публікація в App Store
