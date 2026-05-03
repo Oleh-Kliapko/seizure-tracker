@@ -73,7 +73,7 @@ export const getStyles = (theme: AppTheme) => {
 			color: "#fff",
 		},
 		errorContainer: {
-			height: 24,
+			minHeight: 24,
 			justifyContent: "center" as const,
 			marginBottom: spacing.sm,
 		},
@@ -82,6 +82,7 @@ export const getStyles = (theme: AppTheme) => {
 			fontFamily: fonts.regular,
 			fontSize: fontSize.sm,
 			textAlign: "center" as const,
+			flexShrink: 1,
 		},
 	})
 }
