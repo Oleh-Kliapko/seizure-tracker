@@ -2,14 +2,17 @@
 
 import { useAppTheme } from "@/hooks"
 import { Text, TouchableOpacity, View } from "react-native"
+import { useTranslation } from "react-i18next"
 
 export type HistoryPeriod = "month" | "3months" | "6months" | "year"
 
-const PERIODS: { label: string; value: HistoryPeriod }[] = [
-	{ label: "Місяць", value: "month" },
-	{ label: "3 місяці", value: "3months" },
-	{ label: "6 місяців", value: "6months" },
-	{ label: "Рік", value: "year" },
+type PeriodItem = { labelKey: string; value: HistoryPeriod }
+
+const PERIODS: PeriodItem[] = [
+	{ labelKey: "history.month", value: "month" },
+	{ labelKey: "history.threeMonths", value: "3months" },
+	{ labelKey: "history.sixMonths", value: "6months" },
+	{ labelKey: "history.year", value: "year" },
 ]
 
 export function getPeriodRange(period: HistoryPeriod): { from: number; to: number } {
@@ -41,6 +44,7 @@ type Props = {
 
 export function HistoryPeriodFilter({ active, onChange }: Props) {
 	const { colors, fonts, fontSize, spacing, radius } = useAppTheme()
+	const { t } = useTranslation()
 
 	return (
 		<View style={{ flexDirection: "row", gap: spacing.sm, marginBottom: spacing.md }}>
@@ -64,7 +68,7 @@ export function HistoryPeriodFilter({ active, onChange }: Props) {
 							color: active === p.value ? "#fff" : colors.textSecondary,
 						}}
 					>
-						{p.label}
+						{t(p.labelKey)}
 					</Text>
 				</TouchableOpacity>
 			))}

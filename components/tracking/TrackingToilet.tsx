@@ -2,6 +2,7 @@
 
 import { useAppTheme } from "@/hooks"
 import { Text, TouchableOpacity, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "./getStyles"
 
 type Props = {
@@ -54,19 +55,20 @@ export function TrackingToilet({
 }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 
 	return (
 		<View style={styles.section}>
-			<Text style={styles.sectionTitle}>Фізіологія</Text>
+			<Text style={styles.sectionTitle}>{t('tracking.physiology')}</Text>
 			<Stepper
-				label="Сечовипускань"
+				label={t('tracking.urination')}
 				value={urinationCount}
 				onChange={onUrinationChange}
 				styles={styles}
 			/>
 			<View style={styles.divider} />
 			<Stepper
-				label="Випорожнень"
+				label={t('tracking.bowelMovements')}
 				value={bowelMovements}
 				onChange={onBowelChange}
 				styles={styles}

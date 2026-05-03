@@ -2,6 +2,7 @@
 
 import { useAppTheme } from "@/hooks"
 import { Text, TextInput, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "../getStyles"
 
 type Props = {
@@ -13,16 +14,17 @@ type Props = {
 export function AnamnesisInput({ value, onChange, onBlur }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 
 	return (
 		<View>
-			<Text style={styles.label}>Основний анамнез</Text>
+			<Text style={styles.label}>{t('medical.anamnesis')}</Text>
 			<TextInput
 				style={styles.textInput}
 				value={value}
 				onChangeText={onChange}
 				onBlur={onBlur}
-				placeholder="Опишіть основний анамнез..."
+				placeholder={t('medical.anamnesisPlaceholder')}
 				placeholderTextColor={theme.colors.textSecondary}
 				multiline
 				numberOfLines={5}

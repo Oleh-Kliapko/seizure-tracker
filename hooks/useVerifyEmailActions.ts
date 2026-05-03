@@ -44,7 +44,7 @@ export function useVerifyEmailActions() {
 				await updateUser(auth.currentUser.uid, { isEmailVerified: true })
 				await signOut(auth)
 			} else {
-				setError("Email ще не підтверджено. Перевірте пошту.")
+				setError("error.emailNotVerified")
 			}
 		} catch (e: any) {
 			setError(parseFirebaseError(e.code))

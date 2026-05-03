@@ -7,6 +7,7 @@ import { DOSE_UNITS } from "@/models/medication"
 import { Clock, Plus, Trash2, X } from "lucide-react-native"
 import { useState } from "react"
 import { Text, TouchableOpacity, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "../getStyles"
 
 type Props = {
@@ -31,28 +32,29 @@ export function MedicationCard({
 	const theme = useAppTheme()
 	const { colors, fonts, fontSize, spacing, radius } = theme
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 	const [showPicker, setShowPicker] = useState(false)
 
 	return (
 		<View style={styles.guardianCard}>
 			<View style={styles.guardianHeader}>
-				<Text style={styles.guardianTitle}>Препарат {index + 1}</Text>
+				<Text style={styles.guardianTitle}>{t('medications.title', { index: index + 1 })}</Text>
 				<TouchableOpacity onPress={onRemove} activeOpacity={0.7}>
 					<Trash2 size={20} color={colors.error} />
 				</TouchableOpacity>
 			</View>
 
 			<FormInput
-				label="Назва *"
+				label={t('medications.name')}
 				value={entry.name}
 				onChangeText={v => onUpdate("name", v)}
 				onBlur={onBlur}
-				placeholder="Наприклад: Карбамазепін"
+				placeholder={t('medications.namePlaceholder')}
 				autoCapitalize="words"
 			/>
 
 			<FormInput
-				label="Денна доза *"
+				label={t('medications.dailyDose')}
 				value={entry.doseAmount}
 				onChangeText={v => {
 					if (!v || /^\d*\.?\d*$/.test(v)) onUpdate("doseAmount", v)
@@ -64,7 +66,7 @@ export function MedicationCard({
 
 			<View style={{ marginBottom: spacing.md }}>
 				<Text style={[styles.label, { marginBottom: spacing.sm }]}>
-					Одиниця виміру
+					{t('medications.doseUnit')}
 				</Text>
 				<View style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.sm }}>
 					{DOSE_UNITS.map(unit => {
@@ -100,7 +102,7 @@ export function MedicationCard({
 
 			<View style={{ marginBottom: spacing.md }}>
 				<Text style={[styles.label, { marginBottom: spacing.sm }]}>
-					Час прийому
+					{t('medications.scheduledTime')}
 				</Text>
 				<View style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.sm }}>
 					{entry.scheduledTimes.map(t => (
@@ -146,18 +148,18 @@ export function MedicationCard({
 					>
 						<Plus size={13} color={colors.primary} />
 						<Text style={{ fontFamily: fonts.medium, fontSize: fontSize.sm, color: colors.primary }}>
-							Додати час
+							{t('medications.addTime')}
 						</Text>
 					</TouchableOpacity>
 				</View>
 			</View>
 
 			<FormInput
-				label="Нотатки"
+				label={t('medications.notes')}
 				value={entry.notes}
 				onChangeText={v => onUpdate("notes", v)}
 				onBlur={onBlur}
-				placeholder="Додаткова інформація..."
+				placeholder={t('medications.notesPlaceholder')}
 				autoCapitalize="sentences"
 				multiline
 				numberOfLines={2}

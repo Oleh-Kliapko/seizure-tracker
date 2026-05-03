@@ -21,11 +21,13 @@ import {
 } from "react-native"
 // import { SvgXml } from "react-native-svg"
 import { SvgXml } from "react-native-svg"
+import { useTranslation } from "react-i18next"
 import createAuthStyles from "./auth.styles"
 
 export default function Login() {
 	const theme = useAppTheme()
 	const styles = createAuthStyles(theme)
+	const { t } = useTranslation()
 
 	const {
 		email,
@@ -56,31 +58,31 @@ export default function Login() {
 
 					<View style={styles.formCard}>
 						<FormInput
-							label="Email"
+							label={t('auth.emailLabel')}
 							value={email}
 							onChangeText={setEmail}
-							placeholder="your@email.com"
+							placeholder={t('auth.emailPlaceholder')}
 							keyboardType="email-address"
 							autoCapitalize="none"
 							autoComplete="email"
 						/>
 						<FormInput
-							label="Пароль"
+							label={t('auth.passwordLabel')}
 							value={password}
 							onChangeText={setPassword}
-							placeholder="••••••••"
+							placeholder={t('auth.passwordPlaceholder')}
 							autoComplete="password"
 							isPassword
 						/>
 
 						<View style={styles.errorContainer}>
 							{displayError && (
-								<Text style={styles.errorText}>{displayError}</Text>
+								<Text style={styles.errorText}>{t(displayError)}</Text>
 							)}
 						</View>
 
 						<Button
-							title={isLoading ? "Завантаження..." : "Увійти"}
+							title={isLoading ? t('common.loading') : t('auth.login.submit')}
 							onPress={handleLogin}
 							disabled={isLoading}
 						/>
@@ -88,15 +90,15 @@ export default function Login() {
 
 					<Divider />
 					<Button
-						title="Продовжити з Google"
+						title={t('auth.google')}
 						icon={<SvgXml xml={GOOGLE_ICON} width={20} height={20} />}
 						iconPosition="left"
 						onPress={loginWithGoogle}
 						variant="secondary"
 					/>
 					<AuthFooterLink
-						question="Ще немає акаунту?"
-						linkText="Зареєструватись"
+						question={t('auth.login.noAccount')}
+						linkText={t('auth.login.registerLink')}
 						href="./register"
 					/>
 				</ScrollView>

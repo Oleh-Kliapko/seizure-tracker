@@ -6,6 +6,7 @@ import { Medication } from "@/models/medication"
 import { CheckCircle, Plus, X } from "lucide-react-native"
 import { useState } from "react"
 import { Text, TouchableOpacity, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "./getStyles"
 import { MedicationIntakeModal } from "./MedicationIntakeModal"
 
@@ -32,14 +33,15 @@ export function TrackingMedications({
 	const theme = useAppTheme()
 	const { colors, fonts, fontSize, spacing, radius } = theme
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 	const [showModal, setShowModal] = useState(false)
 
 	if (medications.length === 0) {
 		return (
 			<View style={styles.section}>
-				<Text style={styles.sectionTitle}>Ліки</Text>
+				<Text style={styles.sectionTitle}>{t('tracking.medications')}</Text>
 				<Text style={styles.emptyText}>
-					Ліки не налаштовані. Додайте їх у розділі Профіль → Ліки.
+					{t('tracking.medicationsNotConfigured')}
 				</Text>
 			</View>
 		)
@@ -47,7 +49,7 @@ export function TrackingMedications({
 
 	return (
 		<View style={styles.section}>
-			<Text style={styles.sectionTitle}>Ліки</Text>
+			<Text style={styles.sectionTitle}>{t('tracking.medications')}</Text>
 
 			{/* Per-medication summary */}
 			{medications.map((med, index) => {
@@ -72,7 +74,7 @@ export function TrackingMedications({
 							<View style={{ flex: 1 }}>
 								<Text style={styles.medName}>{med.name}</Text>
 								<Text style={styles.medDose}>
-									Денна доза: {required} {med.doseUnit}
+									{t('tracking.dailyDose')} {required} {med.doseUnit}
 									{med.scheduledTimes && med.scheduledTimes.length > 0
 										? ` (${med.scheduledTimes.join(", ")})`
 										: ""}
@@ -105,7 +107,7 @@ export function TrackingMedications({
 											color: colors.textSecondary,
 										}}
 									>
-										не прийнято
+										{t('tracking.notTaken')}
 									</Text>
 								)}
 								{partial && (
@@ -116,7 +118,7 @@ export function TrackingMedications({
 											color: "#F59E0B",
 										}}
 									>
-										⚠ неповна доза
+										{t('tracking.incompleteDose')}
 									</Text>
 								)}
 							</View>
@@ -139,7 +141,7 @@ export function TrackingMedications({
 							letterSpacing: 0.4,
 						}}
 					>
-						Прийоми сьогодні
+						{t('tracking.intakesToday')}
 					</Text>
 					{medIntakes.map((intake, index) => {
 						const med = medications.find(m => m.id === intake.medicationId)
@@ -219,7 +221,7 @@ export function TrackingMedications({
 						color: colors.primary,
 					}}
 				>
-					Записати прийом
+					{t('tracking.recordIntake')}
 				</Text>
 			</TouchableOpacity>
 

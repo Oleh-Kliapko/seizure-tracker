@@ -3,6 +3,7 @@
 import { MOOD_EMOJI, MOODS } from "@/constants/commonConstants"
 import { useAppTheme } from "@/hooks"
 import { Text, TouchableOpacity, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "./getStyles"
 
 const ACTIVITY_EMOJI: Record<number, string> = {
@@ -28,12 +29,13 @@ export function TrackingWellbeing({
 }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 
 	return (
 		<View style={styles.section}>
-			<Text style={styles.sectionTitle}>Самопочуття</Text>
+			<Text style={styles.sectionTitle}>{t('tracking.wellbeing')}</Text>
 
-			<Text style={styles.label}>Настрій</Text>
+			<Text style={styles.label}>{t('tracking.mood')}</Text>
 			<View style={styles.scaleRow}>
 				{MOODS.map(m => (
 					<TouchableOpacity
@@ -49,7 +51,7 @@ export function TrackingWellbeing({
 
 			<View style={styles.divider} />
 
-			<Text style={styles.label}>Фізична активність</Text>
+			<Text style={styles.label}>{t('tracking.activity')}</Text>
 			<View style={styles.scaleRow}>
 				{MOODS.map(a => (
 					<TouchableOpacity

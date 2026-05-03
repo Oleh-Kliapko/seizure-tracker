@@ -3,6 +3,7 @@ import { BLOOD_TYPES, RH_FACTORS } from "@/constants/commonConstants"
 import { useAppTheme } from "@/hooks"
 import { Picker } from "@react-native-picker/picker"
 import { Text, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "../getStyles"
 
 type Props = {
@@ -20,10 +21,11 @@ export function BloodTypePicker({
 }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 
 	return (
 		<View>
-			<Text style={styles.label}>Група та резус-фактор крові</Text>
+			<Text style={styles.label}>{t('medical.bloodType')}</Text>
 
 			<View style={styles.row}>
 				<View style={styles.pickerWrapper}>

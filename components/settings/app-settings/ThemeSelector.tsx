@@ -4,6 +4,7 @@ import { THEMES } from "@/constants/commonConstants"
 import { useAppTheme } from "@/hooks"
 import { AppThemeMode } from "@/models/user"
 import { Text, TouchableOpacity, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "../getStyles"
 
 type Props = {
@@ -14,32 +15,33 @@ type Props = {
 export function ThemeSelector({ value, onChange }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 
 	return (
 		<View style={styles.settingsSection}>
-			<Text style={styles.settingsSectionTitle}>Тема</Text>
-			{THEMES.map(t => (
+			<Text style={styles.settingsSectionTitle}>{t('settings.theme')}</Text>
+			{THEMES.map(item => (
 				<TouchableOpacity
-					key={t.value}
+					key={item.value}
 					style={styles.themeOption}
-					onPress={() => onChange(t.value)}
+					onPress={() => onChange(item.value)}
 					activeOpacity={0.7}
 				>
 					<View
 						style={[
 							styles.radioCircle,
-							value === t.value && styles.radioCircleActive,
+							value === item.value && styles.radioCircleActive,
 						]}
 					>
-						{value === t.value && <View style={styles.radioDot} />}
+						{value === item.value && <View style={styles.radioDot} />}
 					</View>
 					<Text
 						style={[
 							styles.themeOptionLabel,
-							value === t.value && styles.themeOptionLabelActive,
+							value === item.value && styles.themeOptionLabelActive,
 						]}
 					>
-						{t.label}
+						{t(item.labelKey)}
 					</Text>
 				</TouchableOpacity>
 			))}

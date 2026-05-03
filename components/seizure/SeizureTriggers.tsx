@@ -3,6 +3,7 @@
 import { useAppTheme } from "@/hooks"
 import { ExternalTrigger, InternalTrigger, TriggerItem } from "@/models"
 import { Text, TouchableOpacity, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "./getStyles"
 import {
 	EXTERNAL_TRIGGERS,
@@ -25,26 +26,27 @@ export function SeizureTriggers({
 }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 
 	const isInternalActive = (v: InternalTrigger) =>
-		internalTriggers.some(t => t.type === v)
+		internalTriggers.some(trigger => trigger.type === v)
 
 	const isExternalActive = (v: ExternalTrigger) =>
-		externalTriggers.some(t => t.type === v)
+		externalTriggers.some(trigger => trigger.type === v)
 
 	return (
 		<View style={styles.section}>
-			<Text style={styles.sectionTitle}>Тригери</Text>
+			<Text style={styles.sectionTitle}>{t('seizure.triggers')}</Text>
 
-			<Text style={styles.label}>Внутрішні</Text>
+			<Text style={styles.label}>{t('seizure.internalTriggers')}</Text>
 			<View style={[styles.triggerRow, { marginTop: theme.spacing.sm }]}>
-				{INTERNAL_TRIGGERS.map(t => {
-					const active = isInternalActive(t.value)
+				{INTERNAL_TRIGGERS.map(item => {
+					const active = isInternalActive(item.value)
 					return (
 						<TouchableOpacity
-							key={t.value}
+							key={item.value}
 							style={[styles.triggerChip, active && styles.triggerChipActive]}
-							onPress={() => onToggleInternal(t.value)}
+							onPress={() => onToggleInternal(item.value)}
 							activeOpacity={0.7}
 						>
 							<Text
@@ -53,7 +55,7 @@ export function SeizureTriggers({
 									active && styles.triggerChipTextActive,
 								]}
 							>
-								{t.label}
+								{t(item.labelKey)}
 							</Text>
 						</TouchableOpacity>
 					)
@@ -62,15 +64,15 @@ export function SeizureTriggers({
 
 			<Divider label="" />
 
-			<Text style={styles.label}>Зовнішні</Text>
+			<Text style={styles.label}>{t('seizure.externalTriggers')}</Text>
 			<View style={[styles.triggerRow, { marginTop: theme.spacing.sm }]}>
-				{EXTERNAL_TRIGGERS.map(t => {
-					const active = isExternalActive(t.value)
+				{EXTERNAL_TRIGGERS.map(item => {
+					const active = isExternalActive(item.value)
 					return (
 						<TouchableOpacity
-							key={t.value}
+							key={item.value}
 							style={[styles.triggerChip, active && styles.triggerChipActive]}
-							onPress={() => onToggleExternal(t.value)}
+							onPress={() => onToggleExternal(item.value)}
 							activeOpacity={0.7}
 						>
 							<Text
@@ -79,7 +81,7 @@ export function SeizureTriggers({
 									active && styles.triggerChipTextActive,
 								]}
 							>
-								{t.label}
+								{t(item.labelKey)}
 							</Text>
 						</TouchableOpacity>
 					)

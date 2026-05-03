@@ -4,6 +4,7 @@ import { FormInput } from "@/components/ui"
 import { Button } from "@/components/ui/Button"
 import { useAppTheme } from "@/hooks"
 import { Text, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "../getStyles"
 
 type Props = {
@@ -29,18 +30,19 @@ export function SetPasswordForm({
 }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 
 	return (
 		<View style={styles.settingsSection}>
 			<FormInput
-				label="Новий пароль"
+				label={t('form.newPassword')}
 				value={newPassword}
 				onChangeText={onNewPasswordChange}
 				placeholder="••••••••"
 				isPassword
 			/>
 			<FormInput
-				label="Підтвердити пароль"
+				label={t('form.confirmPassword')}
 				value={confirmPassword}
 				onChangeText={onConfirmPasswordChange}
 				placeholder="••••••••"
@@ -48,16 +50,16 @@ export function SetPasswordForm({
 			/>
 
 			<View style={styles.errorContainer}>
-				{error && <Text style={styles.errorText}>{error}</Text>}
+				{error && <Text style={styles.errorText}>{t(error)}</Text>}
 				{isSuccess && (
 					<Text style={[styles.errorText, { color: theme.colors.success }]}>
-						Пароль успішно встановлено ✓
+						{t('form.passwordSet')}
 					</Text>
 				)}
 			</View>
 
 			<Button
-				title={isLoading ? "Збереження..." : "Встановити пароль"}
+				title={isLoading ? t('common.saving') : t('settings.setPassword')}
 				onPress={onSave}
 				disabled={isLoading}
 			/>

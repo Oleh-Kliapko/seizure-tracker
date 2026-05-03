@@ -46,13 +46,14 @@
 
 ## 🚧 В роботі
 
+- [ ] Face ID через `expo-local-authentication`
+- [ ] i18n — англійська мова через `i18next` (бере мову з мобільника чи планшета, якщо UKR чи RU - то українська, все інше - англійська)
+- [ ] Складніший пароль
+
 ---
 
 ## 🔮 Після MVP
 
-- [ ] Face ID через `expo-local-authentication`
-- [ ] i18n — англійська мова через `i18next`
-- [ ] Складніший пароль
 - [ ] Перехід з Expo Go на Dev Client (99 баксів за акаунт)
 - [ ] Захист від ботів / DDOS (Firebase App Check) — потребує $99 Apple Developer акаунту для DeviceCheck/App Attest; код готовий, залишилось налаштувати в Firebase Console
 - [ ] Публікація в App Store

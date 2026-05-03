@@ -13,9 +13,11 @@ import {
 	ScrollView,
 	View,
 } from "react-native"
+import { useTranslation } from "react-i18next"
 
 export default function MedicationsScreen() {
 	const { colors, spacing } = useAppTheme()
+	const { t } = useTranslation()
 	const {
 		entries,
 		isLoading,
@@ -40,7 +42,7 @@ export default function MedicationsScreen() {
 
 	return (
 		<ScreenWrapper>
-			<ScreenHeader title="Ліки" />
+			<ScreenHeader title={t('settings.medications')} />
 
 			{isLoading ? (
 				<View

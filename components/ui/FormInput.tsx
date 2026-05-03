@@ -12,7 +12,7 @@ import {
 import { createFormInputStyles } from "./FormInput.styles"
 
 type Props = Omit<TextInputProps, "secureTextEntry"> & {
-	label: string
+	label?: string
 	isPassword?: boolean
 }
 
@@ -24,7 +24,7 @@ export function FormInput({ label, isPassword = false, ...props }: Props) {
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.label}>{label}</Text>
+			{!!label && <Text style={styles.label}>{label}</Text>}
 
 			<View style={styles.inputWrapper}>
 				<TextInput

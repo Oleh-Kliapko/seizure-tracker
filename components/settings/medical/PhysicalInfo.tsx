@@ -1,6 +1,7 @@
 // components/settings/medical/PhysicalInfo.tsx
 
 import { FormInput } from "@/components/ui"
+import { useTranslation } from "react-i18next"
 
 type Props = {
 	height: string
@@ -17,23 +18,25 @@ export function PhysicalInfo({
 	onWeightChange,
 	onBlur,
 }: Props) {
+	const { t } = useTranslation()
+
 	return (
 		<>
 			<FormInput
-				label="Ріст (см)"
+				label={t('medical.height')}
 				value={height}
 				onChangeText={onHeightChange}
 				onBlur={onBlur}
-				placeholder="Наприклад: 175"
+				placeholder={t('medical.heightPlaceholder')}
 				keyboardType="number-pad"
 				maxLength={3}
 			/>
 			<FormInput
-				label="Вага (кг)"
+				label={t('medical.weight')}
 				value={weight}
 				onChangeText={onWeightChange}
 				onBlur={onBlur}
-				placeholder="Наприклад: 70"
+				placeholder={t('medical.weightPlaceholder')}
 				keyboardType="number-pad"
 				maxLength={3}
 			/>

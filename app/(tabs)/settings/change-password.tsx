@@ -4,9 +4,11 @@ import { ChangePasswordForm } from "@/components/settings"
 import { ScreenHeader, ScreenWrapper } from "@/components/ui"
 import { useAppTheme, useChangePasswordForm } from "@/hooks"
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
+import { useTranslation } from "react-i18next"
 
 export default function ChangePasswordScreen() {
 	const { spacing } = useAppTheme()
+	const { t } = useTranslation()
 	const {
 		currentPassword,
 		setCurrentPassword,
@@ -22,7 +24,7 @@ export default function ChangePasswordScreen() {
 
 	return (
 		<ScreenWrapper>
-			<ScreenHeader title="Зміна паролю" />
+			<ScreenHeader title={t('settings.changePassword')} />
 			<KeyboardAvoidingView
 				style={{ flex: 1 }}
 				behavior={Platform.OS === "ios" ? "padding" : undefined}

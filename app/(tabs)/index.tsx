@@ -20,9 +20,11 @@ import {
 	TouchableOpacity,
 	View,
 } from "react-native"
+import { useTranslation } from "react-i18next"
 
 export default function Dashboard() {
 	const { colors, fonts, fontSize, spacing } = useAppTheme()
+	const { t } = useTranslation()
 	const {
 		isLoading,
 		profile,
@@ -44,7 +46,7 @@ export default function Dashboard() {
 	return (
 		<ScreenWrapper>
 			<ScreenHeader
-				title={firstName ? `Привіт, ${firstName}` : "Привіт"}
+				title={firstName ? t('dashboard.greeting', { name: firstName }) : t('dashboard.greetingDefault')}
 				subtitle={today}
 				showBackButton={false}
 			/>
@@ -73,7 +75,7 @@ export default function Dashboard() {
 							textAlign: "center",
 						}}
 					>
-						Тут з&apos;явиться статистика після першого запису
+						{t('dashboard.emptyTitle')}
 					</Text>
 					<Text
 						style={{
@@ -83,7 +85,7 @@ export default function Dashboard() {
 							textAlign: "center",
 						}}
 					>
-						Додайте перший приступ, і дашборд оживе
+						{t('dashboard.emptySubtitle')}
 					</Text>
 					<TouchableOpacity
 						onPress={() => router.push("/(tabs)/seizures/add")}
@@ -102,7 +104,7 @@ export default function Dashboard() {
 								color: "#fff",
 							}}
 						>
-							+ Додати приступ
+							{t('dashboard.addSeizure')}
 						</Text>
 					</TouchableOpacity>
 				</View>

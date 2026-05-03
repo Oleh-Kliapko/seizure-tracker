@@ -3,6 +3,7 @@
 import { Divider, FormInput } from "@/components/ui"
 import { useAppTheme } from "@/hooks"
 import { Switch, Text, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "./getStyles"
 
 type Props = {
@@ -24,16 +25,17 @@ export function SeizureExtra({
 }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 
 	return (
 		<View style={styles.section}>
-			<Text style={styles.sectionTitle}>Додатково</Text>
+			<Text style={styles.sectionTitle}>{t('seizure.additional')}</Text>
 
 			<View style={styles.switchRow}>
 				<View>
-					<Text style={styles.label}>Ліки прийняті</Text>
+					<Text style={styles.label}>{t('seizure.medicationTaken')}</Text>
 					<Text style={styles.sublabel}>
-						Чи приймав пацієнт ліки перед приступом
+						{t('seizure.medicationTakenDescription')}
 					</Text>
 				</View>
 				<Switch
@@ -46,23 +48,23 @@ export function SeizureExtra({
 			<Divider label="" />
 
 			<FormInput
-				label="Години сну до приступу"
+				label={t('seizure.sleepHours')}
 				value={sleepHoursBefore !== undefined ? String(sleepHoursBefore) : ""}
 				onChangeText={v => onSleepHoursChange(v ? Number(v) : undefined)}
-				placeholder="Наприклад: 6"
+				placeholder="6"
 				keyboardType="number-pad"
 				maxLength={2}
 			/>
 
 			<View>
 				<View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-					<Text style={styles.label}>Опис</Text>
+					<Text style={styles.label}>{t('seizure.description')}</Text>
 					<Text style={[styles.sublabel, { fontSize: 10 }]}>{description.length}/150</Text>
 				</View>
 				<FormInput
 					value={description}
 					onChangeText={onDescriptionChange}
-					placeholder="Додаткові нотатки..."
+					placeholder={t('seizure.descriptionPlaceholder')}
 					multiline
 					numberOfLines={4}
 					maxLength={150}

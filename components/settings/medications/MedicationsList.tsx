@@ -4,6 +4,7 @@ import { useAppTheme } from "@/hooks"
 import { MedEntry } from "@/hooks/useMedicationsForm"
 import { Pill } from "lucide-react-native"
 import { Text, TouchableOpacity, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "../getStyles"
 import { MedicationCard } from "./MedicationCard"
 
@@ -30,6 +31,7 @@ export function MedicationsList({
 }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 
 	return (
 		<View style={styles.card}>
@@ -52,12 +54,12 @@ export function MedicationsList({
 				activeOpacity={0.7}
 			>
 				<Pill size={20} color={theme.colors.primary} />
-				<Text style={styles.addBtnText}>Додати препарат</Text>
+				<Text style={styles.addBtnText}>{t('medications.addMedication')}</Text>
 			</TouchableOpacity>
 
 			{error && (
 				<View style={styles.errorContainer}>
-					<Text style={styles.errorText}>{error}</Text>
+					<Text style={styles.errorText}>{t(error)}</Text>
 				</View>
 			)}
 		</View>

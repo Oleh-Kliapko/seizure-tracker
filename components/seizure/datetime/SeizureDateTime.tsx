@@ -3,6 +3,7 @@
 import { useAppTheme } from "@/hooks"
 import { useState } from "react"
 import { Switch, Text, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { Divider } from "../../ui"
 import { getStyles } from "../getStyles"
 import { DateTimeInput } from "./DateTimeInput"
@@ -24,6 +25,7 @@ export function SeizureDateTime({
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
 	const dateTimeStyles = getDateTimeStyles(theme)
+	const { t } = useTranslation()
 	const [hasEndTime, setHasEndTime] = useState(!!endedAt)
 
 	const toggleEndTime = (value: boolean) => {
@@ -34,10 +36,10 @@ export function SeizureDateTime({
 
 	return (
 		<View style={styles.section}>
-			<Text style={styles.sectionTitle}>Час приступу</Text>
+			<Text style={styles.sectionTitle}>{t('seizure.dateTime')}</Text>
 
 			<DateTimeInput
-				label="Початок"
+				label={t('seizure.startTime')}
 				value={startedAt}
 				onChange={onStartChange}
 			/>
@@ -45,7 +47,7 @@ export function SeizureDateTime({
 			<Divider label="" />
 
 			<View style={dateTimeStyles.switchRow}>
-				<Text style={dateTimeStyles.label}>Вказати час закінчення</Text>
+				<Text style={dateTimeStyles.label}>{t('seizure.specifyEndTime')}</Text>
 				<Switch
 					value={hasEndTime}
 					onValueChange={toggleEndTime}
@@ -55,7 +57,7 @@ export function SeizureDateTime({
 
 			{hasEndTime && (
 				<DateTimeInput
-					label="Закінчення"
+					label={t('seizure.endTime')}
 					value={endedAt ?? Date.now()}
 					onChange={onEndChange}
 				/>

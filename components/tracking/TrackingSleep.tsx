@@ -2,6 +2,7 @@
 
 import { useAppTheme } from "@/hooks"
 import { Text, TextInput, TouchableOpacity, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "./getStyles"
 
 const QUALITY = [1, 2, 3, 4, 5]
@@ -30,12 +31,13 @@ export function TrackingSleep({
 }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 
 	return (
 		<View style={styles.section}>
-			<Text style={styles.sectionTitle}>Сон</Text>
+			<Text style={styles.sectionTitle}>{t('tracking.sleep')}</Text>
 
-			<Text style={styles.vitalLabel}>Тривалість (годин)</Text>
+			<Text style={styles.vitalLabel}>{t('tracking.sleepDuration')}</Text>
 			<TextInput
 				style={[styles.vitalInput, { marginBottom: theme.spacing.md }]}
 				value={sleepDuration}
@@ -47,7 +49,7 @@ export function TrackingSleep({
 				maxLength={2}
 			/>
 
-			<Text style={styles.label}>Якість сну</Text>
+			<Text style={styles.label}>{t('tracking.sleepQuality')}</Text>
 			<View style={styles.scaleRow}>
 				{QUALITY.map(q => (
 					<TouchableOpacity

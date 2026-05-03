@@ -6,9 +6,11 @@ import { useAppTheme, useMedicalForm } from "@/hooks"
 import { useFocusEffect } from "@react-navigation/native"
 import { useCallback } from "react"
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
+import { useTranslation } from "react-i18next"
 
 export default function MedicalScreen() {
 	const { spacing } = useAppTheme()
+	const { t } = useTranslation()
 	const {
 		month,
 		setMonth,
@@ -39,7 +41,7 @@ export default function MedicalScreen() {
 
 	return (
 		<ScreenWrapper>
-			<ScreenHeader title="Медичні дані" />
+			<ScreenHeader title={t('settings.medical')} />
 			<KeyboardAvoidingView
 				style={{ flex: 1 }}
 				behavior={Platform.OS === "ios" ? "padding" : undefined}

@@ -10,6 +10,7 @@ import {
 	TriggerItem,
 } from "@/models"
 import { Text, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "./getStyles"
 import { SeizureDateTime } from "./datetime"
 import { SeizureExtra } from "./SeizureExtra"
@@ -50,6 +51,7 @@ type Props = {
 export function SeizureForm(props: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 
 	return (
 		<View>
@@ -91,11 +93,11 @@ export function SeizureForm(props: Props) {
 			/>
 
 			<View style={styles.errorContainer}>
-				{props.error && <Text style={styles.errorText}>{props.error}</Text>}
+				{props.error && <Text style={styles.errorText}>{t(props.error)}</Text>}
 			</View>
 
 			<Button
-				title={props.isLoading ? "Збереження..." : "Зберегти"}
+				title={props.isLoading ? t('common.saving') : t('common.save')}
 				onPress={props.onSave}
 				disabled={props.isLoading}
 			/>

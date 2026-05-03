@@ -12,9 +12,11 @@ import {
 	ScrollView,
 	View,
 } from "react-native"
+import { useTranslation } from "react-i18next"
 
 export default function EditSeizureScreen() {
 	const { spacing, colors } = useAppTheme()
+	const { t } = useTranslation()
 	const {
 		startedAt,
 		setStartedAt,
@@ -50,7 +52,7 @@ export default function EditSeizureScreen() {
 	return (
 		<ScreenWrapper>
 			<ScreenHeader
-				title="Редагувати приступ"
+				title={t('seizure.editTitle')}
 				right={
 					<Button
 						title=""

@@ -2,30 +2,33 @@
 
 import { useAppTheme } from "@/hooks"
 import { Text, View } from "react-native"
+import { useTranslation } from "react-i18next"
 
 type Props = {
 	thisMonthCount: number
 	lastMonthCount: number
 }
 
-function trendLabel(current: number, previous: number): { text: string; color: string } | null {
-	if (previous === 0 && current === 0) return null
-	if (previous === 0) return null
-	const diff = current - previous
-	const pct = Math.round(Math.abs(diff / previous) * 100)
-	if (diff === 0) return { text: "= без змін", color: "#888" }
-	if (diff > 0) return { text: `↑ +${pct}%`, color: "#e53935" }
-	return { text: `↓ −${pct}%`, color: "#43a047" }
-}
-
-function seizureWord(n: number): string {
-	if (n === 1) return "приступ"
-	if (n >= 2 && n <= 4) return "приступи"
-	return "приступів"
-}
-
 export function DashboardStats({ thisMonthCount, lastMonthCount }: Props) {
 	const { colors, fonts, fontSize, spacing, radius } = useAppTheme()
+	const { t } = useTranslation()
+
+	function trendLabel(current: number, previous: number): { text: string; color: string } | null {
+		if (previous === 0 && current === 0) return null
+		if (previous === 0) return null
+		const diff = current - previous
+		const pct = Math.round(Math.abs(diff / previous) * 100)
+		if (diff === 0) return { text: t('dashboard.noChange'), color: "#888" }
+		if (diff > 0) return { text: `↑ +${pct}%`, color: "#e53935" }
+		return { text: `↓ −${pct}%`, color: "#43a047" }
+	}
+
+	function seizureWord(n: number): string {
+		if (n === 1) return t('dashboard.seizure_1')
+		if (n >= 2 && n <= 4) return t('dashboard.seizure_2_4')
+		return t('dashboard.seizure_other')
+	}
+
 	const trend = trendLabel(thisMonthCount, lastMonthCount)
 
 	const cardStyle = {
@@ -46,7 +49,7 @@ export function DashboardStats({ thisMonthCount, lastMonthCount }: Props) {
 						marginBottom: spacing.xs,
 					}}
 				>
-					Цього місяця
+					{t('dashboard.thisMonth')}
 				</Text>
 				<Text
 					style={{
@@ -90,7 +93,7 @@ export function DashboardStats({ thisMonthCount, lastMonthCount }: Props) {
 						marginBottom: spacing.xs,
 					}}
 				>
-					Минулого місяця
+					{t('dashboard.lastMonth')}
 				</Text>
 				<Text
 					style={{

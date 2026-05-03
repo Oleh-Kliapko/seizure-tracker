@@ -3,11 +3,13 @@
 import { AppLogo, AppName, Button, ScreenWrapper } from "@/components/ui"
 import { useAppTheme, useVerifyEmailActions } from "@/hooks"
 import { ScrollView, Text, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import createAuthStyles from "./auth.styles"
 
 export default function VerifyEmail() {
 	const theme = useAppTheme()
 	const styles = createAuthStyles(theme)
+	const { t } = useTranslation()
 	const {
 		email,
 		isLoading,
@@ -40,7 +42,7 @@ export default function VerifyEmail() {
 							marginBottom: theme.spacing.sm,
 						}}
 					>
-						Підтвердіть email
+						{t('auth.verify.title')}
 					</Text>
 					<Text
 						style={{
@@ -51,23 +53,22 @@ export default function VerifyEmail() {
 							marginBottom: theme.spacing.lg,
 						}}
 					>
-						Ми надіслали листа на {email}.{"\n"}
-						Перейдіть за посиланням у листі, щоб підтвердити акаунт.
+						{t('auth.verify.message', { email })}
 					</Text>
 
 					<View style={styles.errorContainer}>
-						{error && <Text style={styles.errorText}>{error}</Text>}
+						{error && <Text style={styles.errorText}>{t(error)}</Text>}
 						{isResent && !error && (
 							<Text
 								style={[styles.errorText, { color: theme.colors.success }]}
 							>
-								Лист надіслано повторно!
+								{t('auth.verify.resent')}
 							</Text>
 						)}
 					</View>
 
 					<Button
-						title={isLoading ? "Перевірка..." : "Я підтвердив"}
+						title={isLoading ? t('auth.verify.checking') : t('auth.verify.confirmed')}
 						onPress={handleCheckVerification}
 						disabled={isLoading}
 					/>
@@ -75,8 +76,8 @@ export default function VerifyEmail() {
 					<Button
 						title={
 							cooldown > 0
-								? `Надіслати повторно (${cooldown}с)`
-								: "Надіслати повторно"
+								? t('auth.verify.resendWithCooldown', { cooldown })
+								: t('auth.verify.resend')
 						}
 						onPress={handleResend}
 						variant="secondary"
@@ -84,7 +85,7 @@ export default function VerifyEmail() {
 					/>
 					<View style={{ height: theme.spacing.sm }} />
 					<Button
-						title="Вийти"
+						title={t('common.logout')}
 						onPress={handleLogout}
 						variant="secondary"
 						disabled={isLoading}

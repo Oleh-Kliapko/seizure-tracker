@@ -6,6 +6,7 @@ import { useIsDarkTheme } from "@/hooks/useAppTheme"
 import DateTimePicker from "@react-native-community/datetimepicker"
 import { useState } from "react"
 import { Platform, Text, TouchableOpacity, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "../getStyles"
 
 type FormField = {
@@ -35,6 +36,7 @@ export function PersonalForm({
 	const theme = useAppTheme()
 	const isDark = useIsDarkTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 	const [showPicker, setShowPicker] = useState(false)
 
 	const formatBirthDate = (ts: number) =>
@@ -71,7 +73,7 @@ export function PersonalForm({
 			})}
 
 			<View style={{ marginBottom: theme.spacing.md }}>
-				<Text style={styles.label}>Дата народження</Text>
+				<Text style={styles.label}>{t('personal.birthDate')}</Text>
 				<TouchableOpacity
 					onPress={() => setShowPicker(v => !v)}
 					activeOpacity={0.7}
@@ -91,7 +93,7 @@ export function PersonalForm({
 							color: birthDate ? theme.colors.onSurface : theme.colors.textSecondary,
 						}}
 					>
-						{birthDate ? formatBirthDate(birthDate) : "Оберіть дату"}
+						{birthDate ? formatBirthDate(birthDate) : t('personal.selectDate')}
 					</Text>
 				</TouchableOpacity>
 
@@ -127,7 +129,7 @@ export function PersonalForm({
 									color: "#fff",
 								}}
 							>
-								Готово
+								{t('common.done')}
 							</Text>
 						</TouchableOpacity>
 					</View>

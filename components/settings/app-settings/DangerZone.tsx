@@ -7,11 +7,13 @@ import { useAppTheme, useDeleteAccount } from "@/hooks"
 import { Trash2 } from "lucide-react-native"
 import { useState } from "react"
 import { Alert, Text, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "../getStyles"
 
 export function DangerZone() {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 	const { deleteAccount, isLoading, error } = useDeleteAccount()
 	const [password, setPassword] = useState("")
 	const [showConfirm, setShowConfirm] = useState(false)
@@ -22,12 +24,12 @@ export function DangerZone() {
 
 	const handleDeletePress = () => {
 		Alert.alert(
-			"Видалити акаунт",
-			"Ця дія незворотня. Всі ваші дані будуть видалені назавжди.",
+			t('settings.deleteAccount'),
+			t('settings.deleteAccountWarning'),
 			[
-				{ text: "Скасувати", style: "cancel" },
+				{ text: t('common.cancel'), style: "cancel" },
 				{
-					text: "Продовжити",
+					text: t('common.continue'),
 					style: "destructive",
 					onPress: () => setShowConfirm(true),
 				},
@@ -41,13 +43,13 @@ export function DangerZone() {
 
 	return (
 		<View style={styles.settingsSection}>
-			<Text style={styles.settingsSectionTitle}>Небезпечна зона</Text>
+			<Text style={styles.settingsSectionTitle}>{t('settings.dangerZone')}</Text>
 
 			{showConfirm && (
 				<View>
 					{isPasswordUser && (
 						<FormInput
-							label="Введіть пароль для підтвердження"
+							label={t('form.currentPassword')}
 							value={password}
 							onChangeText={setPassword}
 							placeholder="••••••••"
@@ -56,11 +58,11 @@ export function DangerZone() {
 					)}
 
 					<View style={styles.errorContainer}>
-						{error && <Text style={styles.errorText}>{error}</Text>}
+						{error && <Text style={styles.errorText}>{t(error)}</Text>}
 					</View>
 
 					<Button
-						title={isLoading ? "Видалення..." : "Підтвердити видалення"}
+						title={isLoading ? t('settings.deleting') : t('settings.confirmDelete')}
 						onPress={handleConfirmDelete}
 						disabled={isLoading}
 						variant="secondary"
@@ -73,7 +75,7 @@ export function DangerZone() {
 					/>
 
 					<Button
-						title="Скасувати"
+						title={t('common.cancel')}
 						onPress={() => {
 							setShowConfirm(false)
 							setPassword("")
@@ -85,7 +87,7 @@ export function DangerZone() {
 
 			{!showConfirm && (
 				<Button
-					title="Видалити акаунт"
+					title={t('settings.deleteAccount')}
 					onPress={handleDeletePress}
 					variant="secondary"
 					icon={<Trash2 size={18} color={theme.colors.error} />}

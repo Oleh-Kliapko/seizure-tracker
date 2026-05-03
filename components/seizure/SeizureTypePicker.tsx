@@ -5,6 +5,7 @@ import { SEIZURE_TYPES } from "@/constants/commonConstants"
 import { useAppTheme } from "@/hooks"
 import { SeizureType } from "@/models"
 import { Text, TouchableOpacity, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "./getStyles"
 
 type Props = {
@@ -22,43 +23,44 @@ export function SeizureTypePicker({
 }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 
 	return (
 		<View style={styles.section}>
-			<Text style={styles.sectionTitle}>Тип приступу</Text>
+			<Text style={styles.sectionTitle}>{t('seizure.type')}</Text>
 
-			{SEIZURE_TYPES.map(t => (
+			{SEIZURE_TYPES.map(item => (
 				<TouchableOpacity
-					key={t.value}
+					key={item.value}
 					style={styles.typeOption}
-					onPress={() => onChange(t.value)}
+					onPress={() => onChange(item.value)}
 					activeOpacity={0.7}
 				>
 					<View
 						style={[
 							styles.radioCircle,
-							value === t.value && styles.radioCircleActive,
+							value === item.value && styles.radioCircleActive,
 						]}
 					>
-						{value === t.value && <View style={styles.radioDot} />}
+						{value === item.value && <View style={styles.radioDot} />}
 					</View>
 					<Text
 						style={[
 							styles.typeLabel,
-							value === t.value && styles.typeLabelActive,
+							value === item.value && styles.typeLabelActive,
 						]}
 					>
-						{t.label}
+						{t(item.labelKey)}
 					</Text>
 				</TouchableOpacity>
 			))}
 
 			{value === "custom" && (
 				<FormInput
-					label="Опишіть тип"
+					label={t('seizure.customType')}
 					value={customType}
 					onChangeText={onCustomChange}
-					placeholder="Введіть тип приступу"
+					placeholder={t('seizure.customTypePlaceholder')}
 				/>
 			)}
 		</View>

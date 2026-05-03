@@ -3,6 +3,7 @@ import { MONTHS, YEARS } from "@/constants/commonConstants"
 import { useAppTheme } from "@/hooks"
 import { Picker } from "@react-native-picker/picker"
 import { Text, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "../getStyles" // ← беремо з загального файлу
 
 type Props = {
@@ -20,10 +21,11 @@ export function FirstSeizureDatePicker({
 }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 
 	return (
 		<View>
-			<Text style={styles.label}>Перший приступ</Text>
+			<Text style={styles.label}>{t('medical.firstSeizure')}</Text>
 
 			<View style={styles.row}>
 				<View style={styles.pickerWrapper}>
@@ -34,7 +36,7 @@ export function FirstSeizureDatePicker({
 						style={{ color: theme.colors.onSurface }}
 					>
 						{MONTHS.map(m => (
-							<Picker.Item key={m.value} label={m.label} value={m.value} />
+							<Picker.Item key={m.value} label={t(m.labelKey)} value={m.value} />
 						))}
 					</Picker>
 				</View>

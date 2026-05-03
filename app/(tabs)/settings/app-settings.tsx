@@ -4,9 +4,11 @@ import { AppSettingsForm } from "@/components/settings"
 import { ScreenHeader, ScreenWrapper } from "@/components/ui"
 import { useAppSettingsForm, useAppTheme } from "@/hooks"
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
+import { useTranslation } from "react-i18next"
 
 export default function AppSettingsScreen() {
 	const { spacing } = useAppTheme()
+	const { t } = useTranslation()
 	const {
 		themeMode,
 		communicationChannel,
@@ -18,7 +20,7 @@ export default function AppSettingsScreen() {
 
 	return (
 		<ScreenWrapper>
-			<ScreenHeader title="Налаштування" />
+			<ScreenHeader title={t('settings.appSettings')} />
 			<KeyboardAvoidingView
 				style={{ flex: 1 }}
 				behavior={Platform.OS === "ios" ? "padding" : undefined}

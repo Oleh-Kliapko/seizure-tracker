@@ -2,6 +2,7 @@
 
 import { useAppTheme } from "@/hooks"
 import { Text, TextInput, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "./getStyles"
 
 type Props = {
@@ -41,13 +42,14 @@ export function TrackingVitals({
 }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 
 	return (
 		<View style={styles.section}>
-			<Text style={styles.sectionTitle}>Фізичні показники</Text>
+			<Text style={styles.sectionTitle}>{t('tracking.vitals')}</Text>
 			<View style={styles.vitalsGrid}>
 				<View style={styles.vitalItem}>
-					<Text style={styles.vitalLabel}>Температура (°C)</Text>
+					<Text style={styles.vitalLabel}>{t('tracking.temperature')}</Text>
 					<TextInput
 						style={styles.vitalInput}
 						value={temperature}
@@ -61,7 +63,7 @@ export function TrackingVitals({
 				</View>
 
 				<View style={styles.vitalItem}>
-					<Text style={styles.vitalLabel}>Пульс (уд/хв)</Text>
+					<Text style={styles.vitalLabel}>{t('tracking.pulse')}</Text>
 					<TextInput
 						style={styles.vitalInput}
 						value={pulse}
@@ -75,7 +77,7 @@ export function TrackingVitals({
 				</View>
 
 				<View style={styles.vitalItem}>
-					<Text style={styles.vitalLabel}>Тиск (систол.)</Text>
+					<Text style={styles.vitalLabel}>{t('tracking.systolicPressure')}</Text>
 					<TextInput
 						style={styles.vitalInput}
 						value={systolicPressure}
@@ -89,7 +91,7 @@ export function TrackingVitals({
 				</View>
 
 				<View style={styles.vitalItem}>
-					<Text style={styles.vitalLabel}>Тиск (діастол.)</Text>
+					<Text style={styles.vitalLabel}>{t('tracking.diastolicPressure')}</Text>
 					<TextInput
 						style={styles.vitalInput}
 						value={diastolicPressure}
@@ -103,7 +105,7 @@ export function TrackingVitals({
 				</View>
 
 				<View style={styles.vitalItem}>
-					<Text style={styles.vitalLabel}>Сатурація (%)</Text>
+					<Text style={styles.vitalLabel}>{t('tracking.oxygen')}</Text>
 					<TextInput
 						style={styles.vitalInput}
 						value={oxygenSaturation}

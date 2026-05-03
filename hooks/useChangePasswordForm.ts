@@ -19,7 +19,7 @@ export function useChangePasswordForm() {
 
 	const handleSave = async () => {
 		if (!currentPassword.trim()) {
-			setError("Введіть поточний пароль")
+			setError("error.enterCurrentPassword")
 			return
 		}
 
@@ -35,7 +35,7 @@ export function useChangePasswordForm() {
 		}
 
 		if (currentPassword === newPassword) {
-			setError("Новий пароль має відрізнятись від поточного")
+			setError("error.passwordSame")
 			return
 		}
 

@@ -6,9 +6,11 @@ import { useAppTheme, useGuardiansForm } from "@/hooks"
 import { useFocusEffect } from "@react-navigation/native"
 import { useCallback } from "react"
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
+import { useTranslation } from "react-i18next"
 
 export default function GuardiansScreen() {
 	const { spacing } = useAppTheme()
+	const { t } = useTranslation()
 	const {
 		guardians,
 		displayError,
@@ -29,7 +31,7 @@ export default function GuardiansScreen() {
 
 	return (
 		<ScreenWrapper>
-			<ScreenHeader title="Опікуни" />
+			<ScreenHeader title={t('settings.guardians')} />
 			<KeyboardAvoidingView
 				style={{ flex: 1 }}
 				behavior={Platform.OS === "ios" ? "padding" : undefined}

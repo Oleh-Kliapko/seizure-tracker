@@ -5,26 +5,28 @@ import { Seizure } from "@/models/seizure"
 import { format } from "date-fns"
 import { uk } from "date-fns/locale"
 import { Text, View } from "react-native"
+import { useTranslation } from "react-i18next"
 
 type Props = {
 	lastSeizure: Seizure | null
 	daysSinceLastSeizure: number | null
 }
 
-function daysWord(n: number): string {
-	if (n === 1) return "день"
-	if (n >= 2 && n <= 4) return "дні"
-	return "днів"
-}
-
 export function DashboardHero({ lastSeizure, daysSinceLastSeizure }: Props) {
 	const { colors, fonts, fontSize, spacing, radius } = useAppTheme()
+	const { t } = useTranslation()
 
 	const isToday = daysSinceLastSeizure === 0
 
 	const lastSeizureLabel = lastSeizure
 		? format(new Date(lastSeizure.startedAt), "d MMM, HH:mm", { locale: uk })
 		: null
+
+	function daysWord(n: number): string {
+		if (n === 1) return t('dashboard.day')
+		if (n >= 2 && n <= 4) return t('dashboard.days_2_4')
+		return t('dashboard.days_other')
+	}
 
 	return (
 		<View
@@ -48,7 +50,7 @@ export function DashboardHero({ lastSeizure, daysSinceLastSeizure }: Props) {
 						paddingVertical: spacing.sm,
 					}}
 				>
-					Приступів ще немає
+					{t('dashboard.noSeizures')}
 				</Text>
 			) : (
 				<>
@@ -63,7 +65,7 @@ export function DashboardHero({ lastSeizure, daysSinceLastSeizure }: Props) {
 							letterSpacing: 1,
 						}}
 					>
-						{isToday ? "Останній приступ" : "Без приступів"}
+						{isToday ? t('dashboard.lastSeizure') : t('dashboard.noSeizuresLabel')}
 					</Text>
 
 					{isToday ? (
@@ -75,7 +77,7 @@ export function DashboardHero({ lastSeizure, daysSinceLastSeizure }: Props) {
 								lineHeight: 50,
 							}}
 						>
-							Сьогодні
+							{t('dashboard.today')}
 						</Text>
 					) : (
 						<View style={{ flexDirection: "row", alignItems: "flex-end", justifyContent: "center", gap: 6 }}>
@@ -119,7 +121,7 @@ export function DashboardHero({ lastSeizure, daysSinceLastSeizure }: Props) {
 								color: "#fff",
 							}}
 						>
-							Останній — {lastSeizureLabel}
+							{t('dashboard.lastSeizure')} — {lastSeizureLabel}
 						</Text>
 					</View>
 				</>

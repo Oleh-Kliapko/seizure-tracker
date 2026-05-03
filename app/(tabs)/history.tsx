@@ -15,6 +15,7 @@ import { useHistoryData } from "@/hooks/useHistoryData"
 import { useFocusEffect } from "expo-router"
 import { useCallback, useMemo, useState } from "react"
 import { ActivityIndicator, ScrollView, Text, View } from "react-native"
+import { useTranslation } from "react-i18next"
 
 function SectionCard({
 	title,
@@ -52,6 +53,7 @@ function SectionCard({
 
 export default function History() {
 	const { colors, fonts, spacing } = useAppTheme()
+	const { t } = useTranslation()
 	const {
 		exportPdf,
 		exportPdfToEmail,
@@ -73,7 +75,7 @@ export default function History() {
 
 	return (
 		<ScreenWrapper>
-			<ScreenHeader title="Історія" showBackButton={false} />
+			<ScreenHeader title={t('history.title')} showBackButton={false} />
 			<ScrollView
 				contentContainerStyle={{ padding: spacing.lg }}
 				showsVerticalScrollIndicator={false}
@@ -86,7 +88,7 @@ export default function History() {
 					</View>
 				) : (
 					<>
-						<SectionCard title="Приступів за період">
+						<SectionCard title={t('history.seizureCount')}>
 							<Text
 								style={{
 									fontFamily: fonts.bold,
@@ -99,7 +101,7 @@ export default function History() {
 							</Text>
 						</SectionCard>
 
-						<SectionCard title="Календар">
+						<SectionCard title={t('history.calendar')}>
 							<HistoryCalendar
 								seizuresByDate={seizuresByDate}
 								from={from}
@@ -107,11 +109,11 @@ export default function History() {
 							/>
 						</SectionCard>
 
-						<SectionCard title="Розподіл по часу доби">
+						<SectionCard title={t('history.timeDistribution')}>
 							<HistoryDonutChart data={timeOfDay} />
 						</SectionCard>
 
-						<SectionCard title="Топ тригери">
+						<SectionCard title={t('history.topTriggers')}>
 							<HistoryTriggerBars data={topTriggers} />
 						</SectionCard>
 					</>

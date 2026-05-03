@@ -5,9 +5,11 @@ import { ScreenWrapper } from "@/components/ui"
 import { useAppTheme, useAuthActions, useAvatarUpload, useUser } from "@/hooks"
 import { useEffect } from "react"
 import { ActivityIndicator, Alert, ScrollView, View } from "react-native"
+import { useTranslation } from "react-i18next"
 
 export default function ProfileScreen() {
 	const { colors, spacing } = useAppTheme()
+	const { t } = useTranslation()
 	const { profile, isLoading } = useUser()
 	const { logout } = useAuthActions()
 	const {
@@ -18,7 +20,7 @@ export default function ProfileScreen() {
 	} = useAvatarUpload()
 
 	useEffect(() => {
-		if (avatarError) Alert.alert("Помилка", avatarError)
+		if (avatarError) Alert.alert(t('common.error'), t(avatarError))
 	}, [avatarError])
 
 	if (isLoading) {

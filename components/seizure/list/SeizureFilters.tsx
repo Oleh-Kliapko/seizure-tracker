@@ -2,6 +2,7 @@
 
 import { FILTERS, SeizureFilter } from "@/constants/commonConstants"
 import { useAppTheme } from "@/hooks"
+import { useTranslation } from "react-i18next"
 import { ScrollView, Text, TouchableOpacity } from "react-native"
 import { getStyles } from "./getStyles"
 
@@ -13,6 +14,7 @@ type Props = {
 export function SeizureFilters({ active, onChange }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 
 	return (
 		<ScrollView
@@ -36,7 +38,7 @@ export function SeizureFilters({ active, onChange }: Props) {
 							active === f.value && styles.filterChipTextActive,
 						]}
 					>
-						{f.label}
+						{t(f.labelKey)}
 					</Text>
 				</TouchableOpacity>
 			))}

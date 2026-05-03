@@ -6,9 +6,11 @@ import { useAppTheme, usePersonalForm } from "@/hooks"
 import { useFocusEffect } from "@react-navigation/native"
 import { useCallback } from "react"
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
+import { useTranslation } from "react-i18next"
 
 export default function PersonalScreen() {
 	const { spacing } = useAppTheme()
+	const { t } = useTranslation()
 	const { fields, birthDate, setBirthDate, displayError, autoSave } =
 		usePersonalForm()
 
@@ -23,7 +25,7 @@ export default function PersonalScreen() {
 
 	return (
 		<ScreenWrapper>
-			<ScreenHeader title="Особисті дані" />
+			<ScreenHeader title={t('settings.personal')} />
 			<KeyboardAvoidingView
 				style={{ flex: 1 }}
 				behavior={Platform.OS === "ios" ? "padding" : undefined}

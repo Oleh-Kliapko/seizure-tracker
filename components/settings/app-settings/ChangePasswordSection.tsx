@@ -5,11 +5,13 @@ import { useAppTheme } from "@/hooks"
 import { router } from "expo-router"
 import { ChevronRight, Lock } from "lucide-react-native"
 import { Text, TouchableOpacity, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "../getStyles"
 
 export function ChangePasswordSection() {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 
 	const isPasswordUser = auth.currentUser?.providerData.some(
 		p => p.providerId === "password",
@@ -20,14 +22,14 @@ export function ChangePasswordSection() {
 
 	if (!isPasswordUser && !isGoogleOnlyUser) return null
 
-	const label = isGoogleOnlyUser ? "Встановити пароль" : "Змінити пароль"
+	const label = isGoogleOnlyUser ? t('settings.setPassword') : t('settings.changePassword')
 	const route = isGoogleOnlyUser
 		? "/(tabs)/settings/set-password"
 		: "/(tabs)/settings/change-password"
 
 	return (
 		<View style={styles.settingsSection}>
-			<Text style={styles.settingsSectionTitle}>Безпека</Text>
+			<Text style={styles.settingsSectionTitle}>{t('settings.security')}</Text>
 			<TouchableOpacity
 				style={styles.settingsRow}
 				onPress={() => router.push(route as any)}

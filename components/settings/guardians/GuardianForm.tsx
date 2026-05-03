@@ -6,6 +6,7 @@ import { useAppTheme } from "@/hooks"
 import { Guardian } from "@/models/user"
 import { Trash2 } from "lucide-react-native"
 import { Text, TouchableOpacity, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "../getStyles"
 
 type Props = {
@@ -19,17 +20,18 @@ type Props = {
 export function GuardianForm({ guardian, index, onUpdate, onRemove, onBlur }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 
 	return (
 		<View style={styles.guardianCard}>
 			<View style={styles.guardianHeader}>
-				<Text style={styles.guardianTitle}>Опікун {index + 1}</Text>
+				<Text style={styles.guardianTitle}>{t('guardians.title', { index: index + 1 })}</Text>
 				<TouchableOpacity onPress={onRemove} activeOpacity={0.7}>
 					<Trash2 size={20} color={theme.colors.error} />
 				</TouchableOpacity>
 			</View>
 
-			<Text style={styles.label}>Ступінь спорідненості</Text>
+			<Text style={styles.label}>{t('guardians.relation')}</Text>
 			<View style={styles.relationsRow}>
 				{RELATIONS.map(r => {
 					const isSelected = guardian.relation === r.value
@@ -57,7 +59,7 @@ export function GuardianForm({ guardian, index, onUpdate, onRemove, onBlur }: Pr
 									isSelected && styles.relationLabelActive,
 								]}
 							>
-								{r.label}
+								{t(r.labelKey)}
 							</Text>
 						</TouchableOpacity>
 					)
@@ -65,28 +67,28 @@ export function GuardianForm({ guardian, index, onUpdate, onRemove, onBlur }: Pr
 			</View>
 
 			<FormInput
-				label="ПІБ"
+				label={t('guardians.fullName')}
 				value={guardian.fullName}
 				onChangeText={v => onUpdate("fullName", v)}
 				onBlur={onBlur}
-				placeholder="Прізвище Ім'я По батькові"
+				placeholder={t('guardians.fullNamePlaceholder')}
 				autoCapitalize="words"
 			/>
 			<FormInput
-				label="Email"
+				label={t('auth.emailLabel')}
 				value={guardian.email}
 				onChangeText={v => onUpdate("email", v)}
 				onBlur={onBlur}
-				placeholder="email@example.com"
+				placeholder={t('guardians.emailPlaceholder')}
 				keyboardType="email-address"
 				autoCapitalize="none"
 			/>
 			<FormInput
-				label="Телефон"
+				label={t('guardians.phone')}
 				value={guardian.phone}
 				onChangeText={v => onUpdate("phone", v)}
 				onBlur={onBlur}
-				placeholder="+380XXXXXXXXX"
+				placeholder={t('guardians.phonePlaceholder')}
 				keyboardType="phone-pad"
 			/>
 		</View>

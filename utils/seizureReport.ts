@@ -1,5 +1,6 @@
 // utils/seizureReport.ts
 
+import i18n from "@/config/i18n"
 import {
 	EXTERNAL_TRIGGERS,
 	INTERNAL_TRIGGERS,
@@ -36,25 +37,27 @@ function formatDuration(start: number, end?: number): string {
 }
 
 function getTypeLabel(seizure: Seizure): string {
-	if (seizure.type === "custom") return "Unknown"
-	return (
-		SEIZURE_TYPES.find(t => t.value === seizure.type)?.label ?? seizure.type
-	)
+	if (seizure.type === "custom") return seizure.customType ?? i18n.t("seizureType.custom")
+	const found = SEIZURE_TYPES.find(item => item.value === seizure.type)
+	return found ? i18n.t(found.labelKey) : seizure.type
 }
 
 function getTriggers(seizure: Seizure): string {
-	const internal = (seizure.internalTriggers ?? []).map(
-		t => INTERNAL_TRIGGERS.find(i => i.value === t.type)?.label ?? t.type,
-	)
-	const external = (seizure.externalTriggers ?? []).map(
-		t => EXTERNAL_TRIGGERS.find(e => e.value === t.type)?.label ?? t.type,
-	)
+	const internal = (seizure.internalTriggers ?? []).map(item => {
+		const found = INTERNAL_TRIGGERS.find(t => t.value === item.type)
+		return found ? i18n.t(found.labelKey) : item.type
+	})
+	const external = (seizure.externalTriggers ?? []).map(item => {
+		const found = EXTERNAL_TRIGGERS.find(t => t.value === item.type)
+		return found ? i18n.t(found.labelKey) : item.type
+	})
 	return [...internal, ...external].join(", ") || "—"
 }
 
 function getSeverityLabel(severity?: number): string {
 	if (!severity) return "—"
-	return SEVERITY_LABELS[severity as keyof typeof SEVERITY_LABELS] ?? "—"
+	const key = SEVERITY_LABELS[severity as keyof typeof SEVERITY_LABELS]
+	return key ? i18n.t(key) : "—"
 }
 
 function getStats(seizures: Seizure[]) {
@@ -76,14 +79,14 @@ function getStats(seizures: Seizure[]) {
 	// Найчастіші тригери
 	const triggerCount: Record<string, number> = {}
 	seizures.forEach(s => {
-		;(s.internalTriggers ?? []).forEach(t => {
-			const label =
-				INTERNAL_TRIGGERS.find(i => i.value === t.type)?.label ?? t.type
+		;(s.internalTriggers ?? []).forEach(item => {
+			const found = INTERNAL_TRIGGERS.find(t => t.value === item.type)
+			const label = found ? i18n.t(found.labelKey) : item.type
 			triggerCount[label] = (triggerCount[label] ?? 0) + 1
 		})
-		;(s.externalTriggers ?? []).forEach(t => {
-			const label =
-				EXTERNAL_TRIGGERS.find(e => e.value === t.type)?.label ?? t.type
+		;(s.externalTriggers ?? []).forEach(item => {
+			const found = EXTERNAL_TRIGGERS.find(t => t.value === item.type)
+			const label = found ? i18n.t(found.labelKey) : item.type
 			triggerCount[label] = (triggerCount[label] ?? 0) + 1
 		})
 	})

@@ -10,6 +10,7 @@ import { useAppTheme } from "@/hooks"
 import { Seizure } from "@/models"
 import { router } from "expo-router"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Text, TouchableOpacity, View } from "react-native"
 import { getSeizureColor } from "../getSeizureColor"
 import { getStyles } from "../getStyles"
@@ -21,32 +22,33 @@ type Props = {
 	onPress: (s: Seizure) => void
 }
 
-function getTypeLabel(seizure: Seizure): string {
-	if (seizure.type === "custom") return seizure.customType ?? "Інший"
-	return (
-		SEIZURE_TYPES.find(t => t.value === seizure.type)?.label ?? seizure.type
-	)
-}
-
-function getTriggerLabel(
-	type: string,
-	list: { label: string; value: string }[],
-): string {
-	return list.find(t => t.value === type)?.label ?? type
-}
-
 export function SeizureCard({ seizure: initialSeizure, onPress }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 	const [seizure, setSeizure] = useState(initialSeizure)
 	const bgColor = getSeizureColor(theme, seizure.severity)
 
+	const getTypeLabel = (s: Seizure): string => {
+		if (s.type === "custom") return s.customType ?? t("seizureType.custom")
+		const found = SEIZURE_TYPES.find(item => item.value === s.type)
+		return found ? t(found.labelKey) : s.type
+	}
+
+	const getTriggerLabel = (
+		type: string,
+		list: { labelKey: string; value: string }[],
+	): string => {
+		const found = list.find(item => item.value === type)
+		return found ? t(found.labelKey) : type
+	}
+
 	const allTriggers = [
-		...(seizure.internalTriggers ?? []).map(t =>
-			getTriggerLabel(t.type, INTERNAL_TRIGGERS),
+		...(seizure.internalTriggers ?? []).map(item =>
+			getTriggerLabel(item.type, INTERNAL_TRIGGERS),
 		),
-		...(seizure.externalTriggers ?? []).map(t =>
-			getTriggerLabel(t.type, EXTERNAL_TRIGGERS),
+		...(seizure.externalTriggers ?? []).map(item =>
+			getTriggerLabel(item.type, EXTERNAL_TRIGGERS),
 		),
 	]
 
@@ -88,9 +90,9 @@ export function SeizureCard({ seizure: initialSeizure, onPress }: Props) {
 
 			{allTriggers.length > 0 && (
 				<View style={styles.cardTriggersRow}>
-					{allTriggers.map((t, i) => (
+					{allTriggers.map((trig, i) => (
 						<View key={i} style={styles.cardTriggerChip}>
-							<Text style={styles.cardTriggerText}>{t}</Text>
+							<Text style={styles.cardTriggerText}>{trig}</Text>
 						</View>
 					))}
 				</View>

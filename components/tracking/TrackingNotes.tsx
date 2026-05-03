@@ -2,6 +2,7 @@
 
 import { useAppTheme } from "@/hooks"
 import { Text, TextInput, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "./getStyles"
 
 const MAX_LENGTH = 150
@@ -17,6 +18,7 @@ type Props = {
 function NoteField({
 	label,
 	value,
+	placeholder,
 	onChange,
 	onSave,
 	styles,
@@ -24,6 +26,7 @@ function NoteField({
 }: {
 	label: string
 	value: string
+	placeholder: string
 	onChange: (v: string) => void
 	onSave: () => void
 	styles: ReturnType<typeof getStyles>
@@ -55,7 +58,7 @@ function NoteField({
 				value={value}
 				onChangeText={onChange}
 				onBlur={onSave}
-				placeholder="Нотатки..."
+				placeholder={placeholder}
 				placeholderTextColor={theme.colors.textSecondary}
 				multiline
 				numberOfLines={4}
@@ -74,13 +77,15 @@ export function TrackingNotes({
 }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 
 	return (
 		<View style={styles.section}>
-			<Text style={styles.sectionTitle}>Нотатки</Text>
+			<Text style={styles.sectionTitle}>{t('tracking.notes')}</Text>
 			<NoteField
-				label="Пацієнт"
+				label={t('tracking.patientNotes')}
 				value={patientNotes}
+				placeholder={t('tracking.notesPlaceholder')}
 				onChange={onPatientNotesChange}
 				onSave={onSave}
 				styles={styles}
@@ -88,8 +93,9 @@ export function TrackingNotes({
 			/>
 			<View style={styles.divider} />
 			<NoteField
-				label="Лікар"
+				label={t('tracking.doctorNotes')}
 				value={doctorNotes}
+				placeholder={t('tracking.notesPlaceholder')}
 				onChange={onDoctorNotesChange}
 				onSave={onSave}
 				styles={styles}

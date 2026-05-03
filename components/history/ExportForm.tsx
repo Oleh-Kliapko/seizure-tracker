@@ -8,6 +8,7 @@ import DateTimePicker from "@react-native-community/datetimepicker"
 import { FileDown, Mail } from "lucide-react-native"
 import { useEffect, useState } from "react"
 import { Modal, Platform, Text, TextInput, TouchableOpacity, View } from "react-native"
+import { useTranslation } from "react-i18next"
 import { getStyles } from "./getStyles"
 
 type Props = {
@@ -21,6 +22,7 @@ export function ExportForm({ onExport, onExportEmail, isLoading, error }: Props)
 	const isDark = useIsDarkTheme()
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { t } = useTranslation()
 	const { user } = useAuth()
 	const { profile } = useUser()
 
@@ -57,8 +59,8 @@ export function ExportForm({ onExport, onExportEmail, isLoading, error }: Props)
 
 	return (
 		<View style={styles.card}>
-			<Text style={styles.title}>Експорт PDF звіту</Text>
-			<Text style={styles.subtitle}>(максимум за 5 останніх місяців)</Text>
+			<Text style={styles.title}>{t('history.exportTitle')}</Text>
+			<Text style={styles.subtitle}>{t('history.exportSubtitle')}</Text>
 
 			<View style={styles.row}>
 				<TouchableOpacity
@@ -66,7 +68,7 @@ export function ExportForm({ onExport, onExportEmail, isLoading, error }: Props)
 					onPress={() => setShowFromPicker(v => !v)}
 					activeOpacity={0.7}
 				>
-					<Text style={styles.dateBtnLabel}>Від</Text>
+					<Text style={styles.dateBtnLabel}>{t('history.from')}</Text>
 					<Text style={styles.dateBtnValue}>{formatDate(from)}</Text>
 				</TouchableOpacity>
 
@@ -75,7 +77,7 @@ export function ExportForm({ onExport, onExportEmail, isLoading, error }: Props)
 					onPress={() => setShowToPicker(v => !v)}
 					activeOpacity={0.7}
 				>
-					<Text style={styles.dateBtnLabel}>До</Text>
+					<Text style={styles.dateBtnLabel}>{t('history.to')}</Text>
 					<Text style={styles.dateBtnValue}>{formatDate(to)}</Text>
 				</TouchableOpacity>
 			</View>
@@ -97,7 +99,7 @@ export function ExportForm({ onExport, onExportEmail, isLoading, error }: Props)
 						style={styles.doneBtn}
 						onPress={() => setShowFromPicker(false)}
 					>
-						<Text style={styles.doneBtnText}>Готово</Text>
+						<Text style={styles.doneBtnText}>{t('common.done')}</Text>
 					</TouchableOpacity>
 				</View>
 			)}
@@ -119,25 +121,25 @@ export function ExportForm({ onExport, onExportEmail, isLoading, error }: Props)
 						style={styles.doneBtn}
 						onPress={() => setShowToPicker(false)}
 					>
-						<Text style={styles.doneBtnText}>Готово</Text>
+						<Text style={styles.doneBtnText}>{t('common.done')}</Text>
 					</TouchableOpacity>
 				</View>
 			)}
 
 			<View style={styles.errorContainer}>
-				{error && <Text style={styles.errorText}>{error}</Text>}
+				{error && <Text style={styles.errorText}>{t(error)}</Text>}
 			</View>
 
 			<View style={{ gap: 12 }}>
 				<Button
-					title={isLoading ? "Генерація..." : "Експортувати PDF"}
+					title={isLoading ? t('history.generating') : t('history.exportPdf')}
 					icon={<FileDown size={20} color="#fff" />}
 					iconPosition="left"
 					onPress={() => onExport(from, to)}
 					disabled={isLoading}
 				/>
 				<Button
-					title={isLoading ? "Відправлення..." : "Відправити на імейл"}
+					title={isLoading ? t('history.sending') : t('history.sendEmail')}
 					icon={<Mail size={20} color="#fff" />}
 					iconPosition="left"
 					onPress={() => setShowEmailModal(true)}
@@ -170,12 +172,12 @@ export function ExportForm({ onExport, onExportEmail, isLoading, error }: Props)
 							gap: 16,
 						}}
 					>
-						<Text style={{ fontSize: 18, fontWeight: "bold", color: theme.colors.text }}>
-							Відправити звіт на імейл
+						<Text style={{ fontSize: 18, fontWeight: "bold", color: theme.colors.onSurface }}>
+							{t('history.emailModalTitle')}
 						</Text>
 
 						<Text style={{ fontSize: 13, color: theme.colors.textSecondary, lineHeight: 18 }}>
-							Відправлення може зайняти близько 1 хвилини
+							{t('history.emailModalDescription')}
 						</Text>
 
 						<TextInput
@@ -185,10 +187,10 @@ export function ExportForm({ onExport, onExportEmail, isLoading, error }: Props)
 								borderRadius: 8,
 								padding: 12,
 								fontSize: 16,
-								color: theme.colors.text,
+								color: theme.colors.onSurface,
 								backgroundColor: theme.colors.surface,
 							}}
-							placeholder="Імейл адреса"
+							placeholder={t('history.emailPlaceholder')}
 							placeholderTextColor={theme.colors.textSecondary}
 							value={email}
 							onChangeText={setEmail}
@@ -198,13 +200,13 @@ export function ExportForm({ onExport, onExportEmail, isLoading, error }: Props)
 
 						<View style={{ flexDirection: "row", gap: 12 }}>
 							<Button
-								title="Скасувати"
+								title={t('common.cancel')}
 								onPress={() => setShowEmailModal(false)}
 								disabled={isLoading}
 								style={{ flex: 1 }}
 							/>
 							<Button
-								title={isLoading ? "Відправлення..." : "Відправити"}
+								title={isLoading ? t('history.sending') : t('history.send')}
 								onPress={() => {
 									if (email.trim()) {
 										onExportEmail(from, to, email)

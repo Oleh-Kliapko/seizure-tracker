@@ -91,8 +91,8 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 			// Оновлюємо UI з новим приступом без відео
 			onVideoUpdated({
 				...seizure,
-				videoUrl: null,
-				cloudinaryPublicId: null,
+				videoUrl: undefined,
+				cloudinaryPublicId: undefined,
 			})
 
 			if (cloudinaryError) {
@@ -109,7 +109,7 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 		return (
 			<View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
 				<ActivityIndicator size="small" color={theme.colors.primary} />
-				<Text style={{ color: theme.colors.text, fontSize: 12 }}>
+				<Text style={{ color: theme.colors.onSurface, fontSize: 12 }}>
 					{isDeleting ? "Видалення..." : "Завантаження..."}
 				</Text>
 			</View>

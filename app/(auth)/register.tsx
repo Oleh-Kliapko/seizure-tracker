@@ -21,11 +21,13 @@ import {
 } from "react-native"
 // import { SvgXml } from "react-native-svg"
 import { SvgXml } from "react-native-svg"
+import { useTranslation } from "react-i18next"
 import createAuthStyles from "./auth.styles"
 
 export default function Register() {
 	const theme = useAppTheme()
 	const styles = createAuthStyles(theme)
+	const { t } = useTranslation()
 
 	const {
 		email,
@@ -58,39 +60,39 @@ export default function Register() {
 
 					<View style={styles.formCard}>
 						<FormInput
-							label="Email"
+							label={t('auth.emailLabel')}
 							value={email}
 							onChangeText={setEmail}
-							placeholder="your@email.com"
+							placeholder={t('auth.emailPlaceholder')}
 							keyboardType="email-address"
 							autoCapitalize="none"
 							autoComplete="email"
 						/>
 						<FormInput
-							label="Пароль"
+							label={t('auth.passwordLabel')}
 							value={password}
 							onChangeText={setPassword}
-							placeholder="••••••••"
+							placeholder={t('auth.passwordPlaceholder')}
 							autoComplete="new-password"
 							isPassword
 						/>
 						<FormInput
-							label="Підтвердити пароль"
+							label={t('auth.register.confirmPassword')}
 							value={confirmPassword}
 							onChangeText={setConfirmPassword}
-							placeholder="••••••••"
+							placeholder={t('auth.passwordPlaceholder')}
 							autoComplete="new-password"
 							isPassword
 						/>
 
 						<View style={styles.errorContainer}>
 							{displayError && (
-								<Text style={styles.errorText}>{displayError}</Text>
+								<Text style={styles.errorText}>{t(displayError)}</Text>
 							)}
 						</View>
 
 						<Button
-							title={isLoading ? "Завантаження..." : "Зареєструватись"}
+							title={isLoading ? t('common.loading') : t('auth.register.submit')}
 							onPress={handleRegister}
 							disabled={isLoading}
 						/>
@@ -98,15 +100,15 @@ export default function Register() {
 
 					<Divider />
 					<Button
-						title="Продовжити з Google"
+						title={t('auth.google')}
 						icon={<SvgXml xml={GOOGLE_ICON} width={20} height={20} />}
 						iconPosition="left"
 						onPress={loginWithGoogle}
 						variant="secondary"
 					/>
 					<AuthFooterLink
-						question="Вже є акаунт?"
-						linkText="Увійти"
+						question={t('auth.register.hasAccount')}
+						linkText={t('auth.register.loginLink')}
 						href="./login"
 					/>
 				</ScrollView>

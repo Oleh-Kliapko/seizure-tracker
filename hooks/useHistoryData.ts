@@ -1,6 +1,7 @@
 // hooks/useHistoryData.ts
 
 import { auth } from "@/config/firebase"
+import i18n from "@/config/i18n"
 import { EXTERNAL_TRIGGERS, INTERNAL_TRIGGERS } from "@/constants/commonConstants"
 import { Seizure } from "@/models/seizure"
 import { getSeizuresByPeriod } from "@/services"
@@ -19,8 +20,8 @@ export type TriggerStat = {
 }
 
 const ALL_TRIGGER_LABELS: Record<string, string> = {
-	...Object.fromEntries(INTERNAL_TRIGGERS.map(t => [t.value, t.label])),
-	...Object.fromEntries(EXTERNAL_TRIGGERS.map(t => [t.value, t.label])),
+	...Object.fromEntries(INTERNAL_TRIGGERS.map(t => [t.value, i18n.t(t.labelKey)])),
+	...Object.fromEntries(EXTERNAL_TRIGGERS.map(t => [t.value, i18n.t(t.labelKey)])),
 }
 
 function getTimeOfDayKey(timestamp: number): keyof TimeOfDay {

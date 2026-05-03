@@ -21,9 +21,11 @@ import {
 	Text,
 	View,
 } from "react-native"
+import { useTranslation } from "react-i18next"
 
 export default function TrackingScreen() {
 	const { colors, fonts, fontSize, spacing } = useAppTheme()
+	const { t } = useTranslation()
 	const {
 		temperature,
 		setTemperature,
@@ -68,7 +70,7 @@ export default function TrackingScreen() {
 
 	return (
 		<ScreenWrapper>
-			<ScreenHeader title="Трекінг" subtitle={today} showBackButton={false} />
+			<ScreenHeader title={t('tracking.title')} subtitle={today} showBackButton={false} />
 
 			{isLoading ? (
 				<View
@@ -170,7 +172,7 @@ export default function TrackingScreen() {
 									marginBottom: spacing.lg,
 								}}
 							>
-								{error}
+								{t(error)}
 							</Text>
 						)}
 					</ScrollView>
