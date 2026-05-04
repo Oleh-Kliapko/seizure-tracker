@@ -2,42 +2,13 @@
 
 import { useAppTheme } from "@/hooks"
 import { Seizure } from "@/models"
+import { formatDate, formatDuration, formatTime } from "@/utils/seizureFormatters"
 import { Zap } from "lucide-react-native"
 import { Text, View } from "react-native"
-import i18n from "@/config/i18n"
 import { getStyles } from "./getStyles"
 
 type Props = {
 	seizure: Seizure
-}
-
-function formatDate(ts: number): string {
-	const locale = i18n.language === "uk" ? "uk-UA" : "en-US"
-	return new Date(ts).toLocaleDateString(locale, {
-		weekday: "short",
-		day: "2-digit",
-		month: "2-digit",
-		year: "numeric",
-	})
-}
-
-function formatTime(ts: number): string {
-	const locale = i18n.language === "uk" ? "uk-UA" : "en-US"
-	return new Date(ts).toLocaleTimeString(locale, {
-		hour: "2-digit",
-		minute: "2-digit",
-	})
-}
-
-function formatDuration(start: number, end?: number): string {
-	if (!end) return ""
-	const mins = Math.round((end - start) / 60000)
-	const min = i18n.t("common.minutesShort")
-	const hr = i18n.t("common.hoursShort")
-	if (mins < 60) return `${mins} ${min}`
-	const h = Math.floor(mins / 60)
-	const m = mins % 60
-	return m > 0 ? `${h} ${hr} ${m} ${min}` : `${h} ${hr}`
 }
 
 export function CardHeader({ seizure }: Props) {

@@ -86,26 +86,6 @@ export const getStyles = (theme: AppTheme) => {
 			shadowOffset: { width: 0, height: 2 },
 		},
 
-		cardHeader: {
-			flexDirection: "row",
-			justifyContent: "space-between",
-			alignItems: "flex-start",
-			marginBottom: spacing.sm,
-		},
-
-		cardDate: {
-			fontFamily: fonts.medium,
-			fontSize: fontSize.sm,
-			color: colors.textSecondary,
-		},
-
-		cardTime: {
-			fontFamily: fonts.regular,
-			fontSize: fontSize.sm,
-			color: colors.textSecondary,
-			marginTop: 2,
-		},
-
 		cardType: {
 			fontFamily: fonts.bold,
 			fontSize: fontSize.lg,
@@ -143,11 +123,6 @@ export const getStyles = (theme: AppTheme) => {
 			fontFamily: fonts.regular,
 			fontSize: 11,
 			color: colors.textSecondary,
-		},
-
-		severityRow: {
-			flexDirection: "row",
-			gap: 4,
 		},
 
 		// Пагінація

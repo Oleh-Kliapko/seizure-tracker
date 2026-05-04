@@ -2,12 +2,19 @@
 
 import { useAppTheme } from "@/hooks"
 import { Seizure } from "@/models"
-import { Text, View } from "react-native"
+import { Fragment } from "react"
 import { useTranslation } from "react-i18next"
+import { Text, View } from "react-native"
 import { getStyles } from "./getStyles"
 
 type Props = {
 	seizures: Seizure[]
+}
+
+type StatItem = {
+	value: number
+	labelKey: string
+	color?: string
 }
 
 export function SeizureStatsHeader({ seizures }: Props) {
@@ -15,38 +22,38 @@ export function SeizureStatsHeader({ seizures }: Props) {
 	const styles = getStyles(theme)
 	const { t } = useTranslation()
 
-	const total = seizures.length
-	const severe = seizures.filter(s => s.severity === 3).length
-	const medium = seizures.filter(s => s.severity === 2).length
-	const light = seizures.filter(s => s.severity === 1).length
+	const stats: StatItem[] = [
+		{ value: seizures.length, labelKey: "seizure.statsTotal" },
+		{
+			value: seizures.filter(s => s.severity === 1).length,
+			labelKey: "seizure.statsLight",
+			color: theme.seizureColors.light,
+		},
+		{
+			value: seizures.filter(s => s.severity === 2).length,
+			labelKey: "seizure.statsMedium",
+			color: theme.seizureColors.medium,
+		},
+		{
+			value: seizures.filter(s => s.severity === 3).length,
+			labelKey: "seizure.statsHeavy",
+			color: theme.seizureColors.severe,
+		},
+	]
 
 	return (
 		<View style={styles.statsCard}>
-			<View style={styles.statItem}>
-				<Text style={styles.statValue}>{total}</Text>
-				<Text style={styles.statLabel}>{t("seizure.statsTotal")}</Text>
-			</View>
-			<View style={styles.statDivider} />
-			<View style={styles.statItem}>
-				<Text style={[styles.statValue, { color: theme.seizureColors.light }]}>
-					{light}
-				</Text>
-				<Text style={styles.statLabel}>{t("seizure.statsLight")}</Text>
-			</View>
-			<View style={styles.statDivider} />
-			<View style={styles.statItem}>
-				<Text style={[styles.statValue, { color: theme.seizureColors.medium }]}>
-					{medium}
-				</Text>
-				<Text style={styles.statLabel}>{t("seizure.statsMedium")}</Text>
-			</View>
-			<View style={styles.statDivider} />
-			<View style={styles.statItem}>
-				<Text style={[styles.statValue, { color: theme.seizureColors.severe }]}>
-					{severe}
-				</Text>
-				<Text style={styles.statLabel}>{t("seizure.statsHeavy")}</Text>
-			</View>
+			{stats.map((item, i) => (
+				<Fragment key={item.labelKey}>
+					<View style={styles.statItem}>
+						<Text style={[styles.statValue, item.color ? { color: item.color } : undefined]}>
+							{item.value}
+						</Text>
+						<Text style={styles.statLabel}>{t(item.labelKey)}</Text>
+					</View>
+					{i < stats.length - 1 && <View style={styles.statDivider} />}
+				</Fragment>
+			))}
 		</View>
 	)
 }

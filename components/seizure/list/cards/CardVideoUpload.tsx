@@ -1,17 +1,20 @@
 // components/seizure/list/cards/CardVideoUpload.tsx
 
-import { useAppTheme } from "@/hooks"
+import { useAppTheme, useAuth } from "@/hooks"
 import { Seizure } from "@/models"
 import { getSeizures, updateSeizure } from "@/services"
-import { checkVideoLimits, deleteVideoFromCloudinary, uploadVideoToCloudinary } from "@/services/cloudinary"
-import { MAX_VIDEO_SIZE_MB, MAX_VIDEOS_PER_USER } from "@/config/cloudinary"
+import {
+	checkVideoLimits,
+	deleteVideoFromCloudinary,
+	uploadVideoToCloudinary,
+} from "@/services/cloudinary"
+import { getInfoAsync } from "expo-file-system/legacy"
 import * as ImagePicker from "expo-image-picker"
 import { AlertCircle, Plus, Trash2 } from "lucide-react-native"
 import { useState } from "react"
-import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native"
-import { useAuth } from "@/hooks"
 import { useTranslation } from "react-i18next"
-import { getInfoAsync } from "expo-file-system/legacy"
+import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native"
+import { getStyles } from "./getStyles"
 
 type Props = {
 	seizure: Seizure
@@ -21,6 +24,7 @@ type Props = {
 export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 	const { user } = useAuth()
 	const theme = useAppTheme()
+	const styles = getStyles(theme)
 	const { t } = useTranslation()
 	const [isUploading, setIsUploading] = useState(false)
 	const [isDeleting, setIsDeleting] = useState(false)
@@ -46,8 +50,9 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 
 			if (result.canceled) return
 
-			// Check file size before uploading
-			const fileInfo = await getInfoAsync(result.assets[0].uri, { size: true } as any)
+			const fileInfo = await getInfoAsync(result.assets[0].uri, {
+				size: true,
+			} as any)
 			const fileSize = (fileInfo as any).size ?? 0
 
 			if (fileSize === 0) {
@@ -84,13 +89,15 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 			setError(null)
 			setIsDeleting(true)
 
-			const cloudinaryError = await deleteVideoFromCloudinary(user.uid, seizure.cloudinaryPublicId)
+			const cloudinaryError = await deleteVideoFromCloudinary(
+				user.uid,
+				seizure.cloudinaryPublicId,
+			)
 			await updateSeizure(user.uid, seizure.id, {
 				videoUrl: null,
 				cloudinaryPublicId: null,
 			} as any)
 
-			// Оновлюємо UI з новим приступом без відео
 			onVideoUpdated({
 				...seizure,
 				videoUrl: undefined,
@@ -109,9 +116,9 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 
 	if (isUploading || isDeleting) {
 		return (
-			<View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+			<View style={styles.videoStateRow}>
 				<ActivityIndicator size="small" color={theme.colors.primary} />
-				<Text style={{ color: theme.colors.onSurface, fontSize: 12 }}>
+				<Text style={styles.videoStateText}>
 					{isDeleting ? t("video.deleting") : t("video.uploadingShort")}
 				</Text>
 			</View>
@@ -120,9 +127,9 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 
 	if (error) {
 		return (
-			<View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+			<View style={styles.videoStateRow}>
 				<AlertCircle size={16} color={theme.colors.error} />
-				<Text style={{ color: theme.colors.error, fontSize: 12 }}>{error}</Text>
+				<Text style={styles.videoErrorText}>{error}</Text>
 			</View>
 		)
 	}
@@ -131,19 +138,12 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 		return (
 			<TouchableOpacity
 				onPress={deleteVideo}
-				style={{
-					flexDirection: "row",
-					alignItems: "center",
-					gap: 6,
-					paddingHorizontal: 10,
-					paddingVertical: 6,
-					backgroundColor: theme.colors.error + "20",
-					borderRadius: 4,
-					alignSelf: "flex-start",
-				}}
+				style={[styles.videoActionBtn, { backgroundColor: theme.colors.error + "20" }]}
 			>
 				<Trash2 size={14} color={theme.colors.error} />
-				<Text style={{ color: theme.colors.error, fontSize: 12 }}>{t("video.deleteVideo")}</Text>
+				<Text style={[styles.videoActionBtnText, { color: theme.colors.error }]}>
+					{t("video.deleteVideo")}
+				</Text>
 			</TouchableOpacity>
 		)
 	}
@@ -151,19 +151,12 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 	return (
 		<TouchableOpacity
 			onPress={pickAndUploadVideo}
-			style={{
-				flexDirection: "row",
-				alignItems: "center",
-				gap: 6,
-				paddingHorizontal: 10,
-				paddingVertical: 6,
-				backgroundColor: theme.colors.primary + "20",
-				borderRadius: 4,
-				alignSelf: "flex-start",
-			}}
+			style={[styles.videoActionBtn, { backgroundColor: theme.colors.primary + "20" }]}
 		>
 			<Plus size={14} color={theme.colors.primary} />
-			<Text style={{ color: theme.colors.primary, fontSize: 12 }}>{t("video.addVideo")}</Text>
+			<Text style={[styles.videoActionBtnText, { color: theme.colors.primary }]}>
+				{t("video.addVideo")}
+			</Text>
 		</TouchableOpacity>
 	)
 }
