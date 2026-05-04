@@ -3,8 +3,8 @@
 import { FormInput } from "@/components/ui"
 import { Button } from "@/components/ui/Button"
 import { useAppTheme } from "@/hooks"
-import { Text, View } from "react-native"
 import { useTranslation } from "react-i18next"
+import { Text, View } from "react-native"
 import { getStyles } from "../getStyles"
 
 type Props = {
@@ -39,21 +39,21 @@ export function ChangePasswordForm({
 	return (
 		<View style={styles.settingsSection}>
 			<FormInput
-				label={t('form.currentPassword')}
+				label={t("form.currentPassword")}
 				value={currentPassword}
 				onChangeText={onCurrentPasswordChange}
 				placeholder="••••••••"
 				isPassword
 			/>
 			<FormInput
-				label={t('form.newPassword')}
+				label={t("form.newPassword")}
 				value={newPassword}
 				onChangeText={onNewPasswordChange}
 				placeholder="••••••••"
 				isPassword
 			/>
 			<FormInput
-				label={t('form.confirmNewPassword')}
+				label={t("form.confirmNewPassword")}
 				value={confirmPassword}
 				onChangeText={onConfirmPasswordChange}
 				placeholder="••••••••"
@@ -64,13 +64,13 @@ export function ChangePasswordForm({
 				{error && <Text style={styles.errorText}>{t(error)}</Text>}
 				{isSuccess && (
 					<Text style={[styles.errorText, { color: theme.colors.success }]}>
-						{t('form.passwordChanged')}
+						{t("form.passwordChanged")}
 					</Text>
 				)}
 			</View>
 
 			<Button
-				title={isLoading ? t('common.saving') : t('settings.changePassword')}
+				title={isLoading ? t("common.saving") : t("settings.changePassword")}
 				onPress={onSave}
 				disabled={isLoading}
 			/>

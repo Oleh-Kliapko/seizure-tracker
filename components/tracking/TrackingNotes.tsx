@@ -1,8 +1,8 @@
 // components/tracking/TrackingNotes.tsx
 
 import { useAppTheme } from "@/hooks"
-import { Text, TextInput, View } from "react-native"
 import { useTranslation } from "react-i18next"
+import { Text, TextInput, View } from "react-native"
 import { getStyles } from "./getStyles"
 
 const MAX_LENGTH = 150

@@ -22,7 +22,6 @@ export function AppSettingsForm({
 	communicationChannel,
 	onThemeChange,
 	onCommunicationChange,
-	isLoading,
 }: Props) {
 	return (
 		<View>

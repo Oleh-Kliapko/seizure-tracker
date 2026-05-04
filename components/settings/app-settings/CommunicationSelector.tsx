@@ -3,8 +3,8 @@
 import { CHANNELS } from "@/constants/commonConstants"
 import { useAppTheme } from "@/hooks"
 import { CommunicationChannel } from "@/models/user"
-import { Text, TouchableOpacity, View } from "react-native"
 import { useTranslation } from "react-i18next"
+import { Text, TouchableOpacity, View } from "react-native"
 import { getStyles } from "../getStyles"
 
 type Props = {
@@ -19,7 +19,9 @@ export function CommunicationSelector({ value, onChange }: Props) {
 
 	return (
 		<View style={styles.settingsSection}>
-			<Text style={styles.settingsSectionTitle}>{t('settings.communicationChannel')}</Text>
+			<Text style={styles.settingsSectionTitle}>
+				{t("settings.communicationChannel")}
+			</Text>
 			{CHANNELS.map(c => (
 				<TouchableOpacity
 					key={c.value}

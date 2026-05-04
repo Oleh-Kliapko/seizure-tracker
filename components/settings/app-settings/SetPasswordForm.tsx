@@ -3,8 +3,8 @@
 import { FormInput } from "@/components/ui"
 import { Button } from "@/components/ui/Button"
 import { useAppTheme } from "@/hooks"
-import { Text, View } from "react-native"
 import { useTranslation } from "react-i18next"
+import { Text, View } from "react-native"
 import { getStyles } from "../getStyles"
 
 type Props = {
@@ -35,14 +35,14 @@ export function SetPasswordForm({
 	return (
 		<View style={styles.settingsSection}>
 			<FormInput
-				label={t('form.newPassword')}
+				label={t("form.newPassword")}
 				value={newPassword}
 				onChangeText={onNewPasswordChange}
 				placeholder="••••••••"
 				isPassword
 			/>
 			<FormInput
-				label={t('form.confirmPassword')}
+				label={t("form.confirmPassword")}
 				value={confirmPassword}
 				onChangeText={onConfirmPasswordChange}
 				placeholder="••••••••"
@@ -53,13 +53,13 @@ export function SetPasswordForm({
 				{error && <Text style={styles.errorText}>{t(error)}</Text>}
 				{isSuccess && (
 					<Text style={[styles.errorText, { color: theme.colors.success }]}>
-						{t('form.passwordSet')}
+						{t("form.passwordSet")}
 					</Text>
 				)}
 			</View>
 
 			<Button
-				title={isLoading ? t('common.saving') : t('settings.setPassword')}
+				title={isLoading ? t("common.saving") : t("settings.setPassword")}
 				onPress={onSave}
 				disabled={isLoading}
 			/>

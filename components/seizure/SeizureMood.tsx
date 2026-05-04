@@ -2,8 +2,8 @@
 
 import { MOOD_EMOJI, MOODS } from "@/constants/commonConstants"
 import { useAppTheme } from "@/hooks"
-import { Text, TouchableOpacity, View } from "react-native"
 import { useTranslation } from "react-i18next"
+import { Text, TouchableOpacity, View } from "react-native"
 import { getStyles } from "./getStyles"
 
 type Props = {
@@ -25,9 +25,9 @@ export function SeizureMood({
 
 	return (
 		<View style={styles.section}>
-			<Text style={styles.sectionTitle}>{t('seizure.mood')}</Text>
+			<Text style={styles.sectionTitle}>{t("seizure.mood")}</Text>
 
-			<Text style={styles.label}>{t('seizure.moodBefore')}</Text>
+			<Text style={styles.label}>{t("seizure.moodBefore")}</Text>
 			<View style={styles.moodRow}>
 				{MOODS.map(m => (
 					<TouchableOpacity
@@ -43,7 +43,7 @@ export function SeizureMood({
 
 			<View style={styles.divider} />
 
-			<Text style={styles.label}>{t('seizure.moodAfter')}</Text>
+			<Text style={styles.label}>{t("seizure.moodAfter")}</Text>
 			<View style={styles.moodRow}>
 				{MOODS.map(m => (
 					<TouchableOpacity

@@ -9,10 +9,10 @@ import {
 	SeizureType,
 	TriggerItem,
 } from "@/models"
-import { Text, View } from "react-native"
 import { useTranslation } from "react-i18next"
-import { getStyles } from "./getStyles"
+import { Text, View } from "react-native"
 import { SeizureDateTime } from "./datetime"
+import { getStyles } from "./getStyles"
 import { SeizureExtra } from "./SeizureExtra"
 import { SeizureMood } from "./SeizureMood"
 import { SeizureSeverityPicker } from "./SeizureSeverityPicker"
@@ -97,7 +97,7 @@ export function SeizureForm(props: Props) {
 			</View>
 
 			<Button
-				title={props.isLoading ? t('common.saving') : t('common.save')}
+				title={props.isLoading ? t("common.saving") : t("common.save")}
 				onPress={props.onSave}
 				disabled={props.isLoading}
 			/>

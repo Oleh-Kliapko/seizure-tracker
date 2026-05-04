@@ -2,8 +2,9 @@
 
 import { setAppLanguage } from "@/config/i18n"
 import { useAppTheme } from "@/hooks"
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { useTranslation } from "react-i18next"
+import { Text, TouchableOpacity, View } from "react-native"
+import { createAuthLanguageSwitcherStyles } from "./AuthLanguageSwitcher.styles"
 
 const LANGUAGES = [
 	{ value: "uk" as const, flag: "🇺🇦" },
@@ -12,6 +13,7 @@ const LANGUAGES = [
 
 export function AuthLanguageSwitcher() {
 	const theme = useAppTheme()
+	const styles = createAuthLanguageSwitcherStyles(theme)
 	const { i18n } = useTranslation()
 
 	return (
@@ -26,7 +28,10 @@ export function AuthLanguageSwitcher() {
 						style={[
 							styles.button,
 							{ borderColor: theme.colors.border },
-							active && { borderColor: theme.colors.primary, backgroundColor: theme.colors.primary + "20" },
+							active && {
+								borderColor: theme.colors.primary,
+								backgroundColor: theme.colors.primary + "20",
+							},
 						]}
 					>
 						<Text style={styles.flag}>{lang.flag}</Text>
@@ -36,23 +41,3 @@ export function AuthLanguageSwitcher() {
 		</View>
 	)
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flexDirection: "row",
-		alignSelf: "flex-end",
-		gap: 8,
-		marginBottom: 16,
-	},
-	button: {
-		width: 40,
-		height: 40,
-		borderRadius: 20,
-		borderWidth: 2,
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	flag: {
-		fontSize: 20,
-	},
-})

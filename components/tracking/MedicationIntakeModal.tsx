@@ -57,10 +57,18 @@ export function MedicationIntakeModal({
 				activeOpacity={1}
 				onPress={onClose}
 			/>
-			<View style={[styles.modalSheet, { paddingBottom: theme.spacing.lg + insets.bottom }]}>
+			<View
+				style={[
+					styles.modalSheet,
+					{ paddingBottom: theme.spacing.lg + insets.bottom },
+				]}
+			>
 				<Text style={styles.sectionTitle}>{t("tracking.drug")}</Text>
 
-				<ScrollView style={{ maxHeight: 200 }} showsVerticalScrollIndicator={false}>
+				<ScrollView
+					style={{ maxHeight: 200 }}
+					showsVerticalScrollIndicator={false}
+				>
 					{medications.map(med => {
 						const active = med.id === selectedId
 						return (
@@ -78,13 +86,21 @@ export function MedicationIntakeModal({
 								activeOpacity={0.7}
 								style={[
 									styles.medListItem,
-									{ backgroundColor: active ? theme.colors.primary + "15" : "transparent" },
+									{
+										backgroundColor: active
+											? theme.colors.primary + "15"
+											: "transparent",
+									},
 								]}
 							>
 								<View
 									style={[
 										styles.medRadioOuter,
-										{ borderColor: active ? theme.colors.primary : theme.colors.border },
+										{
+											borderColor: active
+												? theme.colors.primary
+												: theme.colors.border,
+										},
 									]}
 								>
 									{active && <View style={styles.medRadioInner} />}
@@ -93,7 +109,10 @@ export function MedicationIntakeModal({
 									<Text
 										style={[
 											styles.medItemName,
-											active && { fontFamily: theme.fonts.medium, color: theme.colors.primary },
+											active && {
+												fontFamily: theme.fonts.medium,
+												color: theme.colors.primary,
+											},
 										]}
 									>
 										{med.name}
@@ -113,25 +132,43 @@ export function MedicationIntakeModal({
 						{t("tracking.quantity")}
 					</Text>
 					<View style={[styles.stepperRow, { marginTop: 0 }]}>
-						<TouchableOpacity onPress={decrement} activeOpacity={0.7} style={styles.stepperBtn}>
+						<TouchableOpacity
+							onPress={decrement}
+							activeOpacity={0.7}
+							style={styles.stepperBtn}
+						>
 							<Text style={styles.stepperBtnText}>−</Text>
 						</TouchableOpacity>
 						<Text style={styles.amountDisplay}>
 							{formatDoseAmount(amount)}{" "}
 							{selected ? t(DOSE_UNIT_LABEL_KEYS[selected.doseUnit]) : ""}
 						</Text>
-						<TouchableOpacity onPress={increment} activeOpacity={0.7} style={styles.stepperBtn}>
+						<TouchableOpacity
+							onPress={increment}
+							activeOpacity={0.7}
+							style={styles.stepperBtn}
+						>
 							<Text style={styles.stepperBtnText}>+</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
 
 				<View style={styles.modalBtnRow}>
-					<TouchableOpacity onPress={onClose} activeOpacity={0.7} style={styles.modalCancelBtn}>
+					<TouchableOpacity
+						onPress={onClose}
+						activeOpacity={0.7}
+						style={styles.modalCancelBtn}
+					>
 						<Text style={styles.modalCancelBtnText}>{t("common.cancel")}</Text>
 					</TouchableOpacity>
-					<TouchableOpacity onPress={handleAdd} activeOpacity={0.8} style={styles.modalConfirmBtn}>
-						<Text style={styles.modalConfirmBtnText}>{t("tracking.record")}</Text>
+					<TouchableOpacity
+						onPress={handleAdd}
+						activeOpacity={0.8}
+						style={styles.modalConfirmBtn}
+					>
+						<Text style={styles.modalConfirmBtnText}>
+							{t("tracking.record")}
+						</Text>
 					</TouchableOpacity>
 				</View>
 			</View>

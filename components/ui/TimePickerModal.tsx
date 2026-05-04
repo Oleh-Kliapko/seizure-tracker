@@ -2,19 +2,14 @@
 
 import { useAppTheme } from "@/hooks"
 import { useState } from "react"
-import {
-	FlatList,
-	Modal,
-	Text,
-	TouchableOpacity,
-	View,
-} from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useTranslation } from "react-i18next"
+import { FlatList, Modal, Text, TouchableOpacity, View } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { PickerItem } from "./PickerItem"
+import { createTimePickerModalStyles, ITEM_H } from "./TimePickerModal.styles"
 
 const HOURS = Array.from({ length: 24 }, (_, i) => i)
 const MINUTES = [0, 30]
-const ITEM_H = 52
 
 type Props = {
 	visible: boolean
@@ -23,7 +18,8 @@ type Props = {
 }
 
 export function TimePickerModal({ visible, onClose, onAdd }: Props) {
-	const { colors, fonts, fontSize, spacing, radius } = useAppTheme()
+	const theme = useAppTheme()
+	const styles = createTimePickerModalStyles(theme)
 	const insets = useSafeAreaInsets()
 	const { t } = useTranslation()
 	const [hour, setHour] = useState(8)
@@ -35,57 +31,34 @@ export function TimePickerModal({ visible, onClose, onAdd }: Props) {
 	}
 
 	return (
-		<Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
+		<Modal
+			visible={visible}
+			transparent
+			animationType="slide"
+			onRequestClose={onClose}
+		>
 			<TouchableOpacity
-				style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.45)" }}
+				style={styles.overlay}
 				activeOpacity={1}
 				onPress={onClose}
 			/>
 			<View
-				style={{
-					backgroundColor: colors.surface,
-					borderTopLeftRadius: radius.lg,
-					borderTopRightRadius: radius.lg,
-					paddingHorizontal: spacing.lg,
-					paddingTop: spacing.lg,
-					paddingBottom: spacing.lg + insets.bottom,
-				}}
+				style={[
+					styles.sheet,
+					{ paddingBottom: theme.spacing.lg + insets.bottom },
+				]}
 			>
-				{/* Preview */}
-				<Text
-					style={{
-						fontFamily: fonts.bold,
-						fontSize: 40,
-						color: colors.onSurface,
-						textAlign: "center",
-						letterSpacing: 2,
-						marginBottom: spacing.lg,
-					}}
-				>
+				<Text style={styles.preview}>
 					{String(hour).padStart(2, "0")}:{String(minute).padStart(2, "0")}
 				</Text>
 
-				{/* Columns */}
-				<View style={{ flexDirection: "row", gap: spacing.md }}>
-					{/* Hours */}
-					<View style={{ flex: 1 }}>
-						<Text
-							style={{
-								fontFamily: fonts.medium,
-								fontSize: fontSize.sm,
-								color: colors.textSecondary,
-								textAlign: "center",
-								marginBottom: spacing.sm,
-								textTransform: "uppercase",
-								letterSpacing: 0.5,
-							}}
-						>
-							{t("common.hour")}
-						</Text>
+				<View style={styles.columnsRow}>
+					<View style={styles.column}>
+						<Text style={styles.columnLabel}>{t("common.hour")}</Text>
 						<FlatList
 							data={HOURS}
 							keyExtractor={item => String(item)}
-							style={{ height: ITEM_H * 5 }}
+							style={styles.hourList}
 							showsVerticalScrollIndicator={false}
 							getItemLayout={(_, index) => ({
 								length: ITEM_H,
@@ -93,137 +66,45 @@ export function TimePickerModal({ visible, onClose, onAdd }: Props) {
 								index,
 							})}
 							initialScrollIndex={hour > 2 ? hour - 2 : 0}
-							renderItem={({ item }) => {
-								const active = item === hour
-								return (
-									<TouchableOpacity
-										onPress={() => setHour(item)}
-										activeOpacity={0.7}
-										style={{
-											height: ITEM_H,
-											justifyContent: "center",
-											alignItems: "center",
-											borderRadius: radius.sm,
-											backgroundColor: active ? colors.primary : "transparent",
-										}}
-									>
-										<Text
-											style={{
-												fontFamily: active ? fonts.bold : fonts.regular,
-												fontSize: fontSize.xl,
-												color: active ? "#fff" : colors.onSurface,
-											}}
-										>
-											{String(item).padStart(2, "0")}
-										</Text>
-									</TouchableOpacity>
-								)
-							}}
+							renderItem={({ item }) => (
+								<PickerItem
+									value={item}
+									active={item === hour}
+									onPress={() => setHour(item)}
+								/>
+							)}
 						/>
 					</View>
 
-					{/* Separator */}
-					<Text
-						style={{
-							fontFamily: fonts.bold,
-							fontSize: 32,
-							color: colors.textSecondary,
-							alignSelf: "center",
-							marginTop: spacing.xl,
-						}}
-					>
-						:
-					</Text>
+					<Text style={styles.separator}>:</Text>
 
-					{/* Minutes */}
-					<View style={{ flex: 1 }}>
-						<Text
-							style={{
-								fontFamily: fonts.medium,
-								fontSize: fontSize.sm,
-								color: colors.textSecondary,
-								textAlign: "center",
-								marginBottom: spacing.sm,
-								textTransform: "uppercase",
-								letterSpacing: 0.5,
-							}}
-						>
-							{t("common.minutes")}
-						</Text>
-						{MINUTES.map(m => {
-							const active = m === minute
-							return (
-								<TouchableOpacity
-									key={m}
-									onPress={() => setMinute(m)}
-									activeOpacity={0.7}
-									style={{
-										height: ITEM_H,
-										justifyContent: "center",
-										alignItems: "center",
-										borderRadius: radius.sm,
-										backgroundColor: active ? colors.primary : "transparent",
-									}}
-								>
-									<Text
-										style={{
-											fontFamily: active ? fonts.bold : fonts.regular,
-											fontSize: fontSize.xl,
-											color: active ? "#fff" : colors.onSurface,
-										}}
-									>
-										{String(m).padStart(2, "0")}
-									</Text>
-								</TouchableOpacity>
-							)
-						})}
+					<View style={styles.column}>
+						<Text style={styles.columnLabel}>{t("common.minutes")}</Text>
+						{MINUTES.map(m => (
+							<PickerItem
+								key={m}
+								value={m}
+								active={m === minute}
+								onPress={() => setMinute(m)}
+							/>
+						))}
 					</View>
 				</View>
 
-				{/* Buttons */}
-				<View style={{ flexDirection: "row", gap: spacing.md, marginTop: spacing.xl }}>
+				<View style={styles.btnRow}>
 					<TouchableOpacity
 						onPress={onClose}
 						activeOpacity={0.7}
-						style={{
-							flex: 1,
-							borderWidth: 1,
-							borderColor: colors.border,
-							borderRadius: radius.md,
-							paddingVertical: spacing.md,
-							alignItems: "center",
-						}}
+						style={styles.cancelBtn}
 					>
-						<Text
-							style={{
-								fontFamily: fonts.medium,
-								fontSize: fontSize.md,
-								color: colors.onSurface,
-							}}
-						>
-							{t("common.cancel")}
-						</Text>
+						<Text style={styles.cancelBtnText}>{t("common.cancel")}</Text>
 					</TouchableOpacity>
 					<TouchableOpacity
 						onPress={handleAdd}
 						activeOpacity={0.8}
-						style={{
-							flex: 1,
-							backgroundColor: colors.primary,
-							borderRadius: radius.md,
-							paddingVertical: spacing.md,
-							alignItems: "center",
-						}}
+						style={styles.confirmBtn}
 					>
-						<Text
-							style={{
-								fontFamily: fonts.medium,
-								fontSize: fontSize.md,
-								color: "#fff",
-							}}
-						>
-							{t("common.add")}
-						</Text>
+						<Text style={styles.confirmBtnText}>{t("common.add")}</Text>
 					</TouchableOpacity>
 				</View>
 			</View>

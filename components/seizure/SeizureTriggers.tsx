@@ -1,15 +1,15 @@
 // components/seizure/SeizureTriggers.tsx
 
-import { useAppTheme } from "@/hooks"
-import { ExternalTrigger, InternalTrigger, TriggerItem } from "@/models"
-import { Text, TouchableOpacity, View } from "react-native"
-import { useTranslation } from "react-i18next"
-import { getStyles } from "./getStyles"
 import {
 	EXTERNAL_TRIGGERS,
 	INTERNAL_TRIGGERS,
-} from "../../constants/commonConstants"
+} from "@/constants/commonConstants"
+import { useAppTheme } from "@/hooks"
+import { ExternalTrigger, InternalTrigger, TriggerItem } from "@/models"
+import { useTranslation } from "react-i18next"
+import { Text, TouchableOpacity, View } from "react-native"
 import { Divider } from "../ui"
+import { getStyles } from "./getStyles"
 
 type Props = {
 	internalTriggers: TriggerItem<InternalTrigger>[]
@@ -36,9 +36,9 @@ export function SeizureTriggers({
 
 	return (
 		<View style={styles.section}>
-			<Text style={styles.sectionTitle}>{t('seizure.triggers')}</Text>
+			<Text style={styles.sectionTitle}>{t("seizure.triggers")}</Text>
 
-			<Text style={styles.label}>{t('seizure.internalTriggers')}</Text>
+			<Text style={styles.label}>{t("seizure.internalTriggers")}</Text>
 			<View style={[styles.triggerRow, { marginTop: theme.spacing.sm }]}>
 				{INTERNAL_TRIGGERS.map(item => {
 					const active = isInternalActive(item.value)
@@ -64,7 +64,7 @@ export function SeizureTriggers({
 
 			<Divider label="" />
 
-			<Text style={styles.label}>{t('seizure.externalTriggers')}</Text>
+			<Text style={styles.label}>{t("seizure.externalTriggers")}</Text>
 			<View style={[styles.triggerRow, { marginTop: theme.spacing.sm }]}>
 				{EXTERNAL_TRIGGERS.map(item => {
 					const active = isExternalActive(item.value)

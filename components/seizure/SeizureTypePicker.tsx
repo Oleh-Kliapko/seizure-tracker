@@ -4,8 +4,8 @@ import { FormInput } from "@/components/ui"
 import { SEIZURE_TYPES } from "@/constants/commonConstants"
 import { useAppTheme } from "@/hooks"
 import { SeizureType } from "@/models"
-import { Text, TouchableOpacity, View } from "react-native"
 import { useTranslation } from "react-i18next"
+import { Text, TouchableOpacity, View } from "react-native"
 import { getStyles } from "./getStyles"
 
 type Props = {
@@ -27,7 +27,7 @@ export function SeizureTypePicker({
 
 	return (
 		<View style={styles.section}>
-			<Text style={styles.sectionTitle}>{t('seizure.type')}</Text>
+			<Text style={styles.sectionTitle}>{t("seizure.type")}</Text>
 
 			{SEIZURE_TYPES.map(item => (
 				<TouchableOpacity
@@ -57,10 +57,10 @@ export function SeizureTypePicker({
 
 			{value === "custom" && (
 				<FormInput
-					label={t('seizure.customType')}
+					label={t("seizure.customType")}
 					value={customType}
 					onChangeText={onCustomChange}
-					placeholder={t('seizure.customTypePlaceholder')}
+					placeholder={t("seizure.customTypePlaceholder")}
 				/>
 			)}
 		</View>

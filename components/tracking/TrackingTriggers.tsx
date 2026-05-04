@@ -6,8 +6,8 @@ import {
 } from "@/constants/commonConstants"
 import { useAppTheme } from "@/hooks"
 import { ExternalTrigger, InternalTrigger, TriggerItem } from "@/models"
-import { Text, TouchableOpacity, View } from "react-native"
 import { useTranslation } from "react-i18next"
+import { Text, TouchableOpacity, View } from "react-native"
 import { getStyles } from "./getStyles"
 
 type Props = {
@@ -35,9 +35,9 @@ export function TrackingTriggers({
 
 	return (
 		<View style={styles.section}>
-			<Text style={styles.sectionTitle}>{t('tracking.triggers')}</Text>
+			<Text style={styles.sectionTitle}>{t("tracking.triggers")}</Text>
 
-			<Text style={styles.label}>{t('tracking.internalTriggers')}</Text>
+			<Text style={styles.label}>{t("tracking.internalTriggers")}</Text>
 			<View style={[styles.triggerRow, { marginTop: theme.spacing.sm }]}>
 				{INTERNAL_TRIGGERS.map(item => {
 					const active = isInternalActive(item.value)
@@ -63,7 +63,7 @@ export function TrackingTriggers({
 
 			<View style={styles.divider} />
 
-			<Text style={styles.label}>{t('tracking.externalTriggers')}</Text>
+			<Text style={styles.label}>{t("tracking.externalTriggers")}</Text>
 			<View style={[styles.triggerRow, { marginTop: theme.spacing.sm }]}>
 				{EXTERNAL_TRIGGERS.map(item => {
 					const active = isExternalActive(item.value)

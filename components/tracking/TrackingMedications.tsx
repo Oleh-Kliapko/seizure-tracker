@@ -2,7 +2,11 @@
 
 import { useAppTheme } from "@/hooks"
 import { MedIntake } from "@/hooks/useTrackingForm"
-import { DOSE_UNIT_LABEL_KEYS, Medication, normalizeDoseUnit } from "@/models/medication"
+import {
+	DOSE_UNIT_LABEL_KEYS,
+	Medication,
+	normalizeDoseUnit,
+} from "@/models/medication"
 import { formatTime } from "@/utils/seizureFormatters"
 import { CheckCircle, Plus, X } from "lucide-react-native"
 import { useState } from "react"
@@ -33,7 +37,9 @@ export function TrackingMedications({
 		return (
 			<View style={styles.section}>
 				<Text style={styles.sectionTitle}>{t("tracking.medications")}</Text>
-				<Text style={styles.emptyText}>{t("tracking.medicationsNotConfigured")}</Text>
+				<Text style={styles.emptyText}>
+					{t("tracking.medicationsNotConfigured")}
+				</Text>
 			</View>
 		)
 	}
@@ -71,14 +77,18 @@ export function TrackingMedications({
 							</View>
 							<View style={styles.medStatusColumn}>
 								<View style={styles.medStatusRow}>
-									{done && <CheckCircle size={14} color={theme.colors.success} />}
+									{done && (
+										<CheckCircle size={14} color={theme.colors.success} />
+									)}
 									<Text style={[styles.medStatusText, { color: statusColor }]}>
 										{taken} / {required}{" "}
 										{t(DOSE_UNIT_LABEL_KEYS[normalizeDoseUnit(med.doseUnit)])}
 									</Text>
 								</View>
 								{!done && taken === 0 && (
-									<Text style={styles.medStatusNote}>{t("tracking.notTaken")}</Text>
+									<Text style={styles.medStatusNote}>
+										{t("tracking.notTaken")}
+									</Text>
 								)}
 								{partial && (
 									<Text style={[styles.medStatusNote, { color: "#F59E0B" }]}>
@@ -94,18 +104,24 @@ export function TrackingMedications({
 			{medIntakes.length > 0 && (
 				<>
 					<View style={[styles.divider, { marginTop: theme.spacing.md }]} />
-					<Text style={[styles.sectionTitle, { marginBottom: theme.spacing.sm }]}>
+					<Text
+						style={[styles.sectionTitle, { marginBottom: theme.spacing.sm }]}
+					>
 						{t("tracking.intakesToday")}
 					</Text>
 					{medIntakes.map((intake, index) => {
 						const med = medications.find(m => m.id === intake.medicationId)
 						return (
 							<View key={index} style={styles.intakeRow}>
-								<Text style={styles.intakeTime}>{formatTime(intake.takenAt)}</Text>
+								<Text style={styles.intakeTime}>
+									{formatTime(intake.takenAt)}
+								</Text>
 								<Text style={styles.intakeMedName}>{med?.name ?? "—"}</Text>
 								<Text style={styles.medDose}>
 									{intake.amount}{" "}
-									{med ? t(DOSE_UNIT_LABEL_KEYS[normalizeDoseUnit(med.doseUnit)]) : ""}
+									{med
+										? t(DOSE_UNIT_LABEL_KEYS[normalizeDoseUnit(med.doseUnit)])
+										: ""}
 								</Text>
 								<TouchableOpacity
 									onPress={() => onRemoveIntake(index)}
@@ -126,7 +142,9 @@ export function TrackingMedications({
 				style={styles.addIntakeBtn}
 			>
 				<Plus size={16} color={theme.colors.primary} />
-				<Text style={styles.addIntakeBtnText}>{t("tracking.recordIntake")}</Text>
+				<Text style={styles.addIntakeBtnText}>
+					{t("tracking.recordIntake")}
+				</Text>
 			</TouchableOpacity>
 
 			<MedicationIntakeModal

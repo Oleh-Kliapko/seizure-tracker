@@ -4,8 +4,8 @@ import { SEVERITY_LABELS } from "@/constants/commonConstants"
 import { useAppTheme } from "@/hooks"
 import { SeizureSeverity } from "@/models"
 import { Zap } from "lucide-react-native"
-import { Text, TouchableOpacity, View } from "react-native"
 import { useTranslation } from "react-i18next"
+import { Text, TouchableOpacity, View } from "react-native"
 import { getStyles } from "./getStyles"
 
 type Props = {
@@ -20,7 +20,7 @@ export function SeizureSeverityPicker({ value, onChange }: Props) {
 
 	return (
 		<View style={styles.section}>
-			<Text style={styles.sectionTitle}>{t('seizure.severity')}</Text>
+			<Text style={styles.sectionTitle}>{t("seizure.severity")}</Text>
 
 			<View style={styles.severityRow}>
 				{([1, 2, 3] as SeizureSeverity[]).map(level => {

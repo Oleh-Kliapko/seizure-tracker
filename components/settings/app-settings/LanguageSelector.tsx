@@ -2,8 +2,8 @@
 
 import { setAppLanguage } from "@/config/i18n"
 import { useAppTheme } from "@/hooks"
-import { Text, TouchableOpacity, View } from "react-native"
 import { useTranslation } from "react-i18next"
+import { Text, TouchableOpacity, View } from "react-native"
 import { getStyles } from "../getStyles"
 
 const LANGUAGES = [
@@ -28,10 +28,17 @@ export function LanguageSelector() {
 						onPress={() => setAppLanguage(lang.value)}
 						activeOpacity={0.7}
 					>
-						<View style={[styles.radioCircle, active && styles.radioCircleActive]}>
+						<View
+							style={[styles.radioCircle, active && styles.radioCircleActive]}
+						>
 							{active && <View style={styles.radioDot} />}
 						</View>
-						<Text style={[styles.themeOptionLabel, active && styles.themeOptionLabelActive]}>
+						<Text
+							style={[
+								styles.themeOptionLabel,
+								active && styles.themeOptionLabelActive,
+							]}
+						>
 							{lang.label}
 						</Text>
 					</TouchableOpacity>

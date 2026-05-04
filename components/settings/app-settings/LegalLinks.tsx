@@ -3,8 +3,8 @@
 import { LINKS } from "@/constants/commonConstants"
 import { useAppTheme } from "@/hooks"
 import { ChevronRight } from "lucide-react-native"
-import { Linking, Text, TouchableOpacity, View } from "react-native"
 import { useTranslation } from "react-i18next"
+import { Linking, Text, TouchableOpacity, View } from "react-native"
 import { getStyles } from "../getStyles"
 
 export function LegalLinks() {
@@ -18,7 +18,9 @@ export function LegalLinks() {
 
 	return (
 		<View style={styles.settingsSection}>
-			<Text style={styles.settingsSectionTitle}>{t('settings.information')}</Text>
+			<Text style={styles.settingsSectionTitle}>
+				{t("settings.information")}
+			</Text>
 			{LINKS.map((link, index) => (
 				<View key={link.key}>
 					<TouchableOpacity

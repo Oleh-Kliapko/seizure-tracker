@@ -6,8 +6,8 @@ import { auth } from "@/config/firebase"
 import { useAppTheme, useDeleteAccount } from "@/hooks"
 import { Trash2 } from "lucide-react-native"
 import { useState } from "react"
-import { Alert, Text, View } from "react-native"
 import { useTranslation } from "react-i18next"
+import { Alert, Text, View } from "react-native"
 import { getStyles } from "../getStyles"
 
 export function DangerZone() {
@@ -24,12 +24,12 @@ export function DangerZone() {
 
 	const handleDeletePress = () => {
 		Alert.alert(
-			t('settings.deleteAccount'),
-			t('settings.deleteAccountWarning'),
+			t("settings.deleteAccount"),
+			t("settings.deleteAccountWarning"),
 			[
-				{ text: t('common.cancel'), style: "cancel" },
+				{ text: t("common.cancel"), style: "cancel" },
 				{
-					text: t('common.continue'),
+					text: t("common.continue"),
 					style: "destructive",
 					onPress: () => setShowConfirm(true),
 				},
@@ -43,13 +43,15 @@ export function DangerZone() {
 
 	return (
 		<View style={styles.settingsSection}>
-			<Text style={styles.settingsSectionTitle}>{t('settings.dangerZone')}</Text>
+			<Text style={styles.settingsSectionTitle}>
+				{t("settings.dangerZone")}
+			</Text>
 
 			{showConfirm && (
 				<View>
 					{isPasswordUser && (
 						<FormInput
-							label={t('form.currentPassword')}
+							label={t("form.currentPassword")}
 							value={password}
 							onChangeText={setPassword}
 							placeholder="••••••••"
@@ -62,7 +64,9 @@ export function DangerZone() {
 					</View>
 
 					<Button
-						title={isLoading ? t('settings.deleting') : t('settings.confirmDelete')}
+						title={
+							isLoading ? t("settings.deleting") : t("settings.confirmDelete")
+						}
 						onPress={handleConfirmDelete}
 						disabled={isLoading}
 						variant="secondary"
@@ -75,7 +79,7 @@ export function DangerZone() {
 					/>
 
 					<Button
-						title={t('common.cancel')}
+						title={t("common.cancel")}
 						onPress={() => {
 							setShowConfirm(false)
 							setPassword("")
@@ -87,7 +91,7 @@ export function DangerZone() {
 
 			{!showConfirm && (
 				<Button
-					title={t('settings.deleteAccount')}
+					title={t("settings.deleteAccount")}
 					onPress={handleDeletePress}
 					variant="secondary"
 					icon={<Trash2 size={18} color={theme.colors.error} />}

@@ -254,7 +254,7 @@
     "year": "Year",
     "exportTitle": "Export PDF Report",
     "exportRule1": "maximum for the last 5 months",
-    "exportRule2": "no more than 1 report every {{days}} days",
+    "exportRule2": "sending no more than 1 report per {{days}} days",
     "from": "From",
     "to": "To",
     "generating": "Generating...",
