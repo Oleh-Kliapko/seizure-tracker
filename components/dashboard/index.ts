@@ -1,3 +1,4 @@
+export { DashboardEmpty } from "./DashboardEmpty"
 export { DashboardHeatmap } from "./DashboardHeatmap"
 export { DashboardHero } from "./DashboardHero"
 export { DashboardRecentSeizures } from "./DashboardRecentSeizures"

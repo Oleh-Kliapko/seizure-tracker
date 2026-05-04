@@ -1,11 +1,12 @@
 // components/dashboard/DashboardHeatmap.tsx
 
-import { HeatmapDay } from "@/hooks/useDashboard"
 import { useAppTheme } from "@/hooks"
+import { HeatmapDay } from "@/hooks/useDashboard"
+import { enUS, uk } from "date-fns/locale"
 import { format } from "date-fns"
-import { uk, enUS } from "date-fns/locale"
-import { Text, View } from "react-native"
 import { useTranslation } from "react-i18next"
+import { Text, View } from "react-native"
+import { getStyles } from "./getStyles"
 
 function dotColor(count: number, colors: ReturnType<typeof useAppTheme>["colors"]): string {
 	if (count === 0) return colors.border
@@ -19,7 +20,8 @@ type Props = {
 }
 
 export function DashboardHeatmap({ days }: Props) {
-	const { colors, fonts, fontSize, spacing, radius } = useAppTheme()
+	const theme = useAppTheme()
+	const styles = getStyles(theme)
 	const { t, i18n } = useTranslation()
 	const dateFnsLocale = i18n.language === "uk" ? uk : enUS
 
@@ -30,56 +32,25 @@ export function DashboardHeatmap({ days }: Props) {
 	const lastDay = days[29] ? format(new Date(days[29].dateStr), "d MMM", { locale: dateFnsLocale }) : ""
 
 	return (
-		<View
-			style={{
-				backgroundColor: colors.surface,
-				borderRadius: radius.lg,
-				padding: spacing.md,
-				marginBottom: spacing.md,
-			}}
-		>
-			<Text
-				style={{
-					fontFamily: fonts.medium,
-					fontSize: fontSize.sm,
-					color: colors.onSurface,
-					marginBottom: spacing.sm,
-				}}
-			>
-				{t("dashboard.heatmapTitle")}
-			</Text>
+		<View style={styles.heatmapCard}>
+			<Text style={styles.heatmapTitle}>{t("dashboard.heatmapTitle")}</Text>
 
-			<View style={{ gap: 4 }}>
+			<View style={styles.heatmapGrid}>
 				{[firstRow, secondRow].map((row, rowIdx) => (
-					<View key={rowIdx} style={{ flexDirection: "row", gap: 4 }}>
+					<View key={rowIdx} style={styles.heatmapRow}>
 						{row.map(day => (
 							<View
 								key={day.dateStr}
-								style={{
-									flex: 1,
-									height: 20,
-									borderRadius: 4,
-									backgroundColor: dotColor(day.count, colors),
-								}}
+								style={[styles.heatmapDot, { backgroundColor: dotColor(day.count, theme.colors) }]}
 							/>
 						))}
 					</View>
 				))}
 			</View>
 
-			<View
-				style={{
-					flexDirection: "row",
-					justifyContent: "space-between",
-					marginTop: spacing.xs,
-				}}
-			>
-				<Text style={{ fontFamily: fonts.regular, fontSize: 10, color: colors.textSecondary }}>
-					{firstDay}
-				</Text>
-				<Text style={{ fontFamily: fonts.regular, fontSize: 10, color: colors.textSecondary }}>
-					{lastDay}
-				</Text>
+			<View style={styles.heatmapDates}>
+				<Text style={styles.heatmapDate}>{firstDay}</Text>
+				<Text style={styles.heatmapDate}>{lastDay}</Text>
 			</View>
 		</View>
 	)

@@ -4,8 +4,8 @@ import { LogoutButton, ProfileAvatar, ProfileMenu } from "@/components/settings"
 import { ScreenWrapper } from "@/components/ui"
 import { useAppTheme, useAuthActions, useAvatarUpload, useUser } from "@/hooks"
 import { useEffect } from "react"
-import { ActivityIndicator, Alert, ScrollView, View } from "react-native"
 import { useTranslation } from "react-i18next"
+import { ActivityIndicator, Alert, ScrollView, View } from "react-native"
 
 export default function ProfileScreen() {
 	const { colors, spacing } = useAppTheme()
@@ -20,8 +20,8 @@ export default function ProfileScreen() {
 	} = useAvatarUpload()
 
 	useEffect(() => {
-		if (avatarError) Alert.alert(t('common.error'), t(avatarError))
-	}, [avatarError])
+		if (avatarError) Alert.alert(t("common.error"), t(avatarError))
+	}, [avatarError]) // eslint-disable-line react-hooks/exhaustive-deps
 
 	if (isLoading) {
 		return (

@@ -4,8 +4,9 @@ import { useAppTheme } from "@/hooks"
 import { Medication } from "@/models/medication"
 import { router } from "expo-router"
 import { CheckCircle, ChevronRight, Circle, Pill } from "lucide-react-native"
-import { Text, TouchableOpacity, View } from "react-native"
 import { useTranslation } from "react-i18next"
+import { Text, TouchableOpacity, View } from "react-native"
+import { getStyles } from "./getStyles"
 
 const TRACKING_SECTIONS = 6
 
@@ -28,93 +29,60 @@ function StatusRow({
 	statusOk: boolean
 	onPress: () => void
 }) {
-	const { colors, fonts, fontSize, spacing } = useAppTheme()
+	const theme = useAppTheme()
+	const styles = getStyles(theme)
 
 	return (
-		<TouchableOpacity
-			onPress={onPress}
-			activeOpacity={0.7}
-			style={{
-				flexDirection: "row",
-				alignItems: "center",
-				paddingVertical: spacing.sm,
-				gap: spacing.sm,
-			}}
-		>
+		<TouchableOpacity onPress={onPress} activeOpacity={0.7} style={styles.statusRow}>
 			{icon}
-			<Text
-				style={{
-					fontFamily: fonts.medium,
-					fontSize: fontSize.md,
-					color: colors.onSurface,
-					flex: 1,
-				}}
-			>
-				{label}
-			</Text>
-			<Text
-				style={{
-					fontFamily: fonts.regular,
-					fontSize: fontSize.sm,
-					color: statusOk ? colors.success : colors.textSecondary,
-					marginRight: spacing.xs,
-				}}
-			>
+			<Text style={styles.statusRowLabel}>{label}</Text>
+			<Text style={[styles.statusRowText, { color: statusOk ? theme.colors.success : theme.colors.textSecondary }]}>
 				{statusText}
 			</Text>
-			<ChevronRight size={16} color={colors.textSecondary} />
+			<ChevronRight size={16} color={theme.colors.textSecondary} />
 		</TouchableOpacity>
 	)
 }
 
 export function DashboardToday({ trackingFilledSections, medications, medicationsTakenToday }: Props) {
-	const { colors, spacing, radius } = useAppTheme()
+	const theme = useAppTheme()
+	const styles = getStyles(theme)
 	const { t } = useTranslation()
 
 	const trackingDone = trackingFilledSections === TRACKING_SECTIONS
 	const trackingLabel =
 		trackingFilledSections === 0
-			? t('dashboard.trackingNotFilled')
+			? t("dashboard.trackingNotFilled")
 			: trackingDone
-				? t('dashboard.trackingFilled')
+				? t("dashboard.trackingFilled")
 				: `${trackingFilledSections} / ${TRACKING_SECTIONS}`
 
 	const medLabel =
 		medications.length === 0
-			? t('dashboard.medicationsNotConfigured')
+			? t("dashboard.medicationsNotConfigured")
 			: `${medicationsTakenToday} ${t("tracking.of")} ${medications.length}`
 	const medOk = medications.length > 0 && medicationsTakenToday === medications.length
-	const medRoute =
-		medications.length === 0
-			? "/(tabs)/settings/medications"
-			: "/(tabs)/tracking"
+	const medRoute = medications.length === 0 ? "/(tabs)/settings/medications" : "/(tabs)/tracking"
 
 	return (
-		<View
-			style={{
-				backgroundColor: colors.surface,
-				borderRadius: radius.lg,
-				paddingHorizontal: 16,
-				marginBottom: 12,
-			}}
-		>
+		<View style={styles.todayCard}>
 			<StatusRow
 				icon={
 					trackingDone
-						? <CheckCircle size={20} color={colors.success} />
-						: <Circle size={20} color={colors.textSecondary} />
+						? <CheckCircle size={20} color={theme.colors.success} />
+						: <Circle size={20} color={theme.colors.textSecondary} />
 				}
-				label={t('dashboard.tracking')}
+				label={t("dashboard.tracking")}
 				statusText={trackingLabel}
 				statusOk={trackingDone}
 				onPress={() => router.push("/(tabs)/tracking")}
 			/>
 
-			<View style={{ height: 1, backgroundColor: colors.border }} />
+			<View style={styles.divider} />
 
 			<StatusRow
-				icon={<Pill size={20} color={medications.length > 0 ? colors.primary : colors.textSecondary} />}
-				label={t('dashboard.medications')}
+				icon={<Pill size={20} color={medications.length > 0 ? theme.colors.primary : theme.colors.textSecondary} />}
+				label={t("dashboard.medications")}
 				statusText={medLabel}
 				statusOk={medOk}
 				onPress={() => router.push(medRoute as any)}

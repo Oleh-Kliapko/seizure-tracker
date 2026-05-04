@@ -1,6 +1,7 @@
 // app/(tabs)/index.tsx
 
 import {
+	DashboardEmpty,
 	DashboardHeatmap,
 	DashboardHero,
 	DashboardRecentSeizures,
@@ -12,18 +13,11 @@ import { useAppTheme } from "@/hooks"
 import { useDashboard } from "@/hooks/useDashboard"
 import { format } from "date-fns"
 import { uk } from "date-fns/locale"
-import { router } from "expo-router"
-import {
-	ActivityIndicator,
-	ScrollView,
-	Text,
-	TouchableOpacity,
-	View,
-} from "react-native"
 import { useTranslation } from "react-i18next"
+import { ActivityIndicator, ScrollView, View } from "react-native"
 
 export default function Dashboard() {
-	const { colors, fonts, fontSize, spacing } = useAppTheme()
+	const { colors, spacing } = useAppTheme()
 	const { t } = useTranslation()
 	const {
 		isLoading,
@@ -46,7 +40,11 @@ export default function Dashboard() {
 	return (
 		<ScreenWrapper>
 			<ScreenHeader
-				title={firstName ? t('dashboard.greeting', { name: firstName }) : t('dashboard.greetingDefault')}
+				title={
+					firstName
+						? t("dashboard.greeting", { name: firstName })
+						: t("dashboard.greetingDefault")
+				}
 				subtitle={today}
 				showBackButton={false}
 			/>
@@ -58,56 +56,7 @@ export default function Dashboard() {
 					<ActivityIndicator color={colors.primary} />
 				</View>
 			) : !hasSeizures ? (
-				<View
-					style={{
-						flex: 1,
-						justifyContent: "center",
-						alignItems: "center",
-						paddingHorizontal: spacing.xl,
-						gap: spacing.lg,
-					}}
-				>
-					<Text
-						style={{
-							fontFamily: fonts.medium,
-							fontSize: fontSize.lg,
-							color: colors.onSurface,
-							textAlign: "center",
-						}}
-					>
-						{t('dashboard.emptyTitle')}
-					</Text>
-					<Text
-						style={{
-							fontFamily: fonts.regular,
-							fontSize: fontSize.md,
-							color: colors.textSecondary,
-							textAlign: "center",
-						}}
-					>
-						{t('dashboard.emptySubtitle')}
-					</Text>
-					<TouchableOpacity
-						onPress={() => router.push("/(tabs)/seizures/add")}
-						activeOpacity={0.8}
-						style={{
-							backgroundColor: colors.primary,
-							paddingHorizontal: spacing.xl,
-							paddingVertical: spacing.md,
-							borderRadius: 999,
-						}}
-					>
-						<Text
-							style={{
-								fontFamily: fonts.medium,
-								fontSize: fontSize.md,
-								color: "#fff",
-							}}
-						>
-							{t('dashboard.addSeizure')}
-						</Text>
-					</TouchableOpacity>
-				</View>
+				<DashboardEmpty />
 			) : (
 				<ScrollView
 					contentContainerStyle={{

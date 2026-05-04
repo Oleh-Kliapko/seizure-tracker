@@ -5,10 +5,11 @@ import { useAppTheme } from "@/hooks"
 import { Seizure } from "@/models/seizure"
 import { router } from "expo-router"
 import { format } from "date-fns"
-import { uk, enUS } from "date-fns/locale"
+import { enUS, uk } from "date-fns/locale"
 import { ChevronRight } from "lucide-react-native"
-import { Text, TouchableOpacity, View } from "react-native"
 import { useTranslation } from "react-i18next"
+import { Text, TouchableOpacity, View } from "react-native"
+import { getStyles } from "./getStyles"
 
 type Props = {
 	seizures: Seizure[]
@@ -21,103 +22,47 @@ const SEVERITY_COLORS: Record<number, string> = {
 }
 
 export function DashboardRecentSeizures({ seizures }: Props) {
-	const { colors, fonts, fontSize, spacing, radius } = useAppTheme()
+	const theme = useAppTheme()
+	const styles = getStyles(theme)
 	const { t, i18n } = useTranslation()
 	const dateFnsLocale = i18n.language === "uk" ? uk : enUS
 
 	return (
-		<View
-			style={{
-				backgroundColor: colors.surface,
-				borderRadius: radius.lg,
-				paddingHorizontal: 16,
-				marginBottom: 12,
-			}}
-		>
-			<Text
-				style={{
-					fontFamily: fonts.medium,
-					fontSize: fontSize.sm,
-					color: colors.textSecondary,
-					paddingTop: spacing.sm,
-					paddingBottom: spacing.xs,
-				}}
-			>
-				{t("dashboard.recentSeizures")}
-			</Text>
+		<View style={styles.recentCard}>
+			<Text style={styles.recentSectionLabel}>{t("dashboard.recentSeizures")}</Text>
 
 			{seizures.map((s, i) => {
 				const date = format(new Date(s.startedAt), "d MMM", { locale: dateFnsLocale })
 				const time = format(new Date(s.startedAt), "HH:mm")
 				const severity = s.severity ? t(SEVERITY_LABELS[s.severity]) : "—"
-				const severityColor = s.severity ? SEVERITY_COLORS[s.severity] : colors.textSecondary
+				const severityColor = s.severity ? SEVERITY_COLORS[s.severity] : theme.colors.textSecondary
 
 				return (
 					<View key={s.id}>
-						{i > 0 && <View style={{ height: 1, backgroundColor: colors.border }} />}
+						{i > 0 && <View style={styles.divider} />}
 						<TouchableOpacity
 							onPress={() => router.push(`/(tabs)/seizures/${s.id}` as any)}
 							activeOpacity={0.7}
-							style={{
-								flexDirection: "row",
-								alignItems: "center",
-								paddingVertical: spacing.xs,
-								gap: spacing.sm,
-							}}
+							style={styles.seizureRow}
 						>
-							<Text
-								style={{
-									fontFamily: fonts.medium,
-									fontSize: fontSize.sm,
-									color: colors.onSurface,
-									width: 60,
-								}}
-							>
-								{date}
-							</Text>
-							<Text
-								style={{
-									fontFamily: fonts.regular,
-									fontSize: fontSize.sm,
-									color: colors.textSecondary,
-									width: 42,
-								}}
-							>
-								{time}
-							</Text>
-							<Text
-								style={{
-									fontFamily: fonts.medium,
-									fontSize: fontSize.sm,
-									color: severityColor,
-									flex: 1,
-								}}
-							>
-								{severity}
-							</Text>
-							<ChevronRight size={16} color={colors.textSecondary} />
+							<Text style={styles.seizureDate}>{date}</Text>
+							<Text style={styles.seizureTime}>{time}</Text>
+							<Text style={[styles.seizureSeverity, { color: severityColor }]}>{severity}</Text>
+							<ChevronRight size={16} color={theme.colors.textSecondary} />
 						</TouchableOpacity>
 					</View>
 				)
 			})}
 
-			<View style={{ height: 1, backgroundColor: colors.border }} />
+			<View style={styles.divider} />
 
 			<TouchableOpacity
 				onPress={() => router.push("/(tabs)/seizures")}
 				activeOpacity={0.7}
-				style={{
-					flexDirection: "row",
-					alignItems: "center",
-					justifyContent: "flex-end",
-					paddingVertical: spacing.xs,
-					gap: spacing.xs,
-				}}
+				style={styles.allSeizuresRow}
 			>
-				<Text style={{ fontFamily: fonts.medium, fontSize: fontSize.sm, color: colors.primary }}>
-					{t("dashboard.allSeizures")}
-				</Text>
-				<ChevronRight size={16} color={colors.primary} />
+				<Text style={styles.allSeizuresText}>{t("dashboard.allSeizures")}</Text>
+				<ChevronRight size={16} color={theme.colors.primary} />
 			</TouchableOpacity>
 		</View>
 	)

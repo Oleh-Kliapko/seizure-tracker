@@ -1,8 +1,9 @@
 // components/dashboard/DashboardStats.tsx
 
 import { useAppTheme } from "@/hooks"
-import { Text, View } from "react-native"
 import { useTranslation } from "react-i18next"
+import { Text, View } from "react-native"
+import { getStyles } from "./getStyles"
 
 type Props = {
 	thisMonthCount: number
@@ -10,7 +11,8 @@ type Props = {
 }
 
 export function DashboardStats({ thisMonthCount, lastMonthCount }: Props) {
-	const { colors, fonts, fontSize, spacing, radius } = useAppTheme()
+	const theme = useAppTheme()
+	const styles = getStyles(theme)
 	const { t } = useTranslation()
 
 	function trendLabel(current: number, previous: number): { text: string; color: string } | null {
@@ -18,102 +20,34 @@ export function DashboardStats({ thisMonthCount, lastMonthCount }: Props) {
 		if (previous === 0) return null
 		const diff = current - previous
 		const pct = Math.round(Math.abs(diff / previous) * 100)
-		if (diff === 0) return { text: t('dashboard.noChange'), color: "#888" }
+		if (diff === 0) return { text: t("dashboard.noChange"), color: "#888" }
 		if (diff > 0) return { text: `↑ +${pct}%`, color: "#e53935" }
 		return { text: `↓ −${pct}%`, color: "#43a047" }
 	}
 
 	function seizureWord(n: number): string {
-		if (n === 1) return t('dashboard.seizure_1')
-		if (n >= 2 && n <= 4) return t('dashboard.seizure_2_4')
-		return t('dashboard.seizure_other')
+		if (n === 1) return t("dashboard.seizure_1")
+		if (n >= 2 && n <= 4) return t("dashboard.seizure_2_4")
+		return t("dashboard.seizure_other")
 	}
 
 	const trend = trendLabel(thisMonthCount, lastMonthCount)
 
-	const cardStyle = {
-		flex: 1,
-		backgroundColor: colors.surface,
-		borderRadius: radius.lg,
-		padding: spacing.md,
-	}
-
 	return (
-		<View style={{ flexDirection: "row", gap: spacing.md, marginBottom: spacing.md }}>
-			<View style={cardStyle}>
-				<Text
-					style={{
-						fontFamily: fonts.regular,
-						fontSize: fontSize.sm,
-						color: colors.textSecondary,
-						marginBottom: spacing.xs,
-					}}
-				>
-					{t('dashboard.thisMonth')}
-				</Text>
-				<Text
-					style={{
-						fontFamily: fonts.bold,
-						fontSize: 28,
-						color: colors.onSurface,
-						lineHeight: 34,
-					}}
-				>
-					{thisMonthCount}
-				</Text>
-				<Text
-					style={{
-						fontFamily: fonts.regular,
-						fontSize: fontSize.sm,
-						color: colors.textSecondary,
-					}}
-				>
-					{seizureWord(thisMonthCount)}
-				</Text>
+		<View style={styles.statsRow}>
+			<View style={styles.statsCard}>
+				<Text style={styles.statsLabel}>{t("dashboard.thisMonth")}</Text>
+				<Text style={styles.statsCount}>{thisMonthCount}</Text>
+				<Text style={styles.statsUnit}>{seizureWord(thisMonthCount)}</Text>
 				{trend && (
-					<Text
-						style={{
-							fontFamily: fonts.medium,
-							fontSize: fontSize.sm,
-							color: trend.color,
-							marginTop: spacing.xs,
-						}}
-					>
-						{trend.text}
-					</Text>
+					<Text style={[styles.statsTrend, { color: trend.color }]}>{trend.text}</Text>
 				)}
 			</View>
 
-			<View style={cardStyle}>
-				<Text
-					style={{
-						fontFamily: fonts.regular,
-						fontSize: fontSize.sm,
-						color: colors.textSecondary,
-						marginBottom: spacing.xs,
-					}}
-				>
-					{t('dashboard.lastMonth')}
-				</Text>
-				<Text
-					style={{
-						fontFamily: fonts.bold,
-						fontSize: 28,
-						color: colors.onSurface,
-						lineHeight: 34,
-					}}
-				>
-					{lastMonthCount}
-				</Text>
-				<Text
-					style={{
-						fontFamily: fonts.regular,
-						fontSize: fontSize.sm,
-						color: colors.textSecondary,
-					}}
-				>
-					{seizureWord(lastMonthCount)}
-				</Text>
+			<View style={styles.statsCard}>
+				<Text style={styles.statsLabel}>{t("dashboard.lastMonth")}</Text>
+				<Text style={styles.statsCount}>{lastMonthCount}</Text>
+				<Text style={styles.statsUnit}>{seizureWord(lastMonthCount)}</Text>
 			</View>
 		</View>
 	)
