@@ -55,9 +55,21 @@ export const CHANNELS: { labelKey: string; value: CommunicationChannel }[] = [
 ]
 
 export const LINKS = [
-	{ labelKey: "link.faq", key: "faq", url: "https://oleh-kliapko.github.io/seizure-tracker/faq" },
-	{ labelKey: "link.terms", key: "terms", url: "https://oleh-kliapko.github.io/seizure-tracker/terms" },
-	{ labelKey: "link.privacy", key: "privacy", url: "https://oleh-kliapko.github.io/seizure-tracker/privacy" },
+	{
+		labelKey: "link.faq",
+		key: "faq",
+		url: "https://oleh-kliapko.github.io/seizure-tracker/faq",
+	},
+	{
+		labelKey: "link.terms",
+		key: "terms",
+		url: "https://oleh-kliapko.github.io/seizure-tracker/terms",
+	},
+	{
+		labelKey: "link.privacy",
+		key: "privacy",
+		url: "https://oleh-kliapko.github.io/seizure-tracker/privacy",
+	},
 ]
 
 export const SEIZURE_TYPES: { labelKey: string; value: SeizureType }[] = [
@@ -75,22 +87,24 @@ export const SEVERITY_LABELS: Record<SeizureSeverity, string> = {
 	3: "severity.3",
 }
 
-export const INTERNAL_TRIGGERS: { labelKey: string; value: InternalTrigger }[] = [
-	{ labelKey: "trigger.sleep-deprivation", value: "sleep-deprivation" },
-	{ labelKey: "trigger.stress", value: "stress" },
-	{ labelKey: "trigger.alcohol", value: "alcohol" },
-	{ labelKey: "trigger.fever", value: "fever" },
-	{ labelKey: "trigger.infection", value: "infection" },
-	{ labelKey: "trigger.custom", value: "custom" },
-]
+export const INTERNAL_TRIGGERS: { labelKey: string; value: InternalTrigger }[] =
+	[
+		{ labelKey: "trigger.sleep-deprivation", value: "sleep-deprivation" },
+		{ labelKey: "trigger.stress", value: "stress" },
+		{ labelKey: "trigger.alcohol", value: "alcohol" },
+		{ labelKey: "trigger.fever", value: "fever" },
+		{ labelKey: "trigger.infection", value: "infection" },
+		{ labelKey: "trigger.custom", value: "custom" },
+	]
 
-export const EXTERNAL_TRIGGERS: { labelKey: string; value: ExternalTrigger }[] = [
-	{ labelKey: "trigger.photosensitivity", value: "photosensitivity" },
-	{ labelKey: "trigger.magnetic-storm", value: "magnetic-storm" },
-	{ labelKey: "trigger.pressure-change", value: "pressure-change" },
-	{ labelKey: "trigger.weather-change", value: "weather-change" },
-	{ labelKey: "trigger.custom", value: "custom" },
-]
+export const EXTERNAL_TRIGGERS: { labelKey: string; value: ExternalTrigger }[] =
+	[
+		{ labelKey: "trigger.photosensitivity", value: "photosensitivity" },
+		{ labelKey: "trigger.magnetic-storm", value: "magnetic-storm" },
+		{ labelKey: "trigger.pressure-change", value: "pressure-change" },
+		{ labelKey: "trigger.weather-change", value: "weather-change" },
+		{ labelKey: "trigger.custom", value: "custom" },
+	]
 
 export const REPORT_COOLDOWN_DAYS = 7
 

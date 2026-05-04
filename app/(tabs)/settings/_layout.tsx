@@ -1,3 +1,5 @@
+// app/(tabs)/settings/_layout.tsx
+
 import { useAppTheme } from "@/hooks"
 import { Stack } from "expo-router"
 

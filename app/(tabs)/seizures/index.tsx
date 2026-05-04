@@ -12,6 +12,7 @@ import { useAppTheme, useSeizureList } from "@/hooks"
 import { Seizure } from "@/models"
 import { router } from "expo-router"
 import { Plus } from "lucide-react-native"
+import { useTranslation } from "react-i18next"
 import {
 	ActivityIndicator,
 	ScrollView,
@@ -19,7 +20,6 @@ import {
 	TouchableOpacity,
 	View,
 } from "react-native"
-import { useTranslation } from "react-i18next"
 
 export default function SeizuresScreen() {
 	const theme = useAppTheme()

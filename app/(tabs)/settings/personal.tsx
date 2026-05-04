@@ -5,8 +5,8 @@ import { ScreenHeader, ScreenWrapper } from "@/components/ui"
 import { useAppTheme, usePersonalForm } from "@/hooks"
 import { useFocusEffect } from "@react-navigation/native"
 import { useCallback } from "react"
-import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 import { useTranslation } from "react-i18next"
+import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 
 export default function PersonalScreen() {
 	const { spacing } = useAppTheme()
@@ -25,7 +25,7 @@ export default function PersonalScreen() {
 
 	return (
 		<ScreenWrapper>
-			<ScreenHeader title={t('settings.personal')} />
+			<ScreenHeader title={t("settings.personal")} />
 			<KeyboardAvoidingView
 				style={{ flex: 1 }}
 				behavior={Platform.OS === "ios" ? "padding" : undefined}

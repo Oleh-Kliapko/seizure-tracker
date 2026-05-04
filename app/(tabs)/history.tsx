@@ -14,8 +14,8 @@ import { useAppTheme, useExport } from "@/hooks"
 import { useHistoryData } from "@/hooks/useHistoryData"
 import { useFocusEffect } from "expo-router"
 import { useCallback, useMemo, useState } from "react"
-import { ActivityIndicator, ScrollView, Text, View } from "react-native"
 import { useTranslation } from "react-i18next"
+import { ActivityIndicator, ScrollView, Text, View } from "react-native"
 
 function SectionCard({
 	title,
@@ -75,7 +75,7 @@ export default function History() {
 
 	return (
 		<ScreenWrapper>
-			<ScreenHeader title={t('history.title')} showBackButton={false} />
+			<ScreenHeader title={t("history.title")} showBackButton={false} />
 			<ScrollView
 				contentContainerStyle={{ padding: spacing.lg }}
 				showsVerticalScrollIndicator={false}
@@ -88,7 +88,7 @@ export default function History() {
 					</View>
 				) : (
 					<>
-						<SectionCard title={t('history.seizureCount')}>
+						<SectionCard title={t("history.seizureCount")}>
 							<Text
 								style={{
 									fontFamily: fonts.bold,
@@ -101,7 +101,7 @@ export default function History() {
 							</Text>
 						</SectionCard>
 
-						<SectionCard title={t('history.calendar')}>
+						<SectionCard title={t("history.calendar")}>
 							<HistoryCalendar
 								seizuresByDate={seizuresByDate}
 								from={from}
@@ -109,11 +109,11 @@ export default function History() {
 							/>
 						</SectionCard>
 
-						<SectionCard title={t('history.timeDistribution')}>
+						<SectionCard title={t("history.timeDistribution")}>
 							<HistoryDonutChart data={timeOfDay} />
 						</SectionCard>
 
-						<SectionCard title={t('history.topTriggers')}>
+						<SectionCard title={t("history.topTriggers")}>
 							<HistoryTriggerBars data={topTriggers} />
 						</SectionCard>
 					</>

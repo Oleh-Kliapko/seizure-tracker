@@ -5,6 +5,7 @@ import { ScreenHeader, ScreenWrapper } from "@/components/ui"
 import { Button } from "@/components/ui/Button"
 import { useAppTheme, useSeizureEditForm } from "@/hooks"
 import { Trash2 } from "lucide-react-native"
+import { useTranslation } from "react-i18next"
 import {
 	ActivityIndicator,
 	KeyboardAvoidingView,
@@ -12,7 +13,6 @@ import {
 	ScrollView,
 	View,
 } from "react-native"
-import { useTranslation } from "react-i18next"
 
 export default function EditSeizureScreen() {
 	const { spacing, colors } = useAppTheme()
@@ -52,7 +52,7 @@ export default function EditSeizureScreen() {
 	return (
 		<ScreenWrapper>
 			<ScreenHeader
-				title={t('seizure.editTitle')}
+				title={t("seizure.editTitle")}
 				right={
 					<Button
 						title=""

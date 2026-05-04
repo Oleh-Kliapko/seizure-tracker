@@ -5,8 +5,8 @@ import { ScreenHeader, ScreenWrapper } from "@/components/ui"
 import { useAppTheme, useGuardiansForm } from "@/hooks"
 import { useFocusEffect } from "@react-navigation/native"
 import { useCallback } from "react"
-import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 import { useTranslation } from "react-i18next"
+import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 
 export default function GuardiansScreen() {
 	const { spacing } = useAppTheme()
@@ -31,7 +31,7 @@ export default function GuardiansScreen() {
 
 	return (
 		<ScreenWrapper>
-			<ScreenHeader title={t('settings.guardians')} />
+			<ScreenHeader title={t("settings.guardians")} />
 			<KeyboardAvoidingView
 				style={{ flex: 1 }}
 				behavior={Platform.OS === "ios" ? "padding" : undefined}

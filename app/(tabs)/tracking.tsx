@@ -13,6 +13,7 @@ import { ScreenHeader, ScreenWrapper } from "@/components/ui"
 import { useAppTheme, useTrackingForm } from "@/hooks"
 import { format } from "date-fns"
 import { uk } from "date-fns/locale"
+import { useTranslation } from "react-i18next"
 import {
 	ActivityIndicator,
 	KeyboardAvoidingView,
@@ -21,7 +22,6 @@ import {
 	Text,
 	View,
 } from "react-native"
-import { useTranslation } from "react-i18next"
 
 export default function TrackingScreen() {
 	const { colors, fonts, fontSize, spacing } = useAppTheme()
@@ -70,7 +70,11 @@ export default function TrackingScreen() {
 
 	return (
 		<ScreenWrapper>
-			<ScreenHeader title={t('tracking.title')} subtitle={today} showBackButton={false} />
+			<ScreenHeader
+				title={t("tracking.title")}
+				subtitle={today}
+				showBackButton={false}
+			/>
 
 			{isLoading ? (
 				<View

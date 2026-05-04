@@ -6,6 +6,7 @@ import { useAppTheme } from "@/hooks"
 import { useMedicationsForm } from "@/hooks/useMedicationsForm"
 import { useFocusEffect } from "@react-navigation/native"
 import { useCallback } from "react"
+import { useTranslation } from "react-i18next"
 import {
 	ActivityIndicator,
 	KeyboardAvoidingView,
@@ -13,7 +14,6 @@ import {
 	ScrollView,
 	View,
 } from "react-native"
-import { useTranslation } from "react-i18next"
 
 export default function MedicationsScreen() {
 	const { colors, spacing } = useAppTheme()
@@ -42,7 +42,7 @@ export default function MedicationsScreen() {
 
 	return (
 		<ScreenWrapper>
-			<ScreenHeader title={t('settings.medications')} />
+			<ScreenHeader title={t("settings.medications")} />
 
 			{isLoading ? (
 				<View

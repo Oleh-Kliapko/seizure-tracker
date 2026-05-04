@@ -3,8 +3,8 @@
 import { SeizureForm } from "@/components/seizure"
 import { ScreenHeader, ScreenWrapper } from "@/components/ui"
 import { useAppTheme, useSeizureForm } from "@/hooks"
-import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 import { useTranslation } from "react-i18next"
+import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 
 export default function AddSeizureScreen() {
 	const { spacing } = useAppTheme()
@@ -41,7 +41,7 @@ export default function AddSeizureScreen() {
 
 	return (
 		<ScreenWrapper>
-			<ScreenHeader title={t('seizure.addTitle')} />
+			<ScreenHeader title={t("seizure.addTitle")} />
 			<KeyboardAvoidingView
 				style={{ flex: 1 }}
 				behavior={Platform.OS === "ios" ? "padding" : undefined}

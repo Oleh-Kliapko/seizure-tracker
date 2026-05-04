@@ -20,7 +20,6 @@ import {
 	Text,
 	View,
 } from "react-native"
-// import { SvgXml } from "react-native-svg"
 import { SvgXml } from "react-native-svg"
 import { useTranslation } from "react-i18next"
 import createAuthStyles from "./auth.styles"

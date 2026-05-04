@@ -44,14 +44,6 @@
 - [x] Складніший пароль
 - [x] i18n — англійська мова через `i18next` (бере мову з мобільника чи планшета, якщо UKR чи RU - то українська, все інше - англійська)
 
----
-
-## 🚧 В роботі
-
-- [ ] Face ID через `expo-local-authentication`
-
----
-
 ## 🔮 Після MVP
 
 - [ ] Купити домен для продакшн email (напр. `seizuretracker.app`, ~$10-15/рік на namecheap.com) → верифікувати в Resend → замінити `onboarding@resend.dev` на `noreply@seizuretracker.app`
