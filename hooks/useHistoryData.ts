@@ -1,11 +1,11 @@
 // hooks/useHistoryData.ts
 
 import { auth } from "@/config/firebase"
-import i18n from "@/config/i18n"
 import { EXTERNAL_TRIGGERS, INTERNAL_TRIGGERS } from "@/constants/commonConstants"
 import { Seizure } from "@/models/seizure"
 import { getSeizuresByPeriod } from "@/services"
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 
 export type TimeOfDay = {
 	night: number
@@ -17,11 +17,6 @@ export type TimeOfDay = {
 export type TriggerStat = {
 	label: string
 	count: number
-}
-
-const ALL_TRIGGER_LABELS: Record<string, string> = {
-	...Object.fromEntries(INTERNAL_TRIGGERS.map(t => [t.value, i18n.t(t.labelKey)])),
-	...Object.fromEntries(EXTERNAL_TRIGGERS.map(t => [t.value, i18n.t(t.labelKey)])),
 }
 
 function getTimeOfDayKey(timestamp: number): keyof TimeOfDay {
@@ -38,8 +33,14 @@ export function formatDateKey(timestamp: number): string {
 }
 
 export function useHistoryData(from: number, to: number, refreshKey?: number) {
+	const { t } = useTranslation()
 	const [seizures, setSeizures] = useState<Seizure[]>([])
 	const [isLoading, setIsLoading] = useState(true)
+
+	const allTriggerLabels: Record<string, string> = {
+		...Object.fromEntries(INTERNAL_TRIGGERS.map(tr => [tr.value, t(tr.labelKey)])),
+		...Object.fromEntries(EXTERNAL_TRIGGERS.map(tr => [tr.value, t(tr.labelKey)])),
+	}
 
 	useEffect(() => {
 		const uid = auth.currentUser?.uid
@@ -65,11 +66,11 @@ export function useHistoryData(from: number, to: number, refreshKey?: number) {
 	const triggerCounts: Record<string, number> = {}
 	for (const s of seizures) {
 		const all = [...(s.internalTriggers ?? []), ...(s.externalTriggers ?? [])]
-		for (const t of all) {
+		for (const tr of all) {
 			const label =
-				t.type === "custom"
-					? (typeof t.value === "string" ? t.value : i18n.t("common.other"))
-					: (ALL_TRIGGER_LABELS[t.type] ?? t.type)
+				tr.type === "custom"
+					? (typeof tr.value === "string" ? tr.value : t("common.other"))
+					: (allTriggerLabels[tr.type] ?? tr.type)
 			triggerCounts[label] = (triggerCounts[label] ?? 0) + 1
 		}
 	}
