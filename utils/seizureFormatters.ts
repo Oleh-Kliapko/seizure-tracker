@@ -22,6 +22,10 @@ export function formatTime(ts: number): string {
 	})
 }
 
+export function formatDoseAmount(v: number): string {
+	return v % 1 === 0 ? String(v) : v.toFixed(1)
+}
+
 export function formatDuration(start: number, end?: number): string {
 	if (!end) return ""
 	const mins = Math.round((end - start) / 60000)

@@ -150,7 +150,7 @@ export const getStyles = (theme: AppTheme) => {
 			textAlign: "center" as const,
 		},
 
-		// Medications
+		// Medications (summary + intake log)
 		medRow: {
 			flexDirection: "row" as const,
 			alignItems: "center" as const,
@@ -169,6 +169,74 @@ export const getStyles = (theme: AppTheme) => {
 			fontSize: fontSize.sm,
 			color: colors.textSecondary,
 			marginTop: 2,
+		},
+
+		medSummaryRow: {
+			flexDirection: "row" as const,
+			alignItems: "center" as const,
+			justifyContent: "space-between" as const,
+			gap: spacing.sm,
+		},
+
+		medStatusColumn: {
+			alignItems: "flex-end" as const,
+			gap: 2,
+		},
+
+		medStatusRow: {
+			flexDirection: "row" as const,
+			alignItems: "center" as const,
+			gap: 4,
+		},
+
+		medStatusText: {
+			fontFamily: fonts.medium,
+			fontSize: fontSize.sm,
+		},
+
+		medStatusNote: {
+			fontFamily: fonts.regular,
+			fontSize: 11,
+			color: colors.textSecondary,
+		},
+
+		intakeRow: {
+			flexDirection: "row" as const,
+			alignItems: "center" as const,
+			paddingVertical: spacing.xs,
+			gap: spacing.sm,
+		},
+
+		intakeTime: {
+			fontFamily: fonts.regular,
+			fontSize: fontSize.sm,
+			color: colors.textSecondary,
+			width: 40,
+		},
+
+		intakeMedName: {
+			fontFamily: fonts.medium,
+			fontSize: fontSize.sm,
+			color: colors.onSurface,
+			flex: 1,
+		},
+
+		addIntakeBtn: {
+			flexDirection: "row" as const,
+			alignItems: "center" as const,
+			justifyContent: "center" as const,
+			marginTop: spacing.md,
+			paddingVertical: spacing.sm,
+			borderRadius: radius.sm,
+			borderWidth: 1,
+			borderColor: colors.primary,
+			gap: spacing.xs,
+		},
+
+		addIntakeBtnText: {
+			fontFamily: fonts.medium,
+			fontSize: fontSize.sm,
+			color: colors.primary,
 		},
 
 		// Triggers
@@ -221,12 +289,122 @@ export const getStyles = (theme: AppTheme) => {
 			textAlignVertical: "top" as const,
 		},
 
+		noteLabelRow: {
+			flexDirection: "row" as const,
+			justifyContent: "space-between" as const,
+			alignItems: "center" as const,
+			marginBottom: 4,
+		},
+
+		noteCharCounter: {
+			fontFamily: fonts.regular,
+			fontSize: 10,
+			color: colors.textSecondary,
+		},
+
 		emptyText: {
 			fontFamily: fonts.regular,
 			fontSize: fontSize.sm,
 			color: colors.textSecondary,
 			textAlign: "center" as const,
 			paddingVertical: spacing.sm,
+		},
+
+		// Medication intake modal
+		modalOverlay: {
+			flex: 1,
+			backgroundColor: "rgba(0,0,0,0.45)",
+		},
+
+		modalSheet: {
+			backgroundColor: colors.surface,
+			borderTopLeftRadius: radius.lg,
+			borderTopRightRadius: radius.lg,
+			paddingHorizontal: spacing.lg,
+			paddingTop: spacing.lg,
+			maxHeight: "75%" as any,
+		},
+
+		medListItem: {
+			flexDirection: "row" as const,
+			alignItems: "center" as const,
+			paddingVertical: spacing.sm,
+			paddingHorizontal: spacing.md,
+			borderRadius: radius.sm,
+			marginBottom: 4,
+		},
+
+		medRadioOuter: {
+			width: 20,
+			height: 20,
+			borderRadius: 10,
+			borderWidth: 2,
+			justifyContent: "center" as const,
+			alignItems: "center" as const,
+			marginRight: spacing.sm,
+		},
+
+		medRadioInner: {
+			width: 10,
+			height: 10,
+			borderRadius: 5,
+			backgroundColor: colors.primary,
+		},
+
+		medItemName: {
+			fontFamily: fonts.regular,
+			fontSize: fontSize.md,
+			color: colors.onSurface,
+		},
+
+		amountRow: {
+			marginTop: spacing.lg,
+			flexDirection: "row" as const,
+			alignItems: "center" as const,
+			justifyContent: "space-between" as const,
+		},
+
+		amountDisplay: {
+			fontFamily: fonts.medium,
+			fontSize: fontSize.lg,
+			color: colors.onSurface,
+			minWidth: 60,
+			textAlign: "center" as const,
+		},
+
+		modalBtnRow: {
+			flexDirection: "row" as const,
+			gap: spacing.md,
+			marginTop: spacing.xl,
+		},
+
+		modalCancelBtn: {
+			flex: 1,
+			borderWidth: 1,
+			borderColor: colors.border,
+			borderRadius: radius.md,
+			paddingVertical: spacing.md,
+			alignItems: "center" as const,
+		},
+
+		modalCancelBtnText: {
+			fontFamily: fonts.medium,
+			fontSize: fontSize.md,
+			color: colors.onSurface,
+		},
+
+		modalConfirmBtn: {
+			flex: 1,
+			backgroundColor: colors.primary,
+			borderRadius: radius.md,
+			paddingVertical: spacing.md,
+			alignItems: "center" as const,
+		},
+
+		modalConfirmBtnText: {
+			fontFamily: fonts.medium,
+			fontSize: fontSize.md,
+			color: "#fff",
 		},
 	})
 }

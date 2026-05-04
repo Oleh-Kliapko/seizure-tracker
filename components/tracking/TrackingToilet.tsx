@@ -16,13 +16,14 @@ function Stepper({
 	label,
 	value,
 	onChange,
-	styles,
 }: {
 	label: string
 	value: number
 	onChange: (v: number) => void
-	styles: ReturnType<typeof getStyles>
 }) {
+	const theme = useAppTheme()
+	const styles = getStyles(theme)
+
 	return (
 		<View>
 			<Text style={styles.label}>{label}</Text>
@@ -59,19 +60,17 @@ export function TrackingToilet({
 
 	return (
 		<View style={styles.section}>
-			<Text style={styles.sectionTitle}>{t('tracking.physiology')}</Text>
+			<Text style={styles.sectionTitle}>{t("tracking.physiology")}</Text>
 			<Stepper
-				label={t('tracking.urination')}
+				label={t("tracking.urination")}
 				value={urinationCount}
 				onChange={onUrinationChange}
-				styles={styles}
 			/>
 			<View style={styles.divider} />
 			<Stepper
-				label={t('tracking.bowelMovements')}
+				label={t("tracking.bowelMovements")}
 				value={bowelMovements}
 				onChange={onBowelChange}
-				styles={styles}
 			/>
 		</View>
 	)
