@@ -262,6 +262,7 @@
 		"exportPdf": "Експортувати PDF",
 		"sending": "Відправлення...",
 		"sendEmail": "Відправити на імейл",
+		"emailSentOn": "Надіслано {{date}}",
 		"emailModalTitle": "Відправити звіт на імейл",
 		"emailModalDescription": "Відправлення може зайняти близько 1 хвилини",
 		"emailPlaceholder": "Імейл адреса",

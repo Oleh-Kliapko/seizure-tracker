@@ -28,7 +28,7 @@ export function Button({
 
 	return (
 		<TouchableOpacity
-			style={[styles.wrapper, style]}
+			style={[styles.wrapper, style, props.disabled && { opacity: 0.45 }]}
 			activeOpacity={0.85}
 			{...props}
 		>

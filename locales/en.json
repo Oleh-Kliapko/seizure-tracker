@@ -262,6 +262,7 @@
 		"exportPdf": "Export PDF",
 		"sending": "Sending...",
 		"sendEmail": "Send by email",
+		"emailSentOn": "Sent {{date}}",
 		"emailModalTitle": "Send report by email",
 		"emailModalDescription": "Sending may take about 1 minute",
 		"emailPlaceholder": "Email address",

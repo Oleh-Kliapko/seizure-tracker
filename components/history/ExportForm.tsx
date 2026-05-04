@@ -3,8 +3,8 @@
 import { Button } from "@/components/ui/Button"
 import { REPORT_COOLDOWN_DAYS } from "@/constants/commonConstants"
 import { useAppTheme, useAuth } from "@/hooks"
+import { useExportForm } from "@/hooks/useExportForm"
 import { FileDown, Mail } from "lucide-react-native"
-import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Text, View } from "react-native"
 import { ExportDateRange } from "./ExportDateRange"
@@ -16,34 +16,33 @@ type Props = {
 	onExportEmail: (from: number, to: number, email: string) => void
 	isLoading: boolean
 	error: string | null
+	lastReportSentAt?: number
 }
 
-export function ExportForm({ onExport, onExportEmail, isLoading, error }: Props) {
+export function ExportForm({ onExport, onExportEmail, isLoading, error, lastReportSentAt }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
 	const { t } = useTranslation()
 	const { user } = useAuth()
 
-	const minFromDate = (() => {
-		const d = new Date()
-		d.setMonth(d.getMonth() - 5)
-		d.setHours(0, 0, 0, 0)
-		return d
-	})()
+	const {
+		minFromDate,
+		from,
+		to,
+		setFrom,
+		setTo,
+		email,
+		showEmailModal,
+		setShowEmailModal,
+		inCooldown,
+		sentDateLabel,
+	} = useExportForm(user?.email, lastReportSentAt)
 
-	const [from, setFrom] = useState(() => minFromDate.getTime())
-	const [to, setTo] = useState(() => {
-		const d = new Date()
-		d.setHours(23, 59, 59, 999)
-		return d.getTime()
-	})
-
-	const [showEmailModal, setShowEmailModal] = useState(false)
-	const [email, setEmail] = useState(user?.email || "")
-
-	useEffect(() => {
-		if (user?.email) setEmail(user.email)
-	}, [user?.email])
+	const emailBtnTitle = isLoading
+		? t("history.sending")
+		: inCooldown
+			? t("history.emailSentOn", { date: sentDateLabel })
+			: t("history.sendEmail")
 
 	return (
 		<View style={styles.card}>
@@ -74,11 +73,11 @@ export function ExportForm({ onExport, onExportEmail, isLoading, error }: Props)
 					disabled={isLoading}
 				/>
 				<Button
-					title={isLoading ? t("history.sending") : t("history.sendEmail")}
+					title={emailBtnTitle}
 					icon={<Mail size={20} color="#fff" />}
 					iconPosition="left"
 					onPress={() => setShowEmailModal(true)}
-					disabled={isLoading}
+					disabled={isLoading || inCooldown}
 				/>
 			</View>
 

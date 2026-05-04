@@ -14,6 +14,7 @@ import { useAvatarUpload } from "./useAvatarUpload"
 import { useChangePasswordForm } from "./useChangePasswordForm"
 import { useDeleteAccount } from "./useDeleteAccount"
 import { useExport } from "./useExport"
+import { useExportForm } from "./useExportForm"
 import { useGoogleAuth } from "./useGoogleAuth"
 import { useGuardiansForm } from "./useGuardiansForm"
 import { useLoginForm } from "./useLoginForm"
@@ -43,6 +44,7 @@ export {
 	useChangePasswordForm,
 	useDeleteAccount,
 	useExport,
+	useExportForm,
 	useGoogleAuth,
 	useGuardiansForm,
 	useIsDarkTheme,

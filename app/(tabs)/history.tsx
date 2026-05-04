@@ -10,7 +10,7 @@ import {
 	getPeriodRange,
 } from "@/components/history"
 import { ScreenHeader, ScreenWrapper } from "@/components/ui"
-import { useAppTheme, useExport } from "@/hooks"
+import { useAppTheme, useExport, useUser } from "@/hooks"
 import { useHistoryData } from "@/hooks/useHistoryData"
 import { useFocusEffect } from "expo-router"
 import { useCallback, useMemo, useState } from "react"
@@ -60,6 +60,7 @@ export default function History() {
 		isLoading: isExporting,
 		error: exportError,
 	} = useExport()
+	const { profile } = useUser()
 
 	const [period, setPeriod] = useState<HistoryPeriod>("month")
 	const [refreshKey, setRefreshKey] = useState(0)
@@ -124,6 +125,7 @@ export default function History() {
 					onExportEmail={exportPdfToEmail}
 					isLoading={isExporting}
 					error={exportError}
+					lastReportSentAt={profile?.lastReportSentAt}
 				/>
 			</ScrollView>
 		</ScreenWrapper>
