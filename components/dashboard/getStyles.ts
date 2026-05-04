@@ -179,8 +179,8 @@ export const getStyles = (theme: AppTheme) => {
 			color: textSecondary,
 		},
 
-		// Today / StatusRow
-		todayCard: {
+		// Today / StatusRow / Recent seizures (shared card)
+		sectionCard: {
 			backgroundColor: surface,
 			borderRadius: radius.lg,
 			paddingHorizontal: 16,
@@ -209,12 +209,6 @@ export const getStyles = (theme: AppTheme) => {
 		},
 
 		// Recent seizures
-		recentCard: {
-			backgroundColor: surface,
-			borderRadius: radius.lg,
-			paddingHorizontal: 16,
-			marginBottom: 12,
-		},
 		recentSectionLabel: {
 			fontFamily: fonts.medium,
 			fontSize: fontSize.sm,

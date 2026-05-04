@@ -44,6 +44,7 @@ type Theme = {
 		light: string
 		unknown: string
 	}
+	calendarSeverityColors: Record<1 | 2 | 3, string>
 }
 
 export const lightTheme: Theme = {
@@ -83,10 +84,15 @@ export const lightTheme: Theme = {
 		lg: 32,
 	},
 	seizureColors: {
-		severe: "#f8a3ad", // темно-рожевий
-		medium: "#fdc1c8", // середній рожевий
-		light: "#fddcde", // світло-рожевий
-		unknown: "#e9ebed", // світло-сірий
+		severe: "#f8a3ad",
+		medium: "#fdc1c8",
+		light: "#fddcde",
+		unknown: "#e9ebed",
+	},
+	calendarSeverityColors: {
+		1: "#E6A817",
+		2: "#F06292",
+		3: "#7B1FA2",
 	},
 } as const
 
@@ -114,6 +120,11 @@ export const darkTheme: Theme = {
 		medium: "#326d9380",
 		light: "#326d9370",
 		unknown: "#6b7b8860",
+	},
+	calendarSeverityColors: {
+		1: "#FFCA28",
+		2: "#F06292",
+		3: "#7B1FA2",
 	},
 } as const
 

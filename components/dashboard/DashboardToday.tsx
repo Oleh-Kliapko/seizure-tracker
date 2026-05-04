@@ -33,10 +33,21 @@ function StatusRow({
 	const styles = getStyles(theme)
 
 	return (
-		<TouchableOpacity onPress={onPress} activeOpacity={0.7} style={styles.statusRow}>
+		<TouchableOpacity
+			onPress={onPress}
+			activeOpacity={0.7}
+			style={styles.statusRow}
+		>
 			{icon}
 			<Text style={styles.statusRowLabel}>{label}</Text>
-			<Text style={[styles.statusRowText, { color: statusOk ? theme.colors.success : theme.colors.textSecondary }]}>
+			<Text
+				style={[
+					styles.statusRowText,
+					{
+						color: statusOk ? theme.colors.success : theme.colors.textSecondary,
+					},
+				]}
+			>
 				{statusText}
 			</Text>
 			<ChevronRight size={16} color={theme.colors.textSecondary} />
@@ -44,7 +55,11 @@ function StatusRow({
 	)
 }
 
-export function DashboardToday({ trackingFilledSections, medications, medicationsTakenToday }: Props) {
+export function DashboardToday({
+	trackingFilledSections,
+	medications,
+	medicationsTakenToday,
+}: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
 	const { t } = useTranslation()
@@ -61,16 +76,22 @@ export function DashboardToday({ trackingFilledSections, medications, medication
 		medications.length === 0
 			? t("dashboard.medicationsNotConfigured")
 			: `${medicationsTakenToday} ${t("tracking.of")} ${medications.length}`
-	const medOk = medications.length > 0 && medicationsTakenToday === medications.length
-	const medRoute = medications.length === 0 ? "/(tabs)/settings/medications" : "/(tabs)/tracking"
+	const medOk =
+		medications.length > 0 && medicationsTakenToday === medications.length
+	const medRoute =
+		medications.length === 0
+			? "/(tabs)/settings/medications"
+			: "/(tabs)/tracking"
 
 	return (
-		<View style={styles.todayCard}>
+		<View style={styles.sectionCard}>
 			<StatusRow
 				icon={
-					trackingDone
-						? <CheckCircle size={20} color={theme.colors.success} />
-						: <Circle size={20} color={theme.colors.textSecondary} />
+					trackingDone ? (
+						<CheckCircle size={20} color={theme.colors.success} />
+					) : (
+						<Circle size={20} color={theme.colors.textSecondary} />
+					)
 				}
 				label={t("dashboard.tracking")}
 				statusText={trackingLabel}
@@ -81,7 +102,16 @@ export function DashboardToday({ trackingFilledSections, medications, medication
 			<View style={styles.divider} />
 
 			<StatusRow
-				icon={<Pill size={20} color={medications.length > 0 ? theme.colors.primary : theme.colors.textSecondary} />}
+				icon={
+					<Pill
+						size={20}
+						color={
+							medications.length > 0
+								? theme.colors.primary
+								: theme.colors.textSecondary
+						}
+					/>
+				}
 				label={t("dashboard.medications")}
 				statusText={medLabel}
 				statusOk={medOk}

@@ -15,7 +15,10 @@ export function DashboardStats({ thisMonthCount, lastMonthCount }: Props) {
 	const styles = getStyles(theme)
 	const { t } = useTranslation()
 
-	function trendLabel(current: number, previous: number): { text: string; color: string } | null {
+	function trendLabel(
+		current: number,
+		previous: number,
+	): { text: string; color: string } | null {
 		if (previous === 0 && current === 0) return null
 		if (previous === 0) return null
 		const diff = current - previous
@@ -40,7 +43,9 @@ export function DashboardStats({ thisMonthCount, lastMonthCount }: Props) {
 				<Text style={styles.statsCount}>{thisMonthCount}</Text>
 				<Text style={styles.statsUnit}>{seizureWord(thisMonthCount)}</Text>
 				{trend && (
-					<Text style={[styles.statsTrend, { color: trend.color }]}>{trend.text}</Text>
+					<Text style={[styles.statsTrend, { color: trend.color }]}>
+						{trend.text}
+					</Text>
 				)}
 			</View>
 

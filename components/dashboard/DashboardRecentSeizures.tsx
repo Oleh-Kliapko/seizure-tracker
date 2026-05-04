@@ -28,7 +28,7 @@ export function DashboardRecentSeizures({ seizures }: Props) {
 	const dateFnsLocale = i18n.language === "uk" ? uk : enUS
 
 	return (
-		<View style={styles.recentCard}>
+		<View style={styles.sectionCard}>
 			<Text style={styles.recentSectionLabel}>{t("dashboard.recentSeizures")}</Text>
 
 			{seizures.map((s, i) => {
