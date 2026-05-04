@@ -198,5 +198,109 @@ export const getStyles = (theme: AppTheme) => {
 			color: "#fff",
 			fontFamily: fonts.bold,
 		},
+
+		// Shared empty state
+		emptyState: {
+			alignItems: "center" as const,
+			paddingVertical: spacing.lg,
+		},
+		emptyStateText: {
+			fontFamily: fonts.regular,
+			fontSize: 14,
+			color: textSecondary,
+		},
+
+		// Period filter
+		periodFilterRow: {
+			flexDirection: "row",
+			gap: spacing.sm,
+			marginBottom: spacing.md,
+		},
+		periodBtn: {
+			flex: 1,
+			paddingVertical: spacing.xs + 2,
+			borderRadius: radius.md,
+			alignItems: "center" as const,
+		},
+		periodBtnText: {
+			fontFamily: fonts.medium,
+			fontSize: 12,
+		},
+
+		// Trigger bars
+		triggerList: {
+			gap: spacing.sm,
+		},
+		triggerLabelRow: {
+			flexDirection: "row",
+			justifyContent: "space-between",
+			marginBottom: 4,
+		},
+		triggerLabel: {
+			fontFamily: fonts.regular,
+			fontSize: 14,
+			color: onSurface,
+		},
+		triggerCount: {
+			fontFamily: fonts.medium,
+			fontSize: 14,
+			color: primary,
+		},
+		triggerBarBg: {
+			height: 6,
+			backgroundColor: border,
+			borderRadius: radius.sm,
+			overflow: "hidden" as const,
+		},
+		triggerBarFill: {
+			height: 6,
+			borderRadius: radius.sm,
+		},
+
+		// Donut chart
+		donutContainer: {
+			alignItems: "center" as const,
+		},
+		donutCenterOverlay: {
+			position: "absolute" as const,
+			top: 0,
+			left: 0,
+			right: 0,
+			bottom: 0,
+			alignItems: "center" as const,
+			justifyContent: "center" as const,
+		},
+		donutTotal: {
+			fontFamily: fonts.bold,
+			fontSize: 26,
+			color: onSurface,
+		},
+		donutTotalLabel: {
+			fontFamily: fonts.regular,
+			fontSize: 11,
+			color: textSecondary,
+		},
+		donutLegend: {
+			flexDirection: "row",
+			flexWrap: "wrap",
+			justifyContent: "center",
+			gap: 10,
+			marginTop: spacing.md,
+		},
+		donutLegendItem: {
+			flexDirection: "row",
+			alignItems: "center",
+			gap: 6,
+		},
+		donutLegendDot: {
+			width: 10,
+			height: 10,
+			borderRadius: 5,
+		},
+		donutLegendText: {
+			fontFamily: fonts.regular,
+			fontSize: 13,
+			color: onSurface,
+		},
 	})
 }

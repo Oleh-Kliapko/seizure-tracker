@@ -2,23 +2,45 @@
 
 import { useAppTheme } from "@/hooks"
 import { TriggerStat } from "@/hooks/useHistoryData"
-import { Text, View } from "react-native"
 import { useTranslation } from "react-i18next"
+import { Text, View } from "react-native"
+import { getStyles } from "./getStyles"
 
 type Props = {
 	data: TriggerStat[]
 }
 
+function TriggerBarRow({ item, max }: { item: TriggerStat; max: number }) {
+	const theme = useAppTheme()
+	const styles = getStyles(theme)
+
+	return (
+		<View>
+			<View style={styles.triggerLabelRow}>
+				<Text style={styles.triggerLabel}>{item.label}</Text>
+				<Text style={styles.triggerCount}>{item.count}</Text>
+			</View>
+			<View style={styles.triggerBarBg}>
+				<View
+					style={[
+						styles.triggerBarFill,
+						{ width: `${(item.count / max) * 100}%`, backgroundColor: theme.colors.primary },
+					]}
+				/>
+			</View>
+		</View>
+	)
+}
+
 export function HistoryTriggerBars({ data }: Props) {
-	const { colors, fonts, spacing, radius } = useAppTheme()
+	const theme = useAppTheme()
+	const styles = getStyles(theme)
 	const { t } = useTranslation()
 
 	if (data.length === 0) {
 		return (
-			<View style={{ paddingVertical: spacing.md, alignItems: "center" }}>
-				<Text style={{ fontFamily: fonts.regular, fontSize: 14, color: colors.textSecondary }}>
-					{t("history.noTriggers")}
-				</Text>
+			<View style={styles.emptyState}>
+				<Text style={styles.emptyStateText}>{t("history.noTriggers")}</Text>
 			</View>
 		)
 	}
@@ -26,41 +48,9 @@ export function HistoryTriggerBars({ data }: Props) {
 	const max = data[0].count
 
 	return (
-		<View style={{ gap: spacing.sm }}>
+		<View style={styles.triggerList}>
 			{data.map((item, i) => (
-				<View key={`${item.label}-${i}`}>
-					<View
-						style={{
-							flexDirection: "row",
-							justifyContent: "space-between",
-							marginBottom: 4,
-						}}
-					>
-						<Text style={{ fontFamily: fonts.regular, fontSize: 14, color: colors.onSurface }}>
-							{item.label}
-						</Text>
-						<Text style={{ fontFamily: fonts.medium, fontSize: 14, color: colors.primary }}>
-							{item.count}
-						</Text>
-					</View>
-					<View
-						style={{
-							height: 6,
-							backgroundColor: colors.border,
-							borderRadius: radius.sm,
-							overflow: "hidden",
-						}}
-					>
-						<View
-							style={{
-								height: 6,
-								width: `${(item.count / max) * 100}%`,
-								backgroundColor: colors.primary,
-								borderRadius: radius.sm,
-							}}
-						/>
-					</View>
-				</View>
+				<TriggerBarRow key={`${item.label}-${i}`} item={item} max={max} />
 			))}
 		</View>
 	)
