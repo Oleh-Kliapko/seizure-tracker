@@ -6,14 +6,18 @@ import { validate, ValidationResult } from "./validation"
 const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/
 
 export function validatePassword(password: string): ValidationResult {
-	return validate([[!PASSWORD_REGEX.test(password), ERROR_MESSAGES.weakPassword]])
+	return validate([
+		[!PASSWORD_REGEX.test(password), ERROR_MESSAGES.weakPassword],
+	])
 }
 
 export function validateLogin(
 	email: string,
 	password: string,
 ): ValidationResult {
-	return validate([[!email.trim() || !password.trim(), ERROR_MESSAGES.requiredFields]])
+	return validate([
+		[!email.trim() || !password.trim(), ERROR_MESSAGES.requiredFields],
+	])
 }
 
 export function validateRegister(

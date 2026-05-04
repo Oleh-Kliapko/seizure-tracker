@@ -45,13 +45,21 @@ export function useTrackingForm() {
 	const [diastolicPressure, setDiastolicPressure] = useState("")
 	const [oxygenSaturation, setOxygenSaturation] = useState("")
 	const [sleepDuration, setSleepDuration] = useState("")
-	const [sleepQuality, setSleepQuality] = useState<number | undefined>(undefined)
+	const [sleepQuality, setSleepQuality] = useState<number | undefined>(
+		undefined,
+	)
 	const [mood, setMood] = useState<number | undefined>(undefined)
-	const [activityLevel, setActivityLevel] = useState<number | undefined>(undefined)
+	const [activityLevel, setActivityLevel] = useState<number | undefined>(
+		undefined,
+	)
 	const [urinationCount, setUrinationCount] = useState(0)
 	const [bowelMovements, setBowelMovements] = useState(0)
-	const [internalTriggers, setInternalTriggers] = useState<TriggerItem<InternalTrigger>[]>([])
-	const [externalTriggers, setExternalTriggers] = useState<TriggerItem<ExternalTrigger>[]>([])
+	const [internalTriggers, setInternalTriggers] = useState<
+		TriggerItem<InternalTrigger>[]
+	>([])
+	const [externalTriggers, setExternalTriggers] = useState<
+		TriggerItem<ExternalTrigger>[]
+	>([])
 	const [medications, setMedications] = useState<Medication[]>([])
 	const [medIntakes, setMedIntakes] = useState<MedIntake[]>([])
 	const [patientNotes, setPatientNotes] = useState("")
@@ -65,8 +73,14 @@ export function useTrackingForm() {
 			setIsLoading(true)
 			try {
 				const patientId = user.uid
-				const tracking = await getTrackingByDate(user.uid, patientId, Date.now()).catch(() => null)
-				const meds = await getMedicationsByPatient(user.uid, patientId).catch(() => [])
+				const tracking = await getTrackingByDate(
+					user.uid,
+					patientId,
+					Date.now(),
+				).catch(() => null)
+				const meds = await getMedicationsByPatient(user.uid, patientId).catch(
+					() => [],
+				)
 				setMedications(meds)
 
 				if (tracking) {
@@ -104,53 +118,92 @@ export function useTrackingForm() {
 
 	// Always-current snapshot — assigned synchronously on every render
 	const stateRef = useRef<TrackingState>({
-		temperature, pulse, systolicPressure, diastolicPressure, oxygenSaturation,
-		sleepDuration, sleepQuality, mood, activityLevel,
-		urinationCount, bowelMovements, internalTriggers, externalTriggers,
-		medIntakes, patientNotes, doctorNotes,
+		temperature,
+		pulse,
+		systolicPressure,
+		diastolicPressure,
+		oxygenSaturation,
+		sleepDuration,
+		sleepQuality,
+		mood,
+		activityLevel,
+		urinationCount,
+		bowelMovements,
+		internalTriggers,
+		externalTriggers,
+		medIntakes,
+		patientNotes,
+		doctorNotes,
 	})
 	stateRef.current = {
-		temperature, pulse, systolicPressure, diastolicPressure, oxygenSaturation,
-		sleepDuration, sleepQuality, mood, activityLevel,
-		urinationCount, bowelMovements, internalTriggers, externalTriggers,
-		medIntakes, patientNotes, doctorNotes,
+		temperature,
+		pulse,
+		systolicPressure,
+		diastolicPressure,
+		oxygenSaturation,
+		sleepDuration,
+		sleepQuality,
+		mood,
+		activityLevel,
+		urinationCount,
+		bowelMovements,
+		internalTriggers,
+		externalTriggers,
+		medIntakes,
+		patientNotes,
+		doctorNotes,
 	}
 
-	const autoSave = useCallback(async (overrides: Partial<TrackingState> = {}) => {
-		if (!user) return
-		const s: TrackingState = { ...stateRef.current, ...overrides }
-		try {
-			await upsertTracking(user.uid, {
-				userId: user.uid,
-				patientId: user.uid,
-				date: Date.now(),
-				temperature: s.temperature ? parseFloat(s.temperature) : undefined,
-				pulse: s.pulse ? parseInt(s.pulse) : undefined,
-				systolicPressure: s.systolicPressure ? parseInt(s.systolicPressure) : undefined,
-				diastolicPressure: s.diastolicPressure ? parseInt(s.diastolicPressure) : undefined,
-				oxygenSaturation: s.oxygenSaturation ? parseInt(s.oxygenSaturation) : undefined,
-				sleepDuration: s.sleepDuration ? parseFloat(s.sleepDuration) : undefined,
-				sleepQuality: s.sleepQuality,
-				mood: s.mood,
-				activityLevel: s.activityLevel,
-				urinationCount: s.urinationCount || undefined,
-				bowelMovements: s.bowelMovements || undefined,
-				internalTriggers: s.internalTriggers.length > 0 ? s.internalTriggers : undefined,
-				externalTriggers: s.externalTriggers.length > 0 ? s.externalTriggers : undefined,
-				medications: s.medIntakes,
-				patientNotes: s.patientNotes || undefined,
-				doctorNotes: s.doctorNotes || undefined,
-			})
-			setError(null)
-		} catch {
-			setError(i18n.t("error.savingErrorShort"))
-		}
-	}, [user])
+	const autoSave = useCallback(
+		async (overrides: Partial<TrackingState> = {}) => {
+			if (!user) return
+			const s: TrackingState = { ...stateRef.current, ...overrides }
+			try {
+				await upsertTracking(user.uid, {
+					userId: user.uid,
+					patientId: user.uid,
+					date: Date.now(),
+					temperature: s.temperature ? parseFloat(s.temperature) : undefined,
+					pulse: s.pulse ? parseInt(s.pulse) : undefined,
+					systolicPressure: s.systolicPressure
+						? parseInt(s.systolicPressure)
+						: undefined,
+					diastolicPressure: s.diastolicPressure
+						? parseInt(s.diastolicPressure)
+						: undefined,
+					oxygenSaturation: s.oxygenSaturation
+						? parseInt(s.oxygenSaturation)
+						: undefined,
+					sleepDuration: s.sleepDuration
+						? parseFloat(s.sleepDuration)
+						: undefined,
+					sleepQuality: s.sleepQuality,
+					mood: s.mood,
+					activityLevel: s.activityLevel,
+					urinationCount: s.urinationCount || undefined,
+					bowelMovements: s.bowelMovements || undefined,
+					internalTriggers:
+						s.internalTriggers.length > 0 ? s.internalTriggers : undefined,
+					externalTriggers:
+						s.externalTriggers.length > 0 ? s.externalTriggers : undefined,
+					medications: s.medIntakes,
+					patientNotes: s.patientNotes || undefined,
+					doctorNotes: s.doctorNotes || undefined,
+				})
+				setError(null)
+			} catch {
+				setError(i18n.t("error.savingErrorShort"))
+			}
+		},
+		[user],
+	)
 
 	const toggleInternalTrigger = (trigger: InternalTrigger) => {
 		setInternalTriggers(prev => {
 			const exists = prev.find(t => t.type === trigger)
-			const updated = exists ? prev.filter(t => t.type !== trigger) : [...prev, { type: trigger }]
+			const updated = exists
+				? prev.filter(t => t.type !== trigger)
+				: [...prev, { type: trigger }]
 			autoSave({ internalTriggers: updated })
 			return updated
 		})
@@ -159,7 +212,9 @@ export function useTrackingForm() {
 	const toggleExternalTrigger = (trigger: ExternalTrigger) => {
 		setExternalTriggers(prev => {
 			const exists = prev.find(t => t.type === trigger)
-			const updated = exists ? prev.filter(t => t.type !== trigger) : [...prev, { type: trigger }]
+			const updated = exists
+				? prev.filter(t => t.type !== trigger)
+				: [...prev, { type: trigger }]
 			autoSave({ externalTriggers: updated })
 			return updated
 		})
@@ -183,26 +238,42 @@ export function useTrackingForm() {
 	}
 
 	return {
-		temperature, setTemperature,
-		pulse, setPulse,
-		systolicPressure, setSystolicPressure,
-		diastolicPressure, setDiastolicPressure,
-		oxygenSaturation, setOxygenSaturation,
-		sleepDuration, setSleepDuration,
-		sleepQuality, setSleepQuality,
-		mood, setMood,
-		activityLevel, setActivityLevel,
-		urinationCount, setUrinationCount,
-		bowelMovements, setBowelMovements,
-		internalTriggers, externalTriggers,
-		toggleInternalTrigger, toggleExternalTrigger,
+		temperature,
+		setTemperature,
+		pulse,
+		setPulse,
+		systolicPressure,
+		setSystolicPressure,
+		diastolicPressure,
+		setDiastolicPressure,
+		oxygenSaturation,
+		setOxygenSaturation,
+		sleepDuration,
+		setSleepDuration,
+		sleepQuality,
+		setSleepQuality,
+		mood,
+		setMood,
+		activityLevel,
+		setActivityLevel,
+		urinationCount,
+		setUrinationCount,
+		bowelMovements,
+		setBowelMovements,
+		internalTriggers,
+		externalTriggers,
+		toggleInternalTrigger,
+		toggleExternalTrigger,
 		medications,
 		medIntakes,
 		addIntake,
 		removeIntake,
-		patientNotes, setPatientNotes,
-		doctorNotes, setDoctorNotes,
-		isLoading, error,
+		patientNotes,
+		setPatientNotes,
+		doctorNotes,
+		setDoctorNotes,
+		isLoading,
+		error,
 		autoSave,
 	}
 }

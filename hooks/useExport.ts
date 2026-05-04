@@ -1,6 +1,6 @@
 // hooks/useExport.ts
 
-import { exportSeizuresToPdf, getSeizuresByPeriod, updateUser } from "@/services"
+import { exportSeizuresToPdf, getSeizuresByPeriod, getMedications, updateUser } from "@/services"
 import { generateSeizureReportHtml } from "@/utils"
 import { REPORT_COOLDOWN_DAYS } from "@/constants/commonConstants"
 import i18n from "@/config/i18n"
@@ -64,7 +64,8 @@ export function useExport() {
 			}
 
 			console.log("[Email Export] 1. Generating HTML...")
-			const html = await generateSeizureReportHtml(profile, seizures, from, to)
+			const medications = await getMedications(user.uid).catch(() => [])
+			const html = await generateSeizureReportHtml(profile, medications, seizures, from, to)
 			console.log("[Email Export] 2. HTML generated, length:", html.length)
 
 			console.log("[Email Export] 3. Generating PDF...")

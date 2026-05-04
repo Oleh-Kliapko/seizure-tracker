@@ -2,7 +2,10 @@ import { Seizure } from "@/models/seizure"
 
 export type HistoryPeriod = "month" | "3months" | "6months" | "year"
 
-export function getMonthsInRange(from: number, to: number): { year: number; month: number }[] {
+export function getMonthsInRange(
+	from: number,
+	to: number,
+): { year: number; month: number }[] {
 	const result: { year: number; month: number }[] = []
 	const start = new Date(from)
 	const end = new Date(to)
@@ -40,7 +43,12 @@ export function maxSeverityColor(
 	return palette[max] ?? "#999"
 }
 
-export function polarToCartesian(cx: number, cy: number, r: number, deg: number) {
+export function polarToCartesian(
+	cx: number,
+	cy: number,
+	r: number,
+	deg: number,
+) {
 	const rad = ((deg - 90) * Math.PI) / 180
 	return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) }
 }
@@ -71,7 +79,10 @@ export function slicePath(
 	].join(" ")
 }
 
-export function getPeriodRange(period: HistoryPeriod): { from: number; to: number } {
+export function getPeriodRange(period: HistoryPeriod): {
+	from: number
+	to: number
+} {
 	const to = new Date()
 	to.setHours(23, 59, 59, 999)
 	const from = new Date()

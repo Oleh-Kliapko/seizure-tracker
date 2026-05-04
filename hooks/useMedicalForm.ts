@@ -44,44 +44,79 @@ export function useMedicalForm() {
 	}, [profile])
 
 	const stateRef = useRef<MedicalState>({
-		month, year, bloodType, rhFactor, height, weight, anamnesis,
+		month,
+		year,
+		bloodType,
+		rhFactor,
+		height,
+		weight,
+		anamnesis,
 	})
-	stateRef.current = { month, year, bloodType, rhFactor, height, weight, anamnesis }
+	stateRef.current = {
+		month,
+		year,
+		bloodType,
+		rhFactor,
+		height,
+		weight,
+		anamnesis,
+	}
 
-	const autoSave = useCallback(async (overrides: Partial<MedicalState> = {}) => {
-		const s: MedicalState = { ...stateRef.current, ...overrides }
+	const autoSave = useCallback(
+		async (overrides: Partial<MedicalState> = {}) => {
+			const s: MedicalState = { ...stateRef.current, ...overrides }
 
-		if (s.height && (isNaN(Number(s.height)) || Number(s.height) < 30 || Number(s.height) > 250)) {
-			setValidationError(i18n.t("medical.heightRange"))
-			return
-		}
-		if (s.weight && (isNaN(Number(s.weight)) || Number(s.weight) < 3 || Number(s.weight) > 300)) {
-			setValidationError(i18n.t("medical.weightRange"))
-			return
-		}
+			if (
+				s.height &&
+				(isNaN(Number(s.height)) ||
+					Number(s.height) < 30 ||
+					Number(s.height) > 250)
+			) {
+				setValidationError(i18n.t("medical.heightRange"))
+				return
+			}
+			if (
+				s.weight &&
+				(isNaN(Number(s.weight)) ||
+					Number(s.weight) < 3 ||
+					Number(s.weight) > 300)
+			) {
+				setValidationError(i18n.t("medical.weightRange"))
+				return
+			}
 
-		setValidationError(null)
+			setValidationError(null)
 
-		const medicalInfo: Record<string, unknown> = {}
-		if (s.year) medicalInfo.firstSeizureDate = { year: s.year }
-		if (s.month && s.year) medicalInfo.firstSeizureDate = { month: s.month, year: s.year }
-		if (s.bloodType) medicalInfo.bloodType = s.bloodType
-		if (s.rhFactor) medicalInfo.rhFactor = s.rhFactor
-		if (s.height) medicalInfo.height = Number(s.height)
-		if (s.weight) medicalInfo.weight = Number(s.weight)
-		if (s.anamnesis) medicalInfo.anamnesis = s.anamnesis
+			const medicalInfo: Record<string, unknown> = {}
+			if (s.year) medicalInfo.firstSeizureDate = { year: s.year }
+			if (s.month && s.year)
+				medicalInfo.firstSeizureDate = { month: s.month, year: s.year }
+			if (s.bloodType) medicalInfo.bloodType = s.bloodType
+			if (s.rhFactor) medicalInfo.rhFactor = s.rhFactor
+			if (s.height) medicalInfo.height = Number(s.height)
+			if (s.weight) medicalInfo.weight = Number(s.weight)
+			if (s.anamnesis) medicalInfo.anamnesis = s.anamnesis
 
-		await updateProfile({ medicalInfo })
-	}, [updateProfile])
+			await updateProfile({ medicalInfo })
+		},
+		[updateProfile],
+	)
 
 	return {
-		month, setMonth,
-		year, setYear,
-		bloodType, setBloodType,
-		rhFactor, setRhFactor,
-		height, setHeight,
-		weight, setWeight,
-		anamnesis, setAnamnesis,
+		month,
+		setMonth,
+		year,
+		setYear,
+		bloodType,
+		setBloodType,
+		rhFactor,
+		setRhFactor,
+		height,
+		setHeight,
+		weight,
+		setWeight,
+		anamnesis,
+		setAnamnesis,
 		isLoadingProfile,
 		displayError: validationError ?? error ?? null,
 		autoSave,

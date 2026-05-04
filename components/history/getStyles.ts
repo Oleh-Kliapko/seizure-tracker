@@ -129,7 +129,7 @@ export const getStyles = (theme: AppTheme) => {
 		},
 		modalButtonRow: {
 			flexDirection: "row",
-			gap: spacing.md,
+			gap: spacing.sm,
 		},
 
 		// Calendar

@@ -60,6 +60,10 @@ export function useSeizureList() {
 		setPage(1)
 	}
 
+	const updateSeizureInList = (updated: Seizure) => {
+		setSeizures(prev => prev.map(s => s.id === updated.id ? updated : s))
+	}
+
 	return {
 		seizures,
 		paginated,
@@ -69,5 +73,6 @@ export function useSeizureList() {
 		isLoading,
 		handleFilterChange,
 		setPage,
+		updateSeizureInList,
 	}
 }

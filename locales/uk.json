@@ -466,6 +466,13 @@
 		"legendCount": "N — кількість приступів за день",
 		"footer": "Сформовано додатком SeizureTracker",
 		"minutes": "хв",
-		"hours": "год"
+		"hours": "год",
+		"medTitle": "Поточна терапія",
+		"medColName": "Препарат",
+		"medColDose": "Доза на добу",
+		"medColSchedule": "Час прийому",
+		"medColStarted": "Початок прийому",
+		"medColNotes": "Нотатки",
+		"medNone": "Ліки не налаштовані"
 	}
 }

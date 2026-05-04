@@ -18,17 +18,25 @@ function countFilledSections(t: DailyTracking | null): number {
 	let count = 0
 	if (t.mood !== undefined || t.activityLevel !== undefined) count++
 	if (
-		t.temperature !== undefined || t.pulse !== undefined ||
-		t.systolicPressure !== undefined || t.diastolicPressure !== undefined ||
+		t.temperature !== undefined ||
+		t.pulse !== undefined ||
+		t.systolicPressure !== undefined ||
+		t.diastolicPressure !== undefined ||
 		t.oxygenSaturation !== undefined
-	) count++
+	)
+		count++
 	if (t.sleepDuration !== undefined || t.sleepQuality !== undefined) count++
 	if (t.medications && t.medications.length > 0) count++
-	if ((t.urinationCount && t.urinationCount > 0) || (t.bowelMovements && t.bowelMovements > 0)) count++
+	if (
+		(t.urinationCount && t.urinationCount > 0) ||
+		(t.bowelMovements && t.bowelMovements > 0)
+	)
+		count++
 	if (
 		(t.internalTriggers && t.internalTriggers.length > 0) ||
 		(t.externalTriggers && t.externalTriggers.length > 0)
-	) count++
+	)
+		count++
 	return count
 }
 
@@ -46,25 +54,27 @@ export function useDashboard() {
 	const [medications, setMedications] = useState<Medication[]>([])
 	const [isLoading, setIsLoading] = useState(true)
 
-	useFocusEffect(useCallback(() => {
-		if (!user) return
-		const load = async () => {
-			setIsLoading(true)
-			try {
-				const [seizuresData, trackingData, medsData] = await Promise.all([
-					getSeizures(user.uid),
-					getTrackingByDate(user.uid, user.uid, Date.now()).catch(() => null),
-					getMedicationsByPatient(user.uid, user.uid).catch(() => []),
-				])
-				setSeizures(seizuresData)
-				setTracking(trackingData)
-				setMedications(medsData)
-			} finally {
-				setIsLoading(false)
+	useFocusEffect(
+		useCallback(() => {
+			if (!user) return
+			const load = async () => {
+				setIsLoading(true)
+				try {
+					const [seizuresData, trackingData, medsData] = await Promise.all([
+						getSeizures(user.uid),
+						getTrackingByDate(user.uid, user.uid, Date.now()).catch(() => null),
+						getMedicationsByPatient(user.uid, user.uid).catch(() => []),
+					])
+					setSeizures(seizuresData)
+					setTracking(trackingData)
+					setMedications(medsData)
+				} finally {
+					setIsLoading(false)
+				}
 			}
-		}
-		load()
-	}, [user]))
+			load()
+		}, [user]),
+	)
 
 	const computed = useMemo(() => {
 		const lastSeizure = seizures[0] ?? null
@@ -74,11 +84,21 @@ export function useDashboard() {
 			: null
 
 		const now = new Date()
-		const thisMonthStart = new Date(now.getFullYear(), now.getMonth(), 1).getTime()
-		const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1).getTime()
+		const thisMonthStart = new Date(
+			now.getFullYear(),
+			now.getMonth(),
+			1,
+		).getTime()
+		const lastMonthStart = new Date(
+			now.getFullYear(),
+			now.getMonth() - 1,
+			1,
+		).getTime()
 		const lastMonthEnd = thisMonthStart - 1
 
-		const thisMonthCount = seizures.filter(s => s.startedAt >= thisMonthStart).length
+		const thisMonthCount = seizures.filter(
+			s => s.startedAt >= thisMonthStart,
+		).length
 		const lastMonthCount = seizures.filter(
 			s => s.startedAt >= lastMonthStart && s.startedAt <= lastMonthEnd,
 		).length
@@ -90,7 +110,9 @@ export function useDashboard() {
 			d.setDate(d.getDate() - i)
 			const dayStart = d.getTime()
 			const dayEnd = dayStart + 24 * 60 * 60 * 1000 - 1
-			const count = seizures.filter(s => s.startedAt >= dayStart && s.startedAt <= dayEnd).length
+			const count = seizures.filter(
+				s => s.startedAt >= dayStart && s.startedAt <= dayEnd,
+			).length
 			heatmapDays.push({ dateStr: d.toISOString().split("T")[0], count })
 		}
 

@@ -5,6 +5,12 @@ import { GOOGLE_AUTH_CONFIG } from "@/config/googleAuth"
 import i18n from "@/config/i18n"
 import { createUser, getUser } from "@/services"
 import { parseFirebaseError } from "@/utils"
+import {
+	GoogleAuthProvider,
+	reauthenticateWithCredential,
+	signInWithCredential,
+} from "firebase/auth"
+import { useEffect, useState } from "react"
 let GoogleSignin: any
 let statusCodes: any
 try {
@@ -16,12 +22,6 @@ try {
 	GoogleSignin = null
 	statusCodes = {}
 }
-import {
-	GoogleAuthProvider,
-	reauthenticateWithCredential,
-	signInWithCredential,
-} from "firebase/auth"
-import { useEffect, useState } from "react"
 
 type GoogleAuthResult = {
 	success: boolean

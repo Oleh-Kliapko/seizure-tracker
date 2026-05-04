@@ -1,9 +1,12 @@
 import i18n from "@/config/i18n"
 
-const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL || "http://localhost:3000"
+const BACKEND_URL =
+	process.env.EXPO_PUBLIC_BACKEND_URL || "http://localhost:3000"
 const BACKEND_API_KEY = process.env.EXPO_PUBLIC_BACKEND_API_KEY
 
-export async function deleteImageFromCloudinary(publicId: string): Promise<string | null> {
+export async function deleteImageFromCloudinary(
+	publicId: string,
+): Promise<string | null> {
 	if (!BACKEND_API_KEY) return null
 
 	try {

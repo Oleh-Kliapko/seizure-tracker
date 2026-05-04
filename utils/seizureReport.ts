@@ -8,6 +8,7 @@ import {
 	SEVERITY_LABELS,
 } from "@/constants/commonConstants"
 import { Seizure } from "@/models"
+import { DOSE_UNIT_LABEL_KEYS, Medication } from "@/models/medication"
 import { User } from "@/models/user"
 import QRCode from "qrcode"
 import { htmlReport } from "./seizureReportHtml"
@@ -41,7 +42,8 @@ function formatDuration(start: number, end?: number): string {
 }
 
 function getTypeLabel(seizure: Seizure): string {
-	if (seizure.type === "custom") return seizure.customType ?? i18n.t("seizureType.custom")
+	if (seizure.type === "custom")
+		return seizure.customType ?? i18n.t("seizureType.custom")
 	const found = SEIZURE_TYPES.find(item => item.value === seizure.type)
 	return found ? i18n.t(found.labelKey) : seizure.type
 }
@@ -104,7 +106,6 @@ function getStats(seizures: Seizure[]) {
 
 	return { total, avgDuration, severe, medium, light, topTriggers }
 }
-
 
 type DayData = { count: number; maxSeverity: number }
 
@@ -271,8 +272,51 @@ async function generateTableRows(
 	return rows.join("")
 }
 
+function buildMedicationsHtml(medications: Medication[]): string {
+	if (medications.length === 0) {
+		return `<p class="med-none">${i18n.t("report.medNone")}</p>`
+	}
+	const rows = medications
+		.map((m, i) => {
+			const dose = `${m.doseAmount} ${i18n.t(DOSE_UNIT_LABEL_KEYS[m.doseUnit])}`
+			const schedule = m.scheduledTimes?.length
+				? m.scheduledTimes.join(", ")
+				: "—"
+			const started =
+				m.startedAt && m.startedAt.month > 0 && m.startedAt.year > 0
+					? `${i18n.t(`month.${m.startedAt.month}`)} ${m.startedAt.year}`
+					: "—"
+			const notes = m.notes?.trim() || "—"
+			const rowBg = i % 2 === 1 ? ' style="background:#F8FAFC"' : ""
+			return `
+      <tr${rowBg}>
+        <td><strong>${m.name}</strong></td>
+        <td>${dose}</td>
+        <td>${schedule}</td>
+        <td>${started}</td>
+        <td style="color:#6B7280">${notes}</td>
+      </tr>`
+		})
+		.join("")
+
+	return `
+    <table class="med-table">
+      <thead>
+        <tr>
+          <th>${i18n.t("report.medColName")}</th>
+          <th>${i18n.t("report.medColDose")}</th>
+          <th>${i18n.t("report.medColSchedule")}</th>
+          <th>${i18n.t("report.medColStarted")}</th>
+          <th>${i18n.t("report.medColNotes")}</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>`
+}
+
 export async function generateSeizureReportHtml(
 	user: User,
+	medications: Medication[],
 	seizures: Seizure[],
 	from: number,
 	to: number,
@@ -292,6 +336,7 @@ export async function generateSeizureReportHtml(
 	])
 
 	const calendarHtml = buildCalendarHtml(seizures, from, to)
+	const medicationsHtml = buildMedicationsHtml(medications)
 
 	return htmlReport(
 		user,
@@ -303,5 +348,6 @@ export async function generateSeizureReportHtml(
 		rowsWithoutVideo,
 		patientName,
 		calendarHtml,
+		medicationsHtml,
 	)
 }

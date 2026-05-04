@@ -18,11 +18,11 @@ export const DOSE_UNIT_LABEL_KEYS: Record<DoseUnit, string> = {
 }
 
 const LEGACY_UNIT_MAP: Record<string, DoseUnit> = {
-	"таблетки": "tablets",
-	"капсули": "capsules",
-	"краплі": "drops",
-	"мл": "ml",
-	"уколи": "injections",
+	таблетки: "tablets",
+	капсули: "capsules",
+	краплі: "drops",
+	мл: "ml",
+	уколи: "injections",
 }
 
 export function normalizeDoseUnit(unit: string): DoseUnit {

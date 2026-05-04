@@ -20,9 +20,10 @@ import { CardVideoUpload } from "./CardVideoUpload"
 type Props = {
 	seizure: Seizure
 	onPress: (s: Seizure) => void
+	onVideoUpdated?: (s: Seizure) => void
 }
 
-export function SeizureCard({ seizure: initialSeizure, onPress }: Props) {
+export function SeizureCard({ seizure: initialSeizure, onPress, onVideoUpdated }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
 	const { t } = useTranslation()
@@ -61,6 +62,7 @@ export function SeizureCard({ seizure: initialSeizure, onPress }: Props) {
 
 	const handleVideoUpdated = (updatedSeizure: Seizure) => {
 		setSeizure(updatedSeizure)
+		onVideoUpdated?.(updatedSeizure)
 	}
 
 	return (

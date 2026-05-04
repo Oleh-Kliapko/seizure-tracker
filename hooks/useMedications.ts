@@ -1,8 +1,8 @@
 // hooks/useMedications.ts
 
+import i18n from "@/config/i18n"
 import { Medication } from "@/models/medication"
 import { deleteMedication, getMedications } from "@/services"
-import i18n from "@/config/i18n"
 import { useCallback, useEffect, useState } from "react"
 import { useAuth } from "./useAuth"
 

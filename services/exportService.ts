@@ -1,9 +1,10 @@
 // services/exportService.ts
 
+import i18n from "@/config/i18n"
 import { Seizure } from "@/models"
 import { User } from "@/models/user"
+import { getMedications } from "@/services/medicationService"
 import { generateSeizureReportHtml } from "@/utils"
-import i18n from "@/config/i18n"
 import * as Print from "expo-print"
 import * as Sharing from "expo-sharing"
 
@@ -13,7 +14,14 @@ export async function exportSeizuresToPdf(
 	from: number,
 	to: number,
 ): Promise<void> {
-	const html = await generateSeizureReportHtml(user, seizures, from, to)
+	const medications = await getMedications(user.uid).catch(() => [])
+	const html = await generateSeizureReportHtml(
+		user,
+		medications,
+		seizures,
+		from,
+		to,
+	)
 
 	const { uri } = await Print.printToFileAsync({
 		html,

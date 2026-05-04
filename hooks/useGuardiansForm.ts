@@ -22,35 +22,38 @@ export function useGuardiansForm() {
 	const guardiansRef = useRef<Guardian[]>([])
 	guardiansRef.current = guardians
 
-	const autoSave = useCallback(async (overrides: { guardians?: Guardian[] } = {}) => {
-		const g = overrides.guardians ?? guardiansRef.current
-		for (const guardian of g) {
-			if (!guardian.fullName.trim()) {
-				setValidationError(i18n.t("guardians.validationFullName"))
-				return
-			}
-			if (!guardian.relation) {
-				setValidationError(i18n.t("guardians.validationRelation"))
-				return
-			}
-			if (guardian.phone) {
-				const { isValid, error } = validatePhone(guardian.phone)
-				if (!isValid) {
-					setValidationError(error)
+	const autoSave = useCallback(
+		async (overrides: { guardians?: Guardian[] } = {}) => {
+			const g = overrides.guardians ?? guardiansRef.current
+			for (const guardian of g) {
+				if (!guardian.fullName.trim()) {
+					setValidationError(i18n.t("guardians.validationFullName"))
 					return
 				}
-			}
-			if (guardian.email) {
-				const { isValid, error } = validateEmail(guardian.email)
-				if (!isValid) {
-					setValidationError(error)
+				if (!guardian.relation) {
+					setValidationError(i18n.t("guardians.validationRelation"))
 					return
 				}
+				if (guardian.phone) {
+					const { isValid, error } = validatePhone(guardian.phone)
+					if (!isValid) {
+						setValidationError(error)
+						return
+					}
+				}
+				if (guardian.email) {
+					const { isValid, error } = validateEmail(guardian.email)
+					if (!isValid) {
+						setValidationError(error)
+						return
+					}
+				}
 			}
-		}
-		setValidationError(null)
-		await updateProfile({ guardians: g })
-	}, [updateProfile])
+			setValidationError(null)
+			await updateProfile({ guardians: g })
+		},
+		[updateProfile],
+	)
 
 	const addGuardian = () => {
 		setGuardians(prev => [
@@ -65,9 +68,15 @@ export function useGuardiansForm() {
 		await updateProfile({ guardians: updated })
 	}
 
-	const updateGuardian = (index: number, field: keyof Guardian, value: string) => {
+	const updateGuardian = (
+		index: number,
+		field: keyof Guardian,
+		value: string,
+	) => {
 		setGuardians(prev => {
-			const updated = prev.map((g, i) => (i === index ? { ...g, [field]: value } : g))
+			const updated = prev.map((g, i) =>
+				i === index ? { ...g, [field]: value } : g,
+			)
 			if (field === "relation") autoSave({ guardians: updated })
 			return updated
 		})

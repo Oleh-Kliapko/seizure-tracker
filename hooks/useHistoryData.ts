@@ -1,7 +1,10 @@
 // hooks/useHistoryData.ts
 
 import { auth } from "@/config/firebase"
-import { EXTERNAL_TRIGGERS, INTERNAL_TRIGGERS } from "@/constants/commonConstants"
+import {
+	EXTERNAL_TRIGGERS,
+	INTERNAL_TRIGGERS,
+} from "@/constants/commonConstants"
 import { Seizure } from "@/models/seizure"
 import { getSeizuresByPeriod } from "@/services"
 import { useEffect, useState } from "react"
@@ -38,8 +41,12 @@ export function useHistoryData(from: number, to: number, refreshKey?: number) {
 	const [isLoading, setIsLoading] = useState(true)
 
 	const allTriggerLabels: Record<string, string> = {
-		...Object.fromEntries(INTERNAL_TRIGGERS.map(tr => [tr.value, t(tr.labelKey)])),
-		...Object.fromEntries(EXTERNAL_TRIGGERS.map(tr => [tr.value, t(tr.labelKey)])),
+		...Object.fromEntries(
+			INTERNAL_TRIGGERS.map(tr => [tr.value, t(tr.labelKey)]),
+		),
+		...Object.fromEntries(
+			EXTERNAL_TRIGGERS.map(tr => [tr.value, t(tr.labelKey)]),
+		),
 	}
 
 	useEffect(() => {
@@ -58,7 +65,12 @@ export function useHistoryData(from: number, to: number, refreshKey?: number) {
 		seizuresByDate[key].push(s)
 	}
 
-	const timeOfDay: TimeOfDay = { night: 0, morning: 0, afternoon: 0, evening: 0 }
+	const timeOfDay: TimeOfDay = {
+		night: 0,
+		morning: 0,
+		afternoon: 0,
+		evening: 0,
+	}
 	for (const s of seizures) {
 		timeOfDay[getTimeOfDayKey(s.startedAt)]++
 	}
@@ -69,7 +81,9 @@ export function useHistoryData(from: number, to: number, refreshKey?: number) {
 		for (const tr of all) {
 			const label =
 				tr.type === "custom"
-					? (typeof tr.value === "string" ? tr.value : t("common.other"))
+					? typeof tr.value === "string"
+						? tr.value
+						: t("common.other")
 					: (allTriggerLabels[tr.type] ?? tr.type)
 			triggerCounts[label] = (triggerCounts[label] ?? 0) + 1
 		}

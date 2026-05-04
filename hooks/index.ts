@@ -1,7 +1,6 @@
 // hooks/index.ts
 
 import { useAppFonts } from "./useAppFonts"
-import { useAvatarUpload } from "./useAvatarUpload"
 import { useAppSettingsForm } from "./useAppSettingsForm"
 import {
 	ThemeProvider,
@@ -11,9 +10,8 @@ import {
 } from "./useAppTheme"
 import { useAuth } from "./useAuth"
 import { useAuthActions } from "./useAuthActions"
+import { useAvatarUpload } from "./useAvatarUpload"
 import { useChangePasswordForm } from "./useChangePasswordForm"
-import { useSetPasswordForm } from "./useSetPasswordForm"
-import { useVerifyEmailActions } from "./useVerifyEmailActions"
 import { useDeleteAccount } from "./useDeleteAccount"
 import { useExport } from "./useExport"
 import { useGoogleAuth } from "./useGoogleAuth"
@@ -25,7 +23,8 @@ import { useRegisterForm } from "./useRegisterForm"
 import { useSeizureEditForm } from "./useSeizureEditForm"
 import { useSeizureForm } from "./useSeizureForm"
 import { useSeizureList } from "./useSeizureList"
-// useMedicationForm removed — superseded by useMedicationsForm
+import { useSetPasswordForm } from "./useSetPasswordForm"
+import { useVerifyEmailActions } from "./useVerifyEmailActions"
 import { useMedications } from "./useMedications"
 import { useMedicationsForm } from "./useMedicationsForm"
 import { useTrackingForm } from "./useTrackingForm"
@@ -36,14 +35,12 @@ import { useVideoUpload } from "./useVideoUpload"
 export {
 	ThemeProvider,
 	useAppFonts,
-	useAvatarUpload,
 	useAppSettingsForm,
 	useAppTheme,
 	useAuth,
 	useAuthActions,
+	useAvatarUpload,
 	useChangePasswordForm,
-	useSetPasswordForm,
-	useVerifyEmailActions,
 	useDeleteAccount,
 	useExport,
 	useGoogleAuth,
@@ -51,16 +48,18 @@ export {
 	useIsDarkTheme,
 	useLoginForm,
 	useMedicalForm,
+	useMedications,
+	useMedicationsForm,
 	usePersonalForm,
 	useRegisterForm,
 	useSeizureEditForm,
 	useSeizureForm,
-	useMedications,
-	useMedicationsForm,
 	useSeizureList,
+	useSetPasswordForm,
 	useThemeContext,
 	useTrackingForm,
 	useUpdateProfile,
 	useUser,
+	useVerifyEmailActions,
 	useVideoUpload,
 }

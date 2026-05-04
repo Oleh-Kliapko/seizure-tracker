@@ -11,6 +11,7 @@ export const htmlReport = (
 	rowsWithoutVideo: string,
 	patientName: string,
 	calendarHtml: string,
+	medicationsHtml: string,
 ) => `<!DOCTYPE html>
 <html lang="${i18n.language}">
 <head>
@@ -63,6 +64,15 @@ export const htmlReport = (
 
     .footer { text-align: center; color: #6B7280; font-size: 10px; border-top: 1px solid #E5E7EB; padding-top: 12px; }
 
+    .medications-section { margin-bottom: 24px; }
+    .medications-section h2 { font-size: 14px; margin-bottom: 10px; color: #4A90E2; }
+    .med-table { width: 100%; border-collapse: collapse; border-radius: 8px; overflow: hidden; }
+    .med-table thead tr { background: #4A90E2; }
+    .med-table th { color: #fff; font-size: 11px; font-weight: bold; padding: 8px 10px; text-align: left; }
+    .med-table td { font-size: 11px; padding: 7px 10px; border-bottom: 1px solid #E5E7EB; }
+    .med-table td:first-child { min-width: 120px; }
+    .med-none { color: #6B7280; font-size: 11px; }
+
     .calendar-page { page-break-before: always; padding-top: 50px; }
     .calendar-page h2 { font-size: 16px; color: #4A90E2; margin-bottom: 20px; }
     .legend { margin-bottom: 28px; font-size: 11px; color: #6B7280; }
@@ -110,6 +120,11 @@ export const htmlReport = (
       ${user.medicalInfo?.weight ? `<div class="patient-field"><span>${i18n.t("report.weight")}: </span>${user.medicalInfo.weight} ${i18n.t("report.kg")}</div>` : ""}
       ${user.medicalInfo?.anamnesis ? `<div class="patient-field"><span>${i18n.t("report.anamnesis")}: </span>${user.medicalInfo.anamnesis}</div>` : ""}
     </div>
+  </div>
+
+  <div class="medications-section">
+    <h2>💊 ${i18n.t("report.medTitle")}</h2>
+    ${medicationsHtml}
   </div>
 
   <div class="stats">

@@ -1,4 +1,8 @@
-import { cloudinaryConfig, CLOUDINARY_IMAGE_UPLOAD_URL, CLOUDINARY_UPLOAD_URL } from "@/config/cloudinary"
+import {
+	CLOUDINARY_IMAGE_UPLOAD_URL,
+	CLOUDINARY_UPLOAD_URL,
+	cloudinaryConfig,
+} from "@/config/cloudinary"
 import i18n from "@/config/i18n"
 
 export type CloudinaryUploadResponse = {
@@ -8,7 +12,9 @@ export type CloudinaryUploadResponse = {
 
 type UploadProgress = (progress: number) => void
 
-export async function uploadImageToCloudinary(localUri: string): Promise<CloudinaryUploadResponse> {
+export async function uploadImageToCloudinary(
+	localUri: string,
+): Promise<CloudinaryUploadResponse> {
 	const formData = new FormData()
 	formData.append("file", {
 		uri: localUri,
@@ -81,7 +87,11 @@ export async function uploadVideoToCloudinary(
 						),
 					)
 				} catch {
-					reject(new Error(i18n.t("error.uploadStatusError", { status: xhr.status })))
+					reject(
+						new Error(
+							i18n.t("error.uploadStatusError", { status: xhr.status }),
+						),
+					)
 				}
 			}
 		})

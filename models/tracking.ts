@@ -32,8 +32,8 @@ export type DailyTracking = {
 	// Ліки
 	medications?: {
 		medicationId: string
-		amount: number   // фактично прийнята кількість
-		takenAt: number  // timestamp прийому
+		amount: number // фактично прийнята кількість
+		takenAt: number // timestamp прийому
 	}[]
 
 	// Самопочуття

@@ -44,35 +44,50 @@ export function usePersonalForm() {
 	}, [profile])
 
 	const stateRef = useRef<PersonalState>({
-		lastName, firstName, middleName, phone, birthDate,
-		countryOfBirth, cityOfBirth, address,
+		lastName,
+		firstName,
+		middleName,
+		phone,
+		birthDate,
+		countryOfBirth,
+		cityOfBirth,
+		address,
 	})
 	stateRef.current = {
-		lastName, firstName, middleName, phone, birthDate,
-		countryOfBirth, cityOfBirth, address,
+		lastName,
+		firstName,
+		middleName,
+		phone,
+		birthDate,
+		countryOfBirth,
+		cityOfBirth,
+		address,
 	}
 
-	const autoSave = useCallback(async (overrides: Partial<PersonalState> = {}) => {
-		const s: PersonalState = { ...stateRef.current, ...overrides }
-		if (s.phone) {
-			const { isValid, error } = validatePhone(s.phone)
-			if (!isValid) {
-				setValidationError(error)
-				return
+	const autoSave = useCallback(
+		async (overrides: Partial<PersonalState> = {}) => {
+			const s: PersonalState = { ...stateRef.current, ...overrides }
+			if (s.phone) {
+				const { isValid, error } = validatePhone(s.phone)
+				if (!isValid) {
+					setValidationError(error)
+					return
+				}
 			}
-		}
-		setValidationError(null)
-		await updateProfile({
-			lastName: s.lastName,
-			firstName: s.firstName,
-			middleName: s.middleName,
-			phone: s.phone,
-			birthDate: s.birthDate ?? undefined,
-			countryOfBirth: s.countryOfBirth,
-			cityOfBirth: s.cityOfBirth,
-			address: s.address,
-		})
-	}, [updateProfile])
+			setValidationError(null)
+			await updateProfile({
+				lastName: s.lastName,
+				firstName: s.firstName,
+				middleName: s.middleName,
+				phone: s.phone,
+				birthDate: s.birthDate ?? undefined,
+				countryOfBirth: s.countryOfBirth,
+				cityOfBirth: s.cityOfBirth,
+				address: s.address,
+			})
+		},
+		[updateProfile],
+	)
 
 	const fields = [
 		{

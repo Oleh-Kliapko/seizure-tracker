@@ -12,22 +12,25 @@ export function useUpdateProfile() {
 	const [error, setError] = useState<string | null>(null)
 	const [isSuccess, setIsSuccess] = useState(false)
 
-	const updateProfile = useCallback(async (data: Partial<User>) => {
-		if (!user) return
+	const updateProfile = useCallback(
+		async (data: Partial<User>) => {
+			if (!user) return
 
-		try {
-			setIsLoading(true)
-			setError(null)
-			setIsSuccess(false)
-			await updateUser(user.uid, data)
-			setIsSuccess(true)
-		} catch (e) {
-			setError(i18n.t("error.savingError"))
-			return e
-		} finally {
-			setIsLoading(false)
-		}
-	}, [user])
+			try {
+				setIsLoading(true)
+				setError(null)
+				setIsSuccess(false)
+				await updateUser(user.uid, data)
+				setIsSuccess(true)
+			} catch (e) {
+				setError(i18n.t("error.savingError"))
+				return e
+			} finally {
+				setIsLoading(false)
+			}
+		},
+		[user],
+	)
 
 	return { updateProfile, isLoading, error, isSuccess }
 }

@@ -48,7 +48,7 @@ export function ExportEmailModal({ visible, isLoading, initialEmail, onClose, on
 							title={t("common.cancel")}
 							onPress={onClose}
 							disabled={isLoading}
-							style={{ flex: 1 }}
+							style={{ flex: 1, paddingHorizontal: theme.spacing.sm }}
 						/>
 						<Button
 							title={isLoading ? t("history.sending") : t("history.send")}
@@ -56,7 +56,7 @@ export function ExportEmailModal({ visible, isLoading, initialEmail, onClose, on
 								if (email.trim()) onSend(email)
 							}}
 							disabled={isLoading || !email.trim()}
-							style={{ flex: 1 }}
+							style={{ flex: 1, paddingHorizontal: theme.spacing.sm }}
 						/>
 					</View>
 				</View>

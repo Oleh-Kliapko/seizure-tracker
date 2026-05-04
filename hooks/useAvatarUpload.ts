@@ -26,7 +26,11 @@ export function useAvatarUpload() {
 	const pickAndUpload = () => {
 		ActionSheetIOS.showActionSheetWithOptions(
 			{
-				options: [i18n.t("common.cancel"), i18n.t("common.takePhoto"), i18n.t("common.chooseFromGallery")],
+				options: [
+					i18n.t("common.cancel"),
+					i18n.t("common.takePhoto"),
+					i18n.t("common.chooseFromGallery"),
+				],
 				cancelButtonIndex: 0,
 			},
 			async buttonIndex => {

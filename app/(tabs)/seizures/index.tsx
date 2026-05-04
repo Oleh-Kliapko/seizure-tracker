@@ -34,6 +34,7 @@ export default function SeizuresScreen() {
 		isLoading,
 		handleFilterChange,
 		setPage,
+		updateSeizureInList,
 	} = useSeizureList()
 
 	const handleSeizurePress = (s: Seizure) => {
@@ -88,6 +89,7 @@ export default function SeizuresScreen() {
 								key={s.id}
 								seizure={s}
 								onPress={handleSeizurePress}
+								onVideoUpdated={updateSeizureInList}
 							/>
 						))
 					)}

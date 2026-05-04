@@ -1,6 +1,10 @@
-import { MAX_VIDEO_SIZE_BYTES, MAX_VIDEO_SIZE_MB, MAX_VIDEOS_PER_USER } from "@/config/cloudinary"
-import { getSeizures } from "@/services/seizureService"
+import {
+	MAX_VIDEO_SIZE_BYTES,
+	MAX_VIDEO_SIZE_MB,
+	MAX_VIDEOS_PER_USER,
+} from "@/config/cloudinary"
 import i18n from "@/config/i18n"
+import { getSeizures } from "@/services/seizureService"
 
 export async function checkVideoLimits(
 	userId: string,

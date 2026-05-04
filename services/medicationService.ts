@@ -43,10 +43,7 @@ export async function getMedicationsByPatient(
 	userId: string,
 	patientId: string,
 ): Promise<Medication[]> {
-	const q = query(
-		medicationsCol(userId),
-		where("patientId", "==", patientId),
-	)
+	const q = query(medicationsCol(userId), where("patientId", "==", patientId))
 	const snap = await getDocs(q)
 	return snap.docs
 		.map(d => ({ id: d.id, ...d.data() }) as Medication)
