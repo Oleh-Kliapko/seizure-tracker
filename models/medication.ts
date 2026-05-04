@@ -38,6 +38,7 @@ export type Medication = {
 	doseUnit: DoseUnit // одиниця виміру
 	scheduledTimes?: string[] // ["HH:MM", ...]
 	notes?: string
+	startedAt?: { month: number; year: number }
 	createdAt: number
 	updatedAt: number
 }

@@ -395,6 +395,7 @@
 		"addTime": "Додати час",
 		"notes": "Нотатки",
 		"notesPlaceholder": "Додаткова інформація...",
+		"startedAt": "Дата початку прийому",
 		"addMedication": "Додати препарат"
 	},
 	"form": {

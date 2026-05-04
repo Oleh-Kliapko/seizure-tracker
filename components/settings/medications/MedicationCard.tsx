@@ -1,9 +1,11 @@
 // components/settings/medications/MedicationCard.tsx
 
 import { FormInput, TimePickerModal } from "@/components/ui"
+import { MONTHS, YEARS } from "@/constants/commonConstants"
 import { useAppTheme } from "@/hooks"
 import { MedEntry } from "@/hooks/useMedicationsForm"
 import { DOSE_UNIT_LABEL_KEYS, DOSE_UNITS } from "@/models/medication"
+import { Picker } from "@react-native-picker/picker"
 import { Clock, Plus, Trash2, X } from "lucide-react-native"
 import { useState } from "react"
 import { Text, TouchableOpacity, View } from "react-native"
@@ -14,6 +16,7 @@ type Props = {
 	entry: MedEntry
 	index: number
 	onUpdate: (field: keyof MedEntry, value: string) => void
+	onUpdateStarted: (month: number, year: number) => void
 	onAddTime: (time: string) => void
 	onRemoveTime: (time: string) => void
 	onRemove: () => void
@@ -24,6 +27,7 @@ export function MedicationCard({
 	entry,
 	index,
 	onUpdate,
+	onUpdateStarted,
 	onAddTime,
 	onRemoveTime,
 	onRemove,
@@ -164,6 +168,38 @@ export function MedicationCard({
 				multiline
 				numberOfLines={2}
 			/>
+
+			<View style={{ marginBottom: spacing.md }}>
+				<Text style={[styles.label, { marginBottom: spacing.sm }]}>
+					{t('medications.startedAt')}
+				</Text>
+				<View style={styles.row}>
+					<View style={styles.pickerWrapper}>
+						<Picker
+							selectedValue={entry.startMonth}
+							onValueChange={v => onUpdateStarted(v, entry.startYear)}
+							style={{ color: colors.onSurface }}
+							itemStyle={{ color: colors.onSurface }}
+						>
+							{MONTHS.map(m => (
+								<Picker.Item key={m.value} label={t(m.labelKey)} value={m.value} />
+							))}
+						</Picker>
+					</View>
+					<View style={styles.pickerWrapper}>
+						<Picker
+							selectedValue={entry.startYear}
+							onValueChange={v => onUpdateStarted(entry.startMonth, v)}
+							style={{ color: colors.onSurface }}
+							itemStyle={{ color: colors.onSurface }}
+						>
+							{YEARS.map(y => (
+								<Picker.Item key={y.value} label={y.label} value={y.value} />
+							))}
+						</Picker>
+					</View>
+				</View>
+			</View>
 
 			<TimePickerModal
 				visible={showPicker}

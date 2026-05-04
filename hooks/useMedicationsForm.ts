@@ -18,6 +18,8 @@ export type MedEntry = {
 	doseUnit: string
 	scheduledTimes: string[]
 	notes: string
+	startMonth: number
+	startYear: number
 }
 
 function medToEntry(m: Medication): MedEntry {
@@ -28,6 +30,8 @@ function medToEntry(m: Medication): MedEntry {
 		doseUnit: m.doseUnit ?? "tablets",
 		scheduledTimes: m.scheduledTimes ?? [],
 		notes: m.notes ?? "",
+		startMonth: m.startedAt?.month ?? 0,
+		startYear: m.startedAt?.year ?? 0,
 	}
 }
 
@@ -70,6 +74,9 @@ export function useMedicationsForm() {
 				doseUnit: (e.doseUnit || "tablets") as DoseUnit,
 				...(e.scheduledTimes.length > 0 ? { scheduledTimes: e.scheduledTimes } : {}),
 				...(e.notes.trim() ? { notes: e.notes.trim() } : {}),
+				...(e.startMonth > 0 && e.startYear > 0
+					? { startedAt: { month: e.startMonth, year: e.startYear } }
+					: {}),
 			}
 			if (e.id) {
 				await updateMedication(user.uid, e.id, data)
@@ -86,7 +93,7 @@ export function useMedicationsForm() {
 	const addEntry = () =>
 		setEntries(prev => [
 			...prev,
-			{ name: "", doseAmount: "1", doseUnit: "tablets", scheduledTimes: [], notes: "" },
+			{ name: "", doseAmount: "1", doseUnit: "tablets", scheduledTimes: [], notes: "", startMonth: 0, startYear: 0 },
 		])
 
 	const removeEntry = async (index: number) => {
@@ -129,6 +136,11 @@ export function useMedicationsForm() {
 		}))
 	}
 
+	const updateEntryStarted = (index: number, month: number, year: number) => {
+		setEntries(prev => prev.map((e, i) => i !== index ? e : { ...e, startMonth: month, startYear: year }))
+		saveEntry(index, { startMonth: month, startYear: year })
+	}
+
 	const saveAllEntries = useCallback(async () => {
 		for (let i = 0; i < entriesRef.current.length; i++) {
 			await saveEntry(i)
@@ -142,6 +154,7 @@ export function useMedicationsForm() {
 		addEntry,
 		removeEntry,
 		updateEntry,
+		updateEntryStarted,
 		addEntryTime,
 		removeEntryTime,
 		saveEntry,

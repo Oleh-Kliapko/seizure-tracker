@@ -25,6 +25,7 @@ export default function MedicationsScreen() {
 		addEntry,
 		removeEntry,
 		updateEntry,
+		updateEntryStarted,
 		addEntryTime,
 		removeEntryTime,
 		saveEntry,
@@ -66,6 +67,7 @@ export default function MedicationsScreen() {
 							onAdd={addEntry}
 							onRemove={removeEntry}
 							onUpdate={updateEntry}
+							onUpdateStarted={updateEntryStarted}
 							onAddTime={addEntryTime}
 							onRemoveTime={removeEntryTime}
 							onBlurEntry={saveEntry}

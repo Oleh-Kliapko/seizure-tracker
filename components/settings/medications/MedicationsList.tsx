@@ -14,6 +14,7 @@ type Props = {
 	onAdd: () => void
 	onRemove: (index: number) => void
 	onUpdate: (index: number, field: keyof MedEntry, value: string) => void
+	onUpdateStarted: (index: number, month: number, year: number) => void
 	onAddTime: (index: number, time: string) => void
 	onRemoveTime: (index: number, time: string) => void
 	onBlurEntry: (index: number) => void
@@ -25,6 +26,7 @@ export function MedicationsList({
 	onAdd,
 	onRemove,
 	onUpdate,
+	onUpdateStarted,
 	onAddTime,
 	onRemoveTime,
 	onBlurEntry,
@@ -41,6 +43,7 @@ export function MedicationsList({
 					entry={entry}
 					index={index}
 					onUpdate={(field, value) => onUpdate(index, field, value)}
+					onUpdateStarted={(month, year) => onUpdateStarted(index, month, year)}
 					onAddTime={time => onAddTime(index, time)}
 					onRemoveTime={time => onRemoveTime(index, time)}
 					onRemove={() => onRemove(index)}
