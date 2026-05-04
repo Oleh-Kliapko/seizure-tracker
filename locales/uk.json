@@ -203,7 +203,8 @@
 		"seizure_other": "приступів",
 		"recentSeizures": "Останні приступи",
 		"allSeizures": "Всі приступи",
-		"heatmapTitle": "Приступи за 30 днів"
+		"heatmapTitle": "Приступи за 30 днів",
+		"heatmapDetails": "Детально >"
 	},
 	"tracking": {
 		"title": "Трекінг",

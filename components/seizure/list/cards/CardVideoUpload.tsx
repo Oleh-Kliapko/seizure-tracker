@@ -114,49 +114,55 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 		}
 	}
 
-	if (isUploading || isDeleting) {
-		return (
-			<View style={styles.videoStateRow}>
-				<ActivityIndicator size="small" color={theme.colors.primary} />
-				<Text style={styles.videoStateText}>
-					{isDeleting ? t("video.deleting") : t("video.uploadingShort")}
-				</Text>
-			</View>
-		)
-	}
-
-	if (error) {
-		return (
-			<View style={styles.videoStateRow}>
-				<AlertCircle size={16} color={theme.colors.error} />
-				<Text style={styles.videoErrorText}>{error}</Text>
-			</View>
-		)
-	}
-
 	if (seizure.videoUrl) {
 		return (
-			<TouchableOpacity
-				onPress={deleteVideo}
-				style={[styles.videoActionBtn, { backgroundColor: theme.colors.error + "20" }]}
-			>
-				<Trash2 size={14} color={theme.colors.error} />
-				<Text style={[styles.videoActionBtnText, { color: theme.colors.error }]}>
-					{t("video.deleteVideo")}
-				</Text>
-			</TouchableOpacity>
+			<View style={styles.videoActionRow}>
+				<TouchableOpacity
+					onPress={deleteVideo}
+					disabled={isDeleting}
+					activeOpacity={0.7}
+					style={[styles.videoActionBtn, { backgroundColor: theme.colors.error + "20" }]}
+				>
+					{isDeleting
+						? <ActivityIndicator size={14} color={theme.colors.error} />
+						: <Trash2 size={14} color={theme.colors.error} />
+					}
+					<Text style={[styles.videoActionBtnText, { color: theme.colors.error }]}>
+						{isDeleting ? t("video.deleting") : t("video.deleteVideo")}
+					</Text>
+				</TouchableOpacity>
+				{error && (
+					<View style={styles.videoErrorInline}>
+						<AlertCircle size={12} color={theme.colors.error} />
+						<Text style={styles.videoErrorText} numberOfLines={2}>{error}</Text>
+					</View>
+				)}
+			</View>
 		)
 	}
 
 	return (
-		<TouchableOpacity
-			onPress={pickAndUploadVideo}
-			style={[styles.videoActionBtn, { backgroundColor: theme.colors.primary + "20" }]}
-		>
-			<Plus size={14} color={theme.colors.primary} />
-			<Text style={[styles.videoActionBtnText, { color: theme.colors.primary }]}>
-				{t("video.addVideo")}
-			</Text>
-		</TouchableOpacity>
+		<View style={styles.videoActionRow}>
+			<TouchableOpacity
+				onPress={pickAndUploadVideo}
+				disabled={isUploading}
+				activeOpacity={0.7}
+				style={[styles.videoActionBtn, { backgroundColor: theme.colors.primary + "20" }]}
+			>
+				{isUploading
+					? <ActivityIndicator size={14} color={theme.colors.primary} />
+					: <Plus size={14} color={theme.colors.primary} />
+				}
+				<Text style={[styles.videoActionBtnText, { color: theme.colors.primary }]}>
+					{isUploading ? t("video.uploadingShort") : t("video.addVideo")}
+				</Text>
+			</TouchableOpacity>
+			{error && (
+				<View style={styles.videoErrorInline}>
+					<AlertCircle size={12} color={theme.colors.error} />
+					<Text style={styles.videoErrorText} numberOfLines={2}>{error}</Text>
+				</View>
+			)}
+		</View>
 	)
 }

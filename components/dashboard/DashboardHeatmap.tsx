@@ -4,8 +4,9 @@ import { useAppTheme } from "@/hooks"
 import { HeatmapDay } from "@/hooks/useDashboard"
 import { enUS, uk } from "date-fns/locale"
 import { format } from "date-fns"
+import { useRouter } from "expo-router"
 import { useTranslation } from "react-i18next"
-import { Text, View } from "react-native"
+import { Text, TouchableOpacity, View } from "react-native"
 import { getStyles } from "./getStyles"
 
 function dotColor(count: number, colors: ReturnType<typeof useAppTheme>["colors"]): string {
@@ -23,6 +24,7 @@ export function DashboardHeatmap({ days }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
 	const { t, i18n } = useTranslation()
+	const router = useRouter()
 	const dateFnsLocale = i18n.language === "uk" ? uk : enUS
 
 	const firstRow = days.slice(0, 15)
@@ -33,7 +35,12 @@ export function DashboardHeatmap({ days }: Props) {
 
 	return (
 		<View style={styles.heatmapCard}>
-			<Text style={styles.heatmapTitle}>{t("dashboard.heatmapTitle")}</Text>
+			<View style={styles.heatmapHeader}>
+				<Text style={styles.heatmapTitle}>{t("dashboard.heatmapTitle")}</Text>
+				<TouchableOpacity onPress={() => router.push("/(tabs)/history")} activeOpacity={0.7}>
+					<Text style={styles.heatmapDetailsLink}>{t("dashboard.heatmapDetails")}</Text>
+				</TouchableOpacity>
+			</View>
 
 			<View style={styles.heatmapGrid}>
 				{[firstRow, secondRow].map((row, rowIdx) => (

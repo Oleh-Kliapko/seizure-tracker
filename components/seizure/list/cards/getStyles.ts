@@ -33,17 +33,6 @@ export const getStyles = (theme: AppTheme) => {
 		},
 
 		// Video upload
-		videoStateRow: {
-			flexDirection: "row",
-			alignItems: "center",
-			gap: 8,
-		},
-
-		videoStateText: {
-			fontSize: 12,
-			color: colors.onSurface,
-		},
-
 		videoErrorText: {
 			fontSize: 12,
 			color: colors.error,
@@ -61,6 +50,19 @@ export const getStyles = (theme: AppTheme) => {
 
 		videoActionBtnText: {
 			fontSize: 12,
+		},
+
+		videoActionRow: {
+			flexDirection: "row",
+			alignItems: "center",
+			gap: 8,
+		},
+
+		videoErrorInline: {
+			flex: 1,
+			flexDirection: "row",
+			alignItems: "center",
+			gap: 4,
 		},
 	})
 }

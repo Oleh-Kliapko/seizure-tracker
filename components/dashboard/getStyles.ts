@@ -150,11 +150,21 @@ export const getStyles = (theme: AppTheme) => {
 			padding: spacing.md,
 			marginBottom: spacing.md,
 		},
+		heatmapHeader: {
+			flexDirection: "row",
+			justifyContent: "space-between",
+			alignItems: "center",
+			marginBottom: spacing.sm,
+		},
 		heatmapTitle: {
 			fontFamily: fonts.medium,
 			fontSize: fontSize.sm,
 			color: onSurface,
-			marginBottom: spacing.sm,
+		},
+		heatmapDetailsLink: {
+			fontFamily: fonts.medium,
+			fontSize: fontSize.sm,
+			color: primary,
 		},
 		heatmapGrid: {
 			gap: 4,

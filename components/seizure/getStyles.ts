@@ -173,6 +173,11 @@ export const getStyles = (theme: AppTheme) => {
 			alignItems: "center",
 			justifyContent: "space-between",
 			paddingVertical: spacing.sm,
+			gap: spacing.md,
+		},
+
+		switchLabel: {
+			flex: 1,
 		},
 
 		// Відео

@@ -1,4 +1,5 @@
 // config/i18n.ts
+/* eslint-disable import/no-named-as-default-member */
 
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import i18n from "i18next"

@@ -32,7 +32,7 @@ export function SeizureExtra({
 			<Text style={styles.sectionTitle}>{t("seizure.additional")}</Text>
 
 			<View style={styles.switchRow}>
-				<View>
+				<View style={styles.switchLabel}>
 					<Text style={styles.label}>{t("seizure.medicationTaken")}</Text>
 					<Text style={styles.sublabel}>
 						{t("seizure.medicationTakenDescription")}
@@ -42,6 +42,7 @@ export function SeizureExtra({
 					value={isMedicationTaken}
 					onValueChange={onMedicationChange}
 					trackColor={{ true: theme.colors.primary }}
+					style={{ transform: [{ scale: 0.85 }] }}
 				/>
 			</View>
 
