@@ -87,7 +87,7 @@ export const lightTheme: Theme = {
 		severe: "#f8a3ad",
 		medium: "#fdc1c8",
 		light: "#fddcde",
-		unknown: "#1E2A3A",
+		unknown: "#3C5474",
 	},
 	calendarSeverityColors: {
 		1: "#E6A817",
