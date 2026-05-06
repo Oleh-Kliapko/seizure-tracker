@@ -75,21 +75,21 @@ export const getStyles = (theme: AppTheme) => {
 			color: "#fff",
 		},
 
-		// Картка приступу
+		// Картка приступу — завжди темний фон, тому текст завжди світлий
 		card: {
 			borderRadius: radius.lg,
 			padding: spacing.lg,
 			marginBottom: spacing.md,
 			shadowColor: "#000",
-			shadowOpacity: 0.04,
-			shadowRadius: 6,
-			shadowOffset: { width: 0, height: 2 },
+			shadowOpacity: 0.15,
+			shadowRadius: 8,
+			shadowOffset: { width: 0, height: 3 },
 		},
 
 		cardType: {
 			fontFamily: fonts.bold,
 			fontSize: fontSize.lg,
-			color: colors.onSurface,
+			color: "#F1F5F9",
 			marginBottom: spacing.sm,
 		},
 
@@ -102,7 +102,7 @@ export const getStyles = (theme: AppTheme) => {
 		cardMoodText: {
 			fontFamily: fonts.regular,
 			fontSize: fontSize.sm,
-			color: colors.textSecondary,
+			color: "#94A3B8",
 		},
 
 		cardTriggersRow: {
@@ -116,13 +116,13 @@ export const getStyles = (theme: AppTheme) => {
 			paddingHorizontal: spacing.sm,
 			paddingVertical: 2,
 			borderRadius: radius.sm,
-			backgroundColor: colors.background + "80",
+			backgroundColor: "rgba(255, 255, 255, 0.08)",
 		},
 
 		cardTriggerText: {
 			fontFamily: fonts.regular,
 			fontSize: 11,
-			color: colors.textSecondary,
+			color: "#94A3B8",
 		},
 
 		// Пагінація

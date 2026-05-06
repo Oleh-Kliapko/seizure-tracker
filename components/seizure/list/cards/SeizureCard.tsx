@@ -12,7 +12,6 @@ import { router } from "expo-router"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Text, TouchableOpacity, View } from "react-native"
-import { getSeizureColor } from "../getSeizureColor"
 import { getStyles } from "../getStyles"
 import { CardHeader } from "./CardHeader"
 import { CardVideoUpload } from "./CardVideoUpload"
@@ -28,7 +27,7 @@ export function SeizureCard({ seizure: initialSeizure, onPress, onVideoUpdated }
 	const styles = getStyles(theme)
 	const { t } = useTranslation()
 	const [seizure, setSeizure] = useState(initialSeizure)
-	const bgColor = getSeizureColor(theme, seizure.severity)
+	const bgColor = theme.seizureColors.unknown
 
 	const getTypeLabel = (s: Seizure): string => {
 		if (s.type === "custom") return s.customType ?? t("seizureType.custom")

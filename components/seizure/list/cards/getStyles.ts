@@ -17,19 +17,20 @@ export const getStyles = (theme: AppTheme) => {
 		cardDate: {
 			fontFamily: fonts.medium,
 			fontSize: fontSize.sm,
-			color: colors.textSecondary,
+			color: "#94A3B8",
 		},
 
 		cardTime: {
 			fontFamily: fonts.regular,
 			fontSize: fontSize.sm,
-			color: colors.textSecondary,
+			color: "#94A3B8",
 			marginTop: 2,
 		},
 
 		severityRow: {
 			flexDirection: "row",
-			gap: 4,
+			gap: 2,
+			alignItems: "center",
 		},
 
 		// Video upload

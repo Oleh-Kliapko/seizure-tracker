@@ -33,11 +33,11 @@ export function CardHeader({ seizure }: Props) {
 				{[1, 2, 3].map(level => (
 					<Zap
 						key={level}
-						size={16}
-						color={theme.colors.primary}
+						size={32}
+						color="#FFCA28"
 						fill={
 							seizure.severity && seizure.severity >= level
-								? theme.colors.primary
+								? "#FFCA28"
 								: "transparent"
 						}
 					/>
