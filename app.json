@@ -8,6 +8,10 @@
     "scheme": "seizuretracker",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "icon": "./assets/images/icon.png",
+    "locales": {
+      "uk": "./locales/ios/uk.json"
+    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.olehkliapko.seizurestracker",
@@ -18,14 +22,13 @@
             "CFBundleURLSchemes": [
               "com.googleusercontent.apps.899051190770-b9pgl03milrsig9vgf8611n3otel30bj"
             ]
-          },
-          {
-            "CFBundleURLSchemes": [
-              "com.googleusercontent.apps.899051190770-b9pgl03milrsig9vgf8611n3otel30bj"
-            ]
           }
         ],
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSCameraUsageDescription": "Allow access to your camera to capture seizure videos and profile photos.",
+        "NSPhotoLibraryUsageDescription": "Allow access to your photo library to select seizure videos and profile photos.",
+        "NSPhotoLibraryAddUsageDescription": "Allow saving media to your photo library.",
+        "NSMicrophoneUsageDescription": "Allow access to the microphone while recording seizure videos."
       }
     },
     "android": {
@@ -44,6 +47,14 @@
       "expo-font",
       "@react-native-community/datetimepicker",
       "expo-video",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash.png",
+          "backgroundColor": "#4A90E2",
+          "imageWidth": 220
+        }
+      ],
       [
         "@react-native-google-signin/google-signin",
         {
