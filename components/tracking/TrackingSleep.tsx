@@ -1,8 +1,9 @@
 // components/tracking/TrackingSleep.tsx
 
 import { useAppTheme } from "@/hooks"
+import { VITAL_BOUNDS } from "@/utils"
 import { useTranslation } from "react-i18next"
-import { Text, TextInput, TouchableOpacity, View } from "react-native"
+import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { getStyles } from "./getStyles"
 
 const QUALITY = [1, 2, 3, 4, 5]
@@ -42,7 +43,17 @@ export function TrackingSleep({
 				style={[styles.vitalInput, { marginBottom: theme.spacing.md }]}
 				value={sleepDuration}
 				onChangeText={onDurationChange}
-				onBlur={onSave}
+				onBlur={() => {
+					if (!sleepDuration) { onSave(); return }
+					const n = parseFloat(sleepDuration)
+					const { min, max } = VITAL_BOUNDS.sleepDuration
+					if (isNaN(n) || n < min || n > max) {
+						Alert.alert(t("common.error"), t("tracking.error.sleepDuration"))
+						onDurationChange("")
+						return
+					}
+					onSave()
+				}}
 				keyboardType="number-pad"
 				placeholder="8"
 				placeholderTextColor={theme.colors.textSecondary}

@@ -47,6 +47,7 @@ export function DateTimeInput({ label, value, onChange }: Props) {
 						mode="datetime"
 						display={Platform.OS === "ios" ? "spinner" : "default"}
 						themeVariant={isDark ? "dark" : "light"}
+						maximumDate={new Date()}
 						onChange={(_, date) => {
 							if (date) onChange(date.getTime())
 						}}

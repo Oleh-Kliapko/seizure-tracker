@@ -2,8 +2,9 @@
 
 import { Divider, FormInput } from "@/components/ui"
 import { useAppTheme } from "@/hooks"
+import { VITAL_BOUNDS } from "@/utils"
 import { useTranslation } from "react-i18next"
-import { Switch, Text, View } from "react-native"
+import { Alert, Switch, Text, View } from "react-native"
 import { getStyles } from "./getStyles"
 
 type Props = {
@@ -52,6 +53,14 @@ export function SeizureExtra({
 				label={t("seizure.sleepHours")}
 				value={sleepHoursBefore !== undefined ? String(sleepHoursBefore) : ""}
 				onChangeText={v => onSleepHoursChange(v ? Number(v) : undefined)}
+				onBlur={() => {
+					if (sleepHoursBefore === undefined) return
+					const { min, max } = VITAL_BOUNDS.sleepHoursBefore
+					if (sleepHoursBefore < min || sleepHoursBefore > max) {
+						Alert.alert(t("common.error"), t("tracking.error.sleepDuration"))
+						onSleepHoursChange(undefined)
+					}
+				}}
 				placeholder="6"
 				keyboardType="number-pad"
 				maxLength={2}

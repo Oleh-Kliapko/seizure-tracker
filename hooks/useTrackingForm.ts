@@ -8,6 +8,7 @@ import {
 	getTrackingByDate,
 	upsertTracking,
 } from "@/services"
+import { hasInvalidVitals } from "@/utils"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useAuth } from "./useAuth"
 
@@ -158,6 +159,21 @@ export function useTrackingForm() {
 		async (overrides: Partial<TrackingState> = {}) => {
 			if (!user) return
 			const s: TrackingState = { ...stateRef.current, ...overrides }
+
+			if (
+				hasInvalidVitals({
+					temperature: s.temperature,
+					pulse: s.pulse,
+					systolicPressure: s.systolicPressure,
+					diastolicPressure: s.diastolicPressure,
+					oxygenSaturation: s.oxygenSaturation,
+					sleepDuration: s.sleepDuration,
+				})
+			) {
+				setError(i18n.t("error.invalidVitalRange"))
+				return
+			}
+
 			try {
 				await upsertTracking(user.uid, {
 					userId: user.uid,

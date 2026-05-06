@@ -10,6 +10,7 @@ import {
 	TriggerItem,
 } from "@/models"
 import { createSeizure, deleteSeizure, updateSeizure } from "@/services"
+import { isInvalidSeizureTime, isInvalidSleepHours } from "@/utils"
 import { router } from "expo-router"
 import { useState } from "react"
 import { useAuth } from "./useAuth"
@@ -76,6 +77,16 @@ export function useSeizureForm() {
 
 		if (endedAt && endedAt < startedAt) {
 			setError(i18n.t("seizure.endTimeBeforeStart"))
+			return
+		}
+
+		if (isInvalidSeizureTime(startedAt, endedAt)) {
+			setError(i18n.t("seizure.timeInFuture"))
+			return
+		}
+
+		if (isInvalidSleepHours(sleepHoursBefore)) {
+			setError(i18n.t("seizure.invalidSleepHours"))
 			return
 		}
 

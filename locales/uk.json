@@ -55,6 +55,7 @@
 		"uploadStartError": "Не вдалося почати завантаження",
 		"savingError": "Помилка збереження. Спробуйте ще раз",
 		"savingErrorShort": "Помилка збереження",
+		"invalidVitalRange": "Деякі значення поза допустимим діапазоном",
 		"deleteError": "Помилка видалення",
 		"savingSeizureError": "Помилка збереження. Спробуйте ще раз"
 	},
@@ -241,7 +242,15 @@
 		"dailyDoseLabel": "денна доза",
 		"quantity": "Кількість",
 		"record": "Записати",
-		"of": "з"
+		"of": "з",
+		"error": {
+			"temperature": "Температура має бути від 30°C до 45°C",
+			"pulse": "Пульс має бути від 20 до 250 уд/хв",
+			"systolicPressure": "Систолічний тиск: 40–300 мм рт.ст.",
+			"diastolicPressure": "Діастолічний тиск: 20–200 мм рт.ст.",
+			"oxygenSaturation": "Сатурація: 30–100%",
+			"sleepDuration": "Тривалість сну: 0–24 годин"
+		}
 	},
 	"history": {
 		"title": "Історія",
@@ -315,6 +324,8 @@
 		"before": "до",
 		"after": "після",
 		"endTimeBeforeStart": "Час закінчення не може бути раніше часу початку",
+		"timeInFuture": "Час приступу не може бути в майбутньому",
+		"invalidSleepHours": "Години сну: 0–24",
 		"specifyCustomType": "Вкажіть власний тип приступу",
 		"specifyStartTime": "Вкажіть дату та час початку приступу",
 		"confirmDeleteTitle": "Видалити приступ",

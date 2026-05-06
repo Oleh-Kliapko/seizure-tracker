@@ -55,6 +55,7 @@
 		"uploadStartError": "Failed to start upload",
 		"savingError": "Save error. Please try again",
 		"savingErrorShort": "Save error",
+		"invalidVitalRange": "Some values are out of allowed range",
 		"deleteError": "Deletion error",
 		"savingSeizureError": "Save error. Please try again"
 	},
@@ -241,7 +242,15 @@
 		"dailyDoseLabel": "daily dose",
 		"quantity": "Quantity",
 		"record": "Record",
-		"of": "of"
+		"of": "of",
+		"error": {
+			"temperature": "Temperature must be between 30°C and 45°C",
+			"pulse": "Heart rate must be between 20 and 250 bpm",
+			"systolicPressure": "Systolic pressure: 40–300 mmHg",
+			"diastolicPressure": "Diastolic pressure: 20–200 mmHg",
+			"oxygenSaturation": "Oxygen saturation: 30–100%",
+			"sleepDuration": "Sleep duration: 0–24 hours"
+		}
 	},
 	"history": {
 		"title": "History",
@@ -315,6 +324,8 @@
 		"before": "before",
 		"after": "after",
 		"endTimeBeforeStart": "End time cannot be before start time",
+		"timeInFuture": "Seizure time cannot be in the future",
+		"invalidSleepHours": "Sleep hours: 0–24",
 		"specifyCustomType": "Please specify the custom seizure type",
 		"specifyStartTime": "Please specify the seizure start time",
 		"confirmDeleteTitle": "Delete seizure",

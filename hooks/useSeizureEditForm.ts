@@ -10,6 +10,7 @@ import {
 	TriggerItem,
 } from "@/models"
 import { deleteSeizure, getSeizures, updateSeizure } from "@/services"
+import { isInvalidSeizureTime, isInvalidSleepHours } from "@/utils"
 import { router, useLocalSearchParams } from "expo-router"
 import { deleteField } from "firebase/firestore"
 import { useCallback, useEffect, useState } from "react"
@@ -100,6 +101,16 @@ export function useSeizureEditForm() {
 
 		if (endedAt && endedAt < startedAt) {
 			setError(i18n.t("seizure.endTimeBeforeStart"))
+			return
+		}
+
+		if (isInvalidSeizureTime(startedAt, endedAt)) {
+			setError(i18n.t("seizure.timeInFuture"))
+			return
+		}
+
+		if (isInvalidSleepHours(sleepHoursBefore)) {
+			setError(i18n.t("seizure.invalidSleepHours"))
 			return
 		}
 

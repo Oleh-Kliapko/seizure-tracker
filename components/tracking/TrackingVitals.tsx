@@ -1,8 +1,9 @@
 // components/tracking/TrackingVitals.tsx
 
 import { useAppTheme } from "@/hooks"
+import { VITAL_BOUNDS } from "@/utils"
 import { useTranslation } from "react-i18next"
-import { Text, TextInput, View } from "react-native"
+import { Alert, Text, TextInput, View } from "react-native"
 import { getStyles } from "./getStyles"
 
 type Props = {
@@ -17,14 +18,6 @@ type Props = {
 	onDiastolicChange: (v: string) => void
 	onOxygenChange: (v: string) => void
 	onSave: () => void
-}
-
-function makeIntHandler(setter: (v: string) => void, max: number) {
-	return (v: string) => {
-		if (!v) return setter("")
-		const num = parseInt(v)
-		if (!isNaN(num) && num <= max) setter(v)
-	}
 }
 
 export function TrackingVitals({
@@ -44,6 +37,26 @@ export function TrackingVitals({
 	const styles = getStyles(theme)
 	const { t } = useTranslation()
 
+	function makeBlurHandler(
+		value: string,
+		clear: (v: string) => void,
+		field: keyof typeof VITAL_BOUNDS,
+		errorKey: string,
+		isFloat = false,
+	) {
+		return () => {
+			if (!value) { onSave(); return }
+			const n = isFloat ? parseFloat(value) : parseInt(value)
+			const { min, max } = VITAL_BOUNDS[field]
+			if (isNaN(n) || n < min || n > max) {
+				Alert.alert(t("common.error"), t(errorKey))
+				clear("")
+				return
+			}
+			onSave()
+		}
+	}
+
 	return (
 		<View style={styles.section}>
 			<Text style={styles.sectionTitle}>{t("tracking.vitals")}</Text>
@@ -54,7 +67,7 @@ export function TrackingVitals({
 						style={styles.vitalInput}
 						value={temperature}
 						onChangeText={onTemperatureChange}
-						onBlur={onSave}
+						onBlur={makeBlurHandler(temperature, onTemperatureChange, "temperature", "tracking.error.temperature", true)}
 						keyboardType="decimal-pad"
 						placeholder="36.6"
 						placeholderTextColor={theme.colors.textSecondary}
@@ -67,8 +80,8 @@ export function TrackingVitals({
 					<TextInput
 						style={styles.vitalInput}
 						value={pulse}
-						onChangeText={makeIntHandler(onPulseChange, 250)}
-						onBlur={onSave}
+						onChangeText={onPulseChange}
+						onBlur={makeBlurHandler(pulse, onPulseChange, "pulse", "tracking.error.pulse")}
 						keyboardType="number-pad"
 						placeholder="72"
 						placeholderTextColor={theme.colors.textSecondary}
@@ -83,8 +96,8 @@ export function TrackingVitals({
 					<TextInput
 						style={styles.vitalInput}
 						value={systolicPressure}
-						onChangeText={makeIntHandler(onSystolicChange, 250)}
-						onBlur={onSave}
+						onChangeText={onSystolicChange}
+						onBlur={makeBlurHandler(systolicPressure, onSystolicChange, "systolicPressure", "tracking.error.systolicPressure")}
 						keyboardType="number-pad"
 						placeholder="120"
 						placeholderTextColor={theme.colors.textSecondary}
@@ -99,8 +112,8 @@ export function TrackingVitals({
 					<TextInput
 						style={styles.vitalInput}
 						value={diastolicPressure}
-						onChangeText={makeIntHandler(onDiastolicChange, 150)}
-						onBlur={onSave}
+						onChangeText={onDiastolicChange}
+						onBlur={makeBlurHandler(diastolicPressure, onDiastolicChange, "diastolicPressure", "tracking.error.diastolicPressure")}
 						keyboardType="number-pad"
 						placeholder="80"
 						placeholderTextColor={theme.colors.textSecondary}
@@ -113,8 +126,8 @@ export function TrackingVitals({
 					<TextInput
 						style={styles.vitalInput}
 						value={oxygenSaturation}
-						onChangeText={makeIntHandler(onOxygenChange, 100)}
-						onBlur={onSave}
+						onChangeText={onOxygenChange}
+						onBlur={makeBlurHandler(oxygenSaturation, onOxygenChange, "oxygenSaturation", "tracking.error.oxygenSaturation")}
 						keyboardType="number-pad"
 						placeholder="98"
 						placeholderTextColor={theme.colors.textSecondary}
