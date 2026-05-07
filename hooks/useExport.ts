@@ -9,8 +9,7 @@ import * as Print from "expo-print"
 import { useAuth } from "./useAuth"
 import { useUser } from "./useUser"
 
-const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL || "http://localhost:3000"
-const BACKEND_API_KEY = process.env.EXPO_PUBLIC_BACKEND_API_KEY
+const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL
 
 export function useExport() {
 	const { user } = useAuth()
@@ -76,12 +75,15 @@ export function useExport() {
 			const fileContent = await readFileAsBase64(uri)
 			console.log("[Email Export] 6. Base64 length:", fileContent.length)
 
+			if (!BACKEND_URL) throw new Error("EXPO_PUBLIC_BACKEND_URL is not configured")
+			const idToken = await user.getIdToken()
+
 			console.log("[Email Export] 7. Sending to backend:", BACKEND_URL)
 			const response = await fetch(`${BACKEND_URL}/api/emails/send-report`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
-					"x-api-key": BACKEND_API_KEY || "",
+					"Authorization": `Bearer ${idToken}`,
 				},
 				body: JSON.stringify({
 					email,
