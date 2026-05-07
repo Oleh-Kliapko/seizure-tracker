@@ -408,7 +408,10 @@
 		"notes": "Notes",
 		"notesPlaceholder": "Additional info...",
 		"startedAt": "Start date",
-		"addMedication": "Add medication"
+		"addMedication": "Add medication",
+		"confirmDeleteTitle": "Delete medication",
+		"confirmDeleteMessage": "Are you sure? This action cannot be undone.",
+		"confirmDeleteBtn": "Delete"
 	},
 	"form": {
 		"currentPassword": "Current password",

@@ -8,7 +8,7 @@ import { DOSE_UNIT_LABEL_KEYS, DOSE_UNITS } from "@/models/medication"
 import { Picker } from "@react-native-picker/picker"
 import { Clock, Plus, Trash2, X } from "lucide-react-native"
 import { useState } from "react"
-import { Text, TouchableOpacity, View } from "react-native"
+import { Alert, Text, TouchableOpacity, View } from "react-native"
 import { useTranslation } from "react-i18next"
 import { getStyles } from "../getStyles"
 
@@ -43,7 +43,17 @@ export function MedicationCard({
 		<View style={styles.guardianCard}>
 			<View style={styles.guardianHeader}>
 				<Text style={styles.guardianTitle}>{t('medications.title', { index: index + 1 })}</Text>
-				<TouchableOpacity onPress={onRemove} activeOpacity={0.7}>
+				<TouchableOpacity
+					onPress={() => Alert.alert(
+						t("medications.confirmDeleteTitle"),
+						t("medications.confirmDeleteMessage"),
+						[
+							{ text: t("common.cancel"), style: "cancel" },
+							{ text: t("medications.confirmDeleteBtn"), style: "destructive", onPress: onRemove },
+						]
+					)}
+					activeOpacity={0.7}
+				>
 					<Trash2 size={20} color={colors.error} />
 				</TouchableOpacity>
 			</View>

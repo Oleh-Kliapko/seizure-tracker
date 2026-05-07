@@ -408,7 +408,10 @@
 		"notes": "Нотатки",
 		"notesPlaceholder": "Додаткова інформація...",
 		"startedAt": "Дата початку прийому",
-		"addMedication": "Додати препарат"
+		"addMedication": "Додати препарат",
+		"confirmDeleteTitle": "Видалити препарат",
+		"confirmDeleteMessage": "Ви впевнені? Цю дію не можна скасувати.",
+		"confirmDeleteBtn": "Видалити"
 	},
 	"form": {
 		"currentPassword": "Поточний пароль",
