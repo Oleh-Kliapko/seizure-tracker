@@ -73,6 +73,7 @@
       "typedRoutes": true,
       "reactCompiler": true
     },
+    "privacyPolicyUrl": "https://oleh-kliapko.github.io/seizure-tracker/privacy",
     "extra": {
       "router": {},
       "eas": {
