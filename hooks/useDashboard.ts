@@ -54,27 +54,24 @@ export function useDashboard() {
 	const [medications, setMedications] = useState<Medication[]>([])
 	const [isLoading, setIsLoading] = useState(true)
 
-	useFocusEffect(
-		useCallback(() => {
-			if (!user) return
-			const load = async () => {
-				setIsLoading(true)
-				try {
-					const [seizuresData, trackingData, medsData] = await Promise.all([
-						getSeizures(user.uid),
-						getTrackingByDate(user.uid, user.uid, Date.now()).catch(() => null),
-						getMedicationsByPatient(user.uid, user.uid).catch(() => []),
-					])
-					setSeizures(seizuresData)
-					setTracking(trackingData)
-					setMedications(medsData)
-				} finally {
-					setIsLoading(false)
-				}
-			}
-			load()
-		}, [user]),
-	)
+	const load = useCallback(async () => {
+		if (!user) return
+		setIsLoading(true)
+		try {
+			const [seizuresData, trackingData, medsData] = await Promise.all([
+				getSeizures(user.uid),
+				getTrackingByDate(user.uid, user.uid, Date.now()).catch(() => null),
+				getMedicationsByPatient(user.uid, user.uid).catch(() => []),
+			])
+			setSeizures(seizuresData)
+			setTracking(trackingData)
+			setMedications(medsData)
+		} finally {
+			setIsLoading(false)
+		}
+	}, [user])
+
+	useFocusEffect(useCallback(() => { load() }, [load]))
 
 	const computed = useMemo(() => {
 		const lastSeizure = seizures[0] ?? null
@@ -141,6 +138,7 @@ export function useDashboard() {
 		profile,
 		medications,
 		hasSeizures: seizures.length > 0,
+		reload: load,
 		...computed,
 	}
 }

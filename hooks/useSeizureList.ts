@@ -74,5 +74,6 @@ export function useSeizureList() {
 		handleFilterChange,
 		setPage,
 		updateSeizureInList,
+		reload: fetchSeizures,
 	}
 }

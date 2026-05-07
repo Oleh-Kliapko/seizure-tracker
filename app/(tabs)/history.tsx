@@ -13,9 +13,9 @@ import { ScreenHeader, ScreenWrapper } from "@/components/ui"
 import { useAppTheme, useExport, useUser } from "@/hooks"
 import { useHistoryData } from "@/hooks/useHistoryData"
 import { useFocusEffect } from "expo-router"
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { ActivityIndicator, ScrollView, Text, View } from "react-native"
+import { ActivityIndicator, RefreshControl, ScrollView, Text, View } from "react-native"
 
 function SectionCard({
 	title,
@@ -64,6 +64,7 @@ export default function History() {
 
 	const [period, setPeriod] = useState<HistoryPeriod>("month")
 	const [refreshKey, setRefreshKey] = useState(0)
+	const [refreshing, setRefreshing] = useState(false)
 	const { from, to } = useMemo(() => getPeriodRange(period), [period])
 	const { seizures, seizuresByDate, timeOfDay, topTriggers, isLoading } =
 		useHistoryData(from, to, refreshKey)
@@ -74,16 +75,28 @@ export default function History() {
 		}, []),
 	)
 
+	useEffect(() => {
+		if (!isLoading) setRefreshing(false)
+	}, [isLoading])
+
+	const onRefresh = useCallback(() => {
+		setRefreshing(true)
+		setRefreshKey(k => k + 1)
+	}, [])
+
 	return (
 		<ScreenWrapper>
 			<ScreenHeader title={t("history.title")} showBackButton={false} />
 			<ScrollView
 				contentContainerStyle={{ padding: spacing.lg }}
 				showsVerticalScrollIndicator={false}
+				refreshControl={
+					<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />
+				}
 			>
 				<HistoryPeriodFilter active={period} onChange={setPeriod} />
 
-				{isLoading ? (
+				{isLoading && !refreshing ? (
 					<View style={{ paddingVertical: 40, alignItems: "center" }}>
 						<ActivityIndicator color={colors.primary} size="large" />
 					</View>

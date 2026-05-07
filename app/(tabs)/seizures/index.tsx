@@ -13,8 +13,10 @@ import { Seizure } from "@/models"
 import { router } from "expo-router"
 import { Plus } from "lucide-react-native"
 import { useTranslation } from "react-i18next"
+import { useCallback, useState } from "react"
 import {
 	ActivityIndicator,
+	RefreshControl,
 	ScrollView,
 	Text,
 	TouchableOpacity,
@@ -35,7 +37,15 @@ export default function SeizuresScreen() {
 		handleFilterChange,
 		setPage,
 		updateSeizureInList,
+		reload,
 	} = useSeizureList()
+
+	const [refreshing, setRefreshing] = useState(false)
+	const onRefresh = useCallback(async () => {
+		setRefreshing(true)
+		await reload()
+		setRefreshing(false)
+	}, [reload])
 
 	const handleSeizurePress = (s: Seizure) => {
 		// TODO: перейти на екран деталей
@@ -64,7 +74,7 @@ export default function SeizuresScreen() {
 				}
 			/>
 
-			{isLoading ? (
+			{isLoading && !refreshing ? (
 				<View
 					style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
 				>
@@ -74,6 +84,9 @@ export default function SeizuresScreen() {
 				<ScrollView
 					contentContainerStyle={{ padding: theme.spacing.lg }}
 					showsVerticalScrollIndicator={false}
+					refreshControl={
+						<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.colors.primary} />
+					}
 				>
 					<SeizureStatsHeader seizures={seizures} />
 					<SeizureFilters active={filter} onChange={handleFilterChange} />
