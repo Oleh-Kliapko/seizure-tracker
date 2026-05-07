@@ -4,7 +4,8 @@ import { FormInput } from "@/components/ui"
 import { useAppTheme } from "@/hooks"
 import { useIsDarkTheme } from "@/hooks/useAppTheme"
 import DateTimePicker from "@react-native-community/datetimepicker"
-import { useState } from "react"
+import { Check } from "lucide-react-native"
+import { useRef, useState } from "react"
 import { Platform, Text, TouchableOpacity, View } from "react-native"
 import { useTranslation } from "react-i18next"
 import { getStyles } from "../getStyles"
@@ -38,6 +39,8 @@ export function PersonalForm({
 	const styles = getStyles(theme)
 	const { t } = useTranslation()
 	const [showPicker, setShowPicker] = useState(false)
+	const [showDateCheck, setShowDateCheck] = useState(false)
+	const dateTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
 	const formatBirthDate = (ts: number) =>
 		new Date(ts).toLocaleDateString("uk-UA", {
@@ -73,7 +76,10 @@ export function PersonalForm({
 			})}
 
 			<View style={{ marginBottom: theme.spacing.md }}>
-				<Text style={styles.label}>{t('personal.birthDate')}</Text>
+				<View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 6 }}>
+					<Text style={[styles.label, { marginBottom: 0 }]}>{t('personal.birthDate')}</Text>
+					{showDateCheck && <Check size={13} color="#22C55E" />}
+				</View>
 				<TouchableOpacity
 					onPress={() => setShowPicker(v => !v)}
 					activeOpacity={0.7}
@@ -119,6 +125,9 @@ export function PersonalForm({
 							}}
 							onPress={() => {
 								setShowPicker(false)
+								if (dateTimerRef.current) clearTimeout(dateTimerRef.current)
+								setShowDateCheck(true)
+								dateTimerRef.current = setTimeout(() => setShowDateCheck(false), 2000)
 								onBlur()
 							}}
 						>

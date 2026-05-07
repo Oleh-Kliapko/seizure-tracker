@@ -2,6 +2,8 @@
 import { BLOOD_TYPES, RH_FACTORS } from "@/constants/commonConstants"
 import { useAppTheme } from "@/hooks"
 import { Picker } from "@react-native-picker/picker"
+import { Check } from "lucide-react-native"
+import { useRef, useState } from "react"
 import { Text, View } from "react-native"
 import { useTranslation } from "react-i18next"
 import { getStyles } from "../getStyles"
@@ -22,17 +24,28 @@ export function BloodTypePicker({
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
 	const { t } = useTranslation()
+	const [showCheck, setShowCheck] = useState(false)
+	const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+	const flashCheck = () => {
+		if (timerRef.current) clearTimeout(timerRef.current)
+		setShowCheck(true)
+		timerRef.current = setTimeout(() => setShowCheck(false), 2000)
+	}
 
 	return (
 		<View>
-			<Text style={styles.label}>{t('medical.bloodType')}</Text>
+			<View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginBottom: styles.label.marginBottom ?? 6 }}>
+				<Text style={[styles.label, { marginBottom: 0 }]}>{t('medical.bloodType')}</Text>
+				{showCheck && <Check size={13} color="#22C55E" />}
+			</View>
 
 			<View style={styles.row}>
 				<View style={styles.pickerWrapper}>
 					<Picker
 						selectedValue={bloodType}
 						itemStyle={{ color: theme.colors.onSurface }}
-						onValueChange={onBloodTypeChange}
+						onValueChange={v => { onBloodTypeChange(v); flashCheck() }}
 						style={{ color: theme.colors.onSurface }}
 					>
 						{BLOOD_TYPES.map(b => (
@@ -45,7 +58,7 @@ export function BloodTypePicker({
 					<Picker
 						selectedValue={rhFactor}
 						itemStyle={{ color: theme.colors.onSurface }}
-						onValueChange={onRhFactorChange}
+						onValueChange={v => { onRhFactorChange(v); flashCheck() }}
 						style={{ color: theme.colors.onSurface }}
 					>
 						{RH_FACTORS.map(r => (

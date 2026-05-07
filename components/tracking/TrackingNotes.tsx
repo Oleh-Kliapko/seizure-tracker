@@ -1,6 +1,8 @@
 // components/tracking/TrackingNotes.tsx
 
 import { useAppTheme } from "@/hooks"
+import { Check } from "lucide-react-native"
+import { useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Text, TextInput, View } from "react-native"
 import { getStyles } from "./getStyles"
@@ -30,20 +32,41 @@ function NoteField({
 }) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const isDirty = useRef(false)
+	const [showCheck, setShowCheck] = useState(false)
+	const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+	const handleChange = (text: string) => {
+		isDirty.current = true
+		onChange(text)
+	}
+
+	const handleBlur = () => {
+		if (isDirty.current) {
+			isDirty.current = false
+			if (timerRef.current) clearTimeout(timerRef.current)
+			setShowCheck(true)
+			timerRef.current = setTimeout(() => setShowCheck(false), 2000)
+		}
+		onSave()
+	}
 
 	return (
 		<View>
 			<View style={styles.noteLabelRow}>
 				<Text style={styles.label}>{label}</Text>
-				<Text style={styles.noteCharCounter}>
-					{value.length}/{MAX_LENGTH}
-				</Text>
+				<View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+					{showCheck && <Check size={13} color="#22C55E" />}
+					<Text style={styles.noteCharCounter}>
+						{value.length}/{MAX_LENGTH}
+					</Text>
+				</View>
 			</View>
 			<TextInput
 				style={styles.notesInput}
 				value={value}
-				onChangeText={onChange}
-				onBlur={onSave}
+				onChangeText={handleChange}
+				onBlur={handleBlur}
 				placeholder={placeholder}
 				placeholderTextColor={theme.colors.textSecondary}
 				multiline

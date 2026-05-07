@@ -6,8 +6,8 @@ import { useAppTheme } from "@/hooks"
 import { MedEntry } from "@/hooks/useMedicationsForm"
 import { DOSE_UNIT_LABEL_KEYS, DOSE_UNITS } from "@/models/medication"
 import { Picker } from "@react-native-picker/picker"
-import { Clock, Plus, Trash2, X } from "lucide-react-native"
-import { useState } from "react"
+import { Check, Clock, Plus, Trash2, X } from "lucide-react-native"
+import { useRef, useState } from "react"
 import { Alert, Text, TouchableOpacity, View } from "react-native"
 import { useTranslation } from "react-i18next"
 import { getStyles } from "../getStyles"
@@ -38,6 +38,14 @@ export function MedicationCard({
 	const styles = getStyles(theme)
 	const { t } = useTranslation()
 	const [showPicker, setShowPicker] = useState(false)
+	const [showStartedCheck, setShowStartedCheck] = useState(false)
+	const startedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+	const flashStartedCheck = () => {
+		if (startedTimerRef.current) clearTimeout(startedTimerRef.current)
+		setShowStartedCheck(true)
+		startedTimerRef.current = setTimeout(() => setShowStartedCheck(false), 2000)
+	}
 
 	return (
 		<View style={styles.guardianCard}>
@@ -180,14 +188,15 @@ export function MedicationCard({
 			/>
 
 			<View style={{ marginBottom: spacing.md }}>
-				<Text style={[styles.label, { marginBottom: spacing.sm }]}>
-					{t('medications.startedAt')}
-				</Text>
+				<View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginBottom: spacing.sm }}>
+					<Text style={[styles.label, { marginBottom: 0 }]}>{t('medications.startedAt')}</Text>
+					{showStartedCheck && <Check size={13} color="#22C55E" />}
+				</View>
 				<View style={styles.row}>
 					<View style={styles.pickerWrapper}>
 						<Picker
 							selectedValue={entry.startMonth}
-							onValueChange={v => onUpdateStarted(v, entry.startYear)}
+							onValueChange={v => { onUpdateStarted(v, entry.startYear); flashStartedCheck() }}
 							style={{ color: colors.onSurface }}
 							itemStyle={{ color: colors.onSurface }}
 						>
@@ -199,7 +208,7 @@ export function MedicationCard({
 					<View style={styles.pickerWrapper}>
 						<Picker
 							selectedValue={entry.startYear}
-							onValueChange={v => onUpdateStarted(entry.startMonth, v)}
+							onValueChange={v => { onUpdateStarted(entry.startMonth, v); flashStartedCheck() }}
 							style={{ color: colors.onSurface }}
 							itemStyle={{ color: colors.onSurface }}
 						>
