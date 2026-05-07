@@ -9,7 +9,7 @@ import {
 	SeizureType,
 	TriggerItem,
 } from "@/models"
-import { deleteSeizure, getSeizures, updateSeizure } from "@/services"
+import { deleteSeizure, getSeizureById, updateSeizure } from "@/services"
 import { isInvalidSeizureTime, isInvalidSleepHours } from "@/utils"
 import { router, useLocalSearchParams } from "expo-router"
 import { deleteField } from "firebase/firestore"
@@ -53,8 +53,7 @@ export function useSeizureEditForm() {
 		try {
 			setIsFetching(true)
 
-			const seizures = await getSeizures(user.uid)
-			const seizure = seizures.find(s => s.id === id)
+			const seizure = await getSeizureById(user.uid, id)
 			if (!seizure) return
 
 			setStartedAt(seizure.startedAt)

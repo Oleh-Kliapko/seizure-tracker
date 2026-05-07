@@ -14,6 +14,7 @@ import {
 import {
 	createSeizure,
 	deleteSeizure,
+	getSeizureById,
 	getSeizures,
 	getSeizuresByPatient,
 	getSeizuresByPeriod,
@@ -41,6 +42,7 @@ export {
 	exportSeizuresToPdf,
 	getMedications,
 	getMedicationsByPatient,
+	getSeizureById,
 	getSeizures,
 	getSeizuresByPatient,
 	getSeizuresByPeriod,

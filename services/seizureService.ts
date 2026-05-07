@@ -7,6 +7,7 @@ import {
 	collection,
 	deleteDoc,
 	doc,
+	getDoc,
 	getDocs,
 	orderBy,
 	query,
@@ -29,6 +30,16 @@ export async function createSeizure(
 		updatedAt: now,
 	})
 	return ref.id
+}
+
+// Отримати один приступ по ID
+export async function getSeizureById(
+	userId: string,
+	seizureId: string,
+): Promise<Seizure | null> {
+	const snap = await getDoc(doc(seizuresCol(userId), seizureId))
+	if (!snap.exists()) return null
+	return { id: snap.id, ...snap.data() } as Seizure
 }
 
 // Отримати всі приступи користувача
