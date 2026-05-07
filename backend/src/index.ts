@@ -1,13 +1,34 @@
 import dotenv from "dotenv"
+dotenv.config()
 
 import cors from "cors"
 import express, { Request, Response } from "express"
+import { cert, initializeApp } from "firebase-admin/app"
+import { getAuth } from "firebase-admin/auth"
 import { Resend } from "resend"
 import {
 	deleteImageFromCloudinary,
 	deleteVideoFromCloudinary,
 } from "./services/cloudinaryService.js"
-dotenv.config()
+
+initializeApp({
+	credential: cert(JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT!)),
+})
+
+async function requireAuth(req: Request, res: Response): Promise<string | null> {
+	const header = req.headers.authorization
+	if (!header?.startsWith("Bearer ")) {
+		res.status(401).json({ error: "Unauthorized" })
+		return null
+	}
+	try {
+		const decoded = await getAuth().verifyIdToken(header.slice(7))
+		return decoded.uid
+	} catch {
+		res.status(401).json({ error: "Unauthorized" })
+		return null
+	}
+}
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -36,14 +57,8 @@ app.post("/api/videos/delete", async (req: Request, res: Response) => {
 			return
 		}
 
-		// Verify the API key (simple validation to prevent abuse)
-		const apiKey = req.headers["x-api-key"]
-		const expectedKey = process.env.API_KEY
-
-		if (!expectedKey || apiKey !== expectedKey) {
-			res.status(401).json({ error: "Unauthorized" })
-			return
-		}
+		const uid = await requireAuth(req, res)
+		if (!uid) return
 
 		// Delete from Cloudinary
 		await deleteVideoFromCloudinary(userId, publicId)
@@ -65,13 +80,8 @@ app.post("/api/images/delete", async (req: Request, res: Response) => {
 			return
 		}
 
-		const apiKey = req.headers["x-api-key"]
-		const expectedKey = process.env.API_KEY
-
-		if (!expectedKey || apiKey !== expectedKey) {
-			res.status(401).json({ error: "Unauthorized" })
-			return
-		}
+		const uid = await requireAuth(req, res)
+		if (!uid) return
 
 		await deleteImageFromCloudinary(publicId)
 		res.json({ success: true })
@@ -98,14 +108,8 @@ app.post("/api/emails/send-report", async (req: Request, res: Response) => {
 			return
 		}
 
-		// Verify API key
-		const apiKey = req.headers["x-api-key"]
-		const expectedKey = process.env.API_KEY
-
-		if (!expectedKey || apiKey !== expectedKey) {
-			res.status(401).json({ error: "Unauthorized" })
-			return
-		}
+		const uid = await requireAuth(req, res)
+		if (!uid) return
 
 		const resend = new Resend(process.env.RESEND_API_KEY)
 
