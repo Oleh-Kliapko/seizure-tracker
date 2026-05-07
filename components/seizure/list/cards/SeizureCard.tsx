@@ -22,7 +22,10 @@ type Props = {
 	onVideoUpdated?: (s: Seizure) => void
 }
 
-export function SeizureCard({ seizure: initialSeizure, onPress, onVideoUpdated }: Props) {
+export function SeizureCard({
+	seizure: initialSeizure,
+	onVideoUpdated,
+}: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
 	const { t } = useTranslation()
