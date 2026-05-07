@@ -7,7 +7,6 @@ import {
 	deleteImageFromCloudinary,
 	uploadImageToCloudinary,
 } from "@/services/cloudinary"
-import { ImageManipulator, SaveFormat } from "expo-image-manipulator"
 import * as ImagePicker from "expo-image-picker"
 import { deleteField, doc, updateDoc } from "firebase/firestore"
 import { useState } from "react"
@@ -75,14 +74,16 @@ export function useAvatarUpload() {
 
 				const asset = result.assets[0]
 
+				const MAX_SIZE = 3 * 1024 * 1024
+				if (asset.fileSize && asset.fileSize > MAX_SIZE) {
+					setError(i18n.t("error.photoTooLarge"))
+					return
+				}
+
 				try {
 					setIsUploading(true)
 					setError(null)
-					const ctx = ImageManipulator.manipulate(asset.uri)
-					ctx.resize({ width: 512, height: 512 })
-					const rendered = await ctx.renderAsync()
-					const resized = await rendered.saveAsync({ compress: 0.8, format: SaveFormat.JPEG })
-					const { url, publicId } = await uploadImageToCloudinary(resized.uri)
+					const { url, publicId } = await uploadImageToCloudinary(asset.uri)
 					const uid = auth.currentUser?.uid
 					if (uid)
 						await updateUser(uid, { avatarUrl: url, avatarPublicId: publicId })
