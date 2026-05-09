@@ -75,6 +75,11 @@ export default function History() {
 	const { seizures, seizuresByDate, timeOfDay, topTriggers, isLoading } =
 		useHistoryData(from, to, refreshKey)
 
+	const calendarFrom = useMemo(() => {
+		if (period !== "all" || seizures.length === 0) return from
+		return Math.min(...seizures.map(s => s.startedAt))
+	}, [period, seizures, from])
+
 	useFocusEffect(
 		useCallback(() => {
 			setRefreshKey(k => k + 1)
@@ -114,15 +119,13 @@ export default function History() {
 					<>
 						<SeizureStatsHeader seizures={seizures} />
 
-						{period !== "all" && (
-							<SectionCard title={t("history.calendar")}>
-								<HistoryCalendar
-									seizuresByDate={seizuresByDate}
-									from={from}
-									to={to}
-								/>
-							</SectionCard>
-						)}
+						<SectionCard title={t("history.calendar")}>
+							<HistoryCalendar
+								seizuresByDate={seizuresByDate}
+								from={calendarFrom}
+								to={to}
+							/>
+						</SectionCard>
 
 						<SectionCard title={t("history.timeDistribution")}>
 							<HistoryDonutChart data={timeOfDay} />
