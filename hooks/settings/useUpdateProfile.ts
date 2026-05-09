@@ -4,7 +4,7 @@ import i18n from "@/config/i18n"
 import { User } from "@/models"
 import { updateUser } from "@/services"
 import { useCallback, useState } from "react"
-import { useAuth } from "./useAuth"
+import { useAuth } from "../auth/useAuth"
 
 export function useUpdateProfile() {
 	const { user } = useAuth()

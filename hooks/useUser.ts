@@ -4,7 +4,7 @@ import { db } from "@/config/firebase"
 import { User } from "@/models/user"
 import { doc, onSnapshot } from "firebase/firestore"
 import { useEffect, useState } from "react"
-import { useAuth } from "./useAuth"
+import { useAuth } from "./auth/useAuth"
 
 export function useUser() {
 	const { user } = useAuth()

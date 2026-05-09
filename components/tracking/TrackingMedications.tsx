@@ -1,7 +1,7 @@
 // components/tracking/TrackingMedications.tsx
 
 import { useAppTheme } from "@/hooks"
-import { MedIntake } from "@/hooks/useTrackingForm"
+import { MedIntake } from "@/hooks/tracking/useTrackingForm"
 import {
 	DOSE_UNIT_LABEL_KEYS,
 	Medication,

@@ -10,7 +10,7 @@ import {
 } from "@/services"
 import { hasInvalidVitals } from "@/utils"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { useAuth } from "./useAuth"
+import { useAuth } from "../auth/useAuth"
 
 export type MedIntake = {
 	medicationId: string

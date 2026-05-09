@@ -4,7 +4,7 @@ import i18n from "@/config/i18n"
 import { validatePhone } from "@/utils"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useUpdateProfile } from "./useUpdateProfile"
-import { useUser } from "./useUser"
+import { useUser } from "../useUser"
 
 type PersonalState = {
 	lastName: string

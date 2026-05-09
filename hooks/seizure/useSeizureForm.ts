@@ -1,4 +1,4 @@
-// hooks/useSeizureEditForm.ts
+// hooks/useSeizureForm.ts
 import i18n from "@/config/i18n"
 
 import {
@@ -9,17 +9,15 @@ import {
 	SeizureType,
 	TriggerItem,
 } from "@/models"
-import { deleteSeizure, getSeizureById, updateSeizure } from "@/services"
+import { createSeizure, deleteSeizure, updateSeizure } from "@/services"
 import { isInvalidSeizureTime, isInvalidSleepHours } from "@/utils"
-import { router, useLocalSearchParams } from "expo-router"
-import { deleteField } from "firebase/firestore"
-import { useCallback, useEffect, useState } from "react"
-import { Alert } from "react-native"
-import { useAuth } from "./useAuth"
+import { router } from "expo-router"
+import { useState } from "react"
+import { useAuth } from "../auth/useAuth"
+import { useVideoUpload } from "./useVideoUpload"
 
-export function useSeizureEditForm() {
+export function useSeizureForm() {
 	const { user } = useAuth()
-	const { id } = useLocalSearchParams<{ id: string }>()
 
 	const [startedAt, setStartedAt] = useState<number>(Date.now())
 	const [endedAt, setEndedAt] = useState<number | undefined>(undefined)
@@ -41,43 +39,17 @@ export function useSeizureEditForm() {
 		undefined,
 	)
 	const [description, setDescription] = useState("")
+	const [videoUrl, setVideoUrl] = useState<string | undefined>(undefined)
 
 	const [isLoading, setIsLoading] = useState(false)
-	const [isFetching, setIsFetching] = useState(true)
 	const [error, setError] = useState<string | null>(null)
-
-	const loadSeizure = useCallback(async () => {
-		if (!user || !id) return
-		if (!user?.uid) return
-
-		try {
-			setIsFetching(true)
-
-			const seizure = await getSeizureById(user.uid, id)
-			if (!seizure) return
-
-			setStartedAt(seizure.startedAt)
-			setEndedAt(seizure.endedAt)
-			setType(seizure.type)
-			setCustomType(seizure.customType ?? "")
-			setSeverity(seizure.severity)
-			setInternalTriggers(seizure.internalTriggers ?? [])
-			setExternalTriggers(seizure.externalTriggers ?? [])
-			setMoodBefore(seizure.moodBefore)
-			setMoodAfter(seizure.moodAfter)
-			setIsMedicationTaken(seizure.isMedicationTaken ?? false)
-			setSleepHoursBefore(seizure.sleepHoursBefore)
-			setDescription(seizure.description ?? "")
-		} catch {
-			setError(i18n.t("error.loadingError"))
-		} finally {
-			setIsFetching(false)
-		}
-	}, [user, id])
-
-	useEffect(() => {
-		loadSeizure()
-	}, [loadSeizure])
+	const {
+		upload,
+		cancel,
+		isUploading,
+		uploadProgress,
+		error: uploadError,
+	} = useVideoUpload()
 
 	const toggleInternalTrigger = (trigger: InternalTrigger) => {
 		setInternalTriggers(prev => {
@@ -96,7 +68,12 @@ export function useSeizureEditForm() {
 	}
 
 	const handleSave = async () => {
-		if (!user || !id) return
+		if (!user) return
+
+		if (!startedAt) {
+			setError(i18n.t("seizure.specifyStartTime"))
+			return
+		}
 
 		if (endedAt && endedAt < startedAt) {
 			setError(i18n.t("seizure.endTimeBeforeStart"))
@@ -123,6 +100,8 @@ export function useSeizureEditForm() {
 			setError(null)
 
 			const seizureData: Record<string, any> = {
+				userId: user.uid,
+				patientId: user.uid,
 				startedAt,
 				type,
 				isMedicationTaken,
@@ -130,7 +109,7 @@ export function useSeizureEditForm() {
 				externalTriggers,
 			}
 
-			seizureData.endedAt = endedAt !== undefined ? endedAt : deleteField()
+			if (endedAt !== undefined) seizureData.endedAt = endedAt
 			if (customType && type === "custom") seizureData.customType = customType
 			if (severity !== undefined) seizureData.severity = severity
 			if (moodBefore !== undefined) seizureData.moodBefore = moodBefore
@@ -139,40 +118,33 @@ export function useSeizureEditForm() {
 				seizureData.sleepHoursBefore = sleepHoursBefore
 			if (description) seizureData.description = description
 
-			await updateSeizure(user.uid, id, seizureData as Partial<Seizure>)
+			const seizureId = await createSeizure(
+				user.uid,
+				seizureData as Omit<Seizure, "id" | "createdAt" | "updatedAt">,
+			)
+
+			if (videoUrl && !videoUrl.startsWith("http")) {
+				const { url: uploadedUrl, error: videoError } = await upload(
+					user.uid,
+					seizureId,
+					videoUrl,
+				)
+
+				if (!uploadedUrl) {
+					await deleteSeizure(user.uid, seizureId)
+					setError(videoError ?? i18n.t("error.videoUploadError"))
+					return
+				}
+
+				await updateSeizure(user.uid, seizureId, { videoUrl: uploadedUrl })
+			}
+
 			router.back()
-		} catch (e: any) {
-			console.error("Save error:", e.message, JSON.stringify(e))
+		} catch {
 			setError(i18n.t("error.savingError"))
 		} finally {
 			setIsLoading(false)
 		}
-	}
-
-	const handleDelete = () => {
-		Alert.alert(
-			i18n.t("seizure.confirmDeleteTitle"),
-			i18n.t("seizure.confirmDeleteMessage"),
-			[
-				{ text: i18n.t("common.cancel"), style: "cancel" },
-				{
-					text: i18n.t("seizure.confirmDeleteBtn"),
-					style: "destructive",
-					onPress: async () => {
-						if (!user || !id) return
-						try {
-							setIsLoading(true)
-							await deleteSeizure(user.uid, id)
-							router.back()
-						} catch {
-							setError(i18n.t("error.deleteError"))
-						} finally {
-							setIsLoading(false)
-						}
-					},
-				},
-			],
-		)
 	}
 
 	return {
@@ -198,12 +170,16 @@ export function useSeizureEditForm() {
 		setSleepHoursBefore,
 		description,
 		setDescription,
+		videoUrl,
+		setVideoUrl,
 		isLoading,
-		isFetching,
 		error,
 		toggleInternalTrigger,
 		toggleExternalTrigger,
+		isUploading,
+		uploadProgress,
+		uploadError,
+		cancelUpload: cancel,
 		handleSave,
-		handleDelete,
 	}
 }

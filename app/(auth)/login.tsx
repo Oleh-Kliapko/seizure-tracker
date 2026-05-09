@@ -13,6 +13,7 @@ import {
 } from "@/components/ui"
 import { GOOGLE_ICON } from "@/components/ui/svg"
 import { useAppTheme, useLoginForm } from "@/hooks"
+import { useTranslation } from "react-i18next"
 import {
 	KeyboardAvoidingView,
 	Platform,
@@ -20,9 +21,7 @@ import {
 	Text,
 	View,
 } from "react-native"
-// import { SvgXml } from "react-native-svg"
 import { SvgXml } from "react-native-svg"
-import { useTranslation } from "react-i18next"
 import createAuthStyles from "./auth.styles"
 
 export default function Login() {
@@ -60,19 +59,19 @@ export default function Login() {
 
 					<View style={styles.formCard}>
 						<FormInput
-							label={t('auth.emailLabel')}
+							label={t("auth.emailLabel")}
 							value={email}
 							onChangeText={setEmail}
-							placeholder={t('auth.emailPlaceholder')}
+							placeholder={t("auth.emailPlaceholder")}
 							keyboardType="email-address"
 							autoCapitalize="none"
 							autoComplete="email"
 						/>
 						<FormInput
-							label={t('auth.passwordLabel')}
+							label={t("auth.passwordLabel")}
 							value={password}
 							onChangeText={setPassword}
-							placeholder={t('auth.passwordPlaceholder')}
+							placeholder={t("auth.passwordPlaceholder")}
 							autoComplete="password"
 							isPassword
 						/>
@@ -84,7 +83,7 @@ export default function Login() {
 						</View>
 
 						<Button
-							title={isLoading ? t('common.loading') : t('auth.login.submit')}
+							title={isLoading ? t("common.loading") : t("auth.login.submit")}
 							onPress={handleLogin}
 							disabled={isLoading}
 						/>
@@ -92,15 +91,15 @@ export default function Login() {
 
 					<Divider />
 					<Button
-						title={t('auth.google')}
+						title={t("auth.google")}
 						icon={<SvgXml xml={GOOGLE_ICON} width={20} height={20} />}
 						iconPosition="left"
 						onPress={loginWithGoogle}
 						variant="secondary"
 					/>
 					<AuthFooterLink
-						question={t('auth.login.noAccount')}
-						linkText={t('auth.login.registerLink')}
+						question={t("auth.login.noAccount")}
+						linkText={t("auth.login.registerLink")}
 						href="./register"
 					/>
 				</ScrollView>

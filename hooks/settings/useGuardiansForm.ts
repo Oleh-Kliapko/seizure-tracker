@@ -5,7 +5,7 @@ import { Guardian } from "@/models/user"
 import { validateEmail, validatePhone } from "@/utils"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useUpdateProfile } from "./useUpdateProfile"
-import { useUser } from "./useUser"
+import { useUser } from "../useUser"
 
 export function useGuardiansForm() {
 	const { profile, isLoading: isLoadingProfile } = useUser()

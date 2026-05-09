@@ -4,7 +4,7 @@ import i18n from "@/config/i18n"
 import { Medication } from "@/models/medication"
 import { deleteMedication, getMedications } from "@/services"
 import { useCallback, useEffect, useState } from "react"
-import { useAuth } from "./useAuth"
+import { useAuth } from "../auth/useAuth"
 
 export function useMedications() {
 	const { user } = useAuth()

@@ -1,7 +1,7 @@
 // components/history/HistoryDonutChart.tsx
 
 import { useAppTheme } from "@/hooks"
-import { TimeOfDay } from "@/hooks/useHistoryData"
+import { TimeOfDay } from "@/hooks/history/useHistoryData"
 import { polarToCartesian, slicePath } from "@/utils/historyHelpers"
 import { useTranslation } from "react-i18next"
 import { Text, View } from "react-native"
@@ -55,7 +55,11 @@ export function HistoryDonutChart({ data }: Props) {
 		return { ...seg, count, startAngle: start, endAngle: angle }
 	}).filter(s => s.count > 0)
 
-	const legendItems = slices.map(s => ({ key: s.key, label: t(s.labelKey), color: s.color }))
+	const legendItems = slices.map(s => ({
+		key: s.key,
+		label: t(s.labelKey),
+		color: s.color,
+	}))
 
 	return (
 		<View style={styles.donutContainer}>
@@ -65,7 +69,14 @@ export function HistoryDonutChart({ data }: Props) {
 						{slices.map(s => (
 							<Path
 								key={s.key}
-								d={slicePath(CX, CY, OUTER_R, INNER_R, s.startAngle, s.endAngle)}
+								d={slicePath(
+									CX,
+									CY,
+									OUTER_R,
+									INNER_R,
+									s.startAngle,
+									s.endAngle,
+								)}
 								fill={s.color}
 							/>
 						))}
@@ -73,7 +84,12 @@ export function HistoryDonutChart({ data }: Props) {
 							.filter(s => s.endAngle - s.startAngle > 20)
 							.map(s => {
 								const mid = (s.startAngle + s.endAngle) / 2
-								const pos = polarToCartesian(CX, CY, (INNER_R + OUTER_R) / 2, mid)
+								const pos = polarToCartesian(
+									CX,
+									CY,
+									(INNER_R + OUTER_R) / 2,
+									mid,
+								)
 								return (
 									<SvgText
 										key={`label-${s.key}`}

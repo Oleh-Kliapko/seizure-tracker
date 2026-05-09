@@ -1,7 +1,7 @@
 // components/history/HistoryTriggerBars.tsx
 
 import { useAppTheme } from "@/hooks"
-import { TriggerStat } from "@/hooks/useHistoryData"
+import { TriggerStat } from "@/hooks/history/useHistoryData"
 import { useTranslation } from "react-i18next"
 import { Text, View } from "react-native"
 import { getStyles } from "./getStyles"
@@ -24,7 +24,10 @@ function TriggerBarRow({ item, max }: { item: TriggerStat; max: number }) {
 				<View
 					style={[
 						styles.triggerBarFill,
-						{ width: `${(item.count / max) * 100}%`, backgroundColor: theme.colors.primary },
+						{
+							width: `${(item.count / max) * 100}%`,
+							backgroundColor: theme.colors.primary,
+						},
 					]}
 				/>
 			</View>

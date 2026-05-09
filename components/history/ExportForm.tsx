@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/Button"
 import { REPORT_COOLDOWN_DAYS } from "@/constants/commonConstants"
 import { useAppTheme, useAuth } from "@/hooks"
-import { useExportForm } from "@/hooks/useExportForm"
+import { useExportForm } from "@/hooks/history/useExportForm"
 import { FileDown, Mail } from "lucide-react-native"
 import { useTranslation } from "react-i18next"
 import { Text, View } from "react-native"
@@ -19,7 +19,13 @@ type Props = {
 	lastReportSentAt?: number
 }
 
-export function ExportForm({ onExport, onExportEmail, isLoading, error, lastReportSentAt }: Props) {
+export function ExportForm({
+	onExport,
+	onExportEmail,
+	isLoading,
+	error,
+	lastReportSentAt,
+}: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
 	const { t } = useTranslation()
@@ -48,8 +54,14 @@ export function ExportForm({ onExport, onExportEmail, isLoading, error, lastRepo
 		<View style={styles.card}>
 			<Text style={styles.title}>{t("history.exportTitle")}</Text>
 			<View style={styles.rulesList}>
-				<Text style={styles.subtitle}>{"• "}{t("history.exportRule1")}</Text>
-				<Text style={styles.subtitle}>{"• "}{t("history.exportRule2", { days: REPORT_COOLDOWN_DAYS })}</Text>
+				<Text style={styles.subtitle}>
+					{"• "}
+					{t("history.exportRule1")}
+				</Text>
+				<Text style={styles.subtitle}>
+					{"• "}
+					{t("history.exportRule2", { days: REPORT_COOLDOWN_DAYS })}
+				</Text>
 			</View>
 
 			<ExportDateRange
@@ -86,7 +98,7 @@ export function ExportForm({ onExport, onExportEmail, isLoading, error, lastRepo
 				isLoading={isLoading}
 				initialEmail={email}
 				onClose={() => setShowEmailModal(false)}
-				onSend={(emailAddr) => {
+				onSend={emailAddr => {
 					onExportEmail(from, to, emailAddr)
 					setShowEmailModal(false)
 				}}

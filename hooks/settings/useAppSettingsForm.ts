@@ -2,9 +2,9 @@
 
 import { AppThemeMode, CommunicationChannel } from "@/models/user"
 import { useEffect, useState } from "react"
-import { useThemeContext } from "./useAppTheme"
+import { useThemeContext } from "../useAppTheme"
 import { useUpdateProfile } from "./useUpdateProfile"
-import { useUser } from "./useUser"
+import { useUser } from "../useUser"
 
 export function useAppSettingsForm() {
 	const { profile, isLoading: isLoadingProfile } = useUser()

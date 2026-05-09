@@ -9,7 +9,7 @@ import {
 	updateMedication,
 } from "@/services"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { useAuth } from "./useAuth"
+import { useAuth } from "../auth/useAuth"
 
 export type MedEntry = {
 	id?: string

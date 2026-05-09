@@ -9,13 +9,17 @@ import {
 	DashboardToday,
 } from "@/components/dashboard"
 import { ScreenHeader, ScreenWrapper } from "@/components/ui"
-import { useAppTheme } from "@/hooks"
-import { useDashboard } from "@/hooks/useDashboard"
+import { useAppTheme, useDashboard } from "@/hooks"
 import { format } from "date-fns"
 import { uk } from "date-fns/locale"
 import { useCallback, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { ActivityIndicator, RefreshControl, ScrollView, View } from "react-native"
+import {
+	ActivityIndicator,
+	RefreshControl,
+	ScrollView,
+	View,
+} from "react-native"
 
 export default function Dashboard() {
 	const { colors, spacing } = useAppTheme()
@@ -74,7 +78,11 @@ export default function Dashboard() {
 					}}
 					showsVerticalScrollIndicator={false}
 					refreshControl={
-						<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />
+						<RefreshControl
+							refreshing={refreshing}
+							onRefresh={onRefresh}
+							tintColor={colors.primary}
+						/>
 					}
 				>
 					<DashboardHero

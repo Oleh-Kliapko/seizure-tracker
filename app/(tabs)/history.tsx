@@ -10,12 +10,17 @@ import {
 	getPeriodRange,
 } from "@/components/history"
 import { ScreenHeader, ScreenWrapper } from "@/components/ui"
-import { useAppTheme, useExport, useUser } from "@/hooks"
-import { useHistoryData } from "@/hooks/useHistoryData"
+import { useAppTheme, useExport, useUser, useHistoryData } from "@/hooks"
 import { useFocusEffect } from "expo-router"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { ActivityIndicator, RefreshControl, ScrollView, Text, View } from "react-native"
+import {
+	ActivityIndicator,
+	RefreshControl,
+	ScrollView,
+	Text,
+	View,
+} from "react-native"
 
 function SectionCard({
 	title,
@@ -91,7 +96,11 @@ export default function History() {
 				contentContainerStyle={{ padding: spacing.lg }}
 				showsVerticalScrollIndicator={false}
 				refreshControl={
-					<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />
+					<RefreshControl
+						refreshing={refreshing}
+						onRefresh={onRefresh}
+						tintColor={colors.primary}
+					/>
 				}
 			>
 				<HistoryPeriodFilter active={period} onChange={setPeriod} />

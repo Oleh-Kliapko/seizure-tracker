@@ -1,13 +1,18 @@
 // hooks/useExport.ts
 
-import { exportSeizuresToPdf, getSeizuresByPeriod, getMedications, updateUser } from "@/services"
+import {
+	exportSeizuresToPdf,
+	getSeizuresByPeriod,
+	getMedications,
+	updateUser,
+} from "@/services"
 import { generateSeizureReportHtml } from "@/utils"
 import { REPORT_COOLDOWN_DAYS } from "@/constants/commonConstants"
 import i18n from "@/config/i18n"
 import { useState } from "react"
 import * as Print from "expo-print"
-import { useAuth } from "./useAuth"
-import { useUser } from "./useUser"
+import { useAuth } from "../auth/useAuth"
+import { useUser } from "../useUser"
 
 const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL
 
@@ -47,10 +52,17 @@ export function useExport() {
 			setError(null)
 
 			const cooldownMs = REPORT_COOLDOWN_DAYS * 24 * 60 * 60 * 1000
-			if (profile.lastReportSentAt && Date.now() - profile.lastReportSentAt < cooldownMs) {
+			if (
+				profile.lastReportSentAt &&
+				Date.now() - profile.lastReportSentAt < cooldownMs
+			) {
 				const nextAvailable = new Date(profile.lastReportSentAt + cooldownMs)
 				const locale = i18n.language === "uk" ? "uk-UA" : "en-US"
-				const dateStr = nextAvailable.toLocaleDateString(locale, { day: "2-digit", month: "2-digit", year: "numeric" })
+				const dateStr = nextAvailable.toLocaleDateString(locale, {
+					day: "2-digit",
+					month: "2-digit",
+					year: "numeric",
+				})
 				setError(i18n.t("error.reportCooldown", { date: dateStr }))
 				return
 			}
@@ -64,7 +76,13 @@ export function useExport() {
 
 			console.log("[Email Export] 1. Generating HTML...")
 			const medications = await getMedications(user.uid).catch(() => [])
-			const html = await generateSeizureReportHtml(profile, medications, seizures, from, to)
+			const html = await generateSeizureReportHtml(
+				profile,
+				medications,
+				seizures,
+				from,
+				to,
+			)
 			console.log("[Email Export] 2. HTML generated, length:", html.length)
 
 			console.log("[Email Export] 3. Generating PDF...")
@@ -75,7 +93,8 @@ export function useExport() {
 			const fileContent = await readFileAsBase64(uri)
 			console.log("[Email Export] 6. Base64 length:", fileContent.length)
 
-			if (!BACKEND_URL) throw new Error("EXPO_PUBLIC_BACKEND_URL is not configured")
+			if (!BACKEND_URL)
+				throw new Error("EXPO_PUBLIC_BACKEND_URL is not configured")
 			const idToken = await user.getIdToken()
 
 			console.log("[Email Export] 7. Sending to backend:", BACKEND_URL)
@@ -83,21 +102,24 @@ export function useExport() {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
-					"Authorization": `Bearer ${idToken}`,
+					Authorization: `Bearer ${idToken}`,
 				},
 				body: JSON.stringify({
 					email,
 					pdfBase64: fileContent,
 					locale: i18n.language,
-					patientName: [profile.lastName, profile.firstName, profile.middleName]
-						.filter(Boolean)
-						.join(" ") || profile.displayName,
+					patientName:
+						[profile.lastName, profile.firstName, profile.middleName]
+							.filter(Boolean)
+							.join(" ") || profile.displayName,
 				}),
 			})
 			console.log("[Email Export] 8. Response status:", response.status)
 
 			if (!response.ok) {
-				const errorData = await response.json().catch(() => ({ error: i18n.t("error.unknownError") }))
+				const errorData = await response
+					.json()
+					.catch(() => ({ error: i18n.t("error.unknownError") }))
 				setError(errorData.error || i18n.t("error.sendError"))
 				return
 			}

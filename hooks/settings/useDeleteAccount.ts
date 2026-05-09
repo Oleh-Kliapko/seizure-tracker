@@ -10,7 +10,7 @@ import {
 } from "firebase/auth"
 import { deleteDoc, doc } from "firebase/firestore"
 import { useState } from "react"
-import { useGoogleAuth } from "./useGoogleAuth"
+import { useGoogleAuth } from "../auth/useGoogleAuth"
 
 export function useDeleteAccount() {
 	const [isLoading, setIsLoading] = useState(false)

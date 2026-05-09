@@ -1,37 +1,39 @@
 // hooks/index.ts
 
+import { useAuth } from "./auth/useAuth"
+import { useAuthActions } from "./auth/useAuthActions"
+import { useGoogleAuth } from "./auth/useGoogleAuth"
+import { useLoginForm } from "./auth/useLoginForm"
+import { useRegisterForm } from "./auth/useRegisterForm"
+import { useSetPasswordForm } from "./auth/useSetPasswordForm"
+import { useVerifyEmailActions } from "./auth/useVerifyEmailActions"
+import { useDashboard } from "./dashboard/useDashboard"
+import { useExport } from "./history/useExport"
+import { useExportForm } from "./history/useExportForm"
+import { useHistoryData } from "./history/useHistoryData"
+import { useSeizureEditForm } from "./seizure/useSeizureEditForm"
+import { useSeizureForm } from "./seizure/useSeizureForm"
+import { useSeizureList } from "./seizure/useSeizureList"
+import { useVideoUpload } from "./seizure/useVideoUpload"
+import { useAppSettingsForm } from "./settings/useAppSettingsForm"
+import { useAvatarUpload } from "./settings/useAvatarUpload"
+import { useChangePasswordForm } from "./settings/useChangePasswordForm"
+import { useDeleteAccount } from "./settings/useDeleteAccount"
+import { useGuardiansForm } from "./settings/useGuardiansForm"
+import { useMedicalForm } from "./settings/useMedicalForm"
+import { useMedications } from "./settings/useMedications"
+import { useMedicationsForm } from "./settings/useMedicationsForm"
+import { usePersonalForm } from "./settings/usePersonalForm"
+import { useUpdateProfile } from "./settings/useUpdateProfile"
+import { useTrackingForm } from "./tracking/useTrackingForm"
 import { useAppFonts } from "./useAppFonts"
-import { useAppSettingsForm } from "./useAppSettingsForm"
 import {
 	ThemeProvider,
 	useAppTheme,
 	useIsDarkTheme,
 	useThemeContext,
 } from "./useAppTheme"
-import { useAuth } from "./useAuth"
-import { useAuthActions } from "./useAuthActions"
-import { useAvatarUpload } from "./useAvatarUpload"
-import { useChangePasswordForm } from "./useChangePasswordForm"
-import { useDeleteAccount } from "./useDeleteAccount"
-import { useExport } from "./useExport"
-import { useExportForm } from "./useExportForm"
-import { useGoogleAuth } from "./useGoogleAuth"
-import { useGuardiansForm } from "./useGuardiansForm"
-import { useLoginForm } from "./useLoginForm"
-import { useMedicalForm } from "./useMedicalForm"
-import { usePersonalForm } from "./usePersonalForm"
-import { useRegisterForm } from "./useRegisterForm"
-import { useSeizureEditForm } from "./useSeizureEditForm"
-import { useSeizureForm } from "./useSeizureForm"
-import { useSeizureList } from "./useSeizureList"
-import { useSetPasswordForm } from "./useSetPasswordForm"
-import { useVerifyEmailActions } from "./useVerifyEmailActions"
-import { useMedications } from "./useMedications"
-import { useMedicationsForm } from "./useMedicationsForm"
-import { useTrackingForm } from "./useTrackingForm"
-import { useUpdateProfile } from "./useUpdateProfile"
 import { useUser } from "./useUser"
-import { useVideoUpload } from "./useVideoUpload"
 
 export {
 	ThemeProvider,
@@ -42,11 +44,13 @@ export {
 	useAuthActions,
 	useAvatarUpload,
 	useChangePasswordForm,
+	useDashboard,
 	useDeleteAccount,
 	useExport,
 	useExportForm,
 	useGoogleAuth,
 	useGuardiansForm,
+	useHistoryData,
 	useIsDarkTheme,
 	useLoginForm,
 	useMedicalForm,

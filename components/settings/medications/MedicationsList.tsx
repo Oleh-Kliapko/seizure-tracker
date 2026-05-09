@@ -1,7 +1,7 @@
 // components/settings/medications/MedicationsList.tsx
 
 import { useAppTheme } from "@/hooks"
-import { MedEntry } from "@/hooks/useMedicationsForm"
+import { MedEntry } from "@/hooks/settings/useMedicationsForm"
 import { Pill } from "lucide-react-native"
 import { Text, TouchableOpacity, View } from "react-native"
 import { useTranslation } from "react-i18next"
@@ -57,7 +57,7 @@ export function MedicationsList({
 				activeOpacity={0.7}
 			>
 				<Pill size={20} color={theme.colors.primary} />
-				<Text style={styles.addBtnText}>{t('medications.addMedication')}</Text>
+				<Text style={styles.addBtnText}>{t("medications.addMedication")}</Text>
 			</TouchableOpacity>
 
 			{error && (

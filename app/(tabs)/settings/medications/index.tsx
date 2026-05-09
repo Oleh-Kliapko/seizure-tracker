@@ -3,7 +3,7 @@
 import { MedicationsList } from "@/components/settings/medications/MedicationsList"
 import { ScreenHeader, ScreenWrapper } from "@/components/ui"
 import { useAppTheme } from "@/hooks"
-import { useMedicationsForm } from "@/hooks/useMedicationsForm"
+import { useMedicationsForm } from "@/hooks/settings/useMedicationsForm"
 import { useFocusEffect } from "@react-navigation/native"
 import { useCallback } from "react"
 import { useTranslation } from "react-i18next"

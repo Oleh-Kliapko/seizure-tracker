@@ -5,7 +5,7 @@ import { Seizure } from "@/models"
 import { getSeizures } from "@/services"
 import { useFocusEffect } from "expo-router"
 import { useCallback, useMemo, useState } from "react"
-import { useAuth } from "./useAuth"
+import { useAuth } from "../auth/useAuth"
 
 const PAGE_SIZE = 4
 
@@ -61,7 +61,7 @@ export function useSeizureList() {
 	}
 
 	const updateSeizureInList = (updated: Seizure) => {
-		setSeizures(prev => prev.map(s => s.id === updated.id ? updated : s))
+		setSeizures(prev => prev.map(s => (s.id === updated.id ? updated : s)))
 	}
 
 	return {

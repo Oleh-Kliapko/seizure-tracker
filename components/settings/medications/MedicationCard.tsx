@@ -3,7 +3,7 @@
 import { FormInput, TimePickerModal } from "@/components/ui"
 import { MONTHS, YEARS } from "@/constants/commonConstants"
 import { useAppTheme } from "@/hooks"
-import { MedEntry } from "@/hooks/useMedicationsForm"
+import { MedEntry } from "@/hooks/settings/useMedicationsForm"
 import { DOSE_UNIT_LABEL_KEYS, DOSE_UNITS } from "@/models/medication"
 import { Picker } from "@react-native-picker/picker"
 import { Check, Clock, Plus, Trash2, X } from "lucide-react-native"
@@ -50,16 +50,24 @@ export function MedicationCard({
 	return (
 		<View style={styles.guardianCard}>
 			<View style={styles.guardianHeader}>
-				<Text style={styles.guardianTitle}>{t('medications.title', { index: index + 1 })}</Text>
+				<Text style={styles.guardianTitle}>
+					{t("medications.title", { index: index + 1 })}
+				</Text>
 				<TouchableOpacity
-					onPress={() => Alert.alert(
-						t("medications.confirmDeleteTitle"),
-						t("medications.confirmDeleteMessage"),
-						[
-							{ text: t("common.cancel"), style: "cancel" },
-							{ text: t("medications.confirmDeleteBtn"), style: "destructive", onPress: onRemove },
-						]
-					)}
+					onPress={() =>
+						Alert.alert(
+							t("medications.confirmDeleteTitle"),
+							t("medications.confirmDeleteMessage"),
+							[
+								{ text: t("common.cancel"), style: "cancel" },
+								{
+									text: t("medications.confirmDeleteBtn"),
+									style: "destructive",
+									onPress: onRemove,
+								},
+							],
+						)
+					}
 					activeOpacity={0.7}
 				>
 					<Trash2 size={20} color={colors.error} />
@@ -67,16 +75,16 @@ export function MedicationCard({
 			</View>
 
 			<FormInput
-				label={t('medications.name')}
+				label={t("medications.name")}
 				value={entry.name}
 				onChangeText={v => onUpdate("name", v)}
 				onBlur={onBlur}
-				placeholder={t('medications.namePlaceholder')}
+				placeholder={t("medications.namePlaceholder")}
 				autoCapitalize="words"
 			/>
 
 			<FormInput
-				label={t('medications.dailyDose')}
+				label={t("medications.dailyDose")}
 				value={entry.doseAmount}
 				onChangeText={v => {
 					if (!v || /^\d*\.?\d*$/.test(v)) onUpdate("doseAmount", v)
@@ -88,9 +96,11 @@ export function MedicationCard({
 
 			<View style={{ marginBottom: spacing.md }}>
 				<Text style={[styles.label, { marginBottom: spacing.sm }]}>
-					{t('medications.doseUnit')}
+					{t("medications.doseUnit")}
 				</Text>
-				<View style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.sm }}>
+				<View
+					style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.sm }}
+				>
 					{DOSE_UNITS.map(unit => {
 						const active = entry.doseUnit === unit
 						return (
@@ -104,7 +114,9 @@ export function MedicationCard({
 									borderRadius: radius.lg,
 									borderWidth: 1,
 									borderColor: active ? colors.primary : colors.border,
-									backgroundColor: active ? colors.primary + "15" : colors.background,
+									backgroundColor: active
+										? colors.primary + "15"
+										: colors.background,
 								}}
 							>
 								<Text
@@ -124,9 +136,11 @@ export function MedicationCard({
 
 			<View style={{ marginBottom: spacing.md }}>
 				<Text style={[styles.label, { marginBottom: spacing.sm }]}>
-					{t('medications.scheduledTime')}
+					{t("medications.scheduledTime")}
 				</Text>
-				<View style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.sm }}>
+				<View
+					style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.sm }}
+				>
 					{entry.scheduledTimes.map(t => (
 						<View
 							key={t}
@@ -141,7 +155,13 @@ export function MedicationCard({
 							}}
 						>
 							<Clock size={13} color={colors.primary} />
-							<Text style={{ fontFamily: fonts.medium, fontSize: fontSize.sm, color: colors.primary }}>
+							<Text
+								style={{
+									fontFamily: fonts.medium,
+									fontSize: fontSize.sm,
+									color: colors.primary,
+								}}
+							>
 								{t}
 							</Text>
 							<TouchableOpacity
@@ -169,46 +189,71 @@ export function MedicationCard({
 						}}
 					>
 						<Plus size={13} color={colors.primary} />
-						<Text style={{ fontFamily: fonts.medium, fontSize: fontSize.sm, color: colors.primary }}>
-							{t('medications.addTime')}
+						<Text
+							style={{
+								fontFamily: fonts.medium,
+								fontSize: fontSize.sm,
+								color: colors.primary,
+							}}
+						>
+							{t("medications.addTime")}
 						</Text>
 					</TouchableOpacity>
 				</View>
 			</View>
 
 			<FormInput
-				label={t('medications.notes')}
+				label={t("medications.notes")}
 				value={entry.notes}
 				onChangeText={v => onUpdate("notes", v)}
 				onBlur={onBlur}
-				placeholder={t('medications.notesPlaceholder')}
+				placeholder={t("medications.notesPlaceholder")}
 				autoCapitalize="sentences"
 				multiline
 				numberOfLines={2}
 			/>
 
 			<View style={{ marginBottom: spacing.md }}>
-				<View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginBottom: spacing.sm }}>
-					<Text style={[styles.label, { marginBottom: 0 }]}>{t('medications.startedAt')}</Text>
+				<View
+					style={{
+						flexDirection: "row",
+						alignItems: "center",
+						gap: 6,
+						marginBottom: spacing.sm,
+					}}
+				>
+					<Text style={[styles.label, { marginBottom: 0 }]}>
+						{t("medications.startedAt")}
+					</Text>
 					{showStartedCheck && <Check size={13} color="#22C55E" />}
 				</View>
 				<View style={styles.row}>
 					<View style={styles.pickerWrapper}>
 						<Picker
 							selectedValue={entry.startMonth}
-							onValueChange={v => { onUpdateStarted(v, entry.startYear); flashStartedCheck() }}
+							onValueChange={v => {
+								onUpdateStarted(v, entry.startYear)
+								flashStartedCheck()
+							}}
 							style={{ color: colors.onSurface }}
 							itemStyle={{ color: colors.onSurface }}
 						>
 							{MONTHS.map(m => (
-								<Picker.Item key={m.value} label={t(m.labelKey)} value={m.value} />
+								<Picker.Item
+									key={m.value}
+									label={t(m.labelKey)}
+									value={m.value}
+								/>
 							))}
 						</Picker>
 					</View>
 					<View style={styles.pickerWrapper}>
 						<Picker
 							selectedValue={entry.startYear}
-							onValueChange={v => { onUpdateStarted(entry.startMonth, v); flashStartedCheck() }}
+							onValueChange={v => {
+								onUpdateStarted(entry.startMonth, v)
+								flashStartedCheck()
+							}}
 							style={{ color: colors.onSurface }}
 							itemStyle={{ color: colors.onSurface }}
 						>

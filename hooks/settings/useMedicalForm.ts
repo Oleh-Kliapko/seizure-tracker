@@ -1,9 +1,8 @@
 // hooks/useMedicalForm.ts
 import i18n from "@/config/i18n"
-
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useUpdateProfile } from "./useUpdateProfile"
-import { useUser } from "./useUser"
+import { useUser } from "../useUser"
 
 type MedicalState = {
 	month: number

@@ -10,8 +10,8 @@ import {
 } from "@/services"
 import { useFocusEffect } from "expo-router"
 import { useCallback, useMemo, useState } from "react"
-import { useAuth } from "./useAuth"
-import { useUser } from "./useUser"
+import { useAuth } from "../auth/useAuth"
+import { useUser } from "../useUser"
 
 function countFilledSections(t: DailyTracking | null): number {
 	if (!t) return 0
@@ -71,7 +71,11 @@ export function useDashboard() {
 		}
 	}, [user])
 
-	useFocusEffect(useCallback(() => { load() }, [load]))
+	useFocusEffect(
+		useCallback(() => {
+			load()
+		}, [load]),
+	)
 
 	const computed = useMemo(() => {
 		const lastSeizure = seizures[0] ?? null
