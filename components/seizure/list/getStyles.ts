@@ -57,6 +57,8 @@ export const getStyles = (theme: AppTheme) => {
 			borderWidth: 1,
 			borderColor: colors.border,
 			backgroundColor: colors.surface,
+			alignItems: "center",
+			justifyContent: "center",
 		},
 
 		filterChipActive: {

@@ -9,6 +9,7 @@ import {
 	HistoryTriggerBars,
 	getPeriodRange,
 } from "@/components/history"
+import { SeizureStatsHeader } from "@/components/seizure/list"
 import { ScreenHeader, ScreenWrapper } from "@/components/ui"
 import { useAppTheme, useExport, useUser, useHistoryData } from "@/hooks"
 import { useFocusEffect } from "expo-router"
@@ -57,7 +58,7 @@ function SectionCard({
 }
 
 export default function History() {
-	const { colors, fonts, spacing } = useAppTheme()
+	const { colors, spacing } = useAppTheme()
 	const { t } = useTranslation()
 	const {
 		exportPdf,
@@ -111,26 +112,17 @@ export default function History() {
 					</View>
 				) : (
 					<>
-						<SectionCard title={t("history.seizureCount")}>
-							<Text
-								style={{
-									fontFamily: fonts.bold,
-									fontSize: 42,
-									color: colors.onSurface,
-									lineHeight: 48,
-								}}
-							>
-								{seizures.length}
-							</Text>
-						</SectionCard>
+						<SeizureStatsHeader seizures={seizures} />
 
-						<SectionCard title={t("history.calendar")}>
-							<HistoryCalendar
-								seizuresByDate={seizuresByDate}
-								from={from}
-								to={to}
-							/>
-						</SectionCard>
+						{period !== "all" && (
+							<SectionCard title={t("history.calendar")}>
+								<HistoryCalendar
+									seizuresByDate={seizuresByDate}
+									from={from}
+									to={to}
+								/>
+							</SectionCard>
+						)}
 
 						<SectionCard title={t("history.timeDistribution")}>
 							<HistoryDonutChart data={timeOfDay} />

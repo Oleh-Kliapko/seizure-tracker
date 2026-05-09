@@ -16,6 +16,7 @@ const PERIODS: PeriodItem[] = [
 	{ labelKey: "history.threeMonths", value: "3months" },
 	{ labelKey: "history.sixMonths", value: "6months" },
 	{ labelKey: "history.year", value: "year" },
+	{ labelKey: "history.allTime", value: "all" },
 ]
 
 type Props = {

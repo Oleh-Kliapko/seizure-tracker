@@ -1,6 +1,6 @@
 import { Seizure } from "@/models/seizure"
 
-export type HistoryPeriod = "month" | "3months" | "6months" | "year"
+export type HistoryPeriod = "month" | "3months" | "6months" | "year" | "all"
 
 export function getMonthsInRange(
 	from: number,
@@ -99,6 +99,9 @@ export function getPeriodRange(period: HistoryPeriod): {
 			break
 		case "year":
 			from.setFullYear(from.getFullYear() - 1)
+			break
+		case "all":
+			from.setFullYear(2000)
 			break
 	}
 	return { from: from.getTime(), to: to.getTime() }

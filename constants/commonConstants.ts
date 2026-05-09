@@ -117,10 +117,11 @@ export const MOOD_EMOJI: Record<number, string> = {
 	5: "😊",
 }
 
-export type SeizureFilter = "all" | "1" | "2" | "3" | "unknown"
+export type SeizureFilter = "all" | "video" | "1" | "2" | "3" | "unknown"
 
 export const FILTERS: { labelKey: string; value: SeizureFilter }[] = [
 	{ labelKey: "filter.all", value: "all" },
+	{ labelKey: "filter.video", value: "video" },
 	{ labelKey: "filter.1", value: "1" },
 	{ labelKey: "filter.2", value: "2" },
 	{ labelKey: "filter.3", value: "3" },

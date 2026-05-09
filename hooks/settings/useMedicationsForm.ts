@@ -44,7 +44,7 @@ export function useMedicationsForm() {
 	const entriesRef = useRef<MedEntry[]>([])
 	entriesRef.current = entries
 
-	const load = async () => {
+	const load = useCallback(async () => {
 		if (!user) return
 		setIsLoading(true)
 		try {
@@ -55,11 +55,11 @@ export function useMedicationsForm() {
 		} finally {
 			setIsLoading(false)
 		}
-	}
+	}, [user])
 
 	useEffect(() => {
 		load()
-	}, [user])
+	}, [load])
 
 	const saveEntry = useCallback(
 		async (index: number, overrides: Partial<MedEntry> = {}) => {

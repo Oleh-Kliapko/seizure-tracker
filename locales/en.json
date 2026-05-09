@@ -173,6 +173,7 @@
 	},
 	"filter": {
 		"all": "All",
+		"video": "With video",
 		"1": "⚡ Mild",
 		"2": "⚡⚡ Moderate",
 		"3": "⚡⚡⚡ Severe",
@@ -262,6 +263,7 @@
 		"threeMonths": "3 months",
 		"sixMonths": "6 months",
 		"year": "Year",
+		"allTime": "All time",
 		"exportTitle": "Export PDF Report",
 		"exportRule1": "maximum for the last 5 months",
 		"exportRule2": "sending no more than 1 report per {{days}} days",

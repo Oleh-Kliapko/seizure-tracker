@@ -4,7 +4,6 @@ import {
 	SeizureCard,
 	SeizureFilters,
 	SeizurePagination,
-	SeizureStatsHeader,
 } from "@/components/seizure/list"
 import { getStyles } from "@/components/seizure/list/getStyles"
 import { ScreenHeader, ScreenWrapper } from "@/components/ui"
@@ -28,7 +27,6 @@ export default function SeizuresScreen() {
 	const styles = getStyles(theme)
 	const { t } = useTranslation()
 	const {
-		seizures,
 		paginated,
 		filter,
 		page,
@@ -88,7 +86,6 @@ export default function SeizuresScreen() {
 						<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.colors.primary} />
 					}
 				>
-					<SeizureStatsHeader seizures={seizures} />
 					<SeizureFilters active={filter} onChange={handleFilterChange} />
 
 					{paginated.length === 0 ? (

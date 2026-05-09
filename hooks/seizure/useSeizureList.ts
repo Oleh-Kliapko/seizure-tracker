@@ -44,6 +44,7 @@ export function useSeizureList() {
 
 	const filtered = useMemo(() => {
 		if (filter === "all") return seizures
+		if (filter === "video") return seizures.filter(s => !!s.videoUrl)
 		if (filter === "unknown") return seizures.filter(s => !s.severity)
 		return seizures.filter(s => s.severity === Number(filter))
 	}, [seizures, filter])
