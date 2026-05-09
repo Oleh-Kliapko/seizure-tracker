@@ -37,7 +37,7 @@ type TrackingState = {
 	doctorNotes: string
 }
 
-export function useTrackingForm() {
+export function useTrackingForm(dateTimestamp: number) {
 	const { user } = useAuth()
 
 	const [temperature, setTemperature] = useState("")
@@ -77,7 +77,7 @@ export function useTrackingForm() {
 				const tracking = await getTrackingByDate(
 					user.uid,
 					patientId,
-					Date.now(),
+					dateTimestamp,
 				).catch(() => null)
 				const meds = await getMedicationsByPatient(user.uid, patientId).catch(
 					() => [],
@@ -115,7 +115,7 @@ export function useTrackingForm() {
 			}
 		}
 		load()
-	}, [user])
+	}, [user, dateTimestamp])
 
 	// Always-current snapshot — assigned synchronously on every render
 	const stateRef = useRef<TrackingState>({
@@ -178,7 +178,7 @@ export function useTrackingForm() {
 				await upsertTracking(user.uid, {
 					userId: user.uid,
 					patientId: user.uid,
-					date: Date.now(),
+					date: dateTimestamp,
 					temperature: s.temperature ? parseFloat(s.temperature) : undefined,
 					pulse: s.pulse ? parseInt(s.pulse) : undefined,
 					systolicPressure: s.systolicPressure

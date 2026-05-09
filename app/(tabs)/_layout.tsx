@@ -58,6 +58,7 @@ export default function TabsLayout() {
 				options={{
 					title: t("tabs.tracking"),
 					tabBarIcon: ({ color }) => <ChartBar size={md} color={color} />,
+					href: "/(tabs)/tracking",
 				}}
 			/>
 			<Tabs.Screen

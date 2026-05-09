@@ -25,6 +25,7 @@ import { useMedications } from "./settings/useMedications"
 import { useMedicationsForm } from "./settings/useMedicationsForm"
 import { usePersonalForm } from "./settings/usePersonalForm"
 import { useUpdateProfile } from "./settings/useUpdateProfile"
+import { useTrackingCalendar } from "./tracking/useTrackingCalendar"
 import { useTrackingForm } from "./tracking/useTrackingForm"
 import { useAppFonts } from "./useAppFonts"
 import {
@@ -63,6 +64,7 @@ export {
 	useSeizureList,
 	useSetPasswordForm,
 	useThemeContext,
+	useTrackingCalendar,
 	useTrackingForm,
 	useUpdateProfile,
 	useUser,
