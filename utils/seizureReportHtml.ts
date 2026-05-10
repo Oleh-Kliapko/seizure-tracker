@@ -1,11 +1,12 @@
 import i18n from "@/config/i18n"
 import { User } from "../models"
+import { buildHeaderHtml, buildPatientHtml, formatReportDate as formatDate } from "./reportShared"
 
 export const htmlReport = (
 	user: User,
 	from: number,
 	to: number,
-	formatDate: (date: number) => string,
+	_formatDate: (date: number) => string,
 	stats: any,
 	rowsWithVideo: string,
 	rowsWithoutVideo: string,
@@ -103,24 +104,8 @@ export const htmlReport = (
   </style>
 </head>
 <body>
-  <div class="header">
-    <h1>SeizureTracker — ${i18n.t("report.title")}</h1>
-    <p>${i18n.t("report.period")}: ${formatDate(from)} — ${formatDate(to)}</p>
-    <p>${i18n.t("report.generated")}: ${formatDate(Date.now())}</p>
-  </div>
-
-  <div class="patient-info">
-    <h2>${i18n.t("report.patientData")}</h2>
-    <div class="patient-row">
-      <div class="patient-field"><span>${i18n.t("report.fullName")}: </span><strong>${patientName}</strong></div>
-      ${user.birthDate ? `<div class="patient-field"><span>${i18n.t("report.birthDate")}: </span>${formatDate(user.birthDate)}</div>` : ""}
-      <div class="patient-field"><span>Email: </span>${user.email}</div>
-      ${user.phone ? `<div class="patient-field"><span>${i18n.t("report.phone")}: </span>${user.phone}</div>` : ""}
-      ${user.medicalInfo?.height ? `<div class="patient-field"><span>${i18n.t("report.height")}: </span>${user.medicalInfo.height} ${i18n.t("report.cm")}</div>` : ""}
-      ${user.medicalInfo?.weight ? `<div class="patient-field"><span>${i18n.t("report.weight")}: </span>${user.medicalInfo.weight} ${i18n.t("report.kg")}</div>` : ""}
-      ${user.medicalInfo?.anamnesis ? `<div class="patient-field"><span>${i18n.t("report.anamnesis")}: </span>${user.medicalInfo.anamnesis}</div>` : ""}
-    </div>
-  </div>
+  ${buildHeaderHtml(i18n.t("report.title"), from, to)}
+  ${buildPatientHtml(user, patientName)}
 
   <div class="medications-section">
     <h2>💊 ${i18n.t("report.medTitle")}</h2>
