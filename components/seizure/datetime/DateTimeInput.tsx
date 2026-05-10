@@ -48,24 +48,37 @@ export function DateTimeInput({ label, value, onChange }: Props) {
 	const now = new Date()
 	const atMaxMonth = year >= now.getFullYear() && month >= now.getMonth()
 
+	// First and last moment of the selected month (capped at now)
+	const minDate = new Date(year, month, 1, 0, 0, 0)
+	const lastOfMonth = new Date(year, month + 1, 0, 23, 59, 59)
+	const maxDate = lastOfMonth > now ? now : lastOfMonth
+
+	const clampToMonth = (next: Date): number => {
+		const lastDay = new Date(next.getFullYear(), next.getMonth() + 1, 0).getDate()
+		if (next.getDate() > lastDay) next.setDate(lastDay)
+		return next > now ? now.getTime() : next.getTime()
+	}
+
 	const changeYear = (delta: number) => {
 		const newYear = year + delta
 		if (newYear > MAX_YEAR) return
 		const next = new Date(value)
 		next.setFullYear(newYear)
-		onChange(next > now ? now.getTime() : next.getTime())
+		onChange(clampToMonth(next))
 	}
 
 	const changeMonth = (delta: number) => {
 		const next = new Date(value)
-		next.setMonth(next.getMonth() + delta)
-		onChange(next > now ? now.getTime() : next.getTime())
+		const targetMonth = next.getMonth() + delta
+		const lastDay = new Date(next.getFullYear(), targetMonth + 1, 0).getDate()
+		next.setDate(Math.min(next.getDate(), lastDay))
+		next.setMonth(targetMonth)
+		onChange(clampToMonth(next))
 	}
 
 	const handlePickerChange = (_: unknown, d?: Date) => {
 		if (!d) return
-		// Preserve year+month since datetime spinner doesn't show year
-		d.setFullYear(year, month, d.getDate())
+		d.setFullYear(year)
 		onChange(d.getTime())
 	}
 
@@ -107,7 +120,8 @@ export function DateTimeInput({ label, value, onChange }: Props) {
 						mode="datetime"
 						display={Platform.OS === "ios" ? "spinner" : "default"}
 						themeVariant={isDark ? "dark" : "light"}
-						maximumDate={new Date()}
+						minimumDate={minDate}
+						maximumDate={maxDate}
 						onChange={handlePickerChange}
 						style={{ marginTop: -8 }}
 					/>

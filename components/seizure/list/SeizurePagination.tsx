@@ -21,54 +21,58 @@ export function SeizurePagination({
 
 	if (totalPages <= 1) return null
 
-	const pages = Array.from({ length: totalPages }, (_, i) => i + 1)
+	const isFirst = currentPage === 1
+	const isLast = currentPage === totalPages
+	const showFirstDots = currentPage > 2
+	const showLastDots = currentPage < totalPages - 1
 
 	return (
 		<View style={styles.pagination}>
+			{/* Prev arrow */}
 			<TouchableOpacity
 				style={styles.pageBtn}
 				onPress={() => onPageChange(currentPage - 1)}
-				disabled={currentPage === 1}
+				disabled={isFirst}
 				activeOpacity={0.7}
 			>
-				<ChevronLeft
-					size={18}
-					color={currentPage === 1 ? theme.colors.border : theme.colors.primary}
-				/>
+				<ChevronLeft size={18} color={isFirst ? theme.colors.border : theme.colors.primary} />
 			</TouchableOpacity>
 
-			{pages.map(p => (
-				<TouchableOpacity
-					key={p}
-					style={[styles.pageBtn, currentPage === p && styles.pageBtnActive]}
-					onPress={() => onPageChange(p)}
-					activeOpacity={0.7}
-				>
-					<Text
-						style={[
-							styles.pageBtnText,
-							currentPage === p && styles.pageBtnTextActive,
-						]}
-					>
-						{p}
-					</Text>
+			{/* First page */}
+			{!isFirst && (
+				<TouchableOpacity style={styles.pageBtn} onPress={() => onPageChange(1)} activeOpacity={0.7}>
+					<Text style={styles.pageBtnText}>1</Text>
 				</TouchableOpacity>
-			))}
+			)}
 
+			{showFirstDots && (
+				<Text style={[styles.pageBtnText, { paddingHorizontal: 2 }]}>…</Text>
+			)}
+
+			{/* Current page */}
+			<View style={[styles.pageBtn, styles.pageBtnActive]}>
+				<Text style={styles.pageBtnTextActive}>{currentPage}</Text>
+			</View>
+
+			{showLastDots && (
+				<Text style={[styles.pageBtnText, { paddingHorizontal: 2 }]}>…</Text>
+			)}
+
+			{/* Last page */}
+			{!isLast && (
+				<TouchableOpacity style={styles.pageBtn} onPress={() => onPageChange(totalPages)} activeOpacity={0.7}>
+					<Text style={styles.pageBtnText}>{totalPages}</Text>
+				</TouchableOpacity>
+			)}
+
+			{/* Next arrow */}
 			<TouchableOpacity
 				style={styles.pageBtn}
 				onPress={() => onPageChange(currentPage + 1)}
-				disabled={currentPage === totalPages}
+				disabled={isLast}
 				activeOpacity={0.7}
 			>
-				<ChevronRight
-					size={18}
-					color={
-						currentPage === totalPages
-							? theme.colors.border
-							: theme.colors.primary
-					}
-				/>
+				<ChevronRight size={18} color={isLast ? theme.colors.border : theme.colors.primary} />
 			</TouchableOpacity>
 		</View>
 	)
