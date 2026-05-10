@@ -16,6 +16,9 @@ type Props = {
 
 const MAX_YEAR = new Date().getFullYear()
 
+const NAV_ARROW_SIZE = 30
+const NAV_LABEL_SIZE = 17
+
 export function DateTimeInput({ label, value, onChange }: Props) {
 	const theme = useAppTheme()
 	const isDark = useIsDarkTheme()
@@ -25,6 +28,7 @@ export function DateTimeInput({ label, value, onChange }: Props) {
 
 	const date = new Date(value)
 	const year = date.getFullYear()
+	const month = date.getMonth() // 0–11
 
 	const locale = i18n.language === "uk" ? "uk-UA" : "en-US"
 
@@ -39,21 +43,50 @@ export function DateTimeInput({ label, value, onChange }: Props) {
 		})
 	}
 
+	const monthName = date.toLocaleString(locale, { month: "long" })
+
+	const now = new Date()
+	const atMaxMonth = year >= now.getFullYear() && month >= now.getMonth()
+
 	const changeYear = (delta: number) => {
 		const newYear = year + delta
 		if (newYear > MAX_YEAR) return
 		const next = new Date(value)
 		next.setFullYear(newYear)
-		const now = new Date()
+		onChange(next > now ? now.getTime() : next.getTime())
+	}
+
+	const changeMonth = (delta: number) => {
+		const next = new Date(value)
+		next.setMonth(next.getMonth() + delta)
 		onChange(next > now ? now.getTime() : next.getTime())
 	}
 
 	const handlePickerChange = (_: unknown, d?: Date) => {
 		if (!d) return
-		// Preserve the user-selected year since datetime spinner doesn't show it
-		d.setFullYear(year)
+		// Preserve year+month since datetime spinner doesn't show year
+		d.setFullYear(year, month, d.getDate())
 		onChange(d.getTime())
 	}
+
+	const navGroup = (
+		onPrev: () => void,
+		label: string,
+		onNext: () => void,
+		nextDisabled: boolean,
+	) => (
+		<View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+			<TouchableOpacity onPress={onPrev} hitSlop={10}>
+				<Text style={{ color: theme.colors.primary, fontSize: NAV_ARROW_SIZE, lineHeight: NAV_ARROW_SIZE, includeFontPadding: false, transform: [{ translateY: 0 }] }}>‹</Text>
+			</TouchableOpacity>
+			<Text style={{ color: theme.colors.onSurface, fontSize: NAV_LABEL_SIZE, fontFamily: theme.fonts.medium, minWidth: 80, textAlign: "center" }}>
+				{label}
+			</Text>
+			<TouchableOpacity onPress={onNext} disabled={nextDisabled} hitSlop={10}>
+				<Text style={{ color: nextDisabled ? theme.colors.border : theme.colors.primary, fontSize: NAV_ARROW_SIZE, lineHeight: NAV_ARROW_SIZE, includeFontPadding: false, transform: [{ translateY: 0 }] }}>›</Text>
+			</TouchableOpacity>
+		</View>
+	)
 
 	return (
 		<View>
@@ -64,22 +97,9 @@ export function DateTimeInput({ label, value, onChange }: Props) {
 
 			{showPicker && (
 				<View>
-					<View style={{
-						flexDirection: "row",
-						alignItems: "center",
-						justifyContent: "center",
-						gap: 24,
-						paddingVertical: 8,
-					}}>
-						<TouchableOpacity onPress={() => changeYear(-1)} hitSlop={12}>
-							<Text style={{ color: theme.colors.primary, fontSize: 28, fontFamily: theme.fonts.medium }}>‹</Text>
-						</TouchableOpacity>
-						<Text style={{ color: theme.colors.onSurface, fontSize: theme.fontSize.md, fontFamily: theme.fonts.medium }}>
-							{year}
-						</Text>
-						<TouchableOpacity onPress={() => changeYear(+1)} disabled={year >= MAX_YEAR} hitSlop={12}>
-							<Text style={{ color: year >= MAX_YEAR ? theme.colors.border : theme.colors.primary, fontSize: 28, fontFamily: theme.fonts.medium }}>›</Text>
-						</TouchableOpacity>
+					<View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 24, paddingTop: 6, paddingBottom: 0 }}>
+						{navGroup(() => changeYear(-1), String(year), () => changeYear(+1), year >= MAX_YEAR)}
+						{navGroup(() => changeMonth(-1), monthName, () => changeMonth(+1), atMaxMonth)}
 					</View>
 
 					<DateTimePicker
@@ -89,6 +109,7 @@ export function DateTimeInput({ label, value, onChange }: Props) {
 						themeVariant={isDark ? "dark" : "light"}
 						maximumDate={new Date()}
 						onChange={handlePickerChange}
+						style={{ marginTop: -8 }}
 					/>
 
 					<TouchableOpacity
