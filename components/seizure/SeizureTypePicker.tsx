@@ -9,18 +9,13 @@ import { Text, TouchableOpacity, View } from "react-native"
 import { getStyles } from "./getStyles"
 
 type Props = {
-	value: SeizureType
+	values: SeizureType[]
 	customType: string
-	onChange: (v: SeizureType) => void
+	onToggle: (v: SeizureType) => void
 	onCustomChange: (v: string) => void
 }
 
-export function SeizureTypePicker({
-	value,
-	customType,
-	onChange,
-	onCustomChange,
-}: Props) {
+export function SeizureTypePicker({ values, customType, onToggle, onCustomChange }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
 	const { t } = useTranslation()
@@ -29,33 +24,26 @@ export function SeizureTypePicker({
 		<View style={styles.section}>
 			<Text style={styles.sectionTitle}>{t("seizure.type")}</Text>
 
-			{SEIZURE_TYPES.map(item => (
-				<TouchableOpacity
-					key={item.value}
-					style={styles.typeOption}
-					onPress={() => onChange(item.value)}
-					activeOpacity={0.7}
-				>
-					<View
-						style={[
-							styles.radioCircle,
-							value === item.value && styles.radioCircleActive,
-						]}
+			{SEIZURE_TYPES.map(item => {
+				const active = values.includes(item.value)
+				return (
+					<TouchableOpacity
+						key={item.value}
+						style={styles.typeOption}
+						onPress={() => onToggle(item.value)}
+						activeOpacity={0.7}
 					>
-						{value === item.value && <View style={styles.radioDot} />}
-					</View>
-					<Text
-						style={[
-							styles.typeLabel,
-							value === item.value && styles.typeLabelActive,
-						]}
-					>
-						{t(item.labelKey)}
-					</Text>
-				</TouchableOpacity>
-			))}
+						<View style={[styles.checkboxSquare, active && styles.checkboxSquareActive]}>
+							{active && <View style={styles.checkboxMark} />}
+						</View>
+						<Text style={[styles.typeLabel, active && styles.typeLabelActive]}>
+							{t(item.labelKey)}
+						</Text>
+					</TouchableOpacity>
+				)
+			})}
 
-			{value === "custom" && (
+			{values.includes("custom") && (
 				<FormInput
 					label={t("seizure.customType")}
 					value={customType}

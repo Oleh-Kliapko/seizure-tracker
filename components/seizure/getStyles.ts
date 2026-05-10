@@ -92,6 +92,30 @@ export const getStyles = (theme: AppTheme) => {
 			backgroundColor: colors.primary,
 		},
 
+		checkboxSquare: {
+			width: 20,
+			height: 20,
+			borderRadius: 4,
+			borderWidth: 2,
+			borderColor: colors.border,
+			justifyContent: "center",
+			alignItems: "center",
+		},
+
+		checkboxSquareActive: {
+			borderColor: colors.primary,
+			backgroundColor: colors.primary,
+		},
+
+		checkboxMark: {
+			width: 10,
+			height: 6,
+			borderLeftWidth: 2,
+			borderBottomWidth: 2,
+			borderColor: "#fff",
+			transform: [{ rotate: "-45deg" }, { translateY: -1 }],
+		},
+
 		// Тригери
 		triggerChip: {
 			flexDirection: "row",

@@ -34,10 +34,14 @@ function formatDuration(start: number, end?: number): string {
 }
 
 function getTypeLabel(seizure: Seizure): string {
-	if (seizure.type === "custom")
-		return seizure.customType ?? i18n.t("seizureType.custom")
-	const found = SEIZURE_TYPES.find(item => item.value === seizure.type)
-	return found ? i18n.t(found.labelKey) : seizure.type
+	const types: string[] = seizure.types?.length ? seizure.types : [(seizure as any).type ?? "tonic-clonic"]
+	return types
+		.map(type => {
+			if (type === "custom") return seizure.customType ?? i18n.t("seizureType.custom")
+			const found = SEIZURE_TYPES.find(item => item.value === type)
+			return found ? i18n.t(found.labelKey) : type
+		})
+		.join(" + ")
 }
 
 function getTriggers(seizure: Seizure): string {

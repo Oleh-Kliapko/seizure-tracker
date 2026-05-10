@@ -15,7 +15,7 @@ import { useState } from "react"
 export function useSeizureFormBase() {
 	const [startedAt, setStartedAt] = useState<number>(Date.now())
 	const [endedAt, setEndedAt] = useState<number | undefined>(undefined)
-	const [type, setType] = useState<SeizureType>("tonic-clonic")
+	const [types, setTypes] = useState<SeizureType[]>(["tonic-clonic"])
 	const [customType, setCustomType] = useState("")
 	const [severity, setSeverity] = useState<SeizureSeverity | undefined>(undefined)
 	const [internalTriggers, setInternalTriggers] = useState<TriggerItem<InternalTrigger>[]>([])
@@ -28,6 +28,11 @@ export function useSeizureFormBase() {
 	const [isLoading, setIsLoading] = useState(false)
 	const [error, setError] = useState<string | null>(null)
 
+	const toggleType = (t: SeizureType) =>
+		setTypes(prev =>
+			prev.includes(t) ? prev.filter(v => v !== t) : [...prev, t],
+		)
+
 	const toggleInternalTrigger = (trigger: InternalTrigger) =>
 		setInternalTriggers(prev => toggleTriggerItem(prev, trigger))
 
@@ -39,14 +44,15 @@ export function useSeizureFormBase() {
 		if (endedAt && endedAt < startedAt) return i18n.t("seizure.endTimeBeforeStart")
 		if (isInvalidSeizureTime(startedAt, endedAt)) return i18n.t("seizure.timeInFuture")
 		if (isInvalidSleepHours(sleepHoursBefore)) return i18n.t("seizure.invalidSleepHours")
-		if (type === "custom" && !customType.trim()) return i18n.t("seizure.specifyCustomType")
+		if (types.length === 0) return i18n.t("seizure.specifyType")
+		if (types.includes("custom") && !customType.trim()) return i18n.t("seizure.specifyCustomType")
 		return null
 	}
 
 	return {
 		startedAt, setStartedAt,
 		endedAt, setEndedAt,
-		type, setType,
+		types, setTypes, toggleType,
 		customType, setCustomType,
 		severity, setSeverity,
 		internalTriggers, setInternalTriggers,

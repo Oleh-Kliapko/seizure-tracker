@@ -24,7 +24,8 @@ export function useSeizureEditForm() {
 				if (!seizure) return
 				base.setStartedAt(seizure.startedAt)
 				base.setEndedAt(seizure.endedAt)
-				base.setType(seizure.type)
+				// backward-compat: old docs have `type`, new ones have `types`
+				base.setTypes(seizure.types ?? [(seizure as any).type ?? "tonic-clonic"])
 				base.setCustomType(seizure.customType ?? "")
 				base.setSeverity(seizure.severity)
 				base.setInternalTriggers(seizure.internalTriggers ?? [])
@@ -55,14 +56,14 @@ export function useSeizureEditForm() {
 
 			const seizureData: Record<string, any> = {
 				startedAt: base.startedAt,
-				type: base.type,
+				types: base.types,
 				isMedicationTaken: base.isMedicationTaken,
 				internalTriggers: base.internalTriggers,
 				externalTriggers: base.externalTriggers,
 			}
 
 			seizureData.endedAt = base.endedAt !== undefined ? base.endedAt : deleteField()
-			if (base.customType && base.type === "custom") seizureData.customType = base.customType
+			if (base.customType && base.types.includes("custom")) seizureData.customType = base.customType
 			if (base.severity !== undefined) seizureData.severity = base.severity
 			if (base.moodBefore !== undefined) seizureData.moodBefore = base.moodBefore
 			if (base.moodAfter !== undefined) seizureData.moodAfter = base.moodAfter

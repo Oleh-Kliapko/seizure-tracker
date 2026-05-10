@@ -33,9 +33,15 @@ export function SeizureCard({
 	const bgColor = theme.seizureColors.unknown
 
 	const getTypeLabel = (s: Seizure): string => {
-		if (s.type === "custom") return s.customType ?? t("seizureType.custom")
-		const found = SEIZURE_TYPES.find(item => item.value === s.type)
-		return found ? t(found.labelKey) : s.type
+		// backward-compat: old docs have single `type`, new ones have `types[]`
+		const types: string[] = s.types?.length ? s.types : [(s as any).type ?? "tonic-clonic"]
+		return types
+			.map(type => {
+				if (type === "custom") return s.customType ?? t("seizureType.custom")
+				const found = SEIZURE_TYPES.find(item => item.value === type)
+				return found ? t(found.labelKey) : type
+			})
+			.join(" + ")
 	}
 
 	const getTriggerLabel = (

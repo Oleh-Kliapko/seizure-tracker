@@ -38,9 +38,9 @@ export type Seizure = {
 	startedAt: number
 	endedAt?: number
 
-	type: SeizureType // тип судом
+	types: SeizureType[] // типи судом (може бути декілька)
 	severity?: SeizureSeverity // ступінь тяжкості
-	customType?: string // якщо type === "custom", то тут опис власного типу
+	customType?: string // якщо types включає "custom", то тут опис власного типу
 
 	internalTriggers?: TriggerItem<InternalTrigger>[]
 	externalTriggers?: TriggerItem<ExternalTrigger>[]

@@ -21,7 +21,7 @@ import { SeizureTypePicker } from "./SeizureTypePicker"
 type Props = {
 	startedAt: number
 	endedAt: number | undefined
-	type: SeizureType
+	types: SeizureType[]
 	customType: string
 	severity: SeizureSeverity | undefined
 	internalTriggers: TriggerItem<InternalTrigger>[]
@@ -35,7 +35,7 @@ type Props = {
 	error: string | null
 	onStartChange: (v: number) => void
 	onEndChange: (v: number | undefined) => void
-	onTypeChange: (v: SeizureType) => void
+	onToggleType: (v: SeizureType) => void
 	onCustomTypeChange: (v: string) => void
 	onSeverityChange: (v: SeizureSeverity) => void
 	onToggleInternal: (v: InternalTrigger) => void
@@ -62,9 +62,9 @@ export function SeizureForm(props: Props) {
 				onEndChange={props.onEndChange}
 			/>
 			<SeizureTypePicker
-				value={props.type}
+				values={props.types}
 				customType={props.customType}
-				onChange={props.onTypeChange}
+				onToggle={props.onToggleType}
 				onCustomChange={props.onCustomTypeChange}
 			/>
 			<SeizureSeverityPicker

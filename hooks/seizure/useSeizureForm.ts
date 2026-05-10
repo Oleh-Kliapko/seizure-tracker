@@ -43,14 +43,14 @@ export function useSeizureForm() {
 				userId: user.uid,
 				patientId: user.uid,
 				startedAt: base.startedAt,
-				type: base.type,
+				types: base.types,
 				isMedicationTaken: base.isMedicationTaken,
 				internalTriggers: base.internalTriggers,
 				externalTriggers: base.externalTriggers,
 			}
 
 			if (base.endedAt !== undefined) seizureData.endedAt = base.endedAt
-			if (base.customType && base.type === "custom") seizureData.customType = base.customType
+			if (base.customType && base.types.includes("custom")) seizureData.customType = base.customType
 			if (base.severity !== undefined) seizureData.severity = base.severity
 			if (base.moodBefore !== undefined) seizureData.moodBefore = base.moodBefore
 			if (base.moodAfter !== undefined) seizureData.moodAfter = base.moodAfter

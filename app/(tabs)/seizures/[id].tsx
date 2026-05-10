@@ -22,8 +22,8 @@ export default function EditSeizureScreen() {
 		setStartedAt,
 		endedAt,
 		setEndedAt,
-		type,
-		setType,
+		types,
+		toggleType,
 		customType,
 		setCustomType,
 		severity,
@@ -87,7 +87,7 @@ export default function EditSeizureScreen() {
 						<SeizureForm
 							startedAt={startedAt}
 							endedAt={endedAt}
-							type={type}
+							types={types}
 							customType={customType}
 							severity={severity}
 							internalTriggers={internalTriggers}
@@ -101,7 +101,7 @@ export default function EditSeizureScreen() {
 							error={error}
 							onStartChange={setStartedAt}
 							onEndChange={setEndedAt}
-							onTypeChange={setType}
+							onToggleType={toggleType}
 							onCustomTypeChange={setCustomType}
 							onSeverityChange={setSeverity}
 							onToggleInternal={toggleInternalTrigger}
