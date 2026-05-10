@@ -2,7 +2,7 @@
 
 import i18n from "@/config/i18n"
 import { REPORT_COOLDOWN_DAYS } from "@/constants/commonConstants"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 function formatShortDate(ts: number): string {
 	const locale = i18n.language === "uk" ? "uk-UA" : "en-US"
@@ -13,8 +13,8 @@ function formatShortDate(ts: number): string {
 	})
 }
 
-function makeMinFromDate(): Date {
-	const d = new Date()
+function minFromForTo(toTs: number): Date {
+	const d = new Date(toTs)
 	d.setMonth(d.getMonth() - 5)
 	d.setHours(0, 0, 0, 0)
 	return d
@@ -24,14 +24,25 @@ export function useReportForm(
 	userEmail: string | null | undefined,
 	lastReportSentAt: number | undefined,
 ) {
-	const minFromDate = makeMinFromDate()
-
-	const [from, setFrom] = useState(() => minFromDate.getTime())
-	const [to, setTo] = useState(() => {
+	const [to, setToRaw] = useState(() => {
 		const d = new Date()
 		d.setHours(23, 59, 59, 999)
 		return d.getTime()
 	})
+
+	const minFromDate = useMemo(() => minFromForTo(to), [to])
+
+	const [from, setFrom] = useState(() => minFromDate.getTime())
+
+	// When "to" moves and the current "from" falls outside the new 5-month window, clamp it
+	const setTo = (ts: number) => {
+		const end = new Date(ts)
+		end.setHours(23, 59, 59, 999)
+		const newTo = end.getTime()
+		setToRaw(newTo)
+		const newMin = minFromForTo(newTo).getTime()
+		setFrom(prev => (prev < newMin ? newMin : prev))
+	}
 
 	const [showEmailModal, setShowEmailModal] = useState(false)
 	const [email, setEmail] = useState(userEmail ?? "")

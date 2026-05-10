@@ -136,6 +136,26 @@ export const getStyles = (theme: AppTheme) => {
 		calendarContainer: {
 			gap: spacing.sm,
 		},
+		yearHeader: {
+			flexDirection: "row" as const,
+			justifyContent: "space-between" as const,
+			alignItems: "center" as const,
+			paddingVertical: spacing.sm,
+			paddingHorizontal: spacing.sm,
+			borderRadius: radius.md,
+			backgroundColor: surface,
+			borderWidth: 1,
+			borderColor: border,
+		},
+		yearHeaderText: {
+			fontFamily: fonts.bold,
+			fontSize: fontSize.md,
+			color: onSurface,
+		},
+		yearMonths: {
+			gap: spacing.sm,
+			marginTop: spacing.sm,
+		},
 		monthCard: {
 			borderWidth: 1,
 			borderColor: border,

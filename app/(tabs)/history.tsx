@@ -111,31 +111,29 @@ export default function History() {
 			>
 				<HistoryPeriodFilter active={period} onChange={setPeriod} />
 
-				{isLoading && !refreshing ? (
+				{isLoading && !refreshing && seizures.length === 0 && (
 					<View style={{ paddingVertical: 40, alignItems: "center" }}>
 						<ActivityIndicator color={colors.primary} size="large" />
 					</View>
-				) : (
-					<>
-						<SeizureStatsHeader seizures={seizures} />
-
-						<SectionCard title={t("history.calendar")}>
-							<HistoryCalendar
-								seizuresByDate={seizuresByDate}
-								from={calendarFrom}
-								to={to}
-							/>
-						</SectionCard>
-
-						<SectionCard title={t("history.timeDistribution")}>
-							<HistoryDonutChart data={timeOfDay} />
-						</SectionCard>
-
-						<SectionCard title={t("history.topTriggers")}>
-							<HistoryTriggerBars data={topTriggers} />
-						</SectionCard>
-					</>
 				)}
+
+				<SeizureStatsHeader seizures={seizures} />
+
+				<SectionCard title={t("history.calendar")}>
+					<HistoryCalendar
+						seizuresByDate={seizuresByDate}
+						from={calendarFrom}
+						to={to}
+					/>
+				</SectionCard>
+
+				<SectionCard title={t("history.timeDistribution")}>
+					<HistoryDonutChart data={timeOfDay} />
+				</SectionCard>
+
+				<SectionCard title={t("history.topTriggers")}>
+					<HistoryTriggerBars data={topTriggers} />
+				</SectionCard>
 
 				<ExportForm
 					onExport={exportPdf}
