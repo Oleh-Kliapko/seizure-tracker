@@ -1,4 +1,4 @@
-// hooks/useDeleteAccount.ts — оновлений з Google reauth
+// hooks/settings/useDeleteAccount.ts
 
 import { auth, db } from "@/config/firebase"
 import i18n from "@/config/i18n"

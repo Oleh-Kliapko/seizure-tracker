@@ -1,4 +1,4 @@
-// hooks/useTrackingForm.ts
+// hooks/tracking/useTrackingForm.ts
 import i18n from "@/config/i18n"
 
 import { ExternalTrigger, InternalTrigger, TriggerItem } from "@/models"

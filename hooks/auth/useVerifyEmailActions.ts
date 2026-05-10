@@ -1,4 +1,4 @@
-// hooks/useVerifyEmailActions.ts
+// hooks/auth/useVerifyEmailActions.ts
 
 import { auth } from "@/config/firebase"
 import { updateUser } from "@/services"

@@ -1,4 +1,4 @@
-// hooks/useAuth.ts
+// hooks/auth/useAuth.ts
 
 import { auth } from "@/config/firebase"
 import { onIdTokenChanged, User } from "firebase/auth"

@@ -1,4 +1,4 @@
-// hooks/useAppTheme.ts
+// hooks/useAppTheme.tsx
 
 import { AppTheme, darkTheme, lightTheme } from "@/constants/theme"
 import { AppThemeMode } from "@/models/user"

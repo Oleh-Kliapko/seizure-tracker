@@ -1,4 +1,4 @@
-// hooks/useRegisterForm.ts
+// hooks/auth/useRegisterForm.ts
 
 import { validateRegister } from "@/utils"
 import { useState } from "react"

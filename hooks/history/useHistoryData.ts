@@ -1,4 +1,4 @@
-// hooks/useHistoryData.ts
+// hooks/history/useHistoryData.ts
 
 import { auth } from "@/config/firebase"
 import {

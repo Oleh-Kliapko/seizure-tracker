@@ -1,4 +1,4 @@
-// hooks/useMedications.ts
+// hooks/settings/useMedications.ts
 
 import i18n from "@/config/i18n"
 import { Medication } from "@/models/medication"

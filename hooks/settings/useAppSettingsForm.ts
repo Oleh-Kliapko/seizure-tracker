@@ -1,4 +1,4 @@
-// hooks/useAppSettingsForm.ts
+// hooks/settings/useAppSettingsForm.ts
 
 import { AppThemeMode, CommunicationChannel } from "@/models/user"
 import { useEffect, useState } from "react"

@@ -1,4 +1,4 @@
-// hooks/useAvatarUpload.ts
+// hooks/settings/useAvatarUpload.ts
 
 import { auth, db } from "@/config/firebase"
 import i18n from "@/config/i18n"

@@ -244,6 +244,8 @@
 		"quantity": "Quantity",
 		"record": "Record",
 		"of": "of",
+		"legendTracked": "Tracking filled",
+		"legendSeizure": "Had a seizure",
 		"error": {
 			"temperature": "Temperature must be between 30°C and 45°C",
 			"pulse": "Heart rate must be between 20 and 250 bpm",

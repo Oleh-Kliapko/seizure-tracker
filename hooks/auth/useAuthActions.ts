@@ -1,4 +1,4 @@
-// hooks/useAuthActions.ts
+// hooks/auth/useAuthActions.ts
 
 import { auth } from "@/config/firebase"
 import { createUser } from "@/services"

@@ -1,4 +1,4 @@
-// hooks/useGoogleAuth.ts
+// hooks/auth/useGoogleAuth.ts
 
 import { auth } from "@/config/firebase"
 import { GOOGLE_AUTH_CONFIG } from "@/config/googleAuth"

@@ -1,4 +1,4 @@
-// hooks/useChangePasswordForm.ts
+// hooks/settings/useChangePasswordForm.ts
 
 import { auth } from "@/config/firebase"
 import { parseFirebaseError, validateRegister } from "@/utils"

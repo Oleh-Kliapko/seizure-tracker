@@ -1,4 +1,4 @@
-// hooks/useVideoUpload.ts
+// hooks/seizure/useVideoUpload.ts
 
 import i18n from "@/config/i18n"
 import {

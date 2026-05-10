@@ -1,4 +1,4 @@
-// hooks/useMedicationsForm.ts
+// hooks/settings/useMedicationsForm.ts
 import i18n from "@/config/i18n"
 
 import { DoseUnit, Medication } from "@/models/medication"

@@ -1,4 +1,4 @@
-// hooks/useSeizureForm.ts
+// hooks/seizure/useSeizureForm.ts
 import i18n from "@/config/i18n"
 
 import {

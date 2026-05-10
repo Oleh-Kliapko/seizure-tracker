@@ -1,4 +1,4 @@
-// hooks/usePersonalForm.ts
+// hooks/settings/usePersonalForm.ts
 
 import i18n from "@/config/i18n"
 import { validatePhone } from "@/utils"

@@ -1,4 +1,4 @@
-// hooks/useLoginForm.ts
+// hooks/auth/useLoginForm.ts
 
 import { validateLogin } from "@/utils"
 import { useState } from "react"

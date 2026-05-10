@@ -1,4 +1,4 @@
-// hooks/useExport.ts
+// hooks/history/useExport.ts
 
 import {
 	exportSeizuresToPdf,

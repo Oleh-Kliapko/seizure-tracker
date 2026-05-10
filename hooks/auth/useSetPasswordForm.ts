@@ -1,4 +1,4 @@
-// hooks/useSetPasswordForm.ts
+// hooks/auth/useSetPasswordForm.ts
 
 import { auth } from "@/config/firebase"
 import { ERROR_MESSAGES } from "@/constants/errorMessages"

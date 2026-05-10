@@ -1,6 +1,7 @@
 // hooks/tracking/useTrackingCalendar.ts
 
-import { getTrackingByPeriod } from "@/services"
+import { getSeizuresByPeriod, getTrackingByPeriod } from "@/services"
+import { countFilledSections } from "@/utils/trackingHelpers"
 import { useFocusEffect } from "expo-router"
 import { useCallback, useState } from "react"
 import { useAuth } from "../auth/useAuth"
@@ -17,6 +18,7 @@ export function useTrackingCalendar() {
 	const [viewYear, setViewYear] = useState(now.getFullYear())
 	const [viewMonth, setViewMonth] = useState(now.getMonth())
 	const [filledDates, setFilledDates] = useState<Set<string>>(new Set())
+	const [seizureDates, setSeizureDates] = useState<Set<string>>(new Set())
 	const [isLoading, setIsLoading] = useState(true)
 
 	const load = useCallback(async () => {
@@ -25,8 +27,16 @@ export function useTrackingCalendar() {
 		const to = new Date(viewYear, viewMonth + 1, 0, 23, 59, 59, 999).getTime()
 		setIsLoading(true)
 		try {
-			const records = await getTrackingByPeriod(user.uid, from, to)
-			setFilledDates(new Set(records.map(r => toDateKey(r.date))))
+			const [records, seizures] = await Promise.all([
+				getTrackingByPeriod(user.uid, from, to),
+				getSeizuresByPeriod(user.uid, from, to),
+			])
+			setFilledDates(new Set(
+				records
+					.filter(r => countFilledSections(r) >= 1)
+					.map(r => toDateKey(r.date))
+			))
+			setSeizureDates(new Set(seizures.map(s => toDateKey(s.startedAt))))
 		} finally {
 			setIsLoading(false)
 		}
@@ -65,5 +75,5 @@ export function useTrackingCalendar() {
 	const isCurrentMonth =
 		viewYear === now.getFullYear() && viewMonth === now.getMonth()
 
-	return { viewYear, viewMonth, filledDates, isLoading, prevMonth, nextMonth, isCurrentMonth }
+	return { viewYear, viewMonth, filledDates, seizureDates, isLoading, prevMonth, nextMonth, isCurrentMonth }
 }

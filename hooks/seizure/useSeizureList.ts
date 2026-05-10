@@ -1,4 +1,4 @@
-// hooks/useSeizureList.ts
+// hooks/seizure/useSeizureList.ts
 
 import { SeizureFilter } from "@/constants/commonConstants"
 import { Seizure } from "@/models"

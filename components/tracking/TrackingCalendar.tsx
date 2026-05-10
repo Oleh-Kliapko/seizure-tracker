@@ -1,6 +1,6 @@
 // components/tracking/TrackingCalendar.tsx
 
-import { useAppTheme } from "@/hooks"
+import { useAppTheme, useIsDarkTheme } from "@/hooks"
 import { useTrackingCalendar } from "@/hooks/tracking/useTrackingCalendar"
 import { getDaysInMonth } from "@/utils/historyHelpers"
 import { router } from "expo-router"
@@ -24,8 +24,9 @@ function toDateKey(year: number, month: number, day: number): string {
 
 export function TrackingCalendar() {
 	const { colors, fonts, fontSize, spacing, radius } = useAppTheme()
+	const isDark = useIsDarkTheme()
 	const { t } = useTranslation()
-	const { viewYear, viewMonth, filledDates, prevMonth, nextMonth, isCurrentMonth } =
+	const { viewYear, viewMonth, filledDates, seizureDates, prevMonth, nextMonth, isCurrentMonth } =
 		useTrackingCalendar()
 
 	const today = new Date()
@@ -36,11 +37,15 @@ export function TrackingCalendar() {
 		year: "numeric",
 	})
 
+	const cardBg = isDark ? colors.surface : "#F2F3F6"
+
 	return (
 		<View
 			style={{
-				backgroundColor: colors.surface,
+				backgroundColor: cardBg,
 				borderRadius: radius.lg,
+				borderWidth: 1,
+				borderColor: colors.border,
 				padding: spacing.lg,
 				shadowColor: "#000",
 				shadowOpacity: 0.04,
@@ -48,6 +53,27 @@ export function TrackingCalendar() {
 				shadowOffset: { width: 0, height: 2 },
 			}}
 		>
+			{/* Legend */}
+			<View style={{ flexDirection: "row", gap: spacing.lg, marginBottom: spacing.md }}>
+				<View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+					<View style={{
+						width: 18,
+						height: 18,
+						borderRadius: radius.sm,
+						backgroundColor: colors.primary + "20",
+					}} />
+					<Text style={{ fontFamily: fonts.regular, fontSize: 11, color: colors.textSecondary }}>
+						{t("tracking.legendTracked")}
+					</Text>
+				</View>
+				<View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+					<View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: colors.error }} />
+					<Text style={{ fontFamily: fonts.regular, fontSize: 11, color: colors.textSecondary }}>
+						{t("tracking.legendSeizure")}
+					</Text>
+				</View>
+			</View>
+
 			{/* Month switcher */}
 			<View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: spacing.md }}>
 				<TouchableOpacity onPress={prevMonth} activeOpacity={0.7} hitSlop={8}>
@@ -79,6 +105,7 @@ export function TrackingCalendar() {
 					const isFuture = dateKey > todayKey
 					const isToday = dateKey === todayKey
 					const isFilled = filledDates.has(dateKey)
+					const hasSeizure = seizureDates.has(dateKey)
 
 					return (
 						<TouchableOpacity
@@ -92,20 +119,36 @@ export function TrackingCalendar() {
 								flex: 1,
 								borderRadius: radius.sm,
 								alignItems: "center",
-								justifyContent: "center",
-								backgroundColor: isFilled ? colors.primary + "20" : isToday ? colors.primary + "10" : "transparent",
-								borderWidth: isToday ? 1.5 : 0,
-								borderColor: colors.primary,
+								justifyContent: "flex-start",
+								paddingTop: 4,
+								backgroundColor: isFilled
+									? colors.primary + "20"
+									: isToday
+										? colors.primary + "10"
+										: "transparent",
+								borderWidth: isToday ? 1.5 : 1,
+								borderColor: isToday ? colors.primary : colors.border,
 							}}>
 								<Text style={{
 									fontFamily: isFilled || isToday ? fonts.medium : fonts.regular,
 									fontSize: fontSize.sm,
-									color: isFuture ? colors.border : isFilled ? colors.primary : colors.onSurface,
+									color: isFuture
+										? colors.border
+										: isFilled
+											? colors.primary
+											: colors.onSurface,
 								}}>
 									{day}
 								</Text>
-								{isFilled && (
-									<View style={{ width: 4, height: 4, borderRadius: 2, backgroundColor: colors.primary, marginTop: 1 }} />
+								{hasSeizure && (
+									<View style={{
+										position: "absolute",
+										bottom: 5,
+										width: 5,
+										height: 5,
+										borderRadius: 3,
+										backgroundColor: colors.error,
+									}} />
 								)}
 							</View>
 						</TouchableOpacity>

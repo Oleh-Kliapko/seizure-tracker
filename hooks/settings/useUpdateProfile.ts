@@ -1,4 +1,4 @@
-// hooks/useUpdateProfile.ts
+// hooks/settings/useUpdateProfile.ts
 import i18n from "@/config/i18n"
 
 import { User } from "@/models"
