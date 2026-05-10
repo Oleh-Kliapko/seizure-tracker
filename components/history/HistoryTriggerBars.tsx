@@ -1,7 +1,7 @@
 // components/history/HistoryTriggerBars.tsx
 
 import { useAppTheme } from "@/hooks"
-import { TriggerStat } from "@/hooks/history/useHistoryData"
+import { TriggerStat } from "@/utils/historyHelpers"
 import { useTranslation } from "react-i18next"
 import { Text, View } from "react-native"
 import { getStyles } from "./getStyles"

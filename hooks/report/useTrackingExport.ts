@@ -30,7 +30,10 @@ export function useTrackingExport() {
 			}
 
 			const html = generateTrackingReportHtml(profile, records, from, to)
-			const { uri } = await Print.printToFileAsync({ html: html, base64: false })
+			const { uri } = await Print.printToFileAsync({
+				html: html,
+				base64: false,
+			})
 
 			const canShare = await Sharing.isAvailableAsync()
 			if (canShare) {

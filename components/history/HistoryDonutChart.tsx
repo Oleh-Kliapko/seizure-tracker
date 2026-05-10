@@ -1,8 +1,7 @@
 // components/history/HistoryDonutChart.tsx
 
 import { useAppTheme } from "@/hooks"
-import { TimeOfDay } from "@/hooks/history/useHistoryData"
-import { polarToCartesian, slicePath } from "@/utils/historyHelpers"
+import { TimeOfDay, polarToCartesian, slicePath } from "@/utils/historyHelpers"
 import { useTranslation } from "react-i18next"
 import { Text, View } from "react-native"
 import { G, Path, Svg, Text as SvgText } from "react-native-svg"

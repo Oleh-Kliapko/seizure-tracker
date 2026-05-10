@@ -1,151 +1,81 @@
 // hooks/seizure/useSeizureEditForm.ts
-import i18n from "@/config/i18n"
 
-import {
-	ExternalTrigger,
-	InternalTrigger,
-	Seizure,
-	SeizureSeverity,
-	SeizureType,
-	TriggerItem,
-} from "@/models"
+import i18n from "@/config/i18n"
+import { Seizure } from "@/models"
 import { deleteSeizure, getSeizureById, updateSeizure } from "@/services"
-import { isInvalidSeizureTime, isInvalidSleepHours } from "@/utils"
 import { router, useLocalSearchParams } from "expo-router"
 import { deleteField } from "firebase/firestore"
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Alert } from "react-native"
 import { useAuth } from "../auth/useAuth"
+import { useSeizureFormBase } from "./useSeizureFormBase"
 
 export function useSeizureEditForm() {
 	const { user } = useAuth()
 	const { id } = useLocalSearchParams<{ id: string }>()
-
-	const [startedAt, setStartedAt] = useState<number>(Date.now())
-	const [endedAt, setEndedAt] = useState<number | undefined>(undefined)
-	const [type, setType] = useState<SeizureType>("tonic-clonic")
-	const [customType, setCustomType] = useState("")
-	const [severity, setSeverity] = useState<SeizureSeverity | undefined>(
-		undefined,
-	)
-	const [internalTriggers, setInternalTriggers] = useState<
-		TriggerItem<InternalTrigger>[]
-	>([])
-	const [externalTriggers, setExternalTriggers] = useState<
-		TriggerItem<ExternalTrigger>[]
-	>([])
-	const [moodBefore, setMoodBefore] = useState<number | undefined>(undefined)
-	const [moodAfter, setMoodAfter] = useState<number | undefined>(undefined)
-	const [isMedicationTaken, setIsMedicationTaken] = useState(false)
-	const [sleepHoursBefore, setSleepHoursBefore] = useState<number | undefined>(
-		undefined,
-	)
-	const [description, setDescription] = useState("")
-
-	const [isLoading, setIsLoading] = useState(false)
+	const base = useSeizureFormBase()
 	const [isFetching, setIsFetching] = useState(true)
-	const [error, setError] = useState<string | null>(null)
-
-	const loadSeizure = useCallback(async () => {
-		if (!user || !id) return
-		if (!user?.uid) return
-
-		try {
-			setIsFetching(true)
-
-			const seizure = await getSeizureById(user.uid, id)
-			if (!seizure) return
-
-			setStartedAt(seizure.startedAt)
-			setEndedAt(seizure.endedAt)
-			setType(seizure.type)
-			setCustomType(seizure.customType ?? "")
-			setSeverity(seizure.severity)
-			setInternalTriggers(seizure.internalTriggers ?? [])
-			setExternalTriggers(seizure.externalTriggers ?? [])
-			setMoodBefore(seizure.moodBefore)
-			setMoodAfter(seizure.moodAfter)
-			setIsMedicationTaken(seizure.isMedicationTaken ?? false)
-			setSleepHoursBefore(seizure.sleepHoursBefore)
-			setDescription(seizure.description ?? "")
-		} catch {
-			setError(i18n.t("error.loadingError"))
-		} finally {
-			setIsFetching(false)
-		}
-	}, [user, id])
 
 	useEffect(() => {
-		loadSeizure()
-	}, [loadSeizure])
-
-	const toggleInternalTrigger = (trigger: InternalTrigger) => {
-		setInternalTriggers(prev => {
-			const exists = prev.find(t => t.type === trigger)
-			if (exists) return prev.filter(t => t.type !== trigger)
-			return [...prev, { type: trigger }]
-		})
-	}
-
-	const toggleExternalTrigger = (trigger: ExternalTrigger) => {
-		setExternalTriggers(prev => {
-			const exists = prev.find(t => t.type === trigger)
-			if (exists) return prev.filter(t => t.type !== trigger)
-			return [...prev, { type: trigger }]
-		})
-	}
+		if (!user || !id) return
+		setIsFetching(true)
+		getSeizureById(user.uid, id)
+			.then(seizure => {
+				if (!seizure) return
+				base.setStartedAt(seizure.startedAt)
+				base.setEndedAt(seizure.endedAt)
+				base.setType(seizure.type)
+				base.setCustomType(seizure.customType ?? "")
+				base.setSeverity(seizure.severity)
+				base.setInternalTriggers(seizure.internalTriggers ?? [])
+				base.setExternalTriggers(seizure.externalTriggers ?? [])
+				base.setMoodBefore(seizure.moodBefore)
+				base.setMoodAfter(seizure.moodAfter)
+				base.setIsMedicationTaken(seizure.isMedicationTaken ?? false)
+				base.setSleepHoursBefore(seizure.sleepHoursBefore)
+				base.setDescription(seizure.description ?? "")
+			})
+			.catch(() => base.setError(i18n.t("error.loadingError")))
+			.finally(() => setIsFetching(false))
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [user?.uid, id])
 
 	const handleSave = async () => {
 		if (!user || !id) return
 
-		if (endedAt && endedAt < startedAt) {
-			setError(i18n.t("seizure.endTimeBeforeStart"))
-			return
-		}
-
-		if (isInvalidSeizureTime(startedAt, endedAt)) {
-			setError(i18n.t("seizure.timeInFuture"))
-			return
-		}
-
-		if (isInvalidSleepHours(sleepHoursBefore)) {
-			setError(i18n.t("seizure.invalidSleepHours"))
-			return
-		}
-
-		if (type === "custom" && !customType.trim()) {
-			setError(i18n.t("seizure.specifyCustomType"))
+		const validationError = base.validateFields()
+		if (validationError) {
+			base.setError(validationError)
 			return
 		}
 
 		try {
-			setIsLoading(true)
-			setError(null)
+			base.setIsLoading(true)
+			base.setError(null)
 
 			const seizureData: Record<string, any> = {
-				startedAt,
-				type,
-				isMedicationTaken,
-				internalTriggers,
-				externalTriggers,
+				startedAt: base.startedAt,
+				type: base.type,
+				isMedicationTaken: base.isMedicationTaken,
+				internalTriggers: base.internalTriggers,
+				externalTriggers: base.externalTriggers,
 			}
 
-			seizureData.endedAt = endedAt !== undefined ? endedAt : deleteField()
-			if (customType && type === "custom") seizureData.customType = customType
-			if (severity !== undefined) seizureData.severity = severity
-			if (moodBefore !== undefined) seizureData.moodBefore = moodBefore
-			if (moodAfter !== undefined) seizureData.moodAfter = moodAfter
-			if (sleepHoursBefore !== undefined)
-				seizureData.sleepHoursBefore = sleepHoursBefore
-			if (description) seizureData.description = description
+			seizureData.endedAt = base.endedAt !== undefined ? base.endedAt : deleteField()
+			if (base.customType && base.type === "custom") seizureData.customType = base.customType
+			if (base.severity !== undefined) seizureData.severity = base.severity
+			if (base.moodBefore !== undefined) seizureData.moodBefore = base.moodBefore
+			if (base.moodAfter !== undefined) seizureData.moodAfter = base.moodAfter
+			if (base.sleepHoursBefore !== undefined) seizureData.sleepHoursBefore = base.sleepHoursBefore
+			if (base.description) seizureData.description = base.description
 
 			await updateSeizure(user.uid, id, seizureData as Partial<Seizure>)
 			router.back()
 		} catch (e: any) {
 			console.error("Save error:", e.message, JSON.stringify(e))
-			setError(i18n.t("error.savingError"))
+			base.setError(i18n.t("error.savingError"))
 		} finally {
-			setIsLoading(false)
+			base.setIsLoading(false)
 		}
 	}
 
@@ -161,13 +91,13 @@ export function useSeizureEditForm() {
 					onPress: async () => {
 						if (!user || !id) return
 						try {
-							setIsLoading(true)
+							base.setIsLoading(true)
 							await deleteSeizure(user.uid, id)
 							router.back()
 						} catch {
-							setError(i18n.t("error.deleteError"))
+							base.setError(i18n.t("error.deleteError"))
 						} finally {
-							setIsLoading(false)
+							base.setIsLoading(false)
 						}
 					},
 				},
@@ -176,33 +106,8 @@ export function useSeizureEditForm() {
 	}
 
 	return {
-		startedAt,
-		setStartedAt,
-		endedAt,
-		setEndedAt,
-		type,
-		setType,
-		customType,
-		setCustomType,
-		severity,
-		setSeverity,
-		internalTriggers,
-		externalTriggers,
-		moodBefore,
-		setMoodBefore,
-		moodAfter,
-		setMoodAfter,
-		isMedicationTaken,
-		setIsMedicationTaken,
-		sleepHoursBefore,
-		setSleepHoursBefore,
-		description,
-		setDescription,
-		isLoading,
+		...base,
 		isFetching,
-		error,
-		toggleInternalTrigger,
-		toggleExternalTrigger,
 		handleSave,
 		handleDelete,
 	}

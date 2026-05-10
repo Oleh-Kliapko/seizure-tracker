@@ -1,48 +1,18 @@
 // hooks/seizure/useSeizureForm.ts
-import i18n from "@/config/i18n"
 
-import {
-	ExternalTrigger,
-	InternalTrigger,
-	Seizure,
-	SeizureSeverity,
-	SeizureType,
-	TriggerItem,
-} from "@/models"
+import i18n from "@/config/i18n"
+import { Seizure } from "@/models"
 import { createSeizure, deleteSeizure, updateSeizure } from "@/services"
-import { isInvalidSeizureTime, isInvalidSleepHours } from "@/utils"
 import { router } from "expo-router"
 import { useState } from "react"
 import { useAuth } from "../auth/useAuth"
+import { useSeizureFormBase } from "./useSeizureFormBase"
 import { useVideoUpload } from "./useVideoUpload"
 
 export function useSeizureForm() {
 	const { user } = useAuth()
-
-	const [startedAt, setStartedAt] = useState<number>(Date.now())
-	const [endedAt, setEndedAt] = useState<number | undefined>(undefined)
-	const [type, setType] = useState<SeizureType>("tonic-clonic")
-	const [customType, setCustomType] = useState("")
-	const [severity, setSeverity] = useState<SeizureSeverity | undefined>(
-		undefined,
-	)
-	const [internalTriggers, setInternalTriggers] = useState<
-		TriggerItem<InternalTrigger>[]
-	>([])
-	const [externalTriggers, setExternalTriggers] = useState<
-		TriggerItem<ExternalTrigger>[]
-	>([])
-	const [moodBefore, setMoodBefore] = useState<number | undefined>(undefined)
-	const [moodAfter, setMoodAfter] = useState<number | undefined>(undefined)
-	const [isMedicationTaken, setIsMedicationTaken] = useState(false)
-	const [sleepHoursBefore, setSleepHoursBefore] = useState<number | undefined>(
-		undefined,
-	)
-	const [description, setDescription] = useState("")
+	const base = useSeizureFormBase()
 	const [videoUrl, setVideoUrl] = useState<string | undefined>(undefined)
-
-	const [isLoading, setIsLoading] = useState(false)
-	const [error, setError] = useState<string | null>(null)
 	const {
 		upload,
 		cancel,
@@ -51,72 +21,41 @@ export function useSeizureForm() {
 		error: uploadError,
 	} = useVideoUpload()
 
-	const toggleInternalTrigger = (trigger: InternalTrigger) => {
-		setInternalTriggers(prev => {
-			const exists = prev.find(t => t.type === trigger)
-			if (exists) return prev.filter(t => t.type !== trigger)
-			return [...prev, { type: trigger }]
-		})
-	}
-
-	const toggleExternalTrigger = (trigger: ExternalTrigger) => {
-		setExternalTriggers(prev => {
-			const exists = prev.find(t => t.type === trigger)
-			if (exists) return prev.filter(t => t.type !== trigger)
-			return [...prev, { type: trigger }]
-		})
-	}
-
 	const handleSave = async () => {
 		if (!user) return
 
-		if (!startedAt) {
-			setError(i18n.t("seizure.specifyStartTime"))
+		if (!base.startedAt) {
+			base.setError(i18n.t("seizure.specifyStartTime"))
 			return
 		}
 
-		if (endedAt && endedAt < startedAt) {
-			setError(i18n.t("seizure.endTimeBeforeStart"))
-			return
-		}
-
-		if (isInvalidSeizureTime(startedAt, endedAt)) {
-			setError(i18n.t("seizure.timeInFuture"))
-			return
-		}
-
-		if (isInvalidSleepHours(sleepHoursBefore)) {
-			setError(i18n.t("seizure.invalidSleepHours"))
-			return
-		}
-
-		if (type === "custom" && !customType.trim()) {
-			setError(i18n.t("seizure.specifyCustomType"))
+		const validationError = base.validateFields()
+		if (validationError) {
+			base.setError(validationError)
 			return
 		}
 
 		try {
-			setIsLoading(true)
-			setError(null)
+			base.setIsLoading(true)
+			base.setError(null)
 
 			const seizureData: Record<string, any> = {
 				userId: user.uid,
 				patientId: user.uid,
-				startedAt,
-				type,
-				isMedicationTaken,
-				internalTriggers,
-				externalTriggers,
+				startedAt: base.startedAt,
+				type: base.type,
+				isMedicationTaken: base.isMedicationTaken,
+				internalTriggers: base.internalTriggers,
+				externalTriggers: base.externalTriggers,
 			}
 
-			if (endedAt !== undefined) seizureData.endedAt = endedAt
-			if (customType && type === "custom") seizureData.customType = customType
-			if (severity !== undefined) seizureData.severity = severity
-			if (moodBefore !== undefined) seizureData.moodBefore = moodBefore
-			if (moodAfter !== undefined) seizureData.moodAfter = moodAfter
-			if (sleepHoursBefore !== undefined)
-				seizureData.sleepHoursBefore = sleepHoursBefore
-			if (description) seizureData.description = description
+			if (base.endedAt !== undefined) seizureData.endedAt = base.endedAt
+			if (base.customType && base.type === "custom") seizureData.customType = base.customType
+			if (base.severity !== undefined) seizureData.severity = base.severity
+			if (base.moodBefore !== undefined) seizureData.moodBefore = base.moodBefore
+			if (base.moodAfter !== undefined) seizureData.moodAfter = base.moodAfter
+			if (base.sleepHoursBefore !== undefined) seizureData.sleepHoursBefore = base.sleepHoursBefore
+			if (base.description) seizureData.description = base.description
 
 			const seizureId = await createSeizure(
 				user.uid,
@@ -132,7 +71,7 @@ export function useSeizureForm() {
 
 				if (!uploadedUrl) {
 					await deleteSeizure(user.uid, seizureId)
-					setError(videoError ?? i18n.t("error.videoUploadError"))
+					base.setError(videoError ?? i18n.t("error.videoUploadError"))
 					return
 				}
 
@@ -141,41 +80,16 @@ export function useSeizureForm() {
 
 			router.back()
 		} catch {
-			setError(i18n.t("error.savingError"))
+			base.setError(i18n.t("error.savingError"))
 		} finally {
-			setIsLoading(false)
+			base.setIsLoading(false)
 		}
 	}
 
 	return {
-		startedAt,
-		setStartedAt,
-		endedAt,
-		setEndedAt,
-		type,
-		setType,
-		customType,
-		setCustomType,
-		severity,
-		setSeverity,
-		internalTriggers,
-		externalTriggers,
-		moodBefore,
-		setMoodBefore,
-		moodAfter,
-		setMoodAfter,
-		isMedicationTaken,
-		setIsMedicationTaken,
-		sleepHoursBefore,
-		setSleepHoursBefore,
-		description,
-		setDescription,
+		...base,
 		videoUrl,
 		setVideoUrl,
-		isLoading,
-		error,
-		toggleInternalTrigger,
-		toggleExternalTrigger,
 		isUploading,
 		uploadProgress,
 		uploadError,

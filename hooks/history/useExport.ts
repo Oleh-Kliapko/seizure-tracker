@@ -1,16 +1,17 @@
 // hooks/history/useExport.ts
 
+import i18n from "@/config/i18n"
+import { REPORT_COOLDOWN_DAYS } from "@/constants/commonConstants"
 import {
 	exportSeizuresToPdf,
-	getSeizuresByPeriod,
 	getMedications,
+	getSeizuresByPeriod,
 	updateUser,
 } from "@/services"
 import { generateSeizureReportHtml } from "@/utils"
-import { REPORT_COOLDOWN_DAYS } from "@/constants/commonConstants"
-import i18n from "@/config/i18n"
-import { useState } from "react"
+import * as FileSystem from "expo-file-system/legacy"
 import * as Print from "expo-print"
+import { useState } from "react"
 import { useAuth } from "../auth/useAuth"
 import { useUser } from "../useUser"
 
@@ -138,7 +139,5 @@ export function useExport() {
 }
 
 async function readFileAsBase64(uri: string): Promise<string> {
-	const fs = require("expo-file-system/legacy")
-	const content = await fs.readAsStringAsync(uri, { encoding: "base64" })
-	return content
+	return FileSystem.readAsStringAsync(uri, { encoding: "base64" })
 }

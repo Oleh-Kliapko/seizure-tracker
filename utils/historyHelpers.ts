@@ -2,6 +2,49 @@ import { Seizure } from "@/models/seizure"
 
 export type HistoryPeriod = "month" | "3months" | "6months" | "year" | "all"
 
+export type TimeOfDay = {
+	night: number
+	morning: number
+	afternoon: number
+	evening: number
+}
+
+export type TriggerStat = {
+	label: string
+	count: number
+}
+
+function getTimeOfDayKey(timestamp: number): keyof TimeOfDay {
+	const hour = new Date(timestamp).getHours()
+	if (hour < 6) return "night"
+	if (hour < 12) return "morning"
+	if (hour < 18) return "afternoon"
+	return "evening"
+}
+
+export function formatDateKey(timestamp: number): string {
+	const d = new Date(timestamp)
+	return makeDateKey(d.getFullYear(), d.getMonth(), d.getDate())
+}
+
+export function groupSeizuresByDate(seizures: Seizure[]): Record<string, Seizure[]> {
+	const result: Record<string, Seizure[]> = {}
+	for (const s of seizures) {
+		const key = formatDateKey(s.startedAt)
+		if (!result[key]) result[key] = []
+		result[key].push(s)
+	}
+	return result
+}
+
+export function computeTimeOfDay(seizures: Seizure[]): TimeOfDay {
+	const result: TimeOfDay = { night: 0, morning: 0, afternoon: 0, evening: 0 }
+	for (const s of seizures) {
+		result[getTimeOfDayKey(s.startedAt)]++
+	}
+	return result
+}
+
 export function getMonthsInRange(
 	from: number,
 	to: number,
