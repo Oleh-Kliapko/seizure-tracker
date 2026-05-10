@@ -246,6 +246,9 @@
 		"of": "з",
 		"legendTracked": "Трекінг заповнений",
 		"legendSeizure": "Був приступ",
+		"reportTitle": "Звіт по трекінгу",
+		"reportRule1": "максимум за останні 5 місяців",
+		"reportRule2": "відправлення не частіше 1 звіту в {{days}} днів",
 		"error": {
 			"temperature": "Температура має бути від 30°C до 45°C",
 			"pulse": "Пульс має бути від 20 до 250 уд/хв",
@@ -266,7 +269,7 @@
 		"sixMonths": "6 місяців",
 		"year": "Рік",
 		"allTime": "Увесь час",
-		"exportTitle": "Експорт PDF звіту",
+		"exportTitle": "Звіт по приступам",
 		"exportRule1": "максимум за останні 5 місяців",
 		"exportRule2": "відправлення не частіше 1 звіту в {{days}} днів",
 		"from": "Від",
@@ -492,6 +495,17 @@
 		"medColSchedule": "Час прийому",
 		"medColStarted": "Початок прийому",
 		"medColNotes": "Нотатки",
-		"medNone": "Ліки не налаштовані"
+		"medNone": "Ліки не налаштовані",
+		"formFrom": "Від",
+		"formTo": "До",
+		"generating": "Генерація...",
+		"exportPdf": "Завантажити PDF",
+		"sending": "Відправлення...",
+		"sendEmail": "Відправити на імейл",
+		"emailSentOn": "Надіслано {{date}}",
+		"emailModalTitle": "Відправити звіт на імейл",
+		"emailModalDescription": "Відправлення може зайняти близько 1 хвилини",
+		"emailPlaceholder": "Імейл адреса",
+		"send": "Відправити"
 	}
 }
