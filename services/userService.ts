@@ -32,8 +32,8 @@ export async function updateUser(
 	uid: string,
 	data: Partial<User>,
 ): Promise<void> {
-	await updateDoc(doc(db, "users", uid), {
-		...data,
-		updatedAt: new Date(),
-	})
+	const payload = Object.fromEntries(
+		Object.entries({ ...data, updatedAt: new Date() }).filter(([, v]) => v !== undefined),
+	)
+	await updateDoc(doc(db, "users", uid), payload)
 }

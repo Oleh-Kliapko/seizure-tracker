@@ -17,6 +17,7 @@ type FormField = {
 	placeholder: string
 	autoCapitalize?: "none" | "words" | "sentences" | "characters"
 	keyboardType?: "default" | "phone-pad" | "email-address"
+	validate?: (value: string) => boolean
 }
 
 type Props = {
@@ -71,6 +72,7 @@ export function PersonalForm({
 						placeholder={placeholder}
 						autoCapitalize={autoCapitalize ?? "sentences"}
 						keyboardType={keyboardType ?? "default"}
+						validate={field.validate}
 					/>
 				)
 			})}

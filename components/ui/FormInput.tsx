@@ -14,9 +14,10 @@ import { createFormInputStyles } from "./FormInput.styles"
 type Props = Omit<TextInputProps, "secureTextEntry"> & {
 	label?: string
 	isPassword?: boolean
+	validate?: (value: string) => boolean
 }
 
-export function FormInput({ label, isPassword = false, ...props }: Props) {
+export function FormInput({ label, isPassword = false, validate, ...props }: Props) {
 	const theme = useAppTheme()
 	const styles = createFormInputStyles(theme)
 
@@ -24,18 +25,23 @@ export function FormInput({ label, isPassword = false, ...props }: Props) {
 	const [showCheck, setShowCheck] = useState(false)
 	const isDirty = useRef(false)
 	const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+	const currentValueRef = useRef(typeof props.value === "string" ? props.value : "")
 
 	const handleChangeText = (text: string) => {
 		isDirty.current = true
+		currentValueRef.current = text
 		props.onChangeText?.(text)
 	}
 
 	const handleBlur = (e: any) => {
 		if (isDirty.current) {
 			isDirty.current = false
-			if (timerRef.current) clearTimeout(timerRef.current)
-			setShowCheck(true)
-			timerRef.current = setTimeout(() => setShowCheck(false), 2000)
+			const isValid = validate ? validate(currentValueRef.current) : true
+			if (isValid) {
+				if (timerRef.current) clearTimeout(timerRef.current)
+				setShowCheck(true)
+				timerRef.current = setTimeout(() => setShowCheck(false), 2000)
+			}
 		}
 		props.onBlur?.(e)
 	}

@@ -80,7 +80,7 @@ export function usePersonalForm() {
 				firstName: s.firstName,
 				middleName: s.middleName,
 				phone: s.phone,
-				birthDate: s.birthDate ?? undefined,
+				...(s.birthDate != null ? { birthDate: s.birthDate } : {}),
 				countryOfBirth: s.countryOfBirth,
 				cityOfBirth: s.cityOfBirth,
 				address: s.address,
@@ -117,6 +117,7 @@ export function usePersonalForm() {
 			onChange: setPhone,
 			placeholder: "+380XXXXXXXXX",
 			keyboardType: "phone-pad" as const,
+			validate: (v: string) => !v || validatePhone(v).isValid,
 		},
 		{
 			label: i18n.t("personal.countryLabel"),

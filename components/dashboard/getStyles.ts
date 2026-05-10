@@ -236,13 +236,13 @@ export const getStyles = (theme: AppTheme) => {
 			fontFamily: fonts.medium,
 			fontSize: fontSize.sm,
 			color: onSurface,
-			width: 60,
+			width: "30%",
 		},
 		seizureTime: {
 			fontFamily: fonts.regular,
 			fontSize: fontSize.sm,
 			color: textSecondary,
-			width: 42,
+			width: "25%",
 		},
 		seizureSeverity: {
 			fontFamily: fonts.medium,
