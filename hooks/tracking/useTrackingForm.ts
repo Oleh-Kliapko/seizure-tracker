@@ -9,6 +9,7 @@ import {
 	upsertTracking,
 } from "@/services"
 import { hasInvalidVitals } from "@/utils"
+import { toggleTriggerItem } from "@/utils/seizureHelpers"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useAuth } from "../auth/useAuth"
 
@@ -211,30 +212,22 @@ export function useTrackingForm(dateTimestamp: number) {
 				setError(i18n.t("error.savingErrorShort"))
 			}
 		},
-		[user],
+		[user, dateTimestamp],
 	)
 
-	const toggleInternalTrigger = (trigger: InternalTrigger) => {
+	const toggleInternalTrigger = (trigger: InternalTrigger) =>
 		setInternalTriggers(prev => {
-			const exists = prev.find(t => t.type === trigger)
-			const updated = exists
-				? prev.filter(t => t.type !== trigger)
-				: [...prev, { type: trigger }]
+			const updated = toggleTriggerItem(prev, trigger)
 			autoSave({ internalTriggers: updated })
 			return updated
 		})
-	}
 
-	const toggleExternalTrigger = (trigger: ExternalTrigger) => {
+	const toggleExternalTrigger = (trigger: ExternalTrigger) =>
 		setExternalTriggers(prev => {
-			const exists = prev.find(t => t.type === trigger)
-			const updated = exists
-				? prev.filter(t => t.type !== trigger)
-				: [...prev, { type: trigger }]
+			const updated = toggleTriggerItem(prev, trigger)
 			autoSave({ externalTriggers: updated })
 			return updated
 		})
-	}
 
 	const addIntake = (medicationId: string, amount: number) => {
 		const newIntake = { medicationId, amount, takenAt: Date.now() }

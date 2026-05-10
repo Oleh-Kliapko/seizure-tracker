@@ -1,4 +1,4 @@
-// hooks/settings/useAvatarUpload.ts
+// hooks/settings/useAvatar.ts
 
 import { auth, db } from "@/config/firebase"
 import i18n from "@/config/i18n"
@@ -19,7 +19,7 @@ function extractPublicIdFromUrl(url?: string): string | undefined {
 	return match?.[1]
 }
 
-export function useAvatarUpload() {
+export function useAvatar() {
 	const [isUploading, setIsUploading] = useState(false)
 	const [error, setError] = useState<string | null>(null)
 

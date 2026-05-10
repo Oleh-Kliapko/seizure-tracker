@@ -15,7 +15,7 @@ import { useSeizureForm } from "./seizure/useSeizureForm"
 import { useSeizureList } from "./seizure/useSeizureList"
 import { useVideoUpload } from "./seizure/useVideoUpload"
 import { useAppSettingsForm } from "./settings/useAppSettingsForm"
-import { useAvatarUpload } from "./settings/useAvatarUpload"
+import { useAvatar } from "./settings/useAvatar"
 import { useChangePasswordForm } from "./settings/useChangePasswordForm"
 import { useDeleteAccount } from "./settings/useDeleteAccount"
 import { useGuardiansForm } from "./settings/useGuardiansForm"
@@ -43,7 +43,7 @@ export {
 	useAppTheme,
 	useAuth,
 	useAuthActions,
-	useAvatarUpload,
+	useAvatar,
 	useChangePasswordForm,
 	useDashboard,
 	useDeleteAccount,

@@ -2,7 +2,7 @@
 
 import { LogoutButton, ProfileAvatar, ProfileMenu } from "@/components/settings"
 import { ScreenWrapper } from "@/components/ui"
-import { useAppTheme, useAuthActions, useAvatarUpload, useUser } from "@/hooks"
+import { useAppTheme, useAuthActions, useAvatar, useUser } from "@/hooks"
 import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import { ActivityIndicator, Alert, ScrollView, View } from "react-native"
@@ -17,7 +17,7 @@ export default function ProfileScreen() {
 		removeAvatar,
 		isUploading,
 		error: avatarError,
-	} = useAvatarUpload()
+	} = useAvatar()
 
 	useEffect(() => {
 		if (avatarError) Alert.alert(t("common.error"), t(avatarError))

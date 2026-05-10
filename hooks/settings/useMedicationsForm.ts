@@ -136,37 +136,28 @@ export function useMedicationsForm() {
 		)
 	}
 
-	const addEntryTime = (index: number, time: string) => {
-		setEntries(prev =>
-			prev.map((e, i) => {
-				if (i !== index) return e
-				if (e.scheduledTimes.includes(time)) return e
-				const newTimes = [...e.scheduledTimes, time].sort()
-				saveEntry(index, { scheduledTimes: newTimes })
-				return { ...e, scheduledTimes: newTimes }
-			}),
-		)
-	}
+	const applyAndSave = (index: number, updater: (e: MedEntry) => Partial<MedEntry> | null) =>
+		setEntries(prev => prev.map((e, i) => {
+			if (i !== index) return e
+			const overrides = updater(e)
+			if (!overrides || Object.keys(overrides).length === 0) return e
+			saveEntry(index, overrides)
+			return { ...e, ...overrides }
+		}))
 
-	const removeEntryTime = (index: number, time: string) => {
-		setEntries(prev =>
-			prev.map((e, i) => {
-				if (i !== index) return e
-				const newTimes = e.scheduledTimes.filter(t => t !== time)
-				saveEntry(index, { scheduledTimes: newTimes })
-				return { ...e, scheduledTimes: newTimes }
-			}),
-		)
-	}
+	const addEntryTime = (index: number, time: string) =>
+		applyAndSave(index, e => {
+			if (e.scheduledTimes.includes(time)) return null
+			return { scheduledTimes: [...e.scheduledTimes, time].sort() }
+		})
 
-	const updateEntryStarted = (index: number, month: number, year: number) => {
-		setEntries(prev =>
-			prev.map((e, i) =>
-				i !== index ? e : { ...e, startMonth: month, startYear: year },
-			),
-		)
-		saveEntry(index, { startMonth: month, startYear: year })
-	}
+	const removeEntryTime = (index: number, time: string) =>
+		applyAndSave(index, e => ({
+			scheduledTimes: e.scheduledTimes.filter(t => t !== time),
+		}))
+
+	const updateEntryStarted = (index: number, month: number, year: number) =>
+		applyAndSave(index, () => ({ startMonth: month, startYear: year }))
 
 	const saveAllEntries = useCallback(async () => {
 		for (let i = 0; i < entriesRef.current.length; i++) {
