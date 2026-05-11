@@ -1,7 +1,6 @@
 // components/history/ExportForm.tsx
 
 import { ReportForm } from "@/components/report"
-import { REPORT_COOLDOWN_DAYS } from "@/constants/commonConstants"
 import { useTranslation } from "react-i18next"
 
 type Props = {
@@ -17,10 +16,7 @@ export function ExportForm(props: Props) {
 	return (
 		<ReportForm
 			title={t("history.exportTitle")}
-			rules={[
-				t("history.exportRule1"),
-				t("history.exportRule2", { days: REPORT_COOLDOWN_DAYS }),
-			]}
+			rules={[t("history.exportRule1")]}
 			{...props}
 		/>
 	)

@@ -99,6 +99,13 @@ export const getStyles = (theme: AppTheme) => {
 		buttonsContainer: {
 			gap: spacing.md,
 		},
+		emailCooldownText: {
+			fontFamily: fonts.regular,
+			fontSize: fontSize.sm,
+			color: textSecondary,
+			textAlign: "center" as const,
+			marginTop: 4,
+		},
 		modalOverlay: {
 			flex: 1,
 			backgroundColor: "rgba(0,0,0,0.5)",

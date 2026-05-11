@@ -55,6 +55,9 @@ export function useReportForm(
 	const inCooldown =
 		!!lastReportSentAt && Date.now() - lastReportSentAt < cooldownMs
 	const sentDateLabel = inCooldown ? formatShortDate(lastReportSentAt!) : null
+	const daysUntilAvailable = inCooldown
+		? Math.ceil(((lastReportSentAt ?? 0) + cooldownMs - Date.now()) / (1000 * 60 * 60 * 24))
+		: 0
 
 	return {
 		minFromDate,
@@ -67,5 +70,6 @@ export function useReportForm(
 		setShowEmailModal,
 		inCooldown,
 		sentDateLabel,
+		daysUntilAvailable,
 	}
 }

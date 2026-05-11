@@ -46,14 +46,10 @@ export function ReportForm({
 		showEmailModal,
 		setShowEmailModal,
 		inCooldown,
-		sentDateLabel,
+		daysUntilAvailable,
 	} = useReportForm(user?.email, lastReportSentAt)
 
-	const emailBtnTitle = isLoading
-		? t("report.sending")
-		: inCooldown
-			? t("report.emailSentOn", { date: sentDateLabel })
-			: t("report.sendEmail")
+	const emailBtnTitle = isLoading ? t("report.sending") : t("report.sendEmail")
 
 	return (
 		<View style={styles.card}>
@@ -80,22 +76,29 @@ export function ReportForm({
 			</View>
 
 			<View style={styles.buttonsContainer}>
-				<Button
+					<Button
 					title={isLoading ? t("report.generating") : t("report.exportPdf")}
 					icon={<FileDown size={20} color="#fff" />}
 					iconPosition="left"
 					onPress={() => onExport(from, to)}
 					disabled={isLoading}
 				/>
-			{showEmail && (
-				<Button
-					title={emailBtnTitle}
-					icon={<Mail size={20} color="#fff" />}
-					iconPosition="left"
-					onPress={() => setShowEmailModal(true)}
-					disabled={isLoading || inCooldown}
-				/>
-			)}
+				{showEmail && (
+					<View>
+						<Button
+							title={emailBtnTitle}
+							icon={<Mail size={20} color="#fff" />}
+							iconPosition="left"
+							onPress={() => setShowEmailModal(true)}
+							disabled={isLoading || inCooldown}
+						/>
+						{inCooldown && (
+							<Text style={styles.emailCooldownText}>
+								{t("report.emailCooldownDays", { days: daysUntilAvailable })}
+							</Text>
+						)}
+					</View>
+				)}
 			</View>
 
 			{showEmail && (

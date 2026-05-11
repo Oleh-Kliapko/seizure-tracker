@@ -5,11 +5,11 @@ import { StyleSheet } from "react-native"
 export const createFormInputStyles = (theme: AppTheme) => {
 	return StyleSheet.create({
 		container: {
-			marginBottom: 16,
+			marginBottom: theme.spacing.sm,
 		},
 
 		label: {
-			marginBottom: 6,
+			marginBottom: theme.spacing.xs,
 			fontFamily: theme.fonts.medium,
 			fontSize: theme.fontSize.sm,
 			color: theme.colors.textSecondary,

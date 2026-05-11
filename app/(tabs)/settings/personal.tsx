@@ -11,7 +11,8 @@ import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 export default function PersonalScreen() {
 	const { spacing } = useAppTheme()
 	const { t } = useTranslation()
-	const { fields, birthDate, setBirthDate, displayError, autoSave } = usePersonalForm()
+	const { fields, birthDate, setBirthDate, displayError, autoSave } =
+		usePersonalForm()
 
 	useFocusEffect(
 		useCallback(
