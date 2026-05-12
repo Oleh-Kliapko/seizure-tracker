@@ -1,7 +1,7 @@
 // hooks/report/useTrackingExport.ts
 
 import i18n from "@/config/i18n"
-import { getTrackingByPeriod } from "@/services"
+import { getSeizuresByPeriod, getTrackingByPeriod } from "@/services"
 import { generateTrackingReportHtml } from "@/utils/trackingReport"
 import * as Print from "expo-print"
 import * as Sharing from "expo-sharing"
@@ -22,14 +22,24 @@ export function useTrackingExport() {
 			setIsLoading(true)
 			setError(null)
 
-			const records = await getTrackingByPeriod(user.uid, from, to)
+			const [records, seizures] = await Promise.all([
+				getTrackingByPeriod(user.uid, from, to),
+				getSeizuresByPeriod(user.uid, from, to).catch(() => []),
+			])
 
 			if (records.length === 0) {
 				setError(i18n.t("error.exportNoTracking"))
 				return
 			}
 
-			const html = generateTrackingReportHtml(profile, records, from, to)
+			const seizureDayKeys = new Set(
+				seizures.map(s => {
+					const d = new Date(s.startedAt)
+					return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`
+				}),
+			)
+
+			const html = generateTrackingReportHtml(profile, records, seizureDayKeys, from, to)
 			const { uri } = await Print.printToFileAsync({
 				html: html,
 				base64: false,

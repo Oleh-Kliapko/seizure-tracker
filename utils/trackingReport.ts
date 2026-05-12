@@ -169,12 +169,108 @@ function triggerRows(
   </div>`
 }
 
+// ─── Detail log ───────────────────────────────────────────────────────────────
+
+function fmtDate(ts: number): string {
+	const d = new Date(ts)
+	const dd = String(d.getDate()).padStart(2, "0")
+	const mm = String(d.getMonth() + 1).padStart(2, "0")
+	return `${dd}.${mm}`
+}
+
+function fmtNum(val: number | undefined, decimals = 0): string {
+	if (val === undefined) return "—"
+	return decimals > 0 ? val.toFixed(decimals) : String(val)
+}
+
+function fmtBP(sys: number | undefined, dia: number | undefined): string {
+	if (sys === undefined && dia === undefined) return "—"
+	return `${sys ?? "—"}/${dia ?? "—"}`
+}
+
+function fmtTriggers(
+	internal: DailyTracking["internalTriggers"],
+	external: DailyTracking["externalTriggers"],
+): string {
+	const all = [
+		...(internal ?? []).map(t => triggerLabel(t.type, INTERNAL_TRIGGERS)),
+		...(external ?? []).map(t => triggerLabel(t.type, EXTERNAL_TRIGGERS)),
+	]
+	return all.length ? all.join(", ") : "—"
+}
+
+function dayKey(ts: number): string {
+	const d = new Date(ts)
+	return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`
+}
+
+function buildDetailLogHtml(
+	records: DailyTracking[],
+	seizureDayKeys: Set<string>,
+	t: (key: string) => string,
+): string {
+	const sorted = [...records]
+		.filter(r => seizureDayKeys.has(dayKey(r.date)))
+		.sort((a, b) => a.date - b.date)
+
+	if (sorted.length === 0) return ""
+
+	const rows = sorted.map(r => {
+		const warnTemp = r.temperature !== undefined && r.temperature > 37
+		const warnPulse = r.pulse !== undefined && r.pulse > 100
+		const warnBP =
+			(r.systolicPressure !== undefined && r.systolicPressure > 130) ||
+			(r.diastolicPressure !== undefined && r.diastolicPressure > 85)
+		const warnO2 = r.oxygenSaturation !== undefined && r.oxygenSaturation < 95
+		const warnSleep = r.sleepDuration !== undefined && r.sleepDuration < 7
+
+		const cell = (val: string, warn = false) =>
+			`<td${warn ? ' class="warn"' : ""}>${val}</td>`
+
+		return `<tr>
+      ${cell(fmtDate(r.date))}
+      ${cell(fmtNum(r.temperature, 1), warnTemp)}
+      ${cell(fmtNum(r.pulse), warnPulse)}
+      ${cell(fmtBP(r.systolicPressure, r.diastolicPressure), warnBP)}
+      ${cell(fmtNum(r.oxygenSaturation), warnO2)}
+      ${cell(r.sleepDuration !== undefined ? `${r.sleepDuration.toFixed(1)} / ${r.sleepQuality ?? "—"}` : "—", warnSleep)}
+      ${cell(r.mood !== undefined || r.activityLevel !== undefined ? `${r.mood ?? "—"} / ${r.activityLevel ?? "—"}` : "—")}
+      ${cell(r.urinationCount !== undefined || r.bowelMovements !== undefined ? `${r.urinationCount ?? "—"} / ${r.bowelMovements ?? "—"}` : "—")}
+      ${cell(fmtTriggers(r.internalTriggers, r.externalTriggers))}
+      ${cell(r.patientNotes ?? "—")}
+    </tr>`
+	}).join("")
+
+	return `
+  <div class="section detail-log-section">
+    <div class="section-title">📋 ${t("report.detailLogWithSeizures")}</div>
+    <table class="detail-table">
+      <thead>
+        <tr>
+          <th>${t("report.colDate")}</th>
+          <th>${t("report.logColTemp")}</th>
+          <th>${t("report.logColPulse")}</th>
+          <th>${t("report.logColBP")}</th>
+          <th>${t("report.logColO2")}</th>
+          <th>${t("report.logColSleepH")}<br>${t("report.logColSleepQ")}</th>
+          <th>${t("report.logColMood")}<br>${t("report.logColActivity")}</th>
+          <th>${t("report.logColUr")}<br>${t("report.logColBow")}</th>
+          <th>${t("report.logColTriggers")}</th>
+          <th>${t("report.logColNotes")}</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>`
+}
+
 // ─── Main HTML template ───────────────────────────────────────────────────────
 
 function buildTrackingHtml(
 	user: User,
 	patientName: string,
 	records: DailyTracking[],
+	seizureDayKeys: Set<string>,
 	from: number,
 	to: number,
 ): string {
@@ -216,6 +312,14 @@ function buildTrackingHtml(
     .trigger-items { color: #374151; }
 
     .footer { text-align: center; color: #6B7280; font-size: 10px; border-top: 1px solid #E5E7EB; padding-top: 10px; margin-top: 16px; }
+
+    .detail-log-section { page-break-before: always; padding-top: 32px; }
+    .detail-table { width: 100%; border-collapse: collapse; font-size: 10px; }
+    .detail-table th { background: #F0FDFA; color: #0D9488; font-weight: bold; padding: 4px 5px; border: 1px solid #CCFBF1; text-align: center; vertical-align: bottom; white-space: normal; }
+    .detail-table td { padding: 4px 5px; border: 1px solid #E5E7EB; color: #374151; vertical-align: middle; font-size: 15px; text-align: center; }
+    .detail-table tr:nth-child(even) td { background: #F8FAFC; }
+    .detail-table td.warn { color: #EF4444; font-weight: bold; }
+    .detail-table td:last-child { font-size: 10px; text-align: left; max-width: 120px; word-break: break-word; vertical-align: top; }
   </style>
 </head>
 <body>
@@ -271,10 +375,7 @@ function buildTrackingHtml(
     ${triggerRows("report.top3external", s.topExternal, EXTERNAL_TRIGGERS, s.totalExternal)}
   </div>
 
-  <!-- Daily log placeholder -->
-  <div class="section">
-    <div class="section-title">📋 ${t("report.detailLog")}</div>
-  </div>
+  ${buildDetailLogHtml(records, seizureDayKeys, t)}
 
   <div class="footer">
     <p>${t("report.footer")} • ${new Date().toLocaleString(i18n.language === "uk" ? "uk-UA" : "en-US")}</p>
@@ -286,9 +387,10 @@ function buildTrackingHtml(
 export function generateTrackingReportHtml(
 	user: User,
 	records: DailyTracking[],
+	seizureDayKeys: Set<string>,
 	from: number,
 	to: number,
 ): string {
 	const patientName = getPatientName(user)
-	return buildTrackingHtml(user, patientName, records, from, to)
+	return buildTrackingHtml(user, patientName, records, seizureDayKeys, from, to)
 }
