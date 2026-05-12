@@ -78,6 +78,11 @@ export function useDashboard() {
 			s => s.startedAt >= lastMonthStart && s.startedAt <= lastMonthEnd,
 		).length
 
+		const daysElapsedThisMonth = now.getDate()
+		const daysInLastMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate()
+		const thisMonthAvgPerDay = Math.round((thisMonthCount / daysElapsedThisMonth) * 10) / 10
+		const lastMonthAvgPerDay = Math.round((lastMonthCount / daysInLastMonth) * 10) / 10
+
 		const heatmapDays: HeatmapDay[] = []
 		for (let i = 29; i >= 0; i--) {
 			const d = new Date()
@@ -104,6 +109,8 @@ export function useDashboard() {
 			daysSinceLastSeizure,
 			thisMonthCount,
 			lastMonthCount,
+			thisMonthAvgPerDay,
+			lastMonthAvgPerDay,
 			heatmapDays,
 			recentSeizures,
 			trackingFilledSections,

@@ -137,10 +137,32 @@ export const getStyles = (theme: AppTheme) => {
 			fontSize: fontSize.sm,
 			color: textSecondary,
 		},
+		statsInnerRow: {
+			flexDirection: "row",
+			alignItems: "center",
+			marginTop: spacing.xs,
+			gap: spacing.sm,
+		},
+		statsInnerCol: {
+			flex: 1,
+			alignItems: "center",
+		},
+		statsInnerDivider: {
+			width: 1,
+			height: 36,
+			backgroundColor: border,
+		},
+		statsCountSmall: {
+			fontFamily: fonts.bold,
+			fontSize: 20,
+			color: onSurface,
+			lineHeight: 26,
+		},
 		statsTrend: {
 			fontFamily: fonts.medium,
 			fontSize: fontSize.sm,
 			marginTop: spacing.xs,
+			textAlign: "center" as const,
 		},
 
 		// Heatmap

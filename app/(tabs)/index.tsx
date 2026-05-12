@@ -32,6 +32,8 @@ export default function Dashboard() {
 		daysSinceLastSeizure,
 		thisMonthCount,
 		lastMonthCount,
+		thisMonthAvgPerDay,
+		lastMonthAvgPerDay,
 		heatmapDays,
 		recentSeizures,
 		trackingFilledSections,
@@ -93,6 +95,8 @@ export default function Dashboard() {
 					<DashboardStats
 						thisMonthCount={thisMonthCount}
 						lastMonthCount={lastMonthCount}
+						thisMonthAvgPerDay={thisMonthAvgPerDay}
+						lastMonthAvgPerDay={lastMonthAvgPerDay}
 					/>
 
 					<DashboardHeatmap days={heatmapDays} />
