@@ -31,7 +31,7 @@ export const getStyles = (theme: AppTheme) => {
 		doneBtnText: {
 			fontFamily: fonts.medium,
 			fontSize: fontSize.md,
-			color: "#fff",
+			color: colors.onPrimary,
 		},
 
 		switchRow: {

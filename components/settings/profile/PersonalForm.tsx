@@ -80,7 +80,7 @@ export function PersonalForm({
 			<View style={{ marginBottom: theme.spacing.md }}>
 				<View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 6 }}>
 					<Text style={[styles.label, { marginBottom: 0 }]}>{t('personal.birthDate')}</Text>
-					{showDateCheck && <Check size={13} color="#22C55E" />}
+					{showDateCheck && <Check size={13} color={theme.colors.success} />}
 				</View>
 				<TouchableOpacity
 					onPress={() => setShowPicker(v => !v)}
@@ -137,7 +137,7 @@ export function PersonalForm({
 								style={{
 									fontFamily: theme.fonts.medium,
 									fontSize: theme.fontSize.md,
-									color: "#fff",
+									color: theme.colors.onPrimary,
 								}}
 							>
 								{t('common.done')}

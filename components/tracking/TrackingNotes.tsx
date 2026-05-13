@@ -56,7 +56,7 @@ function NoteField({
 			<View style={styles.noteLabelRow}>
 				<Text style={styles.label}>{label}</Text>
 				<View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
-					{showCheck && <Check size={13} color="#22C55E" />}
+					{showCheck && <Check size={13} color={theme.colors.success} />}
 					<Text style={styles.noteCharCounter}>
 						{value.length}/{MAX_LENGTH}
 					</Text>

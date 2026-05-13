@@ -14,12 +14,14 @@ type SegmentDef = {
 	color: string
 }
 
-const SEGMENT_DEFS: SegmentDef[] = [
-	{ key: "night", labelKey: "history.night", color: "#5C6BC0" },
-	{ key: "morning", labelKey: "history.morning", color: "#FFA726" },
-	{ key: "afternoon", labelKey: "history.afternoon", color: "#26C6DA" },
-	{ key: "evening", labelKey: "history.evening", color: "#AB47BC" },
-]
+function buildSegmentDefs(chartColors: ReturnType<typeof useAppTheme>["chartColors"]): SegmentDef[] {
+	return [
+		{ key: "night", labelKey: "history.night", color: chartColors.night },
+		{ key: "morning", labelKey: "history.morning", color: chartColors.morning },
+		{ key: "afternoon", labelKey: "history.afternoon", color: chartColors.afternoon },
+		{ key: "evening", labelKey: "history.evening", color: chartColors.evening },
+	]
+}
 
 const SIZE = 160
 const CX = SIZE / 2
@@ -35,6 +37,7 @@ export function HistoryDonutChart({ data }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
 	const { t } = useTranslation()
+	const SEGMENT_DEFS = buildSegmentDefs(theme.chartColors)
 	const total = Object.values(data).reduce((a, b) => a + b, 0)
 
 	if (total === 0) {

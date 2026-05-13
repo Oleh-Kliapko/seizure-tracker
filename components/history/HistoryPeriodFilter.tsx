@@ -41,7 +41,7 @@ export function HistoryPeriodFilter({ active, onChange }: Props) {
 						{ backgroundColor: active === p.value ? theme.colors.primary : theme.colors.surface },
 					]}
 				>
-					<Text style={[styles.periodBtnText, { color: active === p.value ? "#fff" : theme.colors.textSecondary }]}>
+					<Text style={[styles.periodBtnText, { color: active === p.value ? theme.colors.onPrimary : theme.colors.textSecondary }]}>
 						{t(p.labelKey)}
 					</Text>
 				</TouchableOpacity>

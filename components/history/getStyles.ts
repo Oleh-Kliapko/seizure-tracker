@@ -5,7 +5,7 @@ import { StyleSheet } from "react-native"
 
 export const getStyles = (theme: AppTheme) => {
 	const {
-		colors: { surface, border, error, background, textSecondary, onSurface, primary },
+		colors: { surface, border, error, background, textSecondary, onSurface, primary, onPrimary },
 		fonts,
 		fontSize,
 		spacing,
@@ -73,7 +73,7 @@ export const getStyles = (theme: AppTheme) => {
 		doneBtnText: {
 			fontFamily: fonts.medium,
 			fontSize: fontSize.md,
-			color: "#fff",
+			color: onPrimary,
 		},
 		errorContainer: {
 			minHeight: 24,
@@ -164,7 +164,7 @@ export const getStyles = (theme: AppTheme) => {
 		},
 		monthTitle: {
 			fontFamily: fonts.medium,
-			fontSize: 12,
+			fontSize: fontSize.xs,
 			color: textSecondary,
 			marginBottom: spacing.sm,
 			textTransform: "uppercase" as const,
@@ -215,7 +215,7 @@ export const getStyles = (theme: AppTheme) => {
 		},
 		seizureBadgeText: {
 			fontSize: 8,
-			color: "#fff",
+			color: onPrimary,
 			fontFamily: fonts.bold,
 		},
 
@@ -226,7 +226,7 @@ export const getStyles = (theme: AppTheme) => {
 		},
 		emptyStateText: {
 			fontFamily: fonts.regular,
-			fontSize: 14,
+			fontSize: fontSize.sm,
 			color: textSecondary,
 		},
 
@@ -244,7 +244,7 @@ export const getStyles = (theme: AppTheme) => {
 		},
 		periodBtnText: {
 			fontFamily: fonts.medium,
-			fontSize: 12,
+			fontSize: fontSize.xs,
 		},
 
 		// Trigger bars
@@ -258,12 +258,12 @@ export const getStyles = (theme: AppTheme) => {
 		},
 		triggerLabel: {
 			fontFamily: fonts.regular,
-			fontSize: 14,
+			fontSize: fontSize.sm,
 			color: onSurface,
 		},
 		triggerCount: {
 			fontFamily: fonts.medium,
-			fontSize: 14,
+			fontSize: fontSize.sm,
 			color: primary,
 		},
 		triggerBarBg: {

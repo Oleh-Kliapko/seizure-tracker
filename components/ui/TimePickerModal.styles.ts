@@ -73,7 +73,7 @@ export const createTimePickerModalStyles = (theme: AppTheme) => {
 
 		pickerItemTextActive: {
 			fontFamily: fonts.bold,
-			color: "#fff",
+			color: colors.onPrimary,
 		},
 
 		separator: {
@@ -116,7 +116,7 @@ export const createTimePickerModalStyles = (theme: AppTheme) => {
 		confirmBtnText: {
 			fontFamily: fonts.medium,
 			fontSize: fontSize.md,
-			color: "#fff",
+			color: colors.onPrimary,
 		},
 	})
 }

@@ -78,7 +78,7 @@ export function ReportForm({
 			<View style={styles.buttonsContainer}>
 					<Button
 					title={isLoading ? t("report.generating") : t("report.exportPdf")}
-					icon={<FileDown size={20} color="#fff" />}
+					icon={<FileDown size={20} color={theme.colors.onPrimary} />}
 					iconPosition="left"
 					onPress={() => onExport(from, to)}
 					disabled={isLoading}
@@ -87,7 +87,7 @@ export function ReportForm({
 					<View>
 						<Button
 							title={emailBtnTitle}
-							icon={<Mail size={20} color="#fff" />}
+							icon={<Mail size={20} color={theme.colors.onPrimary} />}
 							iconPosition="left"
 							onPress={() => setShowEmailModal(true)}
 							disabled={isLoading || inCooldown}

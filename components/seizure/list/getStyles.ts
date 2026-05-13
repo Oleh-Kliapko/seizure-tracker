@@ -74,7 +74,7 @@ export const getStyles = (theme: AppTheme) => {
 
 		filterChipTextActive: {
 			fontFamily: fonts.medium,
-			color: "#fff",
+			color: colors.onPrimary,
 		},
 
 		// Картка приступу — завжди темний фон, тому текст завжди світлий
@@ -91,7 +91,7 @@ export const getStyles = (theme: AppTheme) => {
 		cardType: {
 			fontFamily: fonts.bold,
 			fontSize: fontSize.lg,
-			color: "#F1F5F9",
+			color: colors.onPrimary,
 			marginBottom: spacing.sm,
 		},
 
@@ -104,7 +104,7 @@ export const getStyles = (theme: AppTheme) => {
 		cardMoodText: {
 			fontFamily: fonts.regular,
 			fontSize: fontSize.sm,
-			color: "#94A3B8",
+			color: colors.textSecondary,
 		},
 
 		cardTriggersRow: {
@@ -124,7 +124,7 @@ export const getStyles = (theme: AppTheme) => {
 		cardTriggerText: {
 			fontFamily: fonts.regular,
 			fontSize: 11,
-			color: "#94A3B8",
+			color: colors.textSecondary,
 		},
 
 		// Пагінація
@@ -140,7 +140,7 @@ export const getStyles = (theme: AppTheme) => {
 		pageBtn: {
 			width: 36,
 			height: 36,
-			borderRadius: 18,
+			borderRadius: radius.full,
 			justifyContent: "center",
 			alignItems: "center",
 			borderWidth: 1,
@@ -160,7 +160,7 @@ export const getStyles = (theme: AppTheme) => {
 		},
 
 		pageBtnTextActive: {
-			color: "#fff",
+			color: colors.onPrimary,
 		},
 
 		emptyContainer: {

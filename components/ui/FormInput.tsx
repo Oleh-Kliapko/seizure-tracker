@@ -62,7 +62,7 @@ export function FormInput({ label, isPassword = false, validate, ...props }: Pro
 
 				{showCheck && !isPassword && (
 					<View style={styles.eyeBtn}>
-						<Check size={theme.iconSize.sm} color="#22C55E" />
+						<Check size={theme.iconSize.sm} color={theme.colors.success} />
 					</View>
 				)}
 

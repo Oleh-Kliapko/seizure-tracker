@@ -30,9 +30,9 @@ export function DashboardStats({
 		if (previousAvg === 0) return null
 		const diff = currentAvg - previousAvg
 		const pct = Math.round(Math.abs(diff / previousAvg) * 100)
-		if (pct === 0) return { text: t("dashboard.noChange"), color: "#888" }
-		if (diff > 0) return { text: `↑ +${pct}%`, color: "#e53935" }
-		return { text: `↓ −${pct}%`, color: "#43a047" }
+		if (pct === 0) return { text: t("dashboard.noChange"), color: theme.colors.textSecondary }
+		if (diff > 0) return { text: `↑ +${pct}%`, color: theme.colors.error }
+		return { text: `↓ −${pct}%`, color: theme.colors.success }
 	}
 
 	const trend = trendLabel(thisMonthAvgPerDay, lastMonthAvgPerDay)

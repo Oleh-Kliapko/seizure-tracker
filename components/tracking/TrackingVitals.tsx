@@ -54,7 +54,7 @@ function VitalInput({ label, value, onChangeText, onBlur, ...inputProps }: Vital
 				/>
 				{showCheck && (
 					<View style={{ position: "absolute", right: 8, top: 0, bottom: 0, justifyContent: "center" }}>
-						<Check size={13} color="#22C55E" />
+						<Check size={13} color={theme.colors.success} />
 					</View>
 				)}
 			</View>

@@ -93,7 +93,7 @@ export const getStyles = (theme: AppTheme) => {
 		scaleBtn: {
 			width: 44,
 			height: 44,
-			borderRadius: 22,
+			borderRadius: radius.full,
 			borderWidth: 1,
 			borderColor: colors.border,
 			backgroundColor: colors.background,
@@ -113,7 +113,7 @@ export const getStyles = (theme: AppTheme) => {
 		},
 
 		scaleBtnTextActive: {
-			color: "#fff",
+			color: colors.onPrimary,
 		},
 
 		// Stepper (count)
@@ -127,7 +127,7 @@ export const getStyles = (theme: AppTheme) => {
 		stepperBtn: {
 			width: 36,
 			height: 36,
-			borderRadius: 18,
+			borderRadius: radius.full,
 			borderWidth: 1,
 			borderColor: colors.border,
 			backgroundColor: colors.background,
@@ -404,7 +404,7 @@ export const getStyles = (theme: AppTheme) => {
 		modalConfirmBtnText: {
 			fontFamily: fonts.medium,
 			fontSize: fontSize.md,
-			color: "#fff",
+			color: colors.onPrimary,
 		},
 	})
 }

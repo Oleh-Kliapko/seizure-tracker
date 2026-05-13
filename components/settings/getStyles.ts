@@ -12,6 +12,7 @@ export const getStyles = (theme: AppTheme) => {
 			textSecondary,
 			onSurface,
 			primary,
+			onPrimary,
 		},
 		fonts,
 		fontSize,
@@ -114,7 +115,7 @@ export const getStyles = (theme: AppTheme) => {
 		avatarIcon: {
 			width: 100,
 			height: 100,
-			borderRadius: 60,
+			borderRadius: radius.full,
 			justifyContent: "center",
 			alignItems: "center",
 			backgroundColor: primary,
@@ -123,7 +124,7 @@ export const getStyles = (theme: AppTheme) => {
 		avatarTextFirstLetter: {
 			fontFamily: fonts.bold,
 			fontSize: 42,
-			color: "#fff",
+			color: onPrimary,
 		},
 
 		avatarBtn: {

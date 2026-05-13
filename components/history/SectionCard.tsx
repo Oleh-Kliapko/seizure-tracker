@@ -9,7 +9,7 @@ type Props = {
 }
 
 export function SectionCard({ title, children }: Props) {
-	const { colors, fonts, spacing, radius } = useAppTheme()
+	const { colors, fonts, fontSize, spacing, radius } = useAppTheme()
 	return (
 		<View
 			style={{
@@ -22,7 +22,7 @@ export function SectionCard({ title, children }: Props) {
 			<Text
 				style={{
 					fontFamily: fonts.medium,
-					fontSize: 12,
+					fontSize: fontSize.xs,
 					color: colors.textSecondary,
 					textTransform: "uppercase",
 					letterSpacing: 0.5,

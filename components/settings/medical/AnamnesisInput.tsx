@@ -43,7 +43,7 @@ export function AnamnesisInput({ value, onChange, onBlur }: Props) {
 			<View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: styles.label.marginBottom }}>
 				<View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
 					<Text style={[styles.label, { marginBottom: 0 }]}>{t('medical.anamnesis')}</Text>
-					{showCheck && <Check size={13} color="#22C55E" />}
+					{showCheck && <Check size={13} color={theme.colors.success} />}
 				</View>
 				<Text style={{ fontFamily: theme.fonts.regular, fontSize: theme.fontSize.sm, color: theme.colors.textSecondary }}>
 				{value.length}/{MAX_LENGTH}

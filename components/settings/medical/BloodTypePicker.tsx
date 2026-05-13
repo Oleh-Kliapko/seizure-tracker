@@ -37,7 +37,7 @@ export function BloodTypePicker({
 		<View>
 			<View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginBottom: styles.label.marginBottom ?? 6 }}>
 				<Text style={[styles.label, { marginBottom: 0 }]}>{t('medical.bloodType')}</Text>
-				{showCheck && <Check size={13} color="#22C55E" />}
+				{showCheck && <Check size={13} color={theme.colors.success} />}
 			</View>
 
 			<View style={styles.row}>

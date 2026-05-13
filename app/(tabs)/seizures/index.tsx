@@ -61,13 +61,13 @@ export default function SeizuresScreen() {
 						style={{
 							width: 36,
 							height: 36,
-							borderRadius: 18,
+							borderRadius: theme.radius.full,
 							backgroundColor: theme.colors.primary,
 							justifyContent: "center",
 							alignItems: "center",
 						}}
 					>
-						<Plus size={22} color="#fff" />
+						<Plus size={22} color={theme.colors.onPrimary} />
 					</TouchableOpacity>
 				}
 			/>

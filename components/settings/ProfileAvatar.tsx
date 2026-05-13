@@ -51,7 +51,7 @@ export function ProfileAvatar({
 							},
 						]}
 					>
-						<ActivityIndicator color="#fff" />
+						<ActivityIndicator color={theme.colors.onPrimary} />
 					</View>
 				)}
 

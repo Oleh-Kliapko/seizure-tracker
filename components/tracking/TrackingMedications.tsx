@@ -58,7 +58,7 @@ export function TrackingMedications({
 				const statusColor = done
 					? theme.colors.success
 					: partial
-						? "#F59E0B"
+						? theme.colors.warning
 						: theme.colors.textSecondary
 
 				return (
@@ -91,7 +91,7 @@ export function TrackingMedications({
 									</Text>
 								)}
 								{partial && (
-									<Text style={[styles.medStatusNote, { color: "#F59E0B" }]}>
+									<Text style={[styles.medStatusNote, { color: theme.colors.warning }]}>
 										{t("tracking.incompleteDose")}
 									</Text>
 								)}

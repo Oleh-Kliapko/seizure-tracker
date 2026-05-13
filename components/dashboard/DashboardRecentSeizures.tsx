@@ -15,11 +15,6 @@ type Props = {
 	seizures: Seizure[]
 }
 
-const SEVERITY_COLORS: Record<number, string> = {
-	1: "#43a047",
-	2: "#FB8C00",
-	3: "#e53935",
-}
 
 export function DashboardRecentSeizures({ seizures }: Props) {
 	const theme = useAppTheme()
@@ -35,7 +30,13 @@ export function DashboardRecentSeizures({ seizures }: Props) {
 				const date = format(new Date(s.startedAt), "d MMM", { locale: dateFnsLocale })
 				const time = format(new Date(s.startedAt), "HH:mm")
 				const severity = s.severity ? t(SEVERITY_LABELS[s.severity]) : "—"
-				const severityColor = s.severity ? SEVERITY_COLORS[s.severity] : theme.colors.textSecondary
+				const severityColor = s.severity === 1
+				? theme.colors.success
+				: s.severity === 2
+					? theme.colors.warning
+					: s.severity === 3
+						? theme.colors.error
+						: theme.colors.textSecondary
 
 				return (
 					<View key={s.id}>

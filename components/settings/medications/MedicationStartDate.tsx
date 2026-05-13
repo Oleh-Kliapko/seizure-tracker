@@ -33,7 +33,7 @@ export function MedicationStartDate({ startMonth, startYear, onUpdateStarted }: 
 		<View style={{ marginBottom: spacing.md }}>
 			<View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginBottom: spacing.sm }}>
 				<Text style={[styles.label, { marginBottom: 0 }]}>{t("medications.startedAt")}</Text>
-				{showCheck && <Check size={13} color="#22C55E" />}
+				{showCheck && <Check size={13} color={theme.colors.success} />}
 			</View>
 			<View style={styles.row}>
 				<View style={styles.pickerWrapper}>

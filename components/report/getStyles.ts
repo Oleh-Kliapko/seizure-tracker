@@ -13,6 +13,7 @@ export const getStyles = (theme: AppTheme) => {
 			textSecondary,
 			onSurface,
 			primary,
+			onPrimary,
 		},
 		fonts,
 		fontSize,
@@ -82,7 +83,7 @@ export const getStyles = (theme: AppTheme) => {
 		doneBtnText: {
 			fontFamily: fonts.medium,
 			fontSize: fontSize.md,
-			color: "#fff",
+			color: onPrimary,
 		},
 		errorContainer: {
 			minHeight: 24,

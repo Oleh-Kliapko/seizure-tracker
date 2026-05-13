@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native"
 
 export const getStyles = (theme: AppTheme) => {
 	const {
-		colors: { primary, surface, border, onSurface, textSecondary },
+		colors: { primary, surface, border, onSurface, textSecondary, onPrimary },
 		fonts,
 		fontSize,
 		spacing,
@@ -36,12 +36,12 @@ export const getStyles = (theme: AppTheme) => {
 			backgroundColor: primary,
 			paddingHorizontal: spacing.xl,
 			paddingVertical: spacing.md,
-			borderRadius: 999,
+			borderRadius: radius.full,
 		},
 		emptyButtonText: {
 			fontFamily: fonts.medium,
 			fontSize: fontSize.md,
-			color: "#fff",
+			color: onPrimary,
 		},
 
 		// Hero
@@ -56,7 +56,7 @@ export const getStyles = (theme: AppTheme) => {
 		heroNoSeizures: {
 			fontFamily: fonts.medium,
 			fontSize: fontSize.lg,
-			color: "#fff",
+			color: onPrimary,
 			opacity: 0.9,
 			textAlign: "center",
 			paddingVertical: spacing.sm,
@@ -64,7 +64,7 @@ export const getStyles = (theme: AppTheme) => {
 		heroLabel: {
 			fontFamily: fonts.regular,
 			fontSize: fontSize.sm,
-			color: "#fff",
+			color: onPrimary,
 			opacity: 0.8,
 			marginBottom: spacing.xs,
 			textTransform: "uppercase",
@@ -73,7 +73,7 @@ export const getStyles = (theme: AppTheme) => {
 		heroToday: {
 			fontFamily: fonts.bold,
 			fontSize: 42,
-			color: "#fff",
+			color: onPrimary,
 			lineHeight: 50,
 		},
 		heroDaysRow: {
@@ -85,13 +85,13 @@ export const getStyles = (theme: AppTheme) => {
 		heroDaysCount: {
 			fontFamily: fonts.bold,
 			fontSize: 64,
-			color: "#fff",
+			color: onPrimary,
 			lineHeight: 72,
 		},
 		heroDaysWord: {
 			fontFamily: fonts.medium,
 			fontSize: fontSize.lg,
-			color: "#fff",
+			color: onPrimary,
 			opacity: 0.85,
 			marginBottom: 7,
 		},
@@ -105,7 +105,7 @@ export const getStyles = (theme: AppTheme) => {
 		heroBadgeText: {
 			fontFamily: fonts.regular,
 			fontSize: fontSize.sm,
-			color: "#fff",
+			color: onPrimary,
 		},
 
 		// Stats
@@ -154,7 +154,7 @@ export const getStyles = (theme: AppTheme) => {
 		},
 		statsCountSmall: {
 			fontFamily: fonts.bold,
-			fontSize: 20,
+			fontSize: fontSize.lg,
 			color: onSurface,
 			lineHeight: 26,
 		},
@@ -198,7 +198,7 @@ export const getStyles = (theme: AppTheme) => {
 		heatmapDot: {
 			flex: 1,
 			height: 20,
-			borderRadius: 4,
+			borderRadius: radius.xs,
 		},
 		heatmapDates: {
 			flexDirection: "row",

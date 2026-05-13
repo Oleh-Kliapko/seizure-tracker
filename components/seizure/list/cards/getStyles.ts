@@ -17,13 +17,13 @@ export const getStyles = (theme: AppTheme) => {
 		cardDate: {
 			fontFamily: fonts.medium,
 			fontSize: fontSize.sm,
-			color: "#94A3B8",
+			color: colors.textSecondary,
 		},
 
 		cardTime: {
 			fontFamily: fonts.regular,
 			fontSize: fontSize.sm,
-			color: "#94A3B8",
+			color: colors.textSecondary,
 			marginTop: 2,
 		},
 
@@ -35,7 +35,7 @@ export const getStyles = (theme: AppTheme) => {
 
 		// Video upload
 		videoErrorText: {
-			fontSize: 12,
+			fontSize: fontSize.xs,
 			color: colors.error,
 		},
 
@@ -50,7 +50,7 @@ export const getStyles = (theme: AppTheme) => {
 		},
 
 		videoActionBtnText: {
-			fontSize: 12,
+			fontSize: fontSize.xs,
 		},
 
 		videoActionRow: {

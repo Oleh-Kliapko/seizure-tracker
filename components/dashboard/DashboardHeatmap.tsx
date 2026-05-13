@@ -9,14 +9,11 @@ import { useTranslation } from "react-i18next"
 import { Text, TouchableOpacity, View } from "react-native"
 import { getStyles } from "./getStyles"
 
-function dotColor(
-	count: number,
-	colors: ReturnType<typeof useAppTheme>["colors"],
-): string {
-	if (count === 0) return colors.border
-	if (count === 1) return "#FFA726"
-	if (count === 2) return "#FB8C00"
-	return colors.error
+function dotColor(count: number, theme: ReturnType<typeof useAppTheme>): string {
+	if (count === 0) return theme.colors.border
+	if (count === 1) return theme.heatmapColors.low
+	if (count === 2) return theme.heatmapColors.medium
+	return theme.colors.error
 }
 
 type Props = {
@@ -62,7 +59,7 @@ export function DashboardHeatmap({ days }: Props) {
 								key={day.dateStr}
 								style={[
 									styles.heatmapDot,
-									{ backgroundColor: dotColor(day.count, theme.colors) },
+									{ backgroundColor: dotColor(day.count, theme) },
 								]}
 							/>
 						))}

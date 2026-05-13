@@ -112,7 +112,7 @@ export const getStyles = (theme: AppTheme) => {
 			height: 6,
 			borderLeftWidth: 2,
 			borderBottomWidth: 2,
-			borderColor: "#fff",
+			borderColor: colors.onPrimary,
 			transform: [{ rotate: "-45deg" }, { translateY: -1 }],
 		},
 
@@ -181,7 +181,7 @@ export const getStyles = (theme: AppTheme) => {
 		},
 
 		moodBtnTextActive: {
-			color: "#fff",
+			color: colors.onPrimary,
 		},
 
 		// Блискавки
@@ -264,7 +264,7 @@ export const getStyles = (theme: AppTheme) => {
 		doneBtnText: {
 			fontFamily: fonts.medium,
 			fontSize: fontSize.md,
-			color: "#fff",
+			color: colors.onPrimary,
 		},
 
 		uploadProgress: {
