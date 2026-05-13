@@ -334,6 +334,7 @@
 		"endTimeBeforeStart": "Час закінчення не може бути раніше часу початку",
 		"timeInFuture": "Час приступу не може бути в майбутньому",
 		"invalidSleepHours": "Години сну: 0–24",
+		"specifyType": "Вкажіть тип приступу",
 		"specifyCustomType": "Вкажіть власний тип приступу",
 		"specifyStartTime": "Вкажіть дату та час початку приступу",
 		"confirmDeleteTitle": "Видалити приступ",

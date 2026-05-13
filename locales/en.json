@@ -334,6 +334,7 @@
 		"endTimeBeforeStart": "End time cannot be before start time",
 		"timeInFuture": "Seizure time cannot be in the future",
 		"invalidSleepHours": "Sleep hours: 0–24",
+		"specifyType": "Please specify the seizure type",
 		"specifyCustomType": "Please specify the custom seizure type",
 		"specifyStartTime": "Please specify the seizure start time",
 		"confirmDeleteTitle": "Delete seizure",

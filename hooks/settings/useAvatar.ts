@@ -88,7 +88,7 @@ export function useAvatar() {
 					if (uid)
 						await updateUser(uid, { avatarUrl: url, avatarPublicId: publicId })
 				} catch (e: any) {
-					setError(e.message ?? i18n.t("error.uploadError"))
+					setError(e.message ?? i18n.t("error.imageUploadError"))
 				} finally {
 					setIsUploading(false)
 				}

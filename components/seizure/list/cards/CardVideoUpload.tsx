@@ -76,7 +76,7 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 
 			await reloadSeizure()
 		} catch (e: any) {
-			setError(e.message || t("error.uploadError"))
+			setError(e.message || t("error.videoUploadError"))
 		} finally {
 			setIsUploading(false)
 		}
