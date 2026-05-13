@@ -1,7 +1,6 @@
 // utils/trackingReport.ts
 
 import i18n from "@/config/i18n"
-import { EXTERNAL_TRIGGERS, INTERNAL_TRIGGERS } from "@/constants/commonConstants"
 import { DailyTracking } from "@/models"
 import { User } from "@/models/user"
 import { buildHeaderHtml, buildPatientHtml, getPatientName } from "./reportShared"
@@ -23,11 +22,6 @@ function sleepQLabel(avg: number | null): string {
 	if (avg === null) return "—"
 	const rounded = Math.round(avg)
 	return i18n.t(`report.sleepQ${Math.min(Math.max(rounded, 1), 5)}`)
-}
-
-function triggerLabel(type: string, list: { labelKey: string; value: string }[]): string {
-	const found = list.find(t => t.value === type)
-	return found ? i18n.t(found.labelKey) : type
 }
 
 function pct(count: number, total: number): string {
@@ -87,26 +81,6 @@ function computeStats(records: DailyTracking[]) {
 	const insufficientUrination = physiologyRecs.filter(r => (r.urinationCount ?? 0) < 4).length
 	const noBowels = physiologyRecs.filter(r => (r.bowelMovements ?? 0) === 0).length
 
-	// Triggers
-	const internalFreq: Record<string, number> = {}
-	const externalFreq: Record<string, number> = {}
-	records.forEach(r => {
-		;(r.internalTriggers ?? []).forEach(t => {
-			internalFreq[t.type] = (internalFreq[t.type] ?? 0) + 1
-		})
-		;(r.externalTriggers ?? []).forEach(t => {
-			externalFreq[t.type] = (externalFreq[t.type] ?? 0) + 1
-		})
-	})
-	const totalInternal = Object.values(internalFreq).reduce((s, v) => s + v, 0)
-	const totalExternal = Object.values(externalFreq).reduce((s, v) => s + v, 0)
-	const topInternal = Object.entries(internalFreq)
-		.sort((a, b) => b[1] - a[1])
-		.slice(0, 3)
-	const topExternal = Object.entries(externalFreq)
-		.sort((a, b) => b[1] - a[1])
-		.slice(0, 3)
-
 	return {
 		totalDays,
 		avgMood,
@@ -126,10 +100,6 @@ function computeStats(records: DailyTracking[]) {
 		physiologyRecs: physiologyRecs.length,
 		insufficientUrination,
 		noBowels,
-		topInternal,
-		topExternal,
-		totalInternal,
-		totalExternal,
 	}
 }
 
@@ -140,32 +110,6 @@ function statRow(label: string, value: string, warn = false): string {
   <div class="stat-row">
     <span class="stat-label">${label}</span>
     <span class="stat-value${warn ? " warn" : ""}">${value}</span>
-  </div>`
-}
-
-function triggerRows(
-	titleKey: string,
-	entries: [string, number][],
-	triggerList: { labelKey: string; value: string }[],
-	total: number,
-): string {
-	if (entries.length === 0) {
-		return `
-  <div class="trigger-row">
-    <div class="trigger-title">${i18n.t(titleKey)}</div>
-    <div class="trigger-items">${i18n.t("report.noTriggers")}</div>
-  </div>`
-	}
-	const items = entries
-		.map(([type, count]) => {
-			const p = total > 0 ? Math.round((count / total) * 100) : 0
-			return `${triggerLabel(type, triggerList)} — ${count} (${p}%)`
-		})
-		.join(", ")
-	return `
-  <div class="trigger-row">
-    <div class="trigger-title">${i18n.t(titleKey)}</div>
-    <div class="trigger-items">${items}</div>
   </div>`
 }
 
@@ -186,17 +130,6 @@ function fmtNum(val: number | undefined, decimals = 0): string {
 function fmtBP(sys: number | undefined, dia: number | undefined): string {
 	if (sys === undefined && dia === undefined) return "—"
 	return `${sys ?? "—"}/${dia ?? "—"}`
-}
-
-function fmtTriggers(
-	internal: DailyTracking["internalTriggers"],
-	external: DailyTracking["externalTriggers"],
-): string {
-	const all = [
-		...(internal ?? []).map(t => triggerLabel(t.type, INTERNAL_TRIGGERS)),
-		...(external ?? []).map(t => triggerLabel(t.type, EXTERNAL_TRIGGERS)),
-	]
-	return all.length ? all.join(", ") : "—"
 }
 
 function dayKey(ts: number): string {
@@ -236,7 +169,6 @@ function buildDetailLogHtml(
       ${cell(r.sleepDuration !== undefined ? `${r.sleepDuration.toFixed(1)} / ${r.sleepQuality ?? "—"}` : "—", warnSleep)}
       ${cell(r.mood !== undefined || r.activityLevel !== undefined ? `${r.mood ?? "—"} / ${r.activityLevel ?? "—"}` : "—")}
       ${cell(r.urinationCount !== undefined || r.bowelMovements !== undefined ? `${r.urinationCount ?? "—"} / ${r.bowelMovements ?? "—"}` : "—")}
-      ${cell(fmtTriggers(r.internalTriggers, r.externalTriggers))}
       ${cell(r.patientNotes ?? "—")}
     </tr>`
 	}).join("")
@@ -255,7 +187,6 @@ function buildDetailLogHtml(
           <th>${t("report.logColSleepH")}<br>${t("report.logColSleepQ")}</th>
           <th>${t("report.logColMood")}<br>${t("report.logColActivity")}</th>
           <th>${t("report.logColUr")}<br>${t("report.logColBow")}</th>
-          <th>${t("report.logColTriggers")}</th>
           <th>${t("report.logColNotes")}</th>
         </tr>
       </thead>
@@ -306,10 +237,6 @@ function buildTrackingHtml(
     .stat-label { color: #374151; }
     .stat-value { color: #0D9488; font-weight: bold; }
     .stat-value.warn { color: #EF4444; }
-
-    .trigger-row { font-size: 12px; padding: 4px 10px; background: #F8FAFC; border-radius: 4px; margin-bottom: 2px; }
-    .trigger-title { color: #6B7280; font-size: 10px; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.4px; }
-    .trigger-items { color: #374151; }
 
     .footer { text-align: center; color: #6B7280; font-size: 10px; border-top: 1px solid #E5E7EB; padding-top: 10px; margin-top: 16px; }
 
@@ -366,13 +293,6 @@ function buildTrackingHtml(
       ${statRow(t("report.insufficientUrination"), pct(s.insufficientUrination, s.physiologyRecs), s.insufficientUrination > 0)}
       ${statRow(t("report.noBowels"), pct(s.noBowels, s.physiologyRecs), s.noBowels > 0)}
     </div>
-  </div>
-
-  <!-- Triggers -->
-  <div class="section">
-    <div class="section-title">⚡ ${t("tracking.triggers")}</div>
-    ${triggerRows("report.top3internal", s.topInternal, INTERNAL_TRIGGERS, s.totalInternal)}
-    ${triggerRows("report.top3external", s.topExternal, EXTERNAL_TRIGGERS, s.totalExternal)}
   </div>
 
   ${buildDetailLogHtml(records, seizureDayKeys, t)}
