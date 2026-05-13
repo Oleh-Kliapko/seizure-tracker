@@ -1,4 +1,5 @@
 export { ExportForm } from "./ExportForm"
+export { SectionCard } from "./SectionCard"
 export { HistoryCalendar } from "./HistoryCalendar"
 export { HistoryDonutChart } from "./HistoryDonutChart"
 export { HistoryPeriodFilter, getPeriodRange } from "./HistoryPeriodFilter"

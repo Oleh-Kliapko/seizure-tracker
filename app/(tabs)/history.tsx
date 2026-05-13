@@ -7,6 +7,7 @@ import {
 	HistoryDonutChart,
 	HistoryPeriodFilter,
 	HistoryTriggerBars,
+	SectionCard,
 	getPeriodRange,
 } from "@/components/history"
 import { SeizureStatsHeader } from "@/components/seizure/list"
@@ -19,43 +20,8 @@ import {
 	ActivityIndicator,
 	RefreshControl,
 	ScrollView,
-	Text,
 	View,
 } from "react-native"
-
-function SectionCard({
-	title,
-	children,
-}: {
-	title: string
-	children: React.ReactNode
-}) {
-	const { colors, fonts, spacing, radius } = useAppTheme()
-	return (
-		<View
-			style={{
-				backgroundColor: colors.surface,
-				borderRadius: radius.lg,
-				padding: spacing.md,
-				marginBottom: spacing.md,
-			}}
-		>
-			<Text
-				style={{
-					fontFamily: fonts.medium,
-					fontSize: 12,
-					color: colors.textSecondary,
-					textTransform: "uppercase",
-					letterSpacing: 0.5,
-					marginBottom: spacing.md,
-				}}
-			>
-				{title}
-			</Text>
-			{children}
-		</View>
-	)
-}
 
 export default function History() {
 	const { colors, spacing } = useAppTheme()
