@@ -71,7 +71,6 @@ export function useSeizureEditForm() {
 			await updateSeizure(user.uid, id, seizureData as Partial<Seizure>)
 			router.back()
 		} catch (e: any) {
-			console.error("Save error:", e.message, JSON.stringify(e))
 			base.setError(i18n.t("error.savingError"))
 		} finally {
 			base.setIsLoading(false)

@@ -75,7 +75,6 @@ export function useExport() {
 				return
 			}
 
-			console.log("[Email Export] 1. Generating HTML...")
 			const medications = await getMedications(user.uid).catch(() => [])
 			const html = await generateSeizureReportHtml(
 				profile,
@@ -84,21 +83,15 @@ export function useExport() {
 				from,
 				to,
 			)
-			console.log("[Email Export] 2. HTML generated, length:", html.length)
 
-			console.log("[Email Export] 3. Generating PDF...")
 			const { uri } = await Print.printToFileAsync({ html, base64: false })
-			console.log("[Email Export] 4. PDF generated:", uri)
 
-			console.log("[Email Export] 5. Reading as base64...")
 			const fileContent = await readFileAsBase64(uri)
-			console.log("[Email Export] 6. Base64 length:", fileContent.length)
 
 			if (!BACKEND_URL)
 				throw new Error("EXPO_PUBLIC_BACKEND_URL is not configured")
 			const idToken = await user.getIdToken()
 
-			console.log("[Email Export] 7. Sending to backend:", BACKEND_URL)
 			const response = await fetch(`${BACKEND_URL}/api/emails/send-report`, {
 				method: "POST",
 				headers: {
@@ -115,8 +108,6 @@ export function useExport() {
 							.join(" ") || profile.displayName,
 				}),
 			})
-			console.log("[Email Export] 8. Response status:", response.status)
-
 			if (!response.ok) {
 				const errorData = await response
 					.json()
@@ -127,8 +118,7 @@ export function useExport() {
 
 			await updateUser(user.uid, { lastReportSentAt: Date.now() })
 			setError(null)
-		} catch (e: any) {
-			console.log("[Email Export] EXCEPTION:", e.message, e)
+		} catch {
 			setError(i18n.t("error.sendError"))
 		} finally {
 			setIsLoading(false)
