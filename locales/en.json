@@ -1,4 +1,17 @@
 {
+	"onboarding": {
+		"slide1Title": "Seizure Log",
+		"slide1Desc": "Record every seizure — time, duration, severity and possible triggers",
+		"slide2Title": "Analyze Patterns",
+		"slide2Desc": "View statistics and discover connections between triggers and seizures",
+		"slide3Title": "Daily Tracking",
+		"slide3Desc": "Monitor sleep, mood, wellbeing and medication intake every day",
+		"slide4Title": "Doctor's Report",
+		"slide4Desc": "Generate a detailed report and easily share it with your doctor",
+		"next": "Next",
+		"start": "Get started",
+		"skip": "Skip"
+	},
 	"validation": {
 		"invalidEmail": "Invalid email format",
 		"invalidPhone": "Invalid phone format (example: +380XXXXXXXXX)",

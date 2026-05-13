@@ -1,6 +1,6 @@
 // components/AppLayout.tsx
 
-import { useAuth, useThemeContext } from "@/hooks"
+import { useAuth, useOnboarding, useThemeContext } from "@/hooks"
 import { Redirect, Stack } from "expo-router"
 import { useEffect } from "react"
 import { ActivityIndicator, View } from "react-native"
@@ -9,6 +9,7 @@ import { MD3DarkTheme, MD3LightTheme, PaperProvider } from "react-native-paper"
 export function AppLayout() {
 	const { theme, isDark } = useThemeContext()
 	const { user, isLoading } = useAuth()
+	const { hasSeenOnboarding, isChecking } = useOnboarding()
 	const baseTheme = isDark ? MD3DarkTheme : MD3LightTheme
 
 	// Check and wake up backend
@@ -31,7 +32,7 @@ export function AppLayout() {
 		},
 	} = theme
 
-	if (isLoading) {
+	if (isLoading || isChecking) {
 		return (
 			<View
 				style={{
@@ -70,8 +71,10 @@ export function AppLayout() {
 			>
 				<Stack.Screen name="(tabs)" />
 				<Stack.Screen name="(auth)" />
+				<Stack.Screen name="onboarding" />
 			</Stack>
-			{!user && <Redirect href="/(auth)/login" />}
+			{!user && !hasSeenOnboarding && <Redirect href="/onboarding" />}
+			{!user && hasSeenOnboarding && <Redirect href="/(auth)/login" />}
 			{user &&
 				!user.emailVerified &&
 				user.providerData.some(p => p.providerId === "password") &&

@@ -2,7 +2,7 @@
 
 import { AppLayout, ErrorBoundary } from "@/components"
 import "@/config/i18n"
-import { ThemeProvider, useAppFonts } from "@/hooks"
+import { OnboardingProvider, ThemeProvider, useAppFonts } from "@/hooks"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 
 export default function RootLayout() {
@@ -14,7 +14,9 @@ export default function RootLayout() {
 		<ErrorBoundary>
 			<SafeAreaProvider>
 				<ThemeProvider>
-					<AppLayout />
+					<OnboardingProvider>
+						<AppLayout />
+					</OnboardingProvider>
 				</ThemeProvider>
 			</SafeAreaProvider>
 		</ErrorBoundary>

@@ -34,9 +34,11 @@ import {
 	useIsDarkTheme,
 	useThemeContext,
 } from "./useAppTheme"
+import { OnboardingProvider, useOnboarding } from "./useOnboarding"
 import { useUser } from "./useUser"
 
 export {
+	OnboardingProvider,
 	ThemeProvider,
 	useAppFonts,
 	useAppSettingsForm,
@@ -54,6 +56,7 @@ export {
 	useIsDarkTheme,
 	useLoginForm,
 	useMedicalForm,
+	useOnboarding,
 	useMedications,
 	useMedicationsForm,
 	usePersonalForm,
