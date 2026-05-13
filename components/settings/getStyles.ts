@@ -24,7 +24,7 @@ export const getStyles = (theme: AppTheme) => {
 		card: {
 			backgroundColor: surface,
 			borderRadius: radius.md,
-			padding: spacing.md,
+			padding: 12,
 			shadowColor: "#000",
 			shadowOpacity: 0.04,
 			shadowRadius: 6,
@@ -34,7 +34,7 @@ export const getStyles = (theme: AppTheme) => {
 		content: {
 			flexDirection: "row",
 			alignItems: "center",
-			gap: 14,
+			gap: 12,
 		},
 
 		errorContainer: {
@@ -105,7 +105,7 @@ export const getStyles = (theme: AppTheme) => {
 
 		avatarContainer: {
 			alignItems: "center",
-			marginBottom: 64,
+			marginBottom: 32,
 		},
 
 		avatarWrapper: {
@@ -156,8 +156,8 @@ export const getStyles = (theme: AppTheme) => {
 		},
 
 		iconMenu: {
-			width: 46,
-			height: 46,
+			width: 38,
+			height: 38,
 			justifyContent: "center",
 			alignItems: "center",
 			backgroundColor: background,
@@ -166,7 +166,7 @@ export const getStyles = (theme: AppTheme) => {
 
 		titleMenu: {
 			fontFamily: fonts.medium,
-			fontSize: fontSize.lg,
+			fontSize: fontSize.md,
 			color: onSurface,
 		},
 

@@ -17,13 +17,13 @@ export const getStyles = (theme: AppTheme) => {
 		cardDate: {
 			fontFamily: fonts.medium,
 			fontSize: fontSize.sm,
-			color: colors.textSecondary,
+			color: "rgba(255, 255, 255, 0.75)",
 		},
 
 		cardTime: {
 			fontFamily: fonts.regular,
 			fontSize: fontSize.sm,
-			color: colors.textSecondary,
+			color: "rgba(255, 255, 255, 0.55)",
 			marginTop: 2,
 		},
 

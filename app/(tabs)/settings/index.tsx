@@ -45,7 +45,7 @@ export default function ProfileScreen() {
 				contentContainerStyle={{
 					flexGrow: 1,
 					padding: spacing.lg,
-					paddingTop: 120,
+					paddingTop: 88,
 				}}
 				showsVerticalScrollIndicator={false}
 			>
@@ -60,7 +60,7 @@ export default function ProfileScreen() {
 					}
 				/>
 
-				<View style={{ flex: 1, gap: spacing.md }}>
+				<View style={{ flex: 1, gap: 12 }}>
 					<ProfileMenu />
 				</View>
 

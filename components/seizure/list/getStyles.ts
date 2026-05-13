@@ -104,7 +104,7 @@ export const getStyles = (theme: AppTheme) => {
 		cardMoodText: {
 			fontFamily: fonts.regular,
 			fontSize: fontSize.sm,
-			color: colors.textSecondary,
+			color: "rgba(255, 255, 255, 0.65)",
 		},
 
 		cardTriggersRow: {
@@ -118,13 +118,13 @@ export const getStyles = (theme: AppTheme) => {
 			paddingHorizontal: spacing.sm,
 			paddingVertical: 2,
 			borderRadius: radius.sm,
-			backgroundColor: "rgba(255, 255, 255, 0.08)",
+			backgroundColor: "rgba(255, 255, 255, 0.12)",
 		},
 
 		cardTriggerText: {
 			fontFamily: fonts.regular,
 			fontSize: 11,
-			color: colors.textSecondary,
+			color: "rgba(255, 255, 255, 0.65)",
 		},
 
 		// Пагінація
