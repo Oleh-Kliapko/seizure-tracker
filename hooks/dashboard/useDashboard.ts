@@ -55,7 +55,13 @@ export function useDashboard() {
 		const lastSeizure = seizures[0] ?? null
 
 		const daysSinceLastSeizure = lastSeizure
-			? Math.floor((Date.now() - lastSeizure.startedAt) / (1000 * 60 * 60 * 24))
+			? (() => {
+				const now = new Date()
+				const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime()
+				const d = new Date(lastSeizure.startedAt)
+				const seizureMidnight = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime()
+				return Math.round((todayMidnight - seizureMidnight) / (1000 * 60 * 60 * 24))
+			})()
 			: null
 
 		const now = new Date()
