@@ -5,7 +5,6 @@ import {
 	TrackingNotes,
 	TrackingSleep,
 	TrackingToilet,
-	TrackingTriggers,
 	TrackingVitals,
 	TrackingWellbeing,
 } from "@/components/tracking"
@@ -54,8 +53,6 @@ export default function TrackingDayScreen() {
 		activityLevel, setActivityLevel,
 		urinationCount, setUrinationCount,
 		bowelMovements, setBowelMovements,
-		internalTriggers, externalTriggers,
-		toggleInternalTrigger, toggleExternalTrigger,
 		medications, medIntakes, addIntake, removeIntake,
 		patientNotes, setPatientNotes,
 		doctorNotes, setDoctorNotes,
@@ -121,12 +118,6 @@ export default function TrackingDayScreen() {
 							bowelMovements={bowelMovements}
 							onUrinationChange={v => { setUrinationCount(v); autoSave({ urinationCount: v }) }}
 							onBowelChange={v => { setBowelMovements(v); autoSave({ bowelMovements: v }) }}
-						/>
-						<TrackingTriggers
-							internalTriggers={internalTriggers}
-							externalTriggers={externalTriggers}
-							onToggleInternal={toggleInternalTrigger}
-							onToggleExternal={toggleExternalTrigger}
 						/>
 						<TrackingNotes
 							patientNotes={patientNotes}

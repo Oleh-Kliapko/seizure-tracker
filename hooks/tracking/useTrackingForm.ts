@@ -1,7 +1,6 @@
 // hooks/tracking/useTrackingForm.ts
 import i18n from "@/config/i18n"
 
-import { ExternalTrigger, InternalTrigger, TriggerItem } from "@/models"
 import { Medication } from "@/models/medication"
 import {
 	getMedicationsByPatient,
@@ -9,7 +8,6 @@ import {
 	upsertTracking,
 } from "@/services"
 import { hasInvalidVitals } from "@/utils"
-import { toggleTriggerItem } from "@/utils/seizureHelpers"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useAuth } from "../auth/useAuth"
 
@@ -31,8 +29,6 @@ type TrackingState = {
 	activityLevel: number | undefined
 	urinationCount: number
 	bowelMovements: number
-	internalTriggers: TriggerItem<InternalTrigger>[]
-	externalTriggers: TriggerItem<ExternalTrigger>[]
 	medIntakes: MedIntake[]
 	patientNotes: string
 	doctorNotes: string
@@ -56,12 +52,6 @@ export function useTrackingForm(dateTimestamp: number) {
 	)
 	const [urinationCount, setUrinationCount] = useState(0)
 	const [bowelMovements, setBowelMovements] = useState(0)
-	const [internalTriggers, setInternalTriggers] = useState<
-		TriggerItem<InternalTrigger>[]
-	>([])
-	const [externalTriggers, setExternalTriggers] = useState<
-		TriggerItem<ExternalTrigger>[]
-	>([])
 	const [medications, setMedications] = useState<Medication[]>([])
 	const [medIntakes, setMedIntakes] = useState<MedIntake[]>([])
 	const [patientNotes, setPatientNotes] = useState("")
@@ -97,8 +87,6 @@ export function useTrackingForm(dateTimestamp: number) {
 					setActivityLevel(tracking.activityLevel)
 					setUrinationCount(tracking.urinationCount ?? 0)
 					setBowelMovements(tracking.bowelMovements ?? 0)
-					setInternalTriggers(tracking.internalTriggers ?? [])
-					setExternalTriggers(tracking.externalTriggers ?? [])
 					setPatientNotes(tracking.patientNotes ?? "")
 					setDoctorNotes(tracking.doctorNotes ?? "")
 					if (tracking.medications) {
@@ -131,8 +119,6 @@ export function useTrackingForm(dateTimestamp: number) {
 		activityLevel,
 		urinationCount,
 		bowelMovements,
-		internalTriggers,
-		externalTriggers,
 		medIntakes,
 		patientNotes,
 		doctorNotes,
@@ -149,8 +135,6 @@ export function useTrackingForm(dateTimestamp: number) {
 		activityLevel,
 		urinationCount,
 		bowelMovements,
-		internalTriggers,
-		externalTriggers,
 		medIntakes,
 		patientNotes,
 		doctorNotes,
@@ -199,10 +183,6 @@ export function useTrackingForm(dateTimestamp: number) {
 					activityLevel: s.activityLevel,
 					urinationCount: s.urinationCount || undefined,
 					bowelMovements: s.bowelMovements || undefined,
-					internalTriggers:
-						s.internalTriggers.length > 0 ? s.internalTriggers : undefined,
-					externalTriggers:
-						s.externalTriggers.length > 0 ? s.externalTriggers : undefined,
 					medications: s.medIntakes,
 					patientNotes: s.patientNotes || undefined,
 					doctorNotes: s.doctorNotes || undefined,
@@ -214,20 +194,6 @@ export function useTrackingForm(dateTimestamp: number) {
 		},
 		[user, dateTimestamp],
 	)
-
-	const toggleInternalTrigger = (trigger: InternalTrigger) =>
-		setInternalTriggers(prev => {
-			const updated = toggleTriggerItem(prev, trigger)
-			autoSave({ internalTriggers: updated })
-			return updated
-		})
-
-	const toggleExternalTrigger = (trigger: ExternalTrigger) =>
-		setExternalTriggers(prev => {
-			const updated = toggleTriggerItem(prev, trigger)
-			autoSave({ externalTriggers: updated })
-			return updated
-		})
 
 	const addIntake = (medicationId: string, amount: number) => {
 		const newIntake = { medicationId, amount, takenAt: Date.now() }
@@ -269,10 +235,6 @@ export function useTrackingForm(dateTimestamp: number) {
 		setUrinationCount,
 		bowelMovements,
 		setBowelMovements,
-		internalTriggers,
-		externalTriggers,
-		toggleInternalTrigger,
-		toggleExternalTrigger,
 		medications,
 		medIntakes,
 		addIntake,

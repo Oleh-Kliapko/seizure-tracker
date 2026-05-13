@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next"
 import { Text, TouchableOpacity, View } from "react-native"
 import { getStyles } from "./getStyles"
 
-const TRACKING_SECTIONS = 6
+const TRACKING_SECTIONS = 5
 
 type Props = {
 	trackingFilledSections: number

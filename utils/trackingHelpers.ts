@@ -21,10 +21,5 @@ export function countFilledSections(t: DailyTracking | null): number {
 		(t.bowelMovements && t.bowelMovements > 0)
 	)
 		count++
-	if (
-		(t.internalTriggers && t.internalTriggers.length > 0) ||
-		(t.externalTriggers && t.externalTriggers.length > 0)
-	)
-		count++
 	return count
 }
