@@ -6,6 +6,7 @@ import {
 	IllustrationSeizureLog,
 	IllustrationTracking,
 } from "@/components/onboarding"
+import { setAppLanguage } from "@/config/i18n"
 import { useAppTheme, useOnboarding } from "@/hooks"
 import { router } from "expo-router"
 import { useTranslation } from "react-i18next"
@@ -22,6 +23,11 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window")
 
+const LANGUAGES = [
+	{ value: "uk" as const, flag: "🇺🇦" },
+	{ value: "en" as const, flag: "🇬🇧" },
+]
+
 type SlideData = {
 	key: string
 	titleKey: string
@@ -36,7 +42,7 @@ const SLIDES: SlideData[] = [
 ]
 
 export default function OnboardingScreen() {
-	const { t } = useTranslation()
+	const { t, i18n } = useTranslation()
 	const theme = useAppTheme()
 	const { completeOnboarding } = useOnboarding()
 	const insets = useSafeAreaInsets()
@@ -55,11 +61,12 @@ export default function OnboardingScreen() {
 		background: theme.colors.background,
 	}
 
-	const illustrations: Record<string, React.ReactNode> = {
-		log: <IllustrationSeizureLog c={c} />,
-		patterns: <IllustrationPatterns c={c} />,
-		tracking: <IllustrationTracking c={c} />,
-		report: <IllustrationReport c={c} />,
+	const illustrationFor = (key: string, index: number) => {
+		const props = { c, active: activeIndex === index }
+		if (key === "log") return <IllustrationSeizureLog {...props} />
+		if (key === "patterns") return <IllustrationPatterns {...props} />
+		if (key === "tracking") return <IllustrationTracking {...props} />
+		return <IllustrationReport {...props} />
 	}
 
 	const handleNext = () => {
@@ -70,8 +77,8 @@ export default function OnboardingScreen() {
 		}
 	}
 
-	const handleStart = async () => {
-		await completeOnboarding()
+	const handleStart = () => {
+		completeOnboarding()
 		router.replace("/(auth)/login")
 	}
 
@@ -80,6 +87,39 @@ export default function OnboardingScreen() {
 	return (
 		<View style={{ flex: 1, backgroundColor: theme.colors.background }}>
 			<StatusBar barStyle="dark-content" />
+
+			{/* Language switcher */}
+			<View style={{
+				position: "absolute",
+				top: insets.top + 12,
+				left: theme.spacing.lg,
+				zIndex: 10,
+				flexDirection: "row",
+				gap: 8,
+			}}>
+				{LANGUAGES.map(lang => {
+					const active = i18n.language === lang.value
+					return (
+						<TouchableOpacity
+							key={lang.value}
+							onPress={() => setAppLanguage(lang.value)}
+							activeOpacity={0.7}
+							style={{
+								width: 40,
+								height: 40,
+								borderRadius: 20,
+								borderWidth: 2,
+								alignItems: "center",
+								justifyContent: "center",
+								borderColor: active ? theme.colors.primary : theme.colors.border,
+								backgroundColor: active ? theme.colors.primary + "20" : "transparent",
+							}}
+						>
+							<Text style={{ fontSize: 20 }}>{lang.flag}</Text>
+						</TouchableOpacity>
+					)
+				})}
+			</View>
 
 			{/* Skip button */}
 			{!isLast && (
@@ -105,7 +145,7 @@ export default function OnboardingScreen() {
 				</TouchableOpacity>
 			)}
 
-			{/* Slides */}
+			{/* Slides — flex: 1 so FlatList fills remaining height above bottom bar */}
 			<FlatList
 				ref={listRef}
 				data={SLIDES}
@@ -114,19 +154,26 @@ export default function OnboardingScreen() {
 				pagingEnabled
 				showsHorizontalScrollIndicator={false}
 				scrollEventThrottle={16}
+				style={{ flex: 1 }}
 				onMomentumScrollEnd={e => {
 					const index = Math.round(e.nativeEvent.contentOffset.x / SCREEN_WIDTH)
 					setActiveIndex(index)
 				}}
-				renderItem={({ item }) => (
-					<View style={{ width: SCREEN_WIDTH, paddingHorizontal: theme.spacing.lg }}>
-						{/* Illustration */}
-						<View style={{ marginTop: insets.top + 48, width: "100%" }}>
-							{illustrations[item.key]}
+				renderItem={({ item, index }) => (
+					<View style={{ width: SCREEN_WIDTH, alignSelf: "stretch" }}>
+						{/* Illustration — centered in available space */}
+						<View style={{ flex: 1, justifyContent: "center", paddingHorizontal: theme.spacing.lg }}>
+							<View style={{ width: "100%", aspectRatio: 300 / 260 }}>
+								{illustrationFor(item.key, index)}
+							</View>
 						</View>
 
-						{/* Text */}
-						<View style={{ marginTop: theme.spacing.xl, alignItems: "center" }}>
+						{/* Text — pinned to bottom */}
+						<View style={{
+							paddingHorizontal: theme.spacing.lg,
+							paddingBottom: theme.spacing.xl,
+							alignItems: "center",
+						}}>
 							<Text style={{
 								fontFamily: theme.fonts.bold,
 								fontSize: theme.fontSize.xl,

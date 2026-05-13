@@ -1,51 +1,46 @@
 // components/AppLayout.tsx
 
 import { useAuth, useOnboarding, useThemeContext } from "@/hooks"
-import { Redirect, Stack } from "expo-router"
-import { useEffect } from "react"
+import { router, Stack } from "expo-router"
+import { useEffect, useState } from "react"
 import { ActivityIndicator, View } from "react-native"
 import { MD3DarkTheme, MD3LightTheme, PaperProvider } from "react-native-paper"
 
 export function AppLayout() {
 	const { theme, isDark } = useThemeContext()
 	const { user, isLoading } = useAuth()
-	const { hasSeenOnboarding, isChecking } = useOnboarding()
+	const { hasSeenOnboarding } = useOnboarding()
 	const baseTheme = isDark ? MD3DarkTheme : MD3LightTheme
+	const [isReady, setIsReady] = useState(false)
 
-	// Check and wake up backend
 	useEffect(() => {
 		const url = process.env.EXPO_PUBLIC_BACKEND_URL
-		if (!url) return
-
-		fetch(`${url}/health`).catch(() => {})
+		if (url) fetch(`${url}/health`).catch(() => {})
 	}, [])
 
-	const {
-		colors: {
-			primary,
-			secondary,
-			background,
-			surface,
-			onSurface,
-			error,
-			border,
-		},
-	} = theme
+	useEffect(() => {
+		if (isLoading) return
 
-	if (isLoading || isChecking) {
-		return (
-			<View
-				style={{
-					flex: 1,
-					justifyContent: "center",
-					alignItems: "center",
-					backgroundColor: background,
-				}}
-			>
-				<ActivityIndicator color={primary} size="large" />
-			</View>
-		)
-	}
+		const isEmailOnly =
+			user?.providerData.some(p => p.providerId === "password") &&
+			!user?.providerData.some(p => p.providerId === "google.com")
+
+		if (!user && !hasSeenOnboarding) {
+			router.replace("/onboarding")
+		} else if (!user) {
+			router.replace("/(auth)/login")
+		} else if (isEmailOnly && !user.emailVerified) {
+			router.replace("/(auth)/verify-email")
+		} else {
+			router.replace("/(tabs)")
+		}
+
+		setIsReady(true)
+	}, [isLoading, user, hasSeenOnboarding])
+
+	const {
+		colors: { primary, secondary, background, surface, onSurface, error, border },
+	} = theme
 
 	return (
 		<PaperProvider
@@ -73,20 +68,19 @@ export function AppLayout() {
 				<Stack.Screen name="(auth)" />
 				<Stack.Screen name="onboarding" />
 			</Stack>
-			{!user && !hasSeenOnboarding && <Redirect href="/onboarding" />}
-			{!user && hasSeenOnboarding && <Redirect href="/(auth)/login" />}
-			{user &&
-				!user.emailVerified &&
-				user.providerData.some(p => p.providerId === "password") &&
-				!user.providerData.some(p => p.providerId === "google.com") && (
-					<Redirect href="/(auth)/verify-email" />
-				)}
-			{user &&
-				(user.emailVerified ||
-					!user.providerData.some(p => p.providerId === "password") ||
-					user.providerData.some(p => p.providerId === "google.com")) && (
-					<Redirect href="/(tabs)" />
-				)}
+
+			{/* Overlay blocks any persisted-route flash until navigation is decided */}
+			{!isReady && (
+				<View style={{
+					position: "absolute",
+					top: 0, left: 0, right: 0, bottom: 0,
+					backgroundColor: background,
+					justifyContent: "center",
+					alignItems: "center",
+				}}>
+					<ActivityIndicator color={primary} size="large" />
+				</View>
+			)}
 		</PaperProvider>
 	)
 }
