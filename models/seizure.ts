@@ -45,7 +45,6 @@ export type Seizure = {
 	internalTriggers?: TriggerItem<InternalTrigger>[]
 	externalTriggers?: TriggerItem<ExternalTrigger>[]
 
-	isMedicationTaken?: boolean // чи приймав пацієнт ліки перед судомами
 	sleepHoursBefore?: number // кількість годин сну перед судомами
 
 	moodBefore?: number // 1-5 - настрій перед судомами

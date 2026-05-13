@@ -28,7 +28,6 @@ type Props = {
 	externalTriggers: TriggerItem<ExternalTrigger>[]
 	moodBefore: number | undefined
 	moodAfter: number | undefined
-	isMedicationTaken: boolean
 	sleepHoursBefore: number | undefined
 	description: string
 	isLoading: boolean
@@ -42,7 +41,6 @@ type Props = {
 	onToggleExternal: (v: ExternalTrigger) => void
 	onMoodBeforeChange: (v: number) => void
 	onMoodAfterChange: (v: number) => void
-	onMedicationChange: (v: boolean) => void
 	onSleepHoursChange: (v: number | undefined) => void
 	onDescriptionChange: (v: string) => void
 	onSave: () => void
@@ -84,10 +82,8 @@ export function SeizureForm(props: Props) {
 				onMoodAfterChange={props.onMoodAfterChange}
 			/>
 			<SeizureExtra
-				isMedicationTaken={props.isMedicationTaken}
 				sleepHoursBefore={props.sleepHoursBefore}
 				description={props.description}
-				onMedicationChange={props.onMedicationChange}
 				onSleepHoursChange={props.onSleepHoursChange}
 				onDescriptionChange={props.onDescriptionChange}
 			/>

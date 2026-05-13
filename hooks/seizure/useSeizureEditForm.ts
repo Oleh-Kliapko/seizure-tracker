@@ -32,7 +32,6 @@ export function useSeizureEditForm() {
 				base.setExternalTriggers(seizure.externalTriggers ?? [])
 				base.setMoodBefore(seizure.moodBefore)
 				base.setMoodAfter(seizure.moodAfter)
-				base.setIsMedicationTaken(seizure.isMedicationTaken ?? false)
 				base.setSleepHoursBefore(seizure.sleepHoursBefore)
 				base.setDescription(seizure.description ?? "")
 			})
@@ -57,7 +56,6 @@ export function useSeizureEditForm() {
 			const seizureData: Record<string, any> = {
 				startedAt: base.startedAt,
 				types: base.types,
-				isMedicationTaken: base.isMedicationTaken,
 				internalTriggers: base.internalTriggers,
 				externalTriggers: base.externalTriggers,
 			}

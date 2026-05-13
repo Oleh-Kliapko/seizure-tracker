@@ -22,7 +22,6 @@ export function useSeizureFormBase() {
 	const [externalTriggers, setExternalTriggers] = useState<TriggerItem<ExternalTrigger>[]>([])
 	const [moodBefore, setMoodBefore] = useState<number | undefined>(undefined)
 	const [moodAfter, setMoodAfter] = useState<number | undefined>(undefined)
-	const [isMedicationTaken, setIsMedicationTaken] = useState(false)
 	const [sleepHoursBefore, setSleepHoursBefore] = useState<number | undefined>(undefined)
 	const [description, setDescription] = useState("")
 	const [isLoading, setIsLoading] = useState(false)
@@ -59,7 +58,6 @@ export function useSeizureFormBase() {
 		externalTriggers, setExternalTriggers,
 		moodBefore, setMoodBefore,
 		moodAfter, setMoodAfter,
-		isMedicationTaken, setIsMedicationTaken,
 		sleepHoursBefore, setSleepHoursBefore,
 		description, setDescription,
 		isLoading, setIsLoading,

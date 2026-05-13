@@ -26,8 +26,6 @@ export default function AddSeizureScreen() {
 		setMoodBefore,
 		moodAfter,
 		setMoodAfter,
-		isMedicationTaken,
-		setIsMedicationTaken,
 		sleepHoursBefore,
 		setSleepHoursBefore,
 		description,
@@ -61,7 +59,6 @@ export default function AddSeizureScreen() {
 						externalTriggers={externalTriggers}
 						moodBefore={moodBefore}
 						moodAfter={moodAfter}
-						isMedicationTaken={isMedicationTaken}
 						sleepHoursBefore={sleepHoursBefore}
 						description={description}
 						isLoading={isLoading}
@@ -75,7 +72,6 @@ export default function AddSeizureScreen() {
 						onToggleExternal={toggleExternalTrigger}
 						onMoodBeforeChange={setMoodBefore}
 						onMoodAfterChange={setMoodAfter}
-						onMedicationChange={setIsMedicationTaken}
 						onSleepHoursChange={setSleepHoursBefore}
 						onDescriptionChange={setDescription}
 						onSave={handleSave}

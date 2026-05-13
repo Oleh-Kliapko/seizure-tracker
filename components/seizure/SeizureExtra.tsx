@@ -1,26 +1,22 @@
 // components/seizure/SeizureExtra.tsx
 
-import { Divider, FormInput } from "@/components/ui"
+import { FormInput } from "@/components/ui"
 import { useAppTheme } from "@/hooks"
 import { VITAL_BOUNDS } from "@/utils"
 import { useTranslation } from "react-i18next"
-import { Alert, Switch, Text, View } from "react-native"
+import { Alert, Text, View } from "react-native"
 import { getStyles } from "./getStyles"
 
 type Props = {
-	isMedicationTaken: boolean
 	sleepHoursBefore: number | undefined
 	description: string
-	onMedicationChange: (v: boolean) => void
 	onSleepHoursChange: (v: number | undefined) => void
 	onDescriptionChange: (v: string) => void
 }
 
 export function SeizureExtra({
-	isMedicationTaken,
 	sleepHoursBefore,
 	description,
-	onMedicationChange,
 	onSleepHoursChange,
 	onDescriptionChange,
 }: Props) {
@@ -31,23 +27,6 @@ export function SeizureExtra({
 	return (
 		<View style={styles.section}>
 			<Text style={styles.sectionTitle}>{t("seizure.additional")}</Text>
-
-			<View style={styles.switchRow}>
-				<View style={styles.switchLabel}>
-					<Text style={styles.label}>{t("seizure.medicationTaken")}</Text>
-					<Text style={styles.sublabel}>
-						{t("seizure.medicationTakenDescription")}
-					</Text>
-				</View>
-				<Switch
-					value={isMedicationTaken}
-					onValueChange={onMedicationChange}
-					trackColor={{ true: theme.colors.primary }}
-					style={{ transform: [{ scale: 0.85 }] }}
-				/>
-			</View>
-
-			<Divider label="" />
 
 			<FormInput
 				label={t("seizure.sleepHours")}

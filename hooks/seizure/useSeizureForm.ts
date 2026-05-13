@@ -44,7 +44,6 @@ export function useSeizureForm() {
 				patientId: user.uid,
 				startedAt: base.startedAt,
 				types: base.types,
-				isMedicationTaken: base.isMedicationTaken,
 				internalTriggers: base.internalTriggers,
 				externalTriggers: base.externalTriggers,
 			}

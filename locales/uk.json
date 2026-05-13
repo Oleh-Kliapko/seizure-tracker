@@ -313,8 +313,6 @@
 		"internalTriggers": "Внутрішні",
 		"externalTriggers": "Зовнішні",
 		"additional": "Додатково",
-		"medicationTaken": "Ліки прийняті",
-		"medicationTakenDescription": "Чи приймав пацієнт ліки перед приступом",
 		"sleepHours": "Години сну до приступу",
 		"description": "Опис",
 		"descriptionPlaceholder": "Додаткові нотатки...",

@@ -313,8 +313,6 @@
 		"internalTriggers": "Internal",
 		"externalTriggers": "External",
 		"additional": "Additional",
-		"medicationTaken": "Medication taken",
-		"medicationTakenDescription": "Did the patient take medication before the seizure",
 		"sleepHours": "Hours of sleep before seizure",
 		"description": "Description",
 		"descriptionPlaceholder": "Additional notes...",
