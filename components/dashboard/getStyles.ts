@@ -48,10 +48,10 @@ export const getStyles = (theme: AppTheme) => {
 		heroCard: {
 			backgroundColor: primary,
 			borderRadius: radius.lg,
-			paddingHorizontal: spacing.lg,
-			paddingVertical: spacing.md,
+			paddingHorizontal: 20,
+			paddingVertical: 12,
 			alignItems: "center",
-			marginBottom: spacing.md,
+			marginBottom: 12,
 		},
 		heroNoSeizures: {
 			fontFamily: fonts.medium,
@@ -59,7 +59,7 @@ export const getStyles = (theme: AppTheme) => {
 			color: onPrimary,
 			opacity: 0.9,
 			textAlign: "center",
-			paddingVertical: spacing.sm,
+			paddingVertical: 4,
 		},
 		heroLabel: {
 			fontFamily: fonts.regular,
@@ -72,9 +72,9 @@ export const getStyles = (theme: AppTheme) => {
 		},
 		heroToday: {
 			fontFamily: fonts.bold,
-			fontSize: 42,
+			fontSize: 38,
 			color: onPrimary,
-			lineHeight: 50,
+			lineHeight: 46,
 		},
 		heroDaysRow: {
 			flexDirection: "row",
@@ -84,19 +84,19 @@ export const getStyles = (theme: AppTheme) => {
 		},
 		heroDaysCount: {
 			fontFamily: fonts.bold,
-			fontSize: 64,
+			fontSize: 56,
 			color: onPrimary,
-			lineHeight: 72,
+			lineHeight: 64,
 		},
 		heroDaysWord: {
 			fontFamily: fonts.medium,
 			fontSize: fontSize.lg,
 			color: onPrimary,
 			opacity: 0.85,
-			marginBottom: 7,
+			marginBottom: 6,
 		},
 		heroBadge: {
-			marginTop: spacing.sm,
+			marginTop: spacing.xs,
 			paddingHorizontal: spacing.md,
 			paddingVertical: spacing.xs,
 			backgroundColor: "rgba(255,255,255,0.2)",
@@ -112,25 +112,26 @@ export const getStyles = (theme: AppTheme) => {
 		statsRow: {
 			flexDirection: "row",
 			gap: spacing.md,
-			marginBottom: spacing.md,
+			marginBottom: 12,
 		},
 		statsCard: {
 			flex: 1,
 			backgroundColor: surface,
 			borderRadius: radius.lg,
-			padding: spacing.md,
+			paddingHorizontal: 12,
+			paddingVertical: 10,
 		},
 		statsLabel: {
 			fontFamily: fonts.regular,
 			fontSize: fontSize.sm,
 			color: textSecondary,
-			marginBottom: spacing.xs,
+			marginBottom: 2,
 		},
 		statsCount: {
 			fontFamily: fonts.bold,
-			fontSize: 28,
+			fontSize: 24,
 			color: onSurface,
-			lineHeight: 34,
+			lineHeight: 30,
 		},
 		statsUnit: {
 			fontFamily: fonts.regular,
@@ -140,8 +141,8 @@ export const getStyles = (theme: AppTheme) => {
 		statsInnerRow: {
 			flexDirection: "row",
 			alignItems: "center",
-			marginTop: spacing.xs,
-			gap: spacing.sm,
+			marginTop: 2,
+			gap: 6,
 		},
 		statsInnerCol: {
 			flex: 1,
@@ -149,19 +150,19 @@ export const getStyles = (theme: AppTheme) => {
 		},
 		statsInnerDivider: {
 			width: 1,
-			height: 36,
+			height: 28,
 			backgroundColor: border,
 		},
 		statsCountSmall: {
 			fontFamily: fonts.bold,
-			fontSize: fontSize.lg,
+			fontSize: fontSize.md,
 			color: onSurface,
-			lineHeight: 26,
+			lineHeight: 22,
 		},
 		statsTrend: {
 			fontFamily: fonts.medium,
 			fontSize: fontSize.sm,
-			marginTop: spacing.xs,
+			marginTop: 2,
 			textAlign: "center" as const,
 		},
 

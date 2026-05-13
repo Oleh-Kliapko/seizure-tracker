@@ -43,6 +43,27 @@
 - [x] Верифікація email при реєстрації через email/пароль
 - [x] Складніший пароль
 - [x] i18n — англійська мова через `i18next` (бере мову з мобільника чи планшета, якщо UKR чи RU - то українська, все інше - англійська)
+- [x] Auto-save на профільних екранах (personal, medical, guardians, medications) — без кнопки "Зберегти"
+- [x] Індикатор автозбереження — зелена галочка на всіх інпутах і пікерах
+- [x] Pull-to-refresh на Dashboard, Seizures, History
+- [x] Підтвердження видалення ліків (alert)
+- [x] Firebase Crashlytics — крашрепортинг через ErrorBoundary
+- [x] Безпека — заміна x-api-key на Firebase ID token для backend
+- [x] Android adaptiveIcon (foregroundImage для адаптивної іконки)
+- [x] app.json для App Store — icon, splash, NSUsageDescriptions, privacyPolicyUrl
+- [x] Multi-select типів приступів + year selector у DateTimePicker
+- [x] Compact pagination у списку приступів (first/current/last + крапки)
+- [x] Фільтр по відео у списку приступів + статистика в History
+- [x] Трекінг-календар — перегляд і заповнення минулих днів, точки приступів, легенда
+- [x] PDF-звіт по трекінгу (фізіологія, тригери, статистика за period)
+- [x] Tracking report — детальний лог за дні з приступами
+- [x] Дашборд — avg per day замість raw count, виправлення daysSinceLastSeizure
+- [x] Рефакторинг компонентів (Green Zone) — SeizureVideo, SeizureDateTime, SeizureCard, MedicationCard розбиті на менші
+- [x] Реорганізація hooks по доменних папках
+- [x] Онбординг — 4 welcome-слайди з анімованими SVG-ілюстраціями (react-native-reanimated)
+- [x] Перемикач мови на екрані онбордингу (прапори 🇺🇦 / 🇬🇧)
+- [x] Фікс flash логін-екрану при старті (overlay + router.replace замість Redirect)
+- [x] Читабельність карток приступів — вторинний текст (дата, настрій, тригери) на темному фоні
 
 ## 🔮 Після MVP
 
