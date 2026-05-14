@@ -75,8 +75,8 @@ export const htmlReport = (
     .med-none { color: #6B7280; font-size: 11px; }
 
     .calendar-page { page-break-before: always; padding-top: 50px; }
-    .calendar-page h2 { font-size: 16px; color: #4A90E2; margin-bottom: 20px; }
-    .legend { margin-bottom: 28px; font-size: 11px; color: #6B7280; }
+    .calendar-page h2 { font-size: 16px; color: #4A90E2; margin-bottom: 8px; }
+    .legend { margin-bottom: 12px; font-size: 11px; color: #6B7280; }
     .legend-item { display: inline-block; margin-right: 16px; vertical-align: middle; }
     .legend-box { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: middle; margin-right: 5px; }
 
@@ -94,7 +94,7 @@ export const htmlReport = (
     .cal-num { font-size: 9px; color: #1F2937; text-align: center; padding: 0; margin: 0; line-height: 1; border: none; height: auto; }
     .cal-num-empty { border: none; padding: 0; margin: 0; height: auto; }
 
-    .cal-cell { height: 22px; line-height: 22px; border: 1px solid #9CA3AF; border-radius: 4px; text-align: center; vertical-align: middle; background: #fff; padding: 0; }
+    .cal-cell { height: 20px; line-height: 20px; border: 1px solid #9CA3AF; border-radius: 4px; text-align: center; vertical-align: middle; background: #fff; padding: 0; }
     .cal-cell-empty { border: none; background: transparent; }
 
     .cal-count { font-size: 13px; font-weight: bold; line-height: 1; }
@@ -208,9 +208,6 @@ export const htmlReport = (
 			: ""
 	}
 
-  <div class="footer">
-    <p>${i18n.t("report.footer")} • ${new Date().toLocaleString(i18n.language === "uk" ? "uk-UA" : "en-US")}</p>
-  </div>
 </body>
 </html>
   `
