@@ -2,7 +2,11 @@
 
 import { useAppTheme } from "@/hooks"
 import { Seizure } from "@/models/seizure"
-import { getMonthsInRange } from "@/utils/historyHelpers"
+import {
+	HistoryPeriod,
+	computeMonthSeizureStats,
+	getMonthsInRange,
+} from "@/utils/historyHelpers"
 import { ChevronDown, ChevronRight } from "lucide-react-native"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -14,10 +18,11 @@ type Props = {
 	seizuresByDate: Record<string, Seizure[]>
 	from: number
 	to: number
+	period: HistoryPeriod
 	onDayPress?: (dateKey: string) => void
 }
 
-export function HistoryCalendar({ seizuresByDate, from, to, onDayPress }: Props) {
+export function HistoryCalendar({ seizuresByDate, from, to, period, onDayPress }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
 	const { colors, fonts, fontSize, spacing } = theme
@@ -30,7 +35,9 @@ export function HistoryCalendar({ seizuresByDate, from, to, onDayPress }: Props)
 		t("history.dayThu"), t("history.dayFri"), t("history.daySat"), t("history.daySun"),
 	]
 
-	// Group months by year
+	const palette = theme.calendarSeverityColors
+
+	// Build year groups (needed before hooks)
 	const byYear = new Map<number, number[]>()
 	months.forEach(({ year, month }) => {
 		if (!byYear.has(year)) byYear.set(year, [])
@@ -38,6 +45,7 @@ export function HistoryCalendar({ seizuresByDate, from, to, onDayPress }: Props)
 	})
 	const years = Array.from(byYear.keys()).sort((a, b) => a - b)
 
+	// useState must be called unconditionally — before any early return
 	const [expandedYears, setExpandedYears] = useState<Set<number>>(() => new Set())
 
 	const toggleYear = (year: number) =>
@@ -48,20 +56,54 @@ export function HistoryCalendar({ seizuresByDate, from, to, onDayPress }: Props)
 			return next
 		})
 
-	const palette = theme.calendarSeverityColors
+	function getPrevMonthStats(year: number, month: number) {
+		const prevMonth = month === 0 ? 11 : month - 1
+		const prevYear = month === 0 ? year - 1 : year
+		const inRange = months.some(m => m.year === prevYear && m.month === prevMonth)
+		if (!inRange) return undefined
+		return computeMonthSeizureStats(prevYear, prevMonth, seizuresByDate)
+	}
 
+	const legend = (
+		<View style={{ flexDirection: "row", gap: 12, marginBottom: spacing.sm, flexWrap: "wrap" }}>
+			{([1, 2, 3] as const).map(sev => (
+				<View key={sev} style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+					<View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: palette[sev] }} />
+					<Text style={{ fontFamily: fonts.regular, fontSize: fontSize.xs, color: colors.textSecondary }}>
+						{t(`severity.${sev}`)}
+					</Text>
+				</View>
+			))}
+		</View>
+	)
+
+	// For "month" filter — show only current month, no accordion
+	if (period === "month") {
+		const { year, month } = months[months.length - 1]
+		const stats = computeMonthSeizureStats(year, month, seizuresByDate)
+		return (
+			<View style={styles.calendarContainer}>
+				{legend}
+				<HistoryCalendarMonth
+					year={year}
+					month={month}
+					seizuresByDate={seizuresByDate}
+					today={today}
+					dayNames={dayNames}
+					from={from}
+					to={to}
+					stats={stats}
+					prevStats={undefined}
+					onDayPress={onDayPress}
+				/>
+			</View>
+		)
+	}
+
+	// For other filters — group by year, all years expanded by default
 	return (
 		<View style={styles.calendarContainer}>
-			<View style={{ flexDirection: "row", gap: 12, marginBottom: spacing.sm, flexWrap: "wrap" }}>
-				{([1, 2, 3] as const).map(sev => (
-					<View key={sev} style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-						<View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: palette[sev] }} />
-						<Text style={{ fontFamily: fonts.regular, fontSize: fontSize.xs, color: colors.textSecondary }}>
-							{t(`severity.${sev}`)}
-						</Text>
-					</View>
-				))}
-			</View>
+			{legend}
 
 			{years.map(year => {
 				const isExpanded = expandedYears.has(year)
@@ -76,19 +118,25 @@ export function HistoryCalendar({ seizuresByDate, from, to, onDayPress }: Props)
 						</Pressable>
 						{isExpanded && (
 							<View style={styles.yearMonths}>
-								{byYear.get(year)!.map(month => (
-									<HistoryCalendarMonth
-										key={`${year}-${month}`}
-										year={year}
-										month={month}
-										seizuresByDate={seizuresByDate}
-										today={today}
-										dayNames={dayNames}
-										from={from}
-										to={to}
-										onDayPress={onDayPress}
-									/>
-								))}
+								{byYear.get(year)!.map(month => {
+									const stats = computeMonthSeizureStats(year, month, seizuresByDate)
+									const prevStats = getPrevMonthStats(year, month)
+									return (
+										<HistoryCalendarMonth
+											key={`${year}-${month}`}
+											year={year}
+											month={month}
+											seizuresByDate={seizuresByDate}
+											today={today}
+											dayNames={dayNames}
+											from={from}
+											to={to}
+											stats={stats}
+											prevStats={prevStats}
+											onDayPress={onDayPress}
+										/>
+									)
+								})}
 							</View>
 						)}
 					</View>

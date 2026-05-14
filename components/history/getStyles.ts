@@ -5,7 +5,16 @@ import { StyleSheet } from "react-native"
 
 export const getStyles = (theme: AppTheme) => {
 	const {
-		colors: { surface, border, error, background, textSecondary, onSurface, primary, onPrimary },
+		colors: {
+			surface,
+			border,
+			error,
+			background,
+			textSecondary,
+			onSurface,
+			primary,
+			onPrimary,
+		},
 		fonts,
 		fontSize,
 		spacing,
@@ -162,13 +171,48 @@ export const getStyles = (theme: AppTheme) => {
 			borderRadius: radius.md,
 			padding: spacing.sm,
 		},
+		monthHeaderRow: {
+			flexDirection: "row" as const,
+			justifyContent: "space-between" as const,
+			alignItems: "center" as const,
+			marginBottom: 4,
+		},
 		monthTitle: {
 			fontFamily: fonts.medium,
 			fontSize: fontSize.xs,
 			color: textSecondary,
-			marginBottom: spacing.sm,
 			textTransform: "uppercase" as const,
 			letterSpacing: 0.5,
+		},
+		monthTotal: {
+			fontFamily: fonts.bold,
+			fontSize: fontSize.sm,
+			color: onSurface,
+		},
+		trendBadge: {
+			paddingHorizontal: 4,
+			paddingVertical: 2,
+			borderRadius: 3,
+		},
+		trendText: {
+			fontFamily: fonts.medium,
+			fontSize: 10,
+		},
+		typeChipsRow: {
+			flexDirection: "row" as const,
+			justifyContent: "space-between" as const,
+			marginBottom: spacing.sm,
+		},
+		typeChip: {
+			backgroundColor: background,
+			borderRadius: 3,
+			paddingHorizontal: 4,
+			paddingVertical: 2,
+		},
+		typeChipText: {
+			fontFamily: fonts.regular,
+			fontSize: 10,
+			color: textSecondary,
 		},
 		dayNamesRow: {
 			flexDirection: "row",

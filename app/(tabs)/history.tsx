@@ -46,6 +46,7 @@ export default function History() {
 		return Math.min(...seizures.map(s => s.startedAt))
 	}, [period, seizures, from])
 
+
 	useFocusEffect(
 		useCallback(() => {
 			setRefreshKey(k => k + 1)
@@ -90,6 +91,7 @@ export default function History() {
 						seizuresByDate={seizuresByDate}
 						from={calendarFrom}
 						to={to}
+						period={period}
 						onDayPress={dateKey =>
 							router.push({ pathname: "/(tabs)/seizures", params: { date: dateKey } })
 						}

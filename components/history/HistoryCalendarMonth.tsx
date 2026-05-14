@@ -2,7 +2,7 @@
 
 import { useAppTheme } from "@/hooks"
 import { Seizure } from "@/models/seizure"
-import { getDaysInMonth, makeDateKey, maxSeverityColor } from "@/utils/historyHelpers"
+import { MonthStats, getDaysInMonth, makeDateKey, maxSeverityColor } from "@/utils/historyHelpers"
 import { useTranslation } from "react-i18next"
 import { Text, TouchableOpacity, View } from "react-native"
 import { getStyles } from "./getStyles"
@@ -15,12 +15,15 @@ type Props = {
 	dayNames: string[]
 	from: number
 	to: number
+	stats: MonthStats
+	prevStats?: MonthStats
 	onDayPress?: (dateKey: string) => void
 }
 
-export function HistoryCalendarMonth({ year, month, seizuresByDate, today, dayNames, from, to, onDayPress }: Props) {
+export function HistoryCalendarMonth({ year, month, seizuresByDate, today, dayNames, from, to, stats, prevStats, onDayPress }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { colors, fonts, fontSize, spacing } = theme
 	const { t } = useTranslation()
 	const days = getDaysInMonth(year, month)
 	const palette = theme.calendarSeverityColors
@@ -30,11 +33,49 @@ export function HistoryCalendarMonth({ year, month, seizuresByDate, today, dayNa
 	const fromStart = new Date(fromDay.getFullYear(), fromDay.getMonth(), fromDay.getDate()).getTime()
 	const toStart = new Date(toDay.getFullYear(), toDay.getMonth(), toDay.getDate()).getTime()
 
+	const hasPrev = prevStats !== undefined
+	const totalTrend = hasPrev && prevStats!.total > 0
+		? Math.round(((stats.total - prevStats!.total) / prevStats!.total) * 100)
+		: null
+	const trendColor = totalTrend !== null
+		? (totalTrend > 0 ? colors.error : colors.success)
+		: colors.textSecondary
+
+	const severityKeys = [1, 2, 3] as const
+	const severityLabelKeys = ["seizure.statsLight", "seizure.statsMedium", "seizure.statsHeavy"] as const
+
 	return (
 		<View style={styles.monthCard}>
-			<Text style={styles.monthTitle}>
+			<Text style={[styles.monthTitle, { marginBottom: 4 }]}>
 				{t(`month.${month + 1}`)} {year}
 			</Text>
+
+			{stats.total > 0 && (
+				<View style={styles.typeChipsRow}>
+					{severityKeys.map((sev, i) => {
+						const count = stats.bySeverity[sev]
+						return (
+							<View key={sev} style={styles.typeChip}>
+								<Text style={styles.typeChipText}>
+									{t(severityLabelKeys[i])}: {count}
+								</Text>
+							</View>
+						)
+					})}
+					<View style={styles.typeChip}>
+						<Text style={styles.typeChipText}>
+							{t("seizure.statsTotal")}: {stats.total}
+						</Text>
+					</View>
+					{totalTrend !== null && (
+						<View style={[styles.trendBadge, { backgroundColor: trendColor + "20" }]}>
+							<Text style={[styles.trendText, { color: trendColor }]}>
+								{totalTrend > 0 ? "+" : ""}{totalTrend}%
+							</Text>
+						</View>
+					)}
+				</View>
+			)}
 
 			<View style={styles.dayNamesRow}>
 				{dayNames.map(d => (

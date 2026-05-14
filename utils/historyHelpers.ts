@@ -2,6 +2,28 @@ import { Seizure } from "@/models/seizure"
 
 export type HistoryPeriod = "month" | "3months" | "6months" | "year" | "all"
 
+export type MonthStats = {
+	total: number
+	bySeverity: { 1: number; 2: number; 3: number }
+}
+
+export function computeMonthSeizureStats(
+	year: number,
+	month: number,
+	seizuresByDate: Record<string, Seizure[]>,
+): MonthStats {
+	const result: MonthStats = { total: 0, bySeverity: { 1: 0, 2: 0, 3: 0 } }
+	const prefix = `${year}-${String(month + 1).padStart(2, "0")}-`
+	for (const [key, seizures] of Object.entries(seizuresByDate)) {
+		if (!key.startsWith(prefix)) continue
+		result.total += seizures.length
+		for (const s of seizures) {
+			if (s.severity) result.bySeverity[s.severity]++
+		}
+	}
+	return result
+}
+
 export type TimeOfDay = {
 	night: number
 	morning: number
@@ -132,16 +154,19 @@ export function getPeriodRange(period: HistoryPeriod): {
 	from.setHours(0, 0, 0, 0)
 	switch (period) {
 		case "month":
-			from.setDate(from.getDate() - 29)
+			from.setDate(1)
 			break
 		case "3months":
-			from.setMonth(from.getMonth() - 3)
+			from.setMonth(from.getMonth() - 2)
+			from.setDate(1)
 			break
 		case "6months":
-			from.setMonth(from.getMonth() - 6)
+			from.setMonth(from.getMonth() - 5)
+			from.setDate(1)
 			break
 		case "year":
-			from.setFullYear(from.getFullYear() - 1)
+			from.setMonth(from.getMonth() - 11)
+			from.setDate(1)
 			break
 		case "all":
 			from.setFullYear(2000)
