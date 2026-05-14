@@ -9,7 +9,7 @@ import { useAuth } from "../auth/useAuth"
 
 const PAGE_SIZE = 4
 
-export function useSeizureList() {
+export function useSeizureList(dateFilter?: string) {
 	const { user } = useAuth()
 	const [seizures, setSeizures] = useState<Seizure[]>([])
 	const [isLoading, setIsLoading] = useState(true)
@@ -43,11 +43,19 @@ export function useSeizureList() {
 	)
 
 	const filtered = useMemo(() => {
-		if (filter === "all") return seizures
-		if (filter === "video") return seizures.filter(s => !!s.videoUrl)
-		if (filter === "unknown") return seizures.filter(s => !s.severity)
-		return seizures.filter(s => s.severity === Number(filter))
-	}, [seizures, filter])
+		let list = seizures
+		if (dateFilter) {
+			list = list.filter(s => {
+				const d = new Date(s.startedAt)
+				const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`
+				return key === dateFilter
+			})
+		}
+		if (filter === "all") return list
+		if (filter === "video") return list.filter(s => !!s.videoUrl)
+		if (filter === "unknown") return list.filter(s => !s.severity)
+		return list.filter(s => s.severity === Number(filter))
+	}, [seizures, filter, dateFilter])
 
 	const totalPages = Math.ceil(filtered.length / PAGE_SIZE)
 

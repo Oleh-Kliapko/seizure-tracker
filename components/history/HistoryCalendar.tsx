@@ -14,11 +14,13 @@ type Props = {
 	seizuresByDate: Record<string, Seizure[]>
 	from: number
 	to: number
+	onDayPress?: (dateKey: string) => void
 }
 
-export function HistoryCalendar({ seizuresByDate, from, to }: Props) {
+export function HistoryCalendar({ seizuresByDate, from, to, onDayPress }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
+	const { colors, fonts, fontSize, spacing } = theme
 	const { t } = useTranslation()
 
 	const months = getMonthsInRange(from, to)
@@ -46,8 +48,21 @@ export function HistoryCalendar({ seizuresByDate, from, to }: Props) {
 			return next
 		})
 
+	const palette = theme.calendarSeverityColors
+
 	return (
 		<View style={styles.calendarContainer}>
+			<View style={{ flexDirection: "row", gap: 12, marginBottom: spacing.sm, flexWrap: "wrap" }}>
+				{([1, 2, 3] as const).map(sev => (
+					<View key={sev} style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+						<View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: palette[sev] }} />
+						<Text style={{ fontFamily: fonts.regular, fontSize: fontSize.xs, color: colors.textSecondary }}>
+							{t(`severity.${sev}`)}
+						</Text>
+					</View>
+				))}
+			</View>
+
 			{years.map(year => {
 				const isExpanded = expandedYears.has(year)
 				return (
@@ -69,6 +84,7 @@ export function HistoryCalendar({ seizuresByDate, from, to }: Props) {
 										seizuresByDate={seizuresByDate}
 										today={today}
 										dayNames={dayNames}
+										onDayPress={onDayPress}
 									/>
 								))}
 							</View>

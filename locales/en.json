@@ -350,7 +350,8 @@
 		"specifyStartTime": "Please specify the seizure start time",
 		"confirmDeleteTitle": "Delete seizure",
 		"confirmDeleteMessage": "This action is irreversible. The seizure will be deleted permanently.",
-		"confirmDeleteBtn": "Delete"
+		"confirmDeleteBtn": "Delete",
+		"filteredByDate": "Seizures on {{date}}"
 	},
 	"settings": {
 		"personal": "Personal data",

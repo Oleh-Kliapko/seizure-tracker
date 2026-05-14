@@ -13,7 +13,7 @@ import {
 import { SeizureStatsHeader } from "@/components/seizure/list"
 import { ScreenHeader, ScreenWrapper } from "@/components/ui"
 import { useAppTheme, useExport, useUser, useHistoryData } from "@/hooks"
-import { useFocusEffect } from "expo-router"
+import { router, useFocusEffect } from "expo-router"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import {
@@ -90,6 +90,9 @@ export default function History() {
 						seizuresByDate={seizuresByDate}
 						from={calendarFrom}
 						to={to}
+						onDayPress={dateKey =>
+							router.push({ pathname: "/(tabs)/seizures", params: { date: dateKey } })
+						}
 					/>
 				</SectionCard>
 

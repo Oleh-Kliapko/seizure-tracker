@@ -4,7 +4,7 @@ import { useAppTheme } from "@/hooks"
 import { Seizure } from "@/models/seizure"
 import { getDaysInMonth, makeDateKey, maxSeverityColor } from "@/utils/historyHelpers"
 import { useTranslation } from "react-i18next"
-import { Text, View } from "react-native"
+import { Text, TouchableOpacity, View } from "react-native"
 import { getStyles } from "./getStyles"
 
 type Props = {
@@ -13,9 +13,10 @@ type Props = {
 	seizuresByDate: Record<string, Seizure[]>
 	today: Date
 	dayNames: string[]
+	onDayPress?: (dateKey: string) => void
 }
 
-export function HistoryCalendarMonth({ year, month, seizuresByDate, today, dayNames }: Props) {
+export function HistoryCalendarMonth({ year, month, seizuresByDate, today, dayNames, onDayPress }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
 	const { t } = useTranslation()
@@ -50,8 +51,9 @@ export function HistoryCalendarMonth({ year, month, seizuresByDate, today, dayNa
 						today.getMonth() === month &&
 						today.getDate() === day
 
-					return (
-						<View key={key} style={styles.dayCellOuter}>
+					const hasSeizures = (daySeizures?.length ?? 0) >= 1
+					const cellContent = (
+						<>
 							<View
 								style={[
 									styles.dayCellInner,
@@ -75,11 +77,26 @@ export function HistoryCalendarMonth({ year, month, seizuresByDate, today, dayNa
 								</Text>
 							</View>
 
-							{daySeizures?.length >= 1 && (
+							{hasSeizures && (
 								<View style={[styles.seizureBadge, { backgroundColor: color! }]}>
 									<Text style={styles.seizureBadgeText}>{daySeizures.length}</Text>
 								</View>
 							)}
+						</>
+					)
+
+					return hasSeizures && onDayPress ? (
+						<TouchableOpacity
+							key={key}
+							style={styles.dayCellOuter}
+							onPress={() => onDayPress(key)}
+							activeOpacity={0.65}
+						>
+							{cellContent}
+						</TouchableOpacity>
+					) : (
+						<View key={key} style={styles.dayCellOuter}>
+							{cellContent}
 						</View>
 					)
 				})}

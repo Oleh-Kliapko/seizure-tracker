@@ -350,7 +350,8 @@
 		"specifyStartTime": "Вкажіть дату та час початку приступу",
 		"confirmDeleteTitle": "Видалити приступ",
 		"confirmDeleteMessage": "Ця дія незворотня. Приступ буде видалено назавжди.",
-		"confirmDeleteBtn": "Видалити"
+		"confirmDeleteBtn": "Видалити",
+		"filteredByDate": "Приступи від {{date}}"
 	},
 	"settings": {
 		"personal": "Особисті дані",

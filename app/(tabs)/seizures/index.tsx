@@ -9,8 +9,8 @@ import { getStyles } from "@/components/seizure/list/getStyles"
 import { ScreenHeader, ScreenWrapper } from "@/components/ui"
 import { useAppTheme, useSeizureList } from "@/hooks"
 import { Seizure } from "@/models"
-import { router } from "expo-router"
-import { Plus } from "lucide-react-native"
+import { router, useLocalSearchParams } from "expo-router"
+import { Plus, X } from "lucide-react-native"
 import { useTranslation } from "react-i18next"
 import { useCallback, useState } from "react"
 import {
@@ -26,6 +26,8 @@ export default function SeizuresScreen() {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
 	const { t } = useTranslation()
+	const { date: dateParam } = useLocalSearchParams<{ date?: string }>()
+	const dateFilter = dateParam || undefined
 	const {
 		paginated,
 		filter,
@@ -36,7 +38,13 @@ export default function SeizuresScreen() {
 		setPage,
 		updateSeizureInList,
 		reload,
-	} = useSeizureList()
+	} = useSeizureList(dateFilter)
+
+	const dateLabel = (() => {
+		if (!dateFilter) return null
+		const [yearStr, monthStr, dayStr] = dateFilter.split("-")
+		return `${Number(dayStr)} ${t(`month.${Number(monthStr)}`)} ${yearStr}`
+	})()
 
 	const [refreshing, setRefreshing] = useState(false)
 	const onRefresh = useCallback(async () => {
@@ -86,6 +94,28 @@ export default function SeizuresScreen() {
 						<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.colors.primary} />
 					}
 				>
+					{dateLabel && (
+						<View
+							style={{
+								flexDirection: "row",
+								alignItems: "center",
+								justifyContent: "space-between",
+								backgroundColor: theme.colors.primary + "18",
+								borderRadius: theme.radius.md,
+								paddingHorizontal: theme.spacing.md,
+								paddingVertical: theme.spacing.xs + 2,
+								marginBottom: theme.spacing.sm,
+							}}
+						>
+							<Text style={{ fontFamily: theme.fonts.medium, fontSize: theme.fontSize.sm, color: theme.colors.primary }}>
+								{t("seizure.filteredByDate", { date: dateLabel })}
+							</Text>
+							<TouchableOpacity onPress={() => router.setParams({ date: "" })} activeOpacity={0.7} hitSlop={8}>
+								<X size={16} color={theme.colors.primary} />
+							</TouchableOpacity>
+						</View>
+					)}
+
 					<SeizureFilters active={filter} onChange={handleFilterChange} />
 
 					{paginated.length === 0 ? (
