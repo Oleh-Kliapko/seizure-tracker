@@ -84,6 +84,8 @@ export function HistoryCalendar({ seizuresByDate, from, to, onDayPress }: Props)
 										seizuresByDate={seizuresByDate}
 										today={today}
 										dayNames={dayNames}
+										from={from}
+										to={to}
 										onDayPress={onDayPress}
 									/>
 								))}

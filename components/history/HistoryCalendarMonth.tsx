@@ -13,15 +13,22 @@ type Props = {
 	seizuresByDate: Record<string, Seizure[]>
 	today: Date
 	dayNames: string[]
+	from: number
+	to: number
 	onDayPress?: (dateKey: string) => void
 }
 
-export function HistoryCalendarMonth({ year, month, seizuresByDate, today, dayNames, onDayPress }: Props) {
+export function HistoryCalendarMonth({ year, month, seizuresByDate, today, dayNames, from, to, onDayPress }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
 	const { t } = useTranslation()
 	const days = getDaysInMonth(year, month)
 	const palette = theme.calendarSeverityColors
+
+	const fromDay = new Date(from)
+	const toDay = new Date(to)
+	const fromStart = new Date(fromDay.getFullYear(), fromDay.getMonth(), fromDay.getDate()).getTime()
+	const toStart = new Date(toDay.getFullYear(), toDay.getMonth(), toDay.getDate()).getTime()
 
 	return (
 		<View style={styles.monthCard}>
@@ -51,6 +58,8 @@ export function HistoryCalendarMonth({ year, month, seizuresByDate, today, dayNa
 						today.getMonth() === month &&
 						today.getDate() === day
 
+					const dayStart = new Date(year, month, day).getTime()
+					const inRange = dayStart >= fromStart && dayStart <= toStart
 					const hasSeizures = (daySeizures?.length ?? 0) >= 1
 					const cellContent = (
 						<>
@@ -85,17 +94,17 @@ export function HistoryCalendarMonth({ year, month, seizuresByDate, today, dayNa
 						</>
 					)
 
-					return hasSeizures && onDayPress ? (
+					return hasSeizures && onDayPress && inRange ? (
 						<TouchableOpacity
 							key={key}
-							style={styles.dayCellOuter}
+							style={[styles.dayCellOuter, !inRange && { opacity: 0.25 }]}
 							onPress={() => onDayPress(key)}
 							activeOpacity={0.65}
 						>
 							{cellContent}
 						</TouchableOpacity>
 					) : (
-						<View key={key} style={styles.dayCellOuter}>
+						<View key={key} style={[styles.dayCellOuter, !inRange && { opacity: 0.25 }]}>
 							{cellContent}
 						</View>
 					)
