@@ -20,7 +20,7 @@ import { SeizureTriggers } from "./SeizureTriggers"
 import { SeizureTypePicker } from "./SeizureTypePicker"
 type Props = {
 	startedAt: number
-	endedAt: number | undefined
+	durationSeconds: number | undefined
 	types: SeizureType[]
 	customType: string
 	severity: SeizureSeverity | undefined
@@ -33,7 +33,7 @@ type Props = {
 	isLoading: boolean
 	error: string | null
 	onStartChange: (v: number) => void
-	onEndChange: (v: number | undefined) => void
+	onDurationChange: (v: number | undefined) => void
 	onToggleType: (v: SeizureType) => void
 	onCustomTypeChange: (v: string) => void
 	onSeverityChange: (v: SeizureSeverity) => void
@@ -55,9 +55,9 @@ export function SeizureForm(props: Props) {
 		<View>
 			<SeizureDateTime
 				startedAt={props.startedAt}
-				endedAt={props.endedAt}
+				durationSeconds={props.durationSeconds}
 				onStartChange={props.onStartChange}
-				onEndChange={props.onEndChange}
+				onDurationChange={props.onDurationChange}
 			/>
 			<SeizureTypePicker
 				values={props.types}

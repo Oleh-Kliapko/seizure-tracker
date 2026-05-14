@@ -93,6 +93,7 @@
 		"minutes": "Minutes",
 		"minutesShort": "min",
 		"hoursShort": "hr",
+		"secondsShort": "sec",
 		"of": "of"
 	},
 	"picker": {
@@ -331,8 +332,7 @@
 		"descriptionPlaceholder": "Additional notes...",
 		"dateTime": "Seizure time",
 		"startTime": "Start",
-		"specifyEndTime": "Specify end time",
-		"endTime": "End",
+		"duration": "Duration",
 		"listTitle": "Seizures",
 		"emptyTitle": "No seizures yet",
 		"emptyHint": "Tap the add button at the top right",
@@ -342,7 +342,6 @@
 		"statsHeavy": "Severe",
 		"before": "before",
 		"after": "after",
-		"endTimeBeforeStart": "End time cannot be before start time",
 		"timeInFuture": "Seizure time cannot be in the future",
 		"invalidSleepHours": "Sleep hours: 0–24",
 		"specifyType": "Please specify the seizure type",

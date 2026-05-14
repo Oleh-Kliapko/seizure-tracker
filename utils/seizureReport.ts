@@ -22,14 +22,17 @@ function formatTime(ts: number): string {
 	})
 }
 
-function formatDuration(start: number, end?: number): string {
-	if (!end) return "—"
-	const mins = Math.round((end - start) / 60000)
+function formatDuration(seconds?: number): string {
+	if (!seconds) return "—"
+	const secLabel = i18n.t("common.secondsShort")
 	const minLabel = i18n.t("report.minutes")
 	const hourLabel = i18n.t("report.hours")
-	if (mins < 60) return `${mins} ${minLabel}`
-	const h = Math.floor(mins / 60)
-	const m = mins % 60
+	if (seconds < 60) return `${seconds} ${secLabel}`
+	const totalMins = Math.floor(seconds / 60)
+	const secs = seconds % 60
+	if (totalMins < 60) return secs > 0 ? `${totalMins} ${minLabel} ${secs} ${secLabel}` : `${totalMins} ${minLabel}`
+	const h = Math.floor(totalMins / 60)
+	const m = totalMins % 60
 	return m > 0 ? `${h} ${hourLabel} ${m} ${minLabel}` : `${h} ${hourLabel}`
 }
 
@@ -64,13 +67,10 @@ function getSeverityLabel(severity?: number): string {
 
 function getStats(seizures: Seizure[]) {
 	const total = seizures.length
-	const withDuration = seizures.filter(s => s.endedAt)
+	const withDuration = seizures.filter(s => s.durationSeconds)
 	const avgDuration = withDuration.length
 		? Math.round(
-				withDuration.reduce(
-					(acc, s) => acc + (s.endedAt! - s.startedAt) / 60000,
-					0,
-				) / withDuration.length,
+				withDuration.reduce((acc, s) => acc + s.durationSeconds! / 60, 0) / withDuration.length,
 			)
 		: 0
 
@@ -255,7 +255,7 @@ async function generateTableRows(
       <div class="data-row ${rowClass}">
         <div>${formatDate(s.startedAt)}</div>
         <div>${formatTime(s.startedAt)}</div>
-        <div>${formatDuration(s.startedAt, s.endedAt)}</div>
+        <div>${formatDuration(s.durationSeconds)}</div>
         <div>${getTypeLabel(s)}</div>
         <div>${getSeverityLabel(s.severity)}</div>
         <div>${getTriggers(s)}</div>

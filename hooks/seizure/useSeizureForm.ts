@@ -48,7 +48,7 @@ export function useSeizureForm() {
 				externalTriggers: base.externalTriggers,
 			}
 
-			if (base.endedAt !== undefined) seizureData.endedAt = base.endedAt
+			if (base.durationSeconds) seizureData.durationSeconds = base.durationSeconds
 			if (base.customType && base.types.includes("custom")) seizureData.customType = base.customType
 			if (base.severity !== undefined) seizureData.severity = base.severity
 			if (base.moodBefore !== undefined) seizureData.moodBefore = base.moodBefore

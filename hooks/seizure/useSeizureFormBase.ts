@@ -14,7 +14,7 @@ import { useState } from "react"
 
 export function useSeizureFormBase() {
 	const [startedAt, setStartedAt] = useState<number>(Date.now())
-	const [endedAt, setEndedAt] = useState<number | undefined>(undefined)
+	const [durationSeconds, setDurationSeconds] = useState<number | undefined>(undefined)
 	const [types, setTypes] = useState<SeizureType[]>(["tonic-clonic"])
 	const [customType, setCustomType] = useState("")
 	const [severity, setSeverity] = useState<SeizureSeverity | undefined>(undefined)
@@ -40,8 +40,7 @@ export function useSeizureFormBase() {
 
 	// Returns error message or null if valid
 	const validateFields = (): string | null => {
-		if (endedAt && endedAt < startedAt) return i18n.t("seizure.endTimeBeforeStart")
-		if (isInvalidSeizureTime(startedAt, endedAt)) return i18n.t("seizure.timeInFuture")
+		if (isInvalidSeizureTime(startedAt)) return i18n.t("seizure.timeInFuture")
 		if (isInvalidSleepHours(sleepHoursBefore)) return i18n.t("seizure.invalidSleepHours")
 		if (types.length === 0) return i18n.t("seizure.specifyType")
 		if (types.includes("custom") && !customType.trim()) return i18n.t("seizure.specifyCustomType")
@@ -50,7 +49,7 @@ export function useSeizureFormBase() {
 
 	return {
 		startedAt, setStartedAt,
-		endedAt, setEndedAt,
+		durationSeconds, setDurationSeconds,
 		types, setTypes, toggleType,
 		customType, setCustomType,
 		severity, setSeverity,

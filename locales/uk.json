@@ -93,6 +93,7 @@
 		"minutes": "Хвилини",
 		"minutesShort": "хв",
 		"hoursShort": "год",
+		"secondsShort": "сек",
 		"of": "з"
 	},
 	"picker": {
@@ -331,8 +332,7 @@
 		"descriptionPlaceholder": "Додаткові нотатки...",
 		"dateTime": "Час приступу",
 		"startTime": "Початок",
-		"specifyEndTime": "Вказати час закінчення",
-		"endTime": "Закінчення",
+		"duration": "Тривалість",
 		"listTitle": "Приступи",
 		"emptyTitle": "Приступів ще немає",
 		"emptyHint": "Натисніть кнопку додавання справа вгорі",
@@ -342,7 +342,6 @@
 		"statsHeavy": "Важких",
 		"before": "до",
 		"after": "після",
-		"endTimeBeforeStart": "Час закінчення не може бути раніше часу початку",
 		"timeInFuture": "Час приступу не може бути в майбутньому",
 		"invalidSleepHours": "Години сну: 0–24",
 		"specifyType": "Вкажіть тип приступу",

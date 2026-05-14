@@ -27,11 +27,8 @@ export function hasInvalidVitals(inputs: VitalInputs): boolean {
 	return false
 }
 
-export function isInvalidSeizureTime(startedAt: number, endedAt?: number): boolean {
-	const now = Date.now()
-	if (startedAt > now) return true
-	if (endedAt !== undefined && endedAt > now) return true
-	return false
+export function isInvalidSeizureTime(startedAt: number): boolean {
+	return startedAt > Date.now()
 }
 
 export function isInvalidSleepHours(value: number | undefined): boolean {

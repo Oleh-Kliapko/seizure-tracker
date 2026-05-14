@@ -36,7 +36,7 @@ export type Seizure = {
 	patientId: string //
 
 	startedAt: number
-	endedAt?: number
+	durationSeconds?: number
 
 	types: SeizureType[] // типи судом (може бути декілька)
 	severity?: SeizureSeverity // ступінь тяжкості

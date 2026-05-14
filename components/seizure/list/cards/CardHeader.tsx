@@ -2,7 +2,7 @@
 
 import { useAppTheme } from "@/hooks"
 import { Seizure } from "@/models"
-import { formatDate, formatDuration, formatTime } from "@/utils/seizureFormatters"
+import { formatDate, formatDurationSeconds, formatTime } from "@/utils/seizureFormatters"
 import { Zap } from "lucide-react-native"
 import { Text, View } from "react-native"
 import { getStyles } from "./getStyles"
@@ -15,10 +15,8 @@ export function CardHeader({ seizure }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
 
-	const duration = formatDuration(seizure.startedAt, seizure.endedAt)
-	const timeStr = seizure.endedAt
-		? `${formatTime(seizure.startedAt)} — ${formatTime(seizure.endedAt)}`
-		: formatTime(seizure.startedAt)
+	const duration = formatDurationSeconds(seizure.durationSeconds)
+	const timeStr = formatTime(seizure.startedAt)
 
 	return (
 		<View style={styles.cardHeader}>

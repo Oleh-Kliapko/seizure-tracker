@@ -20,8 +20,8 @@ export default function EditSeizureScreen() {
 	const {
 		startedAt,
 		setStartedAt,
-		endedAt,
-		setEndedAt,
+		durationSeconds,
+		setDurationSeconds,
 		types,
 		toggleType,
 		customType,
@@ -84,7 +84,7 @@ export default function EditSeizureScreen() {
 					>
 						<SeizureForm
 							startedAt={startedAt}
-							endedAt={endedAt}
+							durationSeconds={durationSeconds}
 							types={types}
 							customType={customType}
 							severity={severity}
@@ -97,7 +97,7 @@ export default function EditSeizureScreen() {
 							isLoading={isLoading}
 							error={error}
 							onStartChange={setStartedAt}
-							onEndChange={setEndedAt}
+							onDurationChange={setDurationSeconds}
 							onToggleType={toggleType}
 							onCustomTypeChange={setCustomType}
 							onSeverityChange={setSeverity}
