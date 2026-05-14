@@ -83,6 +83,10 @@ export const htmlReport = (
     .months-grid { width: 100%; }
     .month-block { display: inline-block; width: 48%; margin-bottom: 24px; margin-right: 1%; page-break-inside: avoid; vertical-align: top; }
     .month-title { font-size: 13px; color: #1F2937; margin-bottom: 4px; text-align: center; font-weight: bold; }
+    .month-stats { display: flex; gap: 4px; font-size: 9px; margin-bottom: 6px; flex-wrap: wrap; justify-content: space-between; }
+    .month-stat { background: #F1F5F9; border-radius: 3px; padding: 2px 5px; color: #6B7280; }
+    .pdf-trend-up { background: #FEE2E2; color: #EF4444; border-radius: 3px; padding: 2px 5px; }
+    .pdf-trend-down { background: #D1FAE5; color: #10B981; border-radius: 3px; padding: 2px 5px; }
 
     table.calendar { width: 100%; border-collapse: separate; border-spacing: 1px; margin-bottom: 0; }
     table.calendar th { background: #F1F5F9; color: #9CA3AF; padding: 3px 0; text-align: center; font-size: 10px; font-weight: normal; border-radius: 3px; width: 14.28%; }

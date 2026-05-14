@@ -103,6 +103,26 @@ function getStats(seizures: Seizure[]) {
 	return { total, avgDuration, severe, medium, light, topTriggers }
 }
 
+type MonthStatsPdf = {
+	total: number
+	light: number
+	medium: number
+	heavy: number
+}
+
+function computeMonthStatsPdf(seizures: Seizure[], year: number, month: number): MonthStatsPdf {
+	const ms = seizures.filter(s => {
+		const d = new Date(s.startedAt)
+		return d.getFullYear() === year && d.getMonth() === month
+	})
+	return {
+		total: ms.length,
+		light: ms.filter(s => s.severity === 1).length,
+		medium: ms.filter(s => s.severity === 2).length,
+		heavy: ms.filter(s => s.severity === 3).length,
+	}
+}
+
 type DayData = { count: number; maxSeverity: number }
 
 function buildDayMap(seizures: Seizure[]): Record<string, DayData> {
@@ -129,7 +149,28 @@ function buildMonthHtml(
 	year: number,
 	month: number,
 	dayMap: Record<string, DayData>,
+	stats: MonthStatsPdf,
+	prevStats?: MonthStatsPdf,
 ): string {
+	const trend =
+		prevStats && prevStats.total > 0
+			? Math.round(((stats.total - prevStats.total) / prevStats.total) * 100)
+			: null
+
+	const trendHtml =
+		trend !== null
+			? `<span class="${trend > 0 ? "pdf-trend-up" : "pdf-trend-down"}">${trend > 0 ? "+" : ""}${trend}%</span>`
+			: ""
+
+	const statsHtml = `
+    <div class="month-stats">
+      <span class="month-stat">${i18n.t("seizure.statsLight")}: ${stats.light}</span>
+      <span class="month-stat">${i18n.t("seizure.statsMedium")}: ${stats.medium}</span>
+      <span class="month-stat">${i18n.t("seizure.statsHeavy")}: ${stats.heavy}</span>
+      <span class="month-stat">${i18n.t("seizure.statsTotal")}: ${stats.total}</span>
+      ${trendHtml}
+    </div>
+  `
 	const firstDay = new Date(year, month, 1)
 	const daysInMonth = new Date(year, month + 1, 0).getDate()
 	const startCol = (firstDay.getDay() + 6) % 7
@@ -188,6 +229,7 @@ function buildMonthHtml(
 	return `
     <div class="month-block">
       <h4 class="month-title">${i18n.t(`month.${month + 1}`)} ${year}</h4>
+      ${statsHtml}
       <table class="calendar">
         <thead>
           <tr>
@@ -222,7 +264,14 @@ function buildCalendarHtml(
 		cursor.setMonth(cursor.getMonth() + 1)
 	}
 
-	return months.map(m => buildMonthHtml(m.year, m.month, dayMap)).join("")
+	return months
+		.map((m, idx) => {
+			const stats = computeMonthStatsPdf(seizures, m.year, m.month)
+			const prev = idx > 0 ? months[idx - 1] : null
+			const prevStats = prev ? computeMonthStatsPdf(seizures, prev.year, prev.month) : undefined
+			return buildMonthHtml(m.year, m.month, dayMap, stats, prevStats)
+		})
+		.join("")
 }
 
 async function generateTableRows(
