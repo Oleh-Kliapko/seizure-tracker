@@ -457,7 +457,8 @@
 		"uploadingShort": "Uploading...",
 		"deleting": "Deleting...",
 		"deleteVideo": "Delete video",
-		"addVideo": "Add video"
+		"addVideo": "Add video",
+		"watchVideo": "Watch video"
 	},
 	"doseUnit": {
 		"tablets": "tablets",

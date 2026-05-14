@@ -457,7 +457,8 @@
 		"uploadingShort": "Завантаження...",
 		"deleting": "Видалення...",
 		"deleteVideo": "Видалити відео",
-		"addVideo": "Додати відео"
+		"addVideo": "Додати відео",
+		"watchVideo": "Переглянути"
 	},
 	"doseUnit": {
 		"tablets": "таблетки",
