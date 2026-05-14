@@ -1,7 +1,5 @@
 // models/tracking.ts
 
-import { ExternalTrigger, InternalTrigger, TriggerItem } from "./seizure"
-
 export type DailyTracking = {
 	id: string
 	userId: string
@@ -24,10 +22,6 @@ export type DailyTracking = {
 	urinationCount?: number // кількість сечовипускань
 	lastBowelMovement?: number // timestamp останнього випорожнення
 	bowelMovements?: number // кількість випорожнення
-
-	// Тригери
-	internalTriggers?: TriggerItem<InternalTrigger>[]
-	externalTriggers?: TriggerItem<ExternalTrigger>[]
 
 	// Ліки
 	medications?: {
