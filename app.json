@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "seizure-tracker",
+    "name": "Seizure Tracker",
     "slug": "seizure-tracker",
     "owner": "oleh_kliapko",
     "version": "1.0.0",
@@ -37,7 +37,8 @@
         "backgroundColor": "#E6F4FE"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.olehkliapko.seizurestracker"
     },
     "web": {
       "output": "static"

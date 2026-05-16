@@ -69,10 +69,14 @@
 
 - [ ] Купити домен для продакшн email (напр. `seizuretracker.app`, ~$10-15/рік на namecheap.com) → верифікувати в Resend → замінити `onboarding@resend.dev` на `noreply@seizuretracker.app`
 - [ ] Перехід з Expo Go на Dev Client (99 баксів за акаунт)
+- [ ] ASO — заповнити в App Store Connect (appstoreconnect.apple.com) → вибрати додаток → App Information → Localizations:
+  - **EN** — Name: `Seizure Tracker` | Subtitle: `Epilepsy Diary & Reports` | Keywords: `epilepsy,diary,log,journal,trigger,neurologist,report,epileptic,medication,eeg,caregiver,fit` | Promo text: `Log seizures, track triggers, and share PDF reports with your neurologist — all in one place.`
+  - **UK** — Name: `Seizure Tracker` | Subtitle: `Щоденник епілепсії і звіти` | Keywords: `епілепсія,приступ,щоденник,тригер,невролог,ліки,звіт,напад,судоми,медикаменти,доглядач` | Promo text: `Фіксуйте приступи, відстежуйте тригери та надсилайте PDF-звіти неврологу — все в одному місці.`
+  - Опис (EN/UK) — є в чаті від 2026-05-16
 - [ ] Захист від ботів / DDOS (Firebase App Check) — потребує $99 Apple Developer акаунту для DeviceCheck/App Attest; код готовий, залишилось налаштувати в Firebase Console
-- [ ] Публікація в App Store
 - [ ] Push-нотифікації — нагадування про ліки (потребує Dev Client)
 - [ ] реалізувати Sign in with Apple (потребує $99 Apple Developer)
+- [ ] Публікація в App Store
 - [ ] Графіки та статистика (кореляція приступів з тригерами)
 - [ ] Чат між користувачами
 - [ ] Пошук лікарів і онлайн консультації

@@ -4,13 +4,11 @@ import { useAuth, useOnboarding, useThemeContext } from "@/hooks"
 import { router, Stack } from "expo-router"
 import { useEffect, useState } from "react"
 import { ActivityIndicator, View } from "react-native"
-import { MD3DarkTheme, MD3LightTheme, PaperProvider } from "react-native-paper"
 
 export function AppLayout() {
 	const { theme, isDark } = useThemeContext()
 	const { user, isLoading } = useAuth()
 	const { hasSeenOnboarding } = useOnboarding()
-	const baseTheme = isDark ? MD3DarkTheme : MD3LightTheme
 	const [isReady, setIsReady] = useState(false)
 
 	useEffect(() => {
@@ -38,26 +36,10 @@ export function AppLayout() {
 		setIsReady(true)
 	}, [isLoading, user, hasSeenOnboarding])
 
-	const {
-		colors: { primary, secondary, background, surface, onSurface, error, border },
-	} = theme
+	const { colors: { primary, background } } = theme
 
 	return (
-		<PaperProvider
-			theme={{
-				...baseTheme,
-				dark: isDark,
-				colors: {
-					...baseTheme.colors,
-					primary,
-					secondary,
-					surface,
-					error,
-					onSurface,
-					outline: border,
-				},
-			}}
-		>
+		<>
 			<Stack
 				screenOptions={{
 					headerShown: false,
@@ -81,6 +63,6 @@ export function AppLayout() {
 					<ActivityIndicator color={primary} size="large" />
 				</View>
 			)}
-		</PaperProvider>
+		</>
 	)
 }
