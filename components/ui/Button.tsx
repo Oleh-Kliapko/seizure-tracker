@@ -1,6 +1,8 @@
 // components/ui/Button.tsx
 import { useAppTheme } from "@/hooks"
+import * as Haptics from "expo-haptics"
 import {
+	GestureResponderEvent,
 	Text,
 	TouchableOpacity,
 	TouchableOpacityProps,
@@ -21,15 +23,22 @@ export function Button({
 	iconPosition = "left",
 	variant = "primary",
 	style,
+	onPress,
 	...props
 }: Props) {
 	const theme = useAppTheme()
 	const styles = createButtonStyles(theme, variant)
 
+	function handlePress(e: GestureResponderEvent) {
+		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+		onPress?.(e)
+	}
+
 	return (
 		<TouchableOpacity
 			style={[styles.wrapper, style, props.disabled && { opacity: 0.45 }]}
 			activeOpacity={0.85}
+			onPress={props.disabled ? undefined : handlePress}
 			{...props}
 		>
 			<View style={styles.content}>
