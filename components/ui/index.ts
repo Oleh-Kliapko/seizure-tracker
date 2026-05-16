@@ -11,6 +11,8 @@ import { FormInput } from "./FormInput"
 import { Button } from "./Button"
 import { ScreenHeader } from "./ScreenHeader"
 import { ScreenWrapper } from "./ScreenWrapper"
+import { IllustrationDashboardEmpty } from "./IllustrationDashboardEmpty"
+import { IllustrationSeizuresEmpty } from "./IllustrationSeizuresEmpty"
 import { SkeletonBox } from "./SkeletonBox"
 import { TimePickerModal } from "./TimePickerModal"
 
@@ -24,6 +26,8 @@ export {
 	Button,
 	Divider,
 	FormInput,
+	IllustrationDashboardEmpty,
+	IllustrationSeizuresEmpty,
 	ScreenHeader,
 	ScreenWrapper,
 	SkeletonBox,

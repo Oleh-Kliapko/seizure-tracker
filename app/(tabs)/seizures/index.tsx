@@ -6,6 +6,7 @@ import {
 	SeizureListSkeleton,
 	SeizurePagination,
 } from "@/components/seizure/list"
+import { IllustrationSeizuresEmpty } from "@/components/ui"
 import { getStyles } from "@/components/seizure/list/getStyles"
 import { ScreenHeader, ScreenWrapper } from "@/components/ui"
 import { useAppTheme, useSeizureList } from "@/hooks"
@@ -122,6 +123,7 @@ export default function SeizuresScreen() {
 
 					{paginated.length === 0 ? (
 						<View style={styles.emptyContainer}>
+							<IllustrationSeizuresEmpty />
 							<Text style={styles.emptyText}>{t("seizure.emptyTitle")}</Text>
 							<Text style={styles.emptySubtext}>{t("seizure.emptyHint")}</Text>
 						</View>
