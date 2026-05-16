@@ -59,6 +59,8 @@ export const MedicationCard = memo(function MedicationCard({
 						)
 					}
 					activeOpacity={0.7}
+					accessibilityLabel="Видалити ліки"
+					accessibilityRole="button"
 				>
 					<Trash2 size={20} color={theme.colors.error} />
 				</TouchableOpacity>

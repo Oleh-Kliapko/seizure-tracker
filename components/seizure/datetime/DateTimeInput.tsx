@@ -87,15 +87,17 @@ export function DateTimeInput({ label, value, onChange }: Props) {
 		label: string,
 		onNext: () => void,
 		nextDisabled: boolean,
+		prevLabel: string,
+		nextLabel: string,
 	) => (
 		<View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
-			<TouchableOpacity onPress={onPrev} hitSlop={10}>
+			<TouchableOpacity onPress={onPrev} hitSlop={10} accessibilityLabel={prevLabel} accessibilityRole="button">
 				<Text style={{ color: theme.colors.primary, fontSize: NAV_ARROW_SIZE, lineHeight: NAV_ARROW_SIZE, includeFontPadding: false, transform: [{ translateY: 0 }] }}>‹</Text>
 			</TouchableOpacity>
 			<Text style={{ color: theme.colors.onSurface, fontSize: NAV_LABEL_SIZE, fontFamily: theme.fonts.medium, minWidth: 80, textAlign: "center" }}>
 				{label}
 			</Text>
-			<TouchableOpacity onPress={onNext} disabled={nextDisabled} hitSlop={10}>
+			<TouchableOpacity onPress={onNext} disabled={nextDisabled} hitSlop={10} accessibilityLabel={nextLabel} accessibilityRole="button">
 				<Text style={{ color: nextDisabled ? theme.colors.border : theme.colors.primary, fontSize: NAV_ARROW_SIZE, lineHeight: NAV_ARROW_SIZE, includeFontPadding: false, transform: [{ translateY: 0 }] }}>›</Text>
 			</TouchableOpacity>
 		</View>
@@ -111,8 +113,8 @@ export function DateTimeInput({ label, value, onChange }: Props) {
 			{showPicker && (
 				<View>
 					<View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 24, paddingTop: 6, paddingBottom: 0 }}>
-						{navGroup(() => changeYear(-1), String(year), () => changeYear(+1), year >= MAX_YEAR)}
-						{navGroup(() => changeMonth(-1), monthName, () => changeMonth(+1), atMaxMonth)}
+						{navGroup(() => changeYear(-1), String(year), () => changeYear(+1), year >= MAX_YEAR, "Попередній рік", "Наступний рік")}
+						{navGroup(() => changeMonth(-1), monthName, () => changeMonth(+1), atMaxMonth, "Попередній місяць", "Наступний місяць")}
 					</View>
 
 					<DateTimePicker

@@ -24,8 +24,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 const { width: SCREEN_WIDTH } = Dimensions.get("window")
 
 const LANGUAGES = [
-	{ value: "uk" as const, flag: "🇺🇦" },
-	{ value: "en" as const, flag: "🇬🇧" },
+	{ value: "uk" as const, flag: "🇺🇦", label: "Українська" },
+	{ value: "en" as const, flag: "🇬🇧", label: "English" },
 ]
 
 type SlideData = {
@@ -104,6 +104,8 @@ export default function OnboardingScreen() {
 							key={lang.value}
 							onPress={() => setAppLanguage(lang.value)}
 							activeOpacity={0.7}
+							accessibilityLabel={lang.label}
+							accessibilityRole="button"
 							style={{
 								width: 40,
 								height: 40,

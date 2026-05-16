@@ -124,7 +124,7 @@ export function TrackingCalendar() {
 					marginBottom: spacing.md,
 				}}
 			>
-				<TouchableOpacity onPress={prevMonth} activeOpacity={0.7} hitSlop={8}>
+				<TouchableOpacity onPress={prevMonth} activeOpacity={0.7} hitSlop={8} accessibilityLabel="Попередній місяць" accessibilityRole="button">
 					<ChevronLeft size={22} color={colors.onSurface} />
 				</TouchableOpacity>
 				<Text
@@ -141,6 +141,8 @@ export function TrackingCalendar() {
 					onPress={nextMonth}
 					activeOpacity={isCurrentMonth ? 0.3 : 0.7}
 					hitSlop={8}
+					accessibilityLabel="Наступний місяць"
+					accessibilityRole="button"
 				>
 					<ChevronRight
 						size={22}

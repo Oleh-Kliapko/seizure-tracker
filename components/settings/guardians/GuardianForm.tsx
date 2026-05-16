@@ -27,7 +27,7 @@ export const GuardianForm = memo(function GuardianForm({ guardian, index, onUpda
 		<View style={styles.guardianCard}>
 			<View style={styles.guardianHeader}>
 				<Text style={styles.guardianTitle}>{t('guardians.title', { index: index + 1 })}</Text>
-				<TouchableOpacity onPress={onRemove} activeOpacity={0.7}>
+				<TouchableOpacity onPress={onRemove} activeOpacity={0.7} accessibilityLabel="Видалити опікуна" accessibilityRole="button">
 					<Trash2 size={20} color={theme.colors.error} />
 				</TouchableOpacity>
 			</View>

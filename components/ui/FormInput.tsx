@@ -71,6 +71,8 @@ export function FormInput({ label, isPassword = false, validate, ...props }: Pro
 						style={styles.eyeBtn}
 						onPress={() => setIsVisible(v => !v)}
 						activeOpacity={0.7}
+						accessibilityLabel={isVisible ? "Сховати пароль" : "Показати пароль"}
+						accessibilityRole="button"
 					>
 						{isVisible ? (
 							<Eye size={theme.iconSize.sm} color={theme.colors.textSecondary} />

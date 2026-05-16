@@ -60,6 +60,8 @@ export function ProfileAvatar({
 					onPress={hasAvatar ? onDelete : onEdit}
 					activeOpacity={0.7}
 					disabled={isUploading}
+					accessibilityLabel={hasAvatar ? "Видалити фото профілю" : "Редагувати фото профілю"}
+					accessibilityRole="button"
 				>
 					{hasAvatar ? (
 						<Trash2 size={14} color={theme.colors.error} />

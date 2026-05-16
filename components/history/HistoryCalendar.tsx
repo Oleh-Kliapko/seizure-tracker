@@ -109,7 +109,7 @@ export function HistoryCalendar({ seizuresByDate, from, to, period, onDayPress }
 				const isExpanded = expandedYears.has(year)
 				return (
 					<View key={year}>
-						<Pressable style={styles.yearHeader} onPress={() => toggleYear(year)}>
+						<Pressable style={styles.yearHeader} onPress={() => toggleYear(year)} accessibilityLabel={isExpanded ? `Сховати місяці ${year}` : `Показати місяці ${year}`} accessibilityRole="button">
 							<Text style={styles.yearHeaderText}>{year}</Text>
 							{isExpanded
 								? <ChevronDown size={18} color={theme.colors.textSecondary} />

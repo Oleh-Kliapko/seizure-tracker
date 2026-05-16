@@ -34,6 +34,8 @@ export function SeizurePagination({
 				onPress={() => onPageChange(currentPage - 1)}
 				disabled={isFirst}
 				activeOpacity={0.7}
+				accessibilityLabel="Попередня сторінка"
+				accessibilityRole="button"
 			>
 				<ChevronLeft size={18} color={isFirst ? theme.colors.border : theme.colors.primary} />
 			</TouchableOpacity>
@@ -71,6 +73,8 @@ export function SeizurePagination({
 				onPress={() => onPageChange(currentPage + 1)}
 				disabled={isLast}
 				activeOpacity={0.7}
+				accessibilityLabel="Наступна сторінка"
+				accessibilityRole="button"
 			>
 				<ChevronRight size={18} color={isLast ? theme.colors.border : theme.colors.primary} />
 			</TouchableOpacity>

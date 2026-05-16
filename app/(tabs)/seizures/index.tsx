@@ -70,6 +70,8 @@ export default function SeizuresScreen() {
 					<TouchableOpacity
 						onPress={() => router.push("/(tabs)/seizures/add")}
 						activeOpacity={0.7}
+						accessibilityLabel="Додати судому"
+						accessibilityRole="button"
 						style={{
 							width: 36,
 							height: 36,
@@ -110,7 +112,7 @@ export default function SeizuresScreen() {
 							<Text style={{ fontFamily: theme.fonts.medium, fontSize: theme.fontSize.sm, color: theme.colors.primary }}>
 								{t("seizure.filteredByDate", { date: dateLabel })}
 							</Text>
-							<TouchableOpacity onPress={() => router.setParams({ date: "" })} activeOpacity={0.7} hitSlop={8}>
+							<TouchableOpacity onPress={() => router.setParams({ date: "" })} activeOpacity={0.7} hitSlop={8} accessibilityLabel="Скинути фільтр за датою" accessibilityRole="button">
 								<X size={16} color={theme.colors.primary} />
 							</TouchableOpacity>
 						</View>

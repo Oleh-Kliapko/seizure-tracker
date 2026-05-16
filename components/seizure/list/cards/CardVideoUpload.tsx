@@ -186,6 +186,8 @@ export const CardVideoUpload = memo(function CardVideoUpload({ seizure, onVideoU
 						<TouchableOpacity
 							onPress={() => setShowPlayer(false)}
 							activeOpacity={0.8}
+							accessibilityLabel="Закрити відео"
+							accessibilityRole="button"
 							style={{
 								position: "absolute",
 								top: insets.top + (Platform.OS === "android" ? 8 : 12),

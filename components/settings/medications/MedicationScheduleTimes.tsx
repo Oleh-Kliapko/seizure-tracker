@@ -48,6 +48,8 @@ export function MedicationScheduleTimes({ scheduledTimes, onAddTime, onRemoveTim
 							onPress={() => onRemoveTime(time)}
 							hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
 							activeOpacity={0.7}
+							accessibilityLabel={`Видалити час ${time}`}
+							accessibilityRole="button"
 						>
 							<X size={13} color={colors.primary} />
 						</TouchableOpacity>

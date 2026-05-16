@@ -31,6 +31,8 @@ export function ScreenHeader({
 					onPress={() => router.back()}
 					activeOpacity={0.7}
 					style={styles.backBtn}
+					accessibilityLabel="Назад"
+					accessibilityRole="button"
 				>
 					<ArrowLeft size={24} color={theme.colors.primary} />
 				</TouchableOpacity>

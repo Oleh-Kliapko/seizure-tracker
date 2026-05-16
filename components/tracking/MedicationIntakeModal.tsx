@@ -136,6 +136,8 @@ export function MedicationIntakeModal({
 							onPress={decrement}
 							activeOpacity={0.7}
 							style={styles.stepperBtn}
+							accessibilityLabel="Зменшити кількість"
+							accessibilityRole="button"
 						>
 							<Text style={styles.stepperBtnText}>−</Text>
 						</TouchableOpacity>
@@ -147,6 +149,8 @@ export function MedicationIntakeModal({
 							onPress={increment}
 							activeOpacity={0.7}
 							style={styles.stepperBtn}
+							accessibilityLabel="Збільшити кількість"
+							accessibilityRole="button"
 						>
 							<Text style={styles.stepperBtnText}>+</Text>
 						</TouchableOpacity>

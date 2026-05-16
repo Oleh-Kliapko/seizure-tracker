@@ -127,6 +127,8 @@ export function TrackingMedications({
 									onPress={() => onRemoveIntake(index)}
 									hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
 									activeOpacity={0.7}
+									accessibilityLabel="Видалити прийом ліків"
+									accessibilityRole="button"
 								>
 									<X size={16} color={theme.colors.error} />
 								</TouchableOpacity>
