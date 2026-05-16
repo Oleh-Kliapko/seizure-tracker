@@ -9,6 +9,7 @@ import { PersonalForm } from "./profile/PersonalForm"
 import { ProfileAvatar } from "./ProfileAvatar"
 import { ProfileLink } from "./ProfileLink"
 import { ProfileMenu } from "./ProfileMenu"
+import { ProfileSkeleton } from "./ProfileSkeleton"
 
 export {
 	AppSettingsForm,
@@ -21,4 +22,5 @@ export {
 	ProfileAvatar,
 	ProfileLink,
 	ProfileMenu,
+	ProfileSkeleton,
 }

@@ -3,6 +3,7 @@
 import {
 	SeizureCard,
 	SeizureFilters,
+	SeizureListSkeleton,
 	SeizurePagination,
 } from "@/components/seizure/list"
 import { getStyles } from "@/components/seizure/list/getStyles"
@@ -84,11 +85,7 @@ export default function SeizuresScreen() {
 			/>
 
 			{isLoading && !refreshing ? (
-				<View
-					style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-				>
-					<ActivityIndicator color={theme.colors.primary} size="large" />
-				</View>
+				<SeizureListSkeleton />
 			) : (
 				<ScrollView
 					contentContainerStyle={{ padding: theme.spacing.lg }}

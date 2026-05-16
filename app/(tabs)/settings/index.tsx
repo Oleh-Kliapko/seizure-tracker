@@ -1,14 +1,14 @@
 // app/(tabs)/settings/index.tsx
 
-import { LogoutButton, ProfileAvatar, ProfileMenu } from "@/components/settings"
+import { LogoutButton, ProfileAvatar, ProfileMenu, ProfileSkeleton } from "@/components/settings"
 import { ScreenWrapper } from "@/components/ui"
 import { useAppTheme, useAuthActions, useAvatar, useUser } from "@/hooks"
 import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
-import { ActivityIndicator, Alert, ScrollView, View } from "react-native"
+import { Alert, ScrollView, View } from "react-native"
 
 export default function ProfileScreen() {
-	const { colors, spacing } = useAppTheme()
+	const { spacing } = useAppTheme()
 	const { t } = useTranslation()
 	const { profile, isLoading } = useUser()
 	const { logout } = useAuthActions()
@@ -26,15 +26,7 @@ export default function ProfileScreen() {
 	if (isLoading) {
 		return (
 			<ScreenWrapper>
-				<View
-					style={{
-						flex: 1,
-						justifyContent: "center",
-						alignItems: "center",
-					}}
-				>
-					<ActivityIndicator color={colors.primary} size="large" />
-				</View>
+				<ProfileSkeleton />
 			</ScreenWrapper>
 		)
 	}

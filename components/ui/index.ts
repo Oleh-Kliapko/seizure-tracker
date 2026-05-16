@@ -11,6 +11,7 @@ import { FormInput } from "./FormInput"
 import { Button } from "./Button"
 import { ScreenHeader } from "./ScreenHeader"
 import { ScreenWrapper } from "./ScreenWrapper"
+import { SkeletonBox } from "./SkeletonBox"
 import { TimePickerModal } from "./TimePickerModal"
 
 export {
@@ -25,5 +26,6 @@ export {
 	FormInput,
 	ScreenHeader,
 	ScreenWrapper,
+	SkeletonBox,
 	TimePickerModal,
 }

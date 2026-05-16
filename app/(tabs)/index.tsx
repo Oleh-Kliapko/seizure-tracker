@@ -5,6 +5,7 @@ import {
 	DashboardHeatmap,
 	DashboardHero,
 	DashboardRecentSeizures,
+	DashboardSkeleton,
 	DashboardStats,
 	DashboardToday,
 } from "@/components/dashboard"
@@ -14,12 +15,7 @@ import { format } from "date-fns"
 import { uk } from "date-fns/locale"
 import { useCallback, useState } from "react"
 import { useTranslation } from "react-i18next"
-import {
-	ActivityIndicator,
-	RefreshControl,
-	ScrollView,
-	View,
-} from "react-native"
+import { RefreshControl, ScrollView, View } from "react-native"
 
 export default function Dashboard() {
 	const { colors, spacing } = useAppTheme()
@@ -65,11 +61,7 @@ export default function Dashboard() {
 			/>
 
 			{isLoading && !refreshing ? (
-				<View
-					style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-				>
-					<ActivityIndicator color={colors.primary} />
-				</View>
+				<DashboardSkeleton />
 			) : !hasSeizures ? (
 				<DashboardEmpty />
 			) : (
