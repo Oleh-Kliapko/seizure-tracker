@@ -66,7 +66,7 @@ export function useSeizureEditForm() {
 			if (base.moodBefore !== undefined) seizureData.moodBefore = base.moodBefore
 			if (base.moodAfter !== undefined) seizureData.moodAfter = base.moodAfter
 			if (base.sleepHoursBefore !== undefined) seizureData.sleepHoursBefore = base.sleepHoursBefore
-			if (base.description) seizureData.description = base.description
+			seizureData.description = base.description || deleteField()
 
 			await updateSeizure(user.uid, id, seizureData as Partial<Seizure>)
 			router.back()

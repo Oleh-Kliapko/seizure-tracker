@@ -74,6 +74,7 @@
 		"savingSeizureError": "Save error. Please try again"
 	},
 	"common": {
+		"edit": "Edit",
 		"save": "Save",
 		"saving": "Saving...",
 		"cancel": "Cancel",
@@ -315,6 +316,7 @@
 	},
 	"seizure": {
 		"addTitle": "Add seizure",
+		"viewTitle": "Seizure Details",
 		"editTitle": "Edit seizure",
 		"type": "Seizure type",
 		"customType": "Describe the type",

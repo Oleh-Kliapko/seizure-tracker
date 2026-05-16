@@ -43,7 +43,7 @@ export const DashboardRecentSeizures = memo(function DashboardRecentSeizures({ s
 					<View key={s.id}>
 						{i > 0 && <View style={styles.divider} />}
 						<TouchableOpacity
-							onPress={() => router.push(`/(tabs)/seizures/${s.id}` as any)}
+							onPress={() => router.push({ pathname: "/(tabs)/seizures/view" as any, params: { id: s.id } })}
 							activeOpacity={0.7}
 							style={styles.seizureRow}
 						>

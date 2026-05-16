@@ -13,6 +13,7 @@ import { useHistoryData } from "./history/useHistoryData"
 import { useSeizureEditForm } from "./seizure/useSeizureEditForm"
 import { useSeizureForm } from "./seizure/useSeizureForm"
 import { useSeizureList } from "./seizure/useSeizureList"
+import { useSeizureView } from "./seizure/useSeizureView"
 import { useVideoUpload } from "./seizure/useVideoUpload"
 import { useAppSettingsForm } from "./settings/useAppSettingsForm"
 import { useAvatar } from "./settings/useAvatar"
@@ -64,6 +65,7 @@ export {
 	useSeizureEditForm,
 	useSeizureForm,
 	useSeizureList,
+	useSeizureView,
 	useSetPasswordForm,
 	useThemeContext,
 	useTrackingCalendar,

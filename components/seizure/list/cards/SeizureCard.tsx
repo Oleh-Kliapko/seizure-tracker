@@ -63,7 +63,7 @@ export const SeizureCard = memo(function SeizureCard({
 
 	const handleSeizurePress = (s: Seizure) => {
 		router.push({
-			pathname: "/(tabs)/seizures/[id]" as any,
+			pathname: "/(tabs)/seizures/view" as any,
 			params: { id: s.id },
 		})
 	}
