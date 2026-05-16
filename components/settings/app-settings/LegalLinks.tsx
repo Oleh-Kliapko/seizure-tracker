@@ -2,9 +2,10 @@
 
 import { LINKS } from "@/constants/commonConstants"
 import { useAppTheme } from "@/hooks"
+import * as WebBrowser from "expo-web-browser"
 import { ChevronRight } from "lucide-react-native"
 import { useTranslation } from "react-i18next"
-import { Linking, Text, TouchableOpacity, View } from "react-native"
+import { Text, TouchableOpacity, View } from "react-native"
 import { getStyles } from "../getStyles"
 
 export function LegalLinks() {
@@ -13,7 +14,9 @@ export function LegalLinks() {
 	const { t } = useTranslation()
 
 	const handlePress = (url: string) => {
-		Linking.openURL(url)
+		WebBrowser.openBrowserAsync(url, {
+			presentationStyle: WebBrowser.WebBrowserPresentationStyle.PAGE_SHEET,
+		})
 	}
 
 	return (
