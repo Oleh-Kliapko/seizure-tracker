@@ -4,8 +4,9 @@ import { DailyTracking } from "@/models"
 import { Medication } from "@/models/medication"
 import { Seizure } from "@/models/seizure"
 import {
+	getLastSeizure,
 	getMedicationsByPatient,
-	getSeizures,
+	getSeizuresSince,
 	getTrackingByDate,
 } from "@/services"
 import { countFilledSections } from "@/utils/trackingHelpers"
@@ -24,6 +25,7 @@ export function useDashboard() {
 	const { profile } = useUser()
 
 	const [seizures, setSeizures] = useState<Seizure[]>([])
+	const [overallLastSeizure, setOverallLastSeizure] = useState<Seizure | null>(null)
 	const [tracking, setTracking] = useState<DailyTracking | null>(null)
 	const [medications, setMedications] = useState<Medication[]>([])
 	const [isLoading, setIsLoading] = useState(true)
@@ -32,12 +34,16 @@ export function useDashboard() {
 		if (!user) return
 		setIsLoading(true)
 		try {
-			const [seizuresData, trackingData, medsData] = await Promise.all([
-				getSeizures(user.uid),
+			const now = new Date()
+			const twoMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 1, 1).getTime()
+			const [recentData, lastSeizureDoc, trackingData, medsData] = await Promise.all([
+				getSeizuresSince(user.uid, twoMonthsAgo),
+				getLastSeizure(user.uid),
 				getTrackingByDate(user.uid, user.uid, Date.now()).catch(() => null),
 				getMedicationsByPatient(user.uid, user.uid).catch(() => []),
 			])
-			setSeizures(seizuresData)
+			setSeizures(recentData)
+			setOverallLastSeizure(lastSeizureDoc)
 			setTracking(trackingData)
 			setMedications(medsData)
 		} finally {
@@ -52,7 +58,7 @@ export function useDashboard() {
 	)
 
 	const computed = useMemo(() => {
-		const lastSeizure = seizures[0] ?? null
+		const lastSeizure = seizures[0] ?? overallLastSeizure
 
 		const daysSinceLastSeizure = lastSeizure
 			? (() => {
@@ -122,13 +128,13 @@ export function useDashboard() {
 			trackingFilledSections,
 			medicationsTakenToday,
 		}
-	}, [seizures, tracking])
+	}, [seizures, overallLastSeizure, tracking])
 
 	return {
 		isLoading,
 		profile,
 		medications,
-		hasSeizures: seizures.length > 0,
+		hasSeizures: seizures.length > 0 || overallLastSeizure !== null,
 		reload: load,
 		...computed,
 	}

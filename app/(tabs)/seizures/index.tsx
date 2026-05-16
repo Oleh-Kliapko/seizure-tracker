@@ -34,10 +34,13 @@ export default function SeizuresScreen() {
 		page,
 		totalPages,
 		isLoading,
+		isLoadingMore,
+		hasMore,
 		handleFilterChange,
 		setPage,
 		updateSeizureInList,
 		reload,
+		loadMore,
 	} = useSeizureList(dateFilter)
 
 	const dateLabel = (() => {
@@ -139,6 +142,29 @@ export default function SeizuresScreen() {
 						totalPages={totalPages}
 						onPageChange={setPage}
 					/>
+
+					{hasMore && page === totalPages && (
+						<TouchableOpacity
+							onPress={loadMore}
+							disabled={isLoadingMore}
+							activeOpacity={0.7}
+							style={{
+								marginTop: theme.spacing.sm,
+								paddingVertical: theme.spacing.sm,
+								borderRadius: theme.radius.md,
+								borderWidth: 1,
+								borderColor: theme.colors.border,
+								alignItems: "center",
+							}}
+						>
+							{isLoadingMore
+								? <ActivityIndicator size="small" color={theme.colors.primary} />
+								: <Text style={{ fontFamily: theme.fonts.medium, fontSize: theme.fontSize.sm, color: theme.colors.primary }}>
+									{t("seizure.loadMore")}
+								</Text>
+							}
+						</TouchableOpacity>
+					)}
 				</ScrollView>
 			)}
 		</ScreenWrapper>

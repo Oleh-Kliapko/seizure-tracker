@@ -3,14 +3,17 @@
 import { db } from "@/config/firebase"
 import { Seizure } from "@/models"
 import {
+	QueryDocumentSnapshot,
 	addDoc,
 	collection,
 	deleteDoc,
 	doc,
 	getDoc,
 	getDocs,
+	limit,
 	orderBy,
 	query,
+	startAfter,
 	updateDoc,
 	where,
 } from "firebase/firestore"
@@ -89,6 +92,40 @@ export async function updateSeizure(
 		...data,
 		updatedAt: Date.now(),
 	})
+}
+
+// Останній приступ (limit 1)
+export async function getLastSeizure(userId: string): Promise<Seizure | null> {
+	const q = query(seizuresCol(userId), orderBy("startedAt", "desc"), limit(1))
+	const snap = await getDocs(q)
+	if (snap.empty) return null
+	return { id: snap.docs[0].id, ...snap.docs[0].data() } as Seizure
+}
+
+// Приступи з певного моменту (для дашборду)
+export async function getSeizuresSince(userId: string, from: number): Promise<Seizure[]> {
+	const q = query(
+		seizuresCol(userId),
+		where("startedAt", ">=", from),
+		orderBy("startedAt", "desc"),
+	)
+	const snap = await getDocs(q)
+	return snap.docs.map(d => ({ id: d.id, ...d.data() }) as Seizure)
+}
+
+// Сторінкове завантаження (cursor-based)
+export async function getSeizuresBatch(
+	userId: string,
+	batchSize: number,
+	after?: QueryDocumentSnapshot,
+): Promise<{ seizures: Seizure[]; cursor: QueryDocumentSnapshot | null }> {
+	const q = after
+		? query(seizuresCol(userId), orderBy("startedAt", "desc"), startAfter(after), limit(batchSize))
+		: query(seizuresCol(userId), orderBy("startedAt", "desc"), limit(batchSize))
+	const snap = await getDocs(q)
+	const seizures = snap.docs.map(d => ({ id: d.id, ...d.data() }) as Seizure)
+	const cursor = snap.docs.length === batchSize ? (snap.docs[snap.docs.length - 1] as QueryDocumentSnapshot) : null
+	return { seizures, cursor }
 }
 
 // Видалити приступ

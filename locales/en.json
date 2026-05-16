@@ -336,6 +336,7 @@
 		"listTitle": "Seizures",
 		"emptyTitle": "No seizures yet",
 		"emptyHint": "Tap the add button at the top right",
+		"loadMore": "Load more",
 		"statsTotal": "Total",
 		"statsLight": "Mild",
 		"statsMedium": "Moderate",

@@ -14,10 +14,13 @@ import {
 import {
 	createSeizure,
 	deleteSeizure,
+	getLastSeizure,
 	getSeizureById,
 	getSeizures,
+	getSeizuresBatch,
 	getSeizuresByPatient,
 	getSeizuresByPeriod,
+	getSeizuresSince,
 	updateSeizure,
 } from "./seizureService"
 import {
@@ -42,10 +45,13 @@ export {
 	exportSeizuresToPdf,
 	getMedications,
 	getMedicationsByPatient,
+	getLastSeizure,
 	getSeizureById,
 	getSeizures,
+	getSeizuresBatch,
 	getSeizuresByPatient,
 	getSeizuresByPeriod,
+	getSeizuresSince,
 	getTrackingByDate,
 	getTrackingByPeriod,
 	getTrackingRecords,
