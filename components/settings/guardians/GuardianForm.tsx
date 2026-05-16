@@ -1,5 +1,6 @@
 // components/settings/guardians/GuardianForm.tsx
 
+import { memo } from "react"
 import { FormInput } from "@/components/ui"
 import { RELATIONS } from "@/constants/commonConstants"
 import { useAppTheme } from "@/hooks"
@@ -17,7 +18,7 @@ type Props = {
 	onBlur: () => void
 }
 
-export function GuardianForm({ guardian, index, onUpdate, onRemove, onBlur }: Props) {
+export const GuardianForm = memo(function GuardianForm({ guardian, index, onUpdate, onRemove, onBlur }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
 	const { t } = useTranslation()
@@ -93,4 +94,4 @@ export function GuardianForm({ guardian, index, onUpdate, onRemove, onBlur }: Pr
 			/>
 		</View>
 	)
-}
+})

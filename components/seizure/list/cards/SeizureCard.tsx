@@ -9,7 +9,7 @@ import {
 import { useAppTheme } from "@/hooks"
 import { Seizure } from "@/models"
 import { router } from "expo-router"
-import { useState } from "react"
+import { memo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Text, TouchableOpacity, View } from "react-native"
 import { getStyles } from "../getStyles"
@@ -22,7 +22,7 @@ type Props = {
 	onVideoUpdated?: (s: Seizure) => void
 }
 
-export function SeizureCard({
+export const SeizureCard = memo(function SeizureCard({
 	seizure: initialSeizure,
 	onVideoUpdated,
 }: Props) {
@@ -116,4 +116,4 @@ export function SeizureCard({
 			</View>
 		</TouchableOpacity>
 	)
-}
+})

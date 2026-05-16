@@ -1,5 +1,6 @@
 // components/dashboard/DashboardRecentSeizures.tsx
 
+import { memo } from "react"
 import { SEVERITY_LABELS } from "@/constants/commonConstants"
 import { useAppTheme } from "@/hooks"
 import { Seizure } from "@/models/seizure"
@@ -16,7 +17,7 @@ type Props = {
 }
 
 
-export function DashboardRecentSeizures({ seizures }: Props) {
+export const DashboardRecentSeizures = memo(function DashboardRecentSeizures({ seizures }: Props) {
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
 	const { t, i18n } = useTranslation()
@@ -67,4 +68,4 @@ export function DashboardRecentSeizures({ seizures }: Props) {
 			</TouchableOpacity>
 		</View>
 	)
-}
+})

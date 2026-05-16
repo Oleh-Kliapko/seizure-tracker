@@ -1,5 +1,6 @@
 // components/settings/medications/MedicationCard.tsx
 
+import { memo } from "react"
 import { FormInput } from "@/components/ui"
 import { useAppTheme } from "@/hooks"
 import { MedEntry } from "@/hooks/settings/useMedicationsForm"
@@ -22,7 +23,7 @@ type Props = {
 	onBlur: () => void
 }
 
-export function MedicationCard({
+export const MedicationCard = memo(function MedicationCard({
 	entry,
 	index,
 	onUpdate,
@@ -112,4 +113,4 @@ export function MedicationCard({
 			/>
 		</View>
 	)
-}
+})

@@ -12,7 +12,7 @@ import { getInfoAsync } from "expo-file-system/legacy"
 import * as ImagePicker from "expo-image-picker"
 import { useVideoPlayer, VideoView } from "expo-video"
 import { AlertCircle, Play, Plus, Trash2, X } from "lucide-react-native"
-import { useEffect, useState } from "react"
+import { memo, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import {
 	ActivityIndicator,
@@ -31,7 +31,7 @@ type Props = {
 	onVideoUpdated: (updatedSeizure: Seizure) => void
 }
 
-export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
+export const CardVideoUpload = memo(function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 	const { user } = useAuth()
 	const theme = useAppTheme()
 	const styles = getStyles(theme)
@@ -238,4 +238,4 @@ export function CardVideoUpload({ seizure, onVideoUpdated }: Props) {
 			)}
 		</View>
 	)
-}
+})

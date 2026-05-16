@@ -87,9 +87,9 @@ export function useSeizureList(dateFilter?: string) {
 		setPage(1)
 	}
 
-	const updateSeizureInList = (updated: Seizure) => {
+	const updateSeizureInList = useCallback((updated: Seizure) => {
 		setSeizures(prev => prev.map(s => (s.id === updated.id ? updated : s)))
-	}
+	}, [])
 
 	return {
 		seizures,

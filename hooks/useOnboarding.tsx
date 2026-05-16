@@ -1,6 +1,6 @@
 // hooks/useOnboarding.tsx
 
-import { createContext, ReactNode, useContext, useState } from "react"
+import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from "react"
 
 type OnboardingCtx = {
 	hasSeenOnboarding: boolean
@@ -15,12 +15,17 @@ const OnboardingContext = createContext<OnboardingCtx>({
 export function OnboardingProvider({ children }: { children: ReactNode }) {
 	const [hasSeenOnboarding, setHasSeenOnboarding] = useState(false)
 
-	const completeOnboarding = () => {
+	const completeOnboarding = useCallback(() => {
 		setHasSeenOnboarding(true)
-	}
+	}, [])
+
+	const value = useMemo(
+		() => ({ hasSeenOnboarding, completeOnboarding }),
+		[hasSeenOnboarding, completeOnboarding],
+	)
 
 	return (
-		<OnboardingContext.Provider value={{ hasSeenOnboarding, completeOnboarding }}>
+		<OnboardingContext.Provider value={value}>
 			{children}
 		</OnboardingContext.Provider>
 	)
